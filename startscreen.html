@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startscreen</title>
+    <link rel="stylesheet" href="stylestartscreen.css">
+</head>
+<body>
+   <div>
+    <img id="StartscreenBackground" src="Assets/background_forest.png" alt="ForestBackground">
+   </div>
+
+    <div class="flex-container">
+        <h1 id="Title">RogueKnight</h1>
+        <button class="start-button" onclick="window.location.href=''">Play</button>                   
+        <button class="start-button" onclick="window.location.href='Tutorial.html'">Tutorial</a></button>        
+        <button class="start-button" onclick="window.location.href='Settings.html'">Settings</button>
+        <button class="start-button" onclick="window.location.href='Credits.html'">Credits</button>
+    </div>
+    
+    <div class="sprite"></div>
+    <script>
+let frame = 0;
+const sprite = document.querySelector('.sprite');
+
+const runningConfig = {
+    image: 'Assets/Knight_1/Run.png',
+    totalFrames: 7,
+    frameWidth: 200, // Width of each frame for running
+    backgroundSize: '1400px 200px', // Full sprite sheet size for running
+    frameDelay: 100,
+};
+
+const idleConfig = {
+    image: 'Assets/Knight_1/Idlenew.png',
+    totalFrames: 4,
+    frameWidth: 200, // Width of each frame for idle
+    backgroundSize: '800px 200px', // Full sprite sheet size for idle
+    frameDelay: 350,
+};
+
+let currentConfig = runningConfig; // Start with the running animation
+let spritePositionX = 0; // Initial position of the sprite
+const spriteSpeed = 2; // Speed of the sprite movement
+const switchPoint2 = 45; // Distance in percentage to switch to idle animation
+let isIdle = false; // Flag to check if sprite is idle
+
+function setSpriteConfig(config) {
+    sprite.style.backgroundImage = `url(${config.image})`;
+    sprite.style.backgroundSize = config.backgroundSize;
+}
+
+function animateSprite() {
+    // Calculate the x-offset for the current frame
+    const xOffset = -(frame * currentConfig.frameWidth);
+    sprite.style.backgroundPosition = `${xOffset}px 0`;
+
+    // Move the sprite if it's not idle
+    if (!isIdle) {
+        spritePositionX += spriteSpeed;
+        sprite.style.left = `${spritePositionX}%`;
+    }
+
+    // Switch to the idle animation if the sprite has reached the switch point
+    if (!isIdle && spritePositionX >= switchPoint2) {
+        currentConfig = idleConfig; // Switch to the idle configuration
+        setSpriteConfig(currentConfig); // Apply the new configuration
+        isIdle = true; // Set the idle flag
+        frame = 0; // Reset the frame counter
+    }
+
+
+
+    // Loop through frames
+    frame = (frame + 1) % currentConfig.totalFrames;
+
+    // Use the delay from the current configuration
+    setTimeout(animateSprite, currentConfig.frameDelay);
+}
+
+// Apply the initial running animation config and start the animation
+setSpriteConfig(runningConfig);
+animateSprite();
+
+    </script>
+</body>
+</html>
