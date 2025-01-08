@@ -1,5 +1,15 @@
+let player = new Player("Knight", 100, 100, [], 3, 3);
+
+let sprite;
+
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded");
+  sprite = document.querySelector(".sprite-player");
+  // Start the idle animation immediately when the page loads
+  resetToIdleAnimation(); // This will start the idle animation
+  // Call the function to display the weapons
+  displayWeapons();
+
   Enemy.initialize();
   enemies.push(
     new Enemy("Shroom", 250, 15, "Assets/Transperent/Icon1.png"),
@@ -15,6 +25,66 @@ document.addEventListener("DOMContentLoaded", function () {
 const enemies = [];
 
 let isPlayerTurn = true; // Flag to track if it's the player's turn
+
+// Handle weapon selection
+function useWeapon(weaponIndex) {
+  if (!isPlayerTurn) {
+    // Prevent using weapons if it's not the player's turn
+    displayTurnMessage("It's not your turn!");
+    return;
+  }
+  const weapon = weapons[weaponIndex];
+  console.log("Using weapon:", weapon.name);
+
+  // Check if the player has enough energy to use the weapon
+  if (player.useEnergy(weapon.energy)) {
+    if (weapon.requiresTargeting) displayPossibleTargets(weaponIndex, false);
+    else executeAttack(weapon, 0);
+  } else {
+    displayTurnMessage("Not enough energy!");
+  }
+}
+
+const possibleTargetsCls = "possibleTargets";
+const tempTargetsCls = "tempTargets";
+
+function displayPossibleTargets(weaponIndex, isHovering) {
+  let activeTargets = document.querySelectorAll(
+    "." + possibleTargetsCls + ", ." + tempTargetsCls
+  );
+  for (let active of activeTargets) {
+    active.classList.remove(possibleTargetsCls);
+    active.classList.remove(tempTargetsCls);
+  }
+
+  let displayclass = possibleTargetsCls;
+  if (isHovering) displayclass = tempTargetsCls;
+}
+
+/**
+ *
+ * @param {Weapons} weapon used weapon
+ * @param {int} enemyIndex
+ */
+function executeAttack(weapon, enemyIndex) {
+  triggerAttackAnimation(); // Trigger the attack animation
+
+  // Call the damage calculation function
+  const { damage, isCritical } = calculateDamage(weapon); // Destructure to get both damage and isCritical
+
+  enemies[0].displayDamage(damage, isCritical); // Call displayDamage here
+
+  enemies[0].takeDamage(damage); // Apply damage to the enemy
+
+  // Optional: Reset the player's animation after the attack
+  setTimeout(() => {
+    // If using idle animation, you can do this after the attack animation is complete
+    // Call the function to reset the player's animation back to idle
+    resetToIdleAnimation();
+  }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
+
+  updateEnergyDisplay();
+}
 
 // Function to disable weapons during the enemy's turn
 function disableWeapons() {
@@ -62,13 +132,13 @@ function endTurn() {
     setTimeout(() => {
       isPlayerTurn = true;
       enableWeapons(); // Enable the weapons after the delay
-    }, 2000); // Enable after 2 seconds (can adjust based on animation time)
-  }, 1500); // Add a 1.5-second delay before the enemy attacks (adjust the delay as needed)
+    }, 1500); // Enable after 2 seconds (can adjust based on animation time)
+  }, 500); // Add a 1.5-second delay before the enemy attacks (adjust the delay as needed)
 }
 
 // Function to refill the player's energy (e.g., set to full energy)
 function refillEnergy() {
-  player.energy = 3; // Set the energy back to the maximum value
+  player.restoreEnergy(player.maxEnergy); // Set the energy back to the maximum value
 }
 
 // Update the player's energy display

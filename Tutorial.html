@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tutorial</title>
     <link rel="stylesheet" href="styletutorial.css" />
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
+    <script src="enemie.js"></script>
+    <script src="weapons.js"></script>
+    <script src="game.js"></script>
   </head>
   <body>
     <div>
@@ -48,48 +53,5 @@
     <div id="turn-message" style="display: none"></div>
 
     <button id="end-turn-btn">End Turn</button>
-
-    <script src="player.js"></script>
-    <script src="enemie.js"></script>
-    <script src="weapons.js"></script>
-    <script src="turn.js"></script>
-
-    <script>
-      let frame = 0;
-      const sprite = document.querySelector(".sprite-player");
-
-      const idleConfig = {
-        image: "Assets/Knight_1/Idlenew.png",
-        totalFrames: 4,
-        frameWidth: 200, // Width of each frame for idle
-        backgroundSize: "800px 200px", // Full sprite sheet size for idle
-        frameDelay: 350,
-      };
-
-      sprite.style.backgroundImage = `url(${idleConfig.image})`;
-      sprite.style.backgroundSize = idleConfig.backgroundSize;
-
-      function animateSprite() {
-        frame = (frame + 1) % idleConfig.totalFrames;
-        const frameX = frame * idleConfig.frameWidth;
-        sprite.style.backgroundPosition = `-${frameX}px 0px`;
-      }
-
-      setInterval(animateSprite, idleConfig.frameDelay);
-
-      const healthBar = document.getElementById("health-bar");
-
-      function updateHealthBar(player) {
-        const healthPercentage = (player.health / player.maxHealth) * 100;
-        console.log("Updating health bar:", healthPercentage); //debugging
-        healthBar.style.width = `${healthPercentage}%`;
-        healthBar.style.backgroundColor =
-          healthPercentage > 50
-            ? "#4caf50"
-            : healthPercentage > 25
-            ? "#ff9800"
-            : "#f44336";
-      }
-    </script>
   </body>
 </html>

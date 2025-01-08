@@ -1,35 +1,71 @@
-const player = {
-  name: "Knight",
-  health: 100,
-  maxHealth: 100,
-  deck: [], // List of cards player has
-  energy: 3,
-  addCard(card) {
-    this.deck.push(card); // Add card to deck
-  },
+class Player extends HealthEntity {
+  get healthBar() {
+    return document.getElementById("health-bar-container-player");
+  }
+
+  #name;
+  #health;
+  #maxHealth;
+  #deck = [];
+  #energy;
+  #maxEnergy;
+
+  constructor(name, health, maxHealth, deck, energy, maxEnergy) {
+    super();
+    this.#name = name;
+    this.#health = health;
+    this.#maxHealth = maxHealth;
+    this.#deck = deck;
+    this.#energy = energy;
+    this.#maxEnergy = maxEnergy;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get health() {
+    return this.#health;
+  }
+
+  get maxHealth() {
+    return this.#maxHealth;
+  }
+
+  get deck() {
+    return this.#deck;
+  }
+
+  get energy() {
+    return this.#energy;
+  }
+
+  get maxEnergy() {
+    return this.#maxEnergy;
+  }
+
   takeDamage(amount) {
-    this.health -= amount; // Reduce health
-    if (this.health < 0) this.health = 0; // Ensure health doesn't go negative
-  },
+    this.#health -= amount; // Reduce health
+    if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
+    this.displayDamage(amount, false, -60);
+  }
   heal(amount) {
-    this.health += amount; // Increase health
-    if (this.health > this.maxHealth) this.health = this.maxHealth; // Cap at max health
-  },
+    this.#health += amount; // Increase health
+    if (this.#health > this.#maxHealth) this.#health = this.#maxHealth; // Cap at max health
+  }
   useEnergy(amount) {
-    if (this.energy >= amount) {
-      this.energy -= amount; // Deduct energy
+    if (this.#energy >= amount) {
+      this.#energy -= amount; // Deduct energy
       return true; // Successfully used energy
     } else {
       return false; // Not enough energy
     }
-  },
+  }
   restoreEnergy(amount) {
-    this.energy += amount; // Restore energy
-    if (this.energy > this.maxEnergy) this.energy = this.maxEnergy; // Cap at max energy
-  },
-};
-
-const sprite = document.querySelector(".sprite-player");
+    this.#energy += amount; // Restore energy
+    if (this.#energy > this.#maxEnergy) this.#energy = this.#maxEnergy; // Cap at max energy
+  }
+}
 
 // Define the attack animation configuration
 const attackConfig = {
@@ -101,37 +137,38 @@ function resetToIdleAnimation() {
   idleInterval = setInterval(animateSprite, idleConfig.frameDelay); // Start idle animation
 }
 
-// Start the idle animation immediately when the page loads
-resetToIdleAnimation(); // This will start the idle animation
-
 // Handle weapon selection
 function useWeapon(weaponIndex) {
   const weapon = weapons[weaponIndex];
-  console.log("Using weapon:", weapon.name);
 
-  triggerAttackAnimation(); // Trigger the attack animation
+  if (player.useEnergy(weapon.energy)) {
+    console.log("Using weapon:", weapon.name);
 
-  // Call the damage calculation function
-  const damage = calculateDamage(weapon);
-  const isCritical = Math.random() * 100 < weapon.criticalChance; // Determine if the hit is critical
+    triggerAttackAnimation(); // Trigger the attack animation
 
-  enemies[0].displayDamage(damage, isCritical); // Call displayDamage here
+    const { damage, isCritical } = calculateDamage(weapon);
 
-  enemies[0].takeDamage(damage); // Apply damage to the enemy
+    enemies[0].displayDamage(damage, isCritical); // Call displayDamage here
 
-  // Reset the player's animation after the attack
-  setTimeout(() => {
-    resetToIdleAnimation();
-  }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
+    enemies[0].takeDamage(damage); // Apply damage to the enemy
+
+    // Reset the player's animation after the attack
+    setTimeout(() => {
+      resetToIdleAnimation();
+    }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
+  } else {
+    displayTurnMessage("Not enough energy!");
+  }
+  updateEnergyDisplay();
 }
 
 // Function to initialize the health bars on page load
-function initializeHealthBars(player) {
+function initializeHealthBars() {
   updateHealthBar(player); // Update the player's health bar
 }
 
 // Update the player's health bar after damage
-function updateHealthBar(player) {
+function updateHealthBar() {
   const healthPercentage = (player.health / player.maxHealth) * 100;
   console.log(
     "Updating player health bar:",

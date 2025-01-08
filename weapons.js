@@ -1,57 +1,130 @@
-const weapons = [
-  {
-    name: "Basic Sword",
-    range: "melee",
-    damage: 25,
-    criticalDamage: 50,
-    criticalChance: 25,
-    energy: 1,
-    sprite: "Assets/sword.png",
-  },
+class Weapons {
+  #name;
+  #range;
+  #damage;
+  #criticalDamage;
+  #criticalChance;
+  #energy;
+  #sprite;
+  #requiresTargeting;
+  #minRange;
+  #maxRange;
+  #affectsLeft;
+  #affectsRight;
 
-  {
-    name: "Basic Spear",
-    range: "medium",
-    damage: 20,
-    criticalDamage: 75,
-    criticalChance: 15,
-    energy: 1,
-    sprite: "Assets/spear.png",
-  },
-];
-
-// Handle weapon selection
-function useWeapon(weaponIndex) {
-  if (!isPlayerTurn) {
-    // Prevent using weapons if it's not the player's turn
-    displayTurnMessage("It's not your turn!");
-    return;
+  constructor(
+    name,
+    range,
+    damage,
+    criticalDamage,
+    criticalChance,
+    energy,
+    sprite,
+    requiresTargeting = false,
+    minRange = 0,
+    maxRange = 0,
+    affectsLeft = 0,
+    affectsRight = 0
+  ) {
+    this.#name = name;
+    this.#range = range;
+    this.#damage = damage;
+    this.#criticalDamage = criticalDamage;
+    this.#criticalChance = criticalChance;
+    this.#energy = energy;
+    this.#sprite = sprite;
+    this.#requiresTargeting = requiresTargeting;
+    this.#minRange = minRange;
+    this.#maxRange = maxRange;
+    this.#affectsLeft = affectsLeft;
+    this.#affectsRight = affectsRight;
   }
-  const weapon = weapons[weaponIndex];
-  console.log("Using weapon:", weapon.name);
 
-  // Check if the player has enough energy to use the weapon
-  if (player.useEnergy(weapon.energy)) {
-    triggerAttackAnimation(); // Trigger the attack animation
-
-    // Call the damage calculation function
-    const { damage, isCritical } = calculateDamage(weapon); // Destructure to get both damage and isCritical
-
-    enemies[0].displayDamage(damage, isCritical); // Call displayDamage here
-
-    enemies[0].takeDamage(damage); // Apply damage to the enemy
-
-    // Optional: Reset the player's animation after the attack
-    setTimeout(() => {
-      // If using idle animation, you can do this after the attack animation is complete
-      // Call the function to reset the player's animation back to idle
-      resetToIdleAnimation();
-    }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
-  } else {
-    displayTurnMessage("Not enough energy!");
+  get name() {
+    return this.#name;
   }
-  updateEnergyDisplay();
+
+  get range() {
+    return this.#range;
+  }
+
+  get damage() {
+    return this.#damage;
+  }
+
+  get criticalDamage() {
+    return this.#criticalDamage;
+  }
+
+  get criticalChance() {
+    return this.#criticalChance;
+  }
+
+  get energy() {
+    return this.#energy;
+  }
+
+  get sprite() {
+    return this.#sprite;
+  }
+
+  get requiresTargeting() {
+    return this.#requiresTargeting;
+  }
+
+  // Getter for #minRange
+  get minRange() {
+    return this.#minRange;
+  }
+
+  // Getter for #maxRange
+  get maxRange() {
+    return this.#maxRange;
+  }
+
+  // Getter for #affectsLeft
+  get affectsLeft() {
+    return this.#affectsLeft;
+  }
+
+  // Getter for #affectsRight
+  get affectsRight() {
+    return this.#affectsRight;
+  }
 }
+
+class BasicSword extends Weapons {
+  constructor() {
+    super("Basic Sword", "melee", 25, 50, 25, 1, "Assets/sword.png");
+  }
+}
+
+class BasicAxe extends Weapons {
+  constructor() {
+    super("Basic Axe", "melee", 55, 130, 15, 2, "Assets/axe.png", true, 0, 1);
+  }
+}
+
+class BasicSpear extends Weapons {
+  constructor() {
+    super(
+      "Basic Spear",
+      "medium",
+      20,
+      75,
+      15,
+      1,
+      "Assets/spear.png",
+      false,
+      0,
+      0,
+      0,
+      [0.8, 0.5]
+    );
+  }
+}
+
+const weapons = [new BasicSword(), new BasicAxe(), new BasicSpear()];
 
 // Calculate damage with a chance for a critical hit
 function calculateDamage(weapon) {
@@ -110,6 +183,3 @@ function displayWeapons() {
     weaponsContainer.appendChild(weaponElement);
   });
 }
-
-// Call the function to display the weapons
-displayWeapons();
