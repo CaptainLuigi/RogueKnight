@@ -39,13 +39,13 @@ class Weapons {
     if (!Array.isArray(effectsLeft)) {
       effectsLeft = parseInt(effectsLeft);
       if (isNaN(effectsLeft) || effectsLeft == 0) effectsLeft = [];
-      else effectsLeft = new Array(effectsLeft).map((e) => 1);
+      else effectsLeft = [...new Array(effectsLeft)].map((e) => 1);
     }
     this.#effectsLeft = effectsLeft;
     if (!Array.isArray(effectsRight)) {
       effectsRight = parseInt(effectsRight);
       if (isNaN(effectsRight) || effectsRight == 0) effectsRight = [];
-      else effectsRight = new Array(effectsRight).map((e) => 1);
+      else effectsRight = [...new Array(effectsRight)].map((e) => 1);
     }
     this.#effectsRight = effectsRight;
   }
@@ -177,7 +177,31 @@ class BasicSpear extends Weapons {
   }
 }
 
-const weapons = [new BasicSword(), new BasicAxe(), new BasicSpear()];
+class Grenade extends Weapons {
+  constructor() {
+    super(
+      "Grenade",
+      "range",
+      50,
+      90,
+      20,
+      1,
+      "Assets/spear.png",
+      true,
+      1,
+      3,
+      [0.5],
+      [0.5]
+    );
+  }
+}
+
+const weapons = [
+  new BasicSword(),
+  new BasicAxe(),
+  new BasicSpear(),
+  new Grenade(),
+];
 
 function displayWeapons() {
   const weaponsContainer = document.getElementById("weapons-container");
