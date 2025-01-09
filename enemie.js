@@ -37,6 +37,10 @@ class Enemy extends HealthEntity {
     return this.#display.querySelector(".health-bar-container-enemy");
   }
 
+  get display() {
+    return this.#display;
+  }
+
   constructor(name, maxHealth, attackPower, icon) {
     super();
     this.#health = maxHealth;
@@ -101,6 +105,8 @@ class Enemy extends HealthEntity {
     let index = enemies.findIndex((e) => e == this);
     enemies.splice(index, 1);
     this.#display.remove();
+
+    enemyDeathEvent();
   }
 }
 

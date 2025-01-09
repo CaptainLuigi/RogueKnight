@@ -9,8 +9,8 @@ class Weapons {
   #requiresTargeting;
   #minRange;
   #maxRange;
-  #affectsLeft;
-  #affectsRight;
+  #effectsLeft;
+  #effectsRight;
 
   constructor(
     name,
@@ -23,8 +23,8 @@ class Weapons {
     requiresTargeting = false,
     minRange = 0,
     maxRange = 0,
-    affectsLeft = 0,
-    affectsRight = 0
+    effectsLeft = 0,
+    effectsRight = 0
   ) {
     this.#name = name;
     this.#range = range;
@@ -36,8 +36,18 @@ class Weapons {
     this.#requiresTargeting = requiresTargeting;
     this.#minRange = minRange;
     this.#maxRange = maxRange;
-    this.#affectsLeft = affectsLeft;
-    this.#affectsRight = affectsRight;
+    if (!Array.isArray(effectsLeft)) {
+      effectsLeft = parseInt(effectsLeft);
+      if (isNaN(effectsLeft) || effectsLeft == 0) effectsLeft = [];
+      else effectsLeft = new Array(effectsLeft).map((e) => 1);
+    }
+    this.#effectsLeft = effectsLeft;
+    if (!Array.isArray(effectsRight)) {
+      effectsRight = parseInt(effectsRight);
+      if (isNaN(effectsRight) || effectsRight == 0) effectsRight = [];
+      else effectsRight = new Array(effectsRight).map((e) => 1);
+    }
+    this.#effectsRight = effectsRight;
   }
 
   get name() {
@@ -82,14 +92,57 @@ class Weapons {
     return this.#maxRange;
   }
 
-  // Getter for #affectsLeft
-  get affectsLeft() {
-    return this.#affectsLeft;
+  // Getter for #effectsLeft
+  get effectsLeft() {
+    return this.#effectsLeft;
   }
 
-  // Getter for #affectsRight
-  get affectsRight() {
-    return this.#affectsRight;
+  // Getter for #effectsRight
+  get effectsRight() {
+    return this.#effectsRight;
+  }
+
+  possibleTargets() {
+    if (!this.requiresTargeting) return [this.#minRange];
+
+    const displayTargets = [];
+    for (let index = this.#minRange; index <= this.#maxRange; index++)
+      displayTargets.push(index);
+
+    return displayTargets;
+  }
+
+  calculateDamage(enemyIndex) {
+    const isCritical = Math.random() * 100 < this.criticalChance; // Random chance for critical hit
+    const damage = isCritical ? this.criticalDamage : this.damage;
+
+    let startIndex = enemyIndex - this.#effectsLeft.length;
+    let leftOffset = 0;
+    if (startIndex < 0) {
+      leftOffset = Math.abs(startIndex);
+      startIndex = 0;
+    }
+
+    let endIndex = enemyIndex + this.#effectsRight.length;
+    let rightOffset = this.#effectsRight.length;
+    if (endIndex >= enemies.length) {
+      rightOffset = endIndex - enemies.length + 1;
+      rightOffset = this.#effectsRight.length - rightOffset;
+      endIndex = enemies.length - 1;
+    }
+
+    let factors = [
+      ...this.#effectsLeft.slice(leftOffset),
+      1,
+      ...this.#effectsRight.slice(0, rightOffset),
+    ];
+    let damages = factors.map((factor) => factor * damage);
+
+    return {
+      startIndex,
+      isCritical,
+      damages,
+    };
   }
 }
 
@@ -126,19 +179,6 @@ class BasicSpear extends Weapons {
 
 const weapons = [new BasicSword(), new BasicAxe(), new BasicSpear()];
 
-// Calculate damage with a chance for a critical hit
-function calculateDamage(weapon) {
-  const isCritical = Math.random() * 100 < weapon.criticalChance; // Random chance for critical hit
-  const totalDamage = isCritical ? weapon.criticalDamage : weapon.damage;
-
-  console.log(
-    `${weapon.name}: ${
-      isCritical ? "Critical Hit!" : "Normal Hit"
-    }, Damage: ${totalDamage}`
-  );
-  return { damage: totalDamage, isCritical }; // Return both damage and isCritical as an object
-}
-
 function displayWeapons() {
   const weaponsContainer = document.getElementById("weapons-container");
   weaponsContainer.innerHTML = ""; // Clear previous content if any
@@ -148,6 +188,9 @@ function displayWeapons() {
     // Add index parameter here
     const weaponElement = document.createElement("div");
     weaponElement.classList.add("weapon");
+    weaponElement.setAttribute("index", index);
+    weaponElement.setAttribute("onmouseenter", "weaponHover(this);");
+    weaponElement.setAttribute("onmouseleave", "clearSelection();");
 
     // Create an image element for the weapon
     const weaponImage = document.createElement("img");

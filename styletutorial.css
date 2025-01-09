@@ -38,6 +38,13 @@ html, body {
     flex-flow: column;
     align-items: center;
     gap: 20px;
+    padding-bottom: 10px;
+
+}
+
+.sprite-enemie.tempTargets {
+    border-bottom: 10px solid #ff07;
+    padding-bottom: 0;
 }
 
 .sprite-enemie img{
@@ -218,6 +225,8 @@ html, body {
 }
 
 #end-turn-btn {
+    font-family: 'Pirata_One';
+    font-size: 20px;
     position: absolute;
     width: 100px;
     height: 50px;
@@ -249,7 +258,10 @@ html, body {
     z-index: 1100;
 }
 
-
+.highlight {
+    border: 2px solid #ffcc00;
+    background-color: rgba(255, 204, 0, 0.3);
+}
 
 
 

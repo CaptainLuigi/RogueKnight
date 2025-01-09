@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   displayWeapons();
 
   Enemy.initialize();
+
   enemies.push(
     new Enemy("Shroom", 250, 15, "Assets/Transperent/Icon1.png"),
     new Shroom(),
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     new Enemy("Troll", 750, 50, "Assets/Transperent/Icon4.png"),
     new Enemy("Troll", 750, 5, "Assets/Transperent/Icon5.png")
   );
+  setEnemyIndices();
   // Add the event listener to the "End Turn" button
   document.getElementById("end-turn-btn").addEventListener("click", endTurn);
 });
@@ -25,6 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
 const enemies = [];
 
 let isPlayerTurn = true; // Flag to track if it's the player's turn
+
+function enemyDeathEvent() {
+  setEnemyIndices();
+}
+
+function setEnemyIndices() {
+  for (let index in enemies) {
+    let enemy = enemies[index];
+    enemy.display.setAttribute("index", index);
+  }
+}
 
 // Handle weapon selection
 function useWeapon(weaponIndex) {
@@ -37,28 +50,53 @@ function useWeapon(weaponIndex) {
   console.log("Using weapon:", weapon.name);
 
   // Check if the player has enough energy to use the weapon
-  if (player.useEnergy(weapon.energy)) {
-    if (weapon.requiresTargeting) displayPossibleTargets(weaponIndex, false);
-    else executeAttack(weapon, 0);
+  if (player.energy >= weapon.energy) {
+    if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
+    else executeAttack(weapon, weapon.minRange);
   } else {
-    displayTurnMessage("Not enough energy!");
+    displayTurnMessage("Not enough energy! pls fix");
   }
 }
 
-const possibleTargetsCls = "possibleTargets";
-const tempTargetsCls = "tempTargets";
+function weaponHover(weaponNode) {
+  console.log(weaponNode);
+  let index = weaponNode.getAttribute("index");
+  console.log(index);
+  index = parseInt(index);
+  console.log(index);
+  let weapon = weapons[index];
+  console.log(weapon);
+  const possibleTargets = weapon.possibleTargets();
+  console.log(possibleTargets);
+  for (let enemyIndex of possibleTargets)
+    enemies[enemyIndex].display.classList.add(tempTargetsCls);
+}
 
-function displayPossibleTargets(weaponIndex, isHovering) {
+function clearSelection() {
   let activeTargets = document.querySelectorAll(
     "." + possibleTargetsCls + ", ." + tempTargetsCls
   );
   for (let active of activeTargets) {
     active.classList.remove(possibleTargetsCls);
     active.classList.remove(tempTargetsCls);
+    active.removeAttribute("style");
   }
+}
 
-  let displayclass = possibleTargetsCls;
-  if (isHovering) displayclass = tempTargetsCls;
+const possibleTargetsCls = "possibleTargets";
+const tempTargetsCls = "tempTargets";
+
+let activeWeapon;
+let activePossibleTargets;
+
+function setActiveWeapon(weaponIndex) {
+  if (weaponIndex < 0) {
+    activeWeapon = null;
+    activePossibleTargets = null;
+    return;
+  }
+  activeWeapon = weapons[weaponIndex];
+  activePossibleTargets = activeWeapon.possibleTargets();
 }
 
 /**
@@ -70,11 +108,14 @@ function executeAttack(weapon, enemyIndex) {
   triggerAttackAnimation(); // Trigger the attack animation
 
   // Call the damage calculation function
-  const { damage, isCritical } = calculateDamage(weapon); // Destructure to get both damage and isCritical
+  let { startIndex, isCritical, damages } = weapon.calculateDamage(enemyIndex);
 
-  enemies[0].displayDamage(damage, isCritical); // Call displayDamage here
+  for (let enemyDamage of damages) {
+    enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
+    enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
 
-  enemies[0].takeDamage(damage); // Apply damage to the enemy
+    startIndex++;
+  }
 
   // Optional: Reset the player's animation after the attack
   setTimeout(() => {
@@ -83,7 +124,27 @@ function executeAttack(weapon, enemyIndex) {
     resetToIdleAnimation();
   }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
 
+  player.useEnergy(weapon.energy);
+
   updateEnergyDisplay();
+  setActiveWeapon(-1);
+}
+
+function selectEnemy(enemyNode) {
+  let index = enemyNode.getAttribute("index");
+  index = parseInt(index);
+
+  if (activeWeapon == null) {
+    displayTurnMessage("No weapon selected!");
+    return;
+  }
+
+  if (!activePossibleTargets.includes(index)) {
+    displayTurnMessage("Can't attack selected enemy!");
+    return;
+  }
+
+  executeAttack(activeWeapon, index);
 }
 
 // Function to disable weapons during the enemy's turn
@@ -106,29 +167,23 @@ function enableWeapons() {
 function endTurn() {
   console.log("End turn clicked!");
 
-  // Step 1: Disable the weapons so the player can't attack during the enemy's turn
   disableWeapons();
 
   isPlayerTurn = false;
 
-  // Step 2: Add a delay before the enemy attacks
   setTimeout(() => {
-    // Trigger the enemy's attack (deal damage to the player)
     enemies[0].attack(player); // Call the attack function in the enemy.js file
 
-    // Step 3: Update the player's health bar to reflect the damage
     updateHealthBar(player); // Make sure you update the health bar after damage
 
-    // Step 4: Refill the player's energy
-    refillEnergy();
+    setTimeout(() => {
+      displayTurnMessage("Your Turn Again!");
 
-    // Step 5: Update the energy display to show refilled energy
-    updateEnergyDisplay();
+      refillEnergy();
 
-    // Step 6: Display "Your Turn Again" message
-    displayTurnMessage("Your Turn Again!");
+      updateEnergyDisplay();
+    }, 500);
 
-    // Step 7: Enable the weapons again for the player's next turn
     setTimeout(() => {
       isPlayerTurn = true;
       enableWeapons(); // Enable the weapons after the delay

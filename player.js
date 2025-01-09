@@ -46,8 +46,15 @@ class Player extends HealthEntity {
 
   takeDamage(amount) {
     this.#health -= amount; // Reduce health
-    if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
-    this.displayDamage(amount, false, -60);
+    if (this.#health < 0) {
+      this.#health = 0; // Ensure health doesn't go negative
+      this.displayDamage(amount, false, -60);
+
+      triggerDeathAnimation();
+    } else {
+      this.displayDamage(amount, false, -60);
+      triggerDamageAnimation();
+    }
   }
   heal(amount) {
     this.#health += amount; // Increase health
@@ -67,6 +74,8 @@ class Player extends HealthEntity {
   }
 }
 
+let isAttacking = false;
+
 // Define the attack animation configuration
 const attackConfig = {
   image: "Assets/Knight_1/Attack2.png", // Change to your attack sprite sheet
@@ -85,6 +94,84 @@ const idleConfig = {
   frameDelay: 350, // Delay between idle frames
 };
 
+const hurtConfig = {
+  image: "Assets/Knight_1/Hurtnew.png",
+  totalFrames: 2,
+  frameWidth: 200,
+  backgroundSize: "400px 200px",
+  frameDelay: 150,
+};
+
+const deathConfig = {
+  image: "Assets/Knight_1/Deadnew.png",
+  totalFrames: 6,
+  frameWidth: 200,
+  backgroundSize: "1200px 200px",
+  frameDelay: 300,
+};
+
+let damageFrame = 0;
+let damageInterval;
+
+function animateDamage() {
+  damageFrame = (damageFrame + 1) % hurtConfig.totalFrames;
+  const frameX = damageFrame * hurtConfig.frameWidth;
+  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+
+  if (damageFrame === 0) {
+    clearInterval(damageInterval);
+    resetToIdleAnimation();
+  }
+}
+
+function triggerDamageAnimation() {
+  clearInterval(idleInterval);
+  clearInterval(attackInterval);
+
+  sprite.style.backgroundImage = `url(${hurtConfig.image})`;
+  sprite.style.backgroundSize = hurtConfig.backgroundSize;
+
+  damageFrame = 0;
+  const frameX = damageFrame * hurtConfig.frameWidth;
+  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+
+  clearInterval(damageInterval);
+  damageInterval = setInterval(animateDamage, hurtConfig.frameDelay);
+}
+
+let deathFrame = 0;
+let deathInterval;
+
+function animateDeath() {
+  deathFrame = (deathFrame + 1) % deathConfig.totalFrames;
+  const frameX = deathFrame * deathConfig.frameWidth;
+  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+
+  if (deathFrame === 0) {
+    clearInterval(deathInterval);
+
+    sprite.style.backgroundPosition = `-${
+      (deathConfig.totalFrames - 1) * deathConfig.frameWidth
+    }px 0px`;
+  }
+}
+
+function triggerDeathAnimation() {
+  clearInterval(idleInterval);
+  clearInterval(attackInterval);
+  clearInterval(damageInterval);
+
+  sprite.style.backgroundImage = `url(${deathConfig.image})`;
+  sprite.style.backgroundSize = deathConfig.backgroundSize;
+
+  deathFrame = 0;
+  const frameX = deathFrame * deathConfig.frameWidth;
+  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+
+  clearInterval(deathInterval);
+  deathInterval = setInterval(animateDeath, deathConfig.frameDelay);
+}
+
 // Use this to store the interval IDs for the animations
 let attackInterval;
 let idleInterval;
@@ -101,12 +188,17 @@ function animateAttack() {
   if (attackFrame === 0) {
     clearInterval(attackInterval);
     resetToIdleAnimation(); // Switch to idle animation after attack completes
+
+    isAttacking = false;
   }
 }
 
 // Function to trigger attack animation and reset to idle after attack
 function triggerAttackAnimation() {
+  if (isAttacking) return;
+  isAttacking = true;
   // Stop the idle animation if it's running
+  clearInterval(attackInterval);
   clearInterval(idleInterval);
 
   // Ensure sprite is properly set for the attack animation
@@ -114,7 +206,6 @@ function triggerAttackAnimation() {
   sprite.style.backgroundSize = attackConfig.backgroundSize;
 
   attackFrame = 0; // Reset to the first frame
-  clearInterval(attackInterval);
   attackInterval = setInterval(animateAttack, attackConfig.frameDelay); // Start the attack animation
 }
 
@@ -135,31 +226,6 @@ function resetToIdleAnimation() {
 
   clearInterval(idleInterval); // Clear any previous idle intervals
   idleInterval = setInterval(animateSprite, idleConfig.frameDelay); // Start idle animation
-}
-
-// Handle weapon selection
-function useWeapon(weaponIndex) {
-  const weapon = weapons[weaponIndex];
-
-  if (player.useEnergy(weapon.energy)) {
-    console.log("Using weapon:", weapon.name);
-
-    triggerAttackAnimation(); // Trigger the attack animation
-
-    const { damage, isCritical } = calculateDamage(weapon);
-
-    enemies[0].displayDamage(damage, isCritical); // Call displayDamage here
-
-    enemies[0].takeDamage(damage); // Apply damage to the enemy
-
-    // Reset the player's animation after the attack
-    setTimeout(() => {
-      resetToIdleAnimation();
-    }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
-  } else {
-    displayTurnMessage("Not enough energy!");
-  }
-  updateEnergyDisplay();
 }
 
 // Function to initialize the health bars on page load
