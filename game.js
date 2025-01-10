@@ -12,19 +12,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   Enemy.initialize();
 
-  enemies.push(
-    new Enemy("Shroom", 250, 15, "Assets/Transperent/Icon1.png"),
-    new Shroom(),
-    new Enemy("Troll", 750, 50, "Assets/Transperent/Icon3.png"),
-    new Enemy("Troll", 750, 50, "Assets/Transperent/Icon4.png"),
-    new Enemy("Troll", 750, 5, "Assets/Transperent/Icon5.png")
-  );
+  // enemies.push(
+  //   new Snail(),
+  //   new Shroom(),
+  //   new SadShroom(),
+  //   new BiteShroom(),
+  //   new Scorpion(),
+  //   new Mantis()
+  //   //new Hornet()
+  // );
+
+  fillEnemyArray(1);
+
   setEnemyIndices();
   // Add the event listener to the "End Turn" button
   document.getElementById("end-turn-btn").addEventListener("click", endTurn);
 });
 
 const enemies = [];
+
+function fillEnemyArray(currentDifficulty) {
+  console.log(enemyConstellationTemplates);
+
+  const filteredEnemyArray = enemyConstellationTemplates.filter(
+    (constellation) => {
+      return (
+        constellation.difficultyFrom <= currentDifficulty &&
+        constellation.difficultyTo >= currentDifficulty
+      );
+    }
+  );
+  const randomIndex = Math.floor(Math.random() * filteredEnemyArray.length);
+  const selectedConstellation = filteredEnemyArray[randomIndex];
+  for (const enemy of selectedConstellation.enemies) {
+    enemies.push(new enemy());
+  }
+  console.log("filteredEnemyArray", filteredEnemyArray[randomIndex]);
+}
 
 let isPlayerTurn = true; // Flag to track if it's the player's turn
 
@@ -54,7 +78,7 @@ function useWeapon(weaponIndex) {
     if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
     else executeAttack(weapon, weapon.minRange);
   } else {
-    displayTurnMessage("Not enough energy! pls fix");
+    displayTurnMessage("Not enough energy!");
   }
 }
 

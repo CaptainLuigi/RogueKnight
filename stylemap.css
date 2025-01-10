@@ -1,0 +1,179 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+
+}
+#StartscreenBackground {
+    width: 95%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    margin-left: 2.5%;
+    position: absolute;
+    z-index: 1;
+}
+
+#Map {
+    width: 95%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    margin-left: 2.5%;
+    position: absolute;
+    z-index: 10; 
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    z-index: 15;
+    border: none;
+}
+
+.navigation :hover {
+    cursor: pointer;
+}
+
+#bossfight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    z-index: 15;
+    border: none;
+}
+
+#bossfight :hover {
+    cursor: pointer;
+}
+
+.navigation-container button:nth-child(1) {
+  left: 15%;
+  top: 45%;  
+}
+
+.navigation-container button:nth-child(2) {
+    left: 23%;
+    top: 25%;  
+  }
+
+  .navigation-container button:nth-child(3) {
+    left: 23%;
+    top: 45%;  
+  }
+
+  .navigation-container button:nth-child(4) {
+    left: 23%;
+    top: 65%;  
+  }
+
+  .navigation-container button:nth-child(5) {
+    left: 31%;
+    top: 35%;  
+  }
+
+  .navigation-container button:nth-child(6) {
+    left: 31%;
+    top: 55%;  
+  }
+
+  .navigation-container button:nth-child(7) {
+    left: 31%;
+    top: 55%;  
+  }
+
+  .navigation-container button:nth-child(8) {
+    left: 39%;
+    top: 25%;  
+  }
+
+  .navigation-container button:nth-child(9) {
+    left: 39%;
+    top: 45%;  
+  }
+
+  .navigation-container button:nth-child(10) {
+    left: 39%;
+    top: 65%;  
+  }
+
+  .navigation-container button:nth-child(11) {
+    left: 47%;
+    top: 35%;  
+  }
+
+  .navigation-container button:nth-child(12) {
+    left: 47%;
+    top: 55%;  
+  }
+
+  .navigation-container button:nth-child(13) {
+    left: 55%;
+    top: 25%;  
+  }
+
+  .navigation-container button:nth-child(14) {
+    left: 55%;
+    top: 45%;  
+  }
+
+  .navigation-container button:nth-child(15) {
+    left: 55%;
+    top: 65%;  
+  }
+
+  .navigation-container button:nth-child(16) {
+    left: 63%;
+    top: 35%;  
+  }
+
+  .navigation-container button:nth-child(17) {
+    left: 63%;
+    top: 55%;  
+  }
+
+  .navigation-container button:nth-child(18) {
+    left: 71%;
+    top: 25%;  
+  }
+
+  .navigation-container button:nth-child(19) {
+    left: 71%;
+    top: 45%;  
+  }
+
+  .navigation-container button:nth-child(20) {
+    left: 71%;
+    top: 65%;  
+  }
+
+  .navigation-container button:nth-child(21) {
+    left: 80%;
+    top: 45%;  
+  }
+
+  .navigation-container .navigation img {
+    width: 60px;
+    height: auto;
+    object-fit: contain;
+  }
+
+    .navigation-container #bossfight img {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+  }

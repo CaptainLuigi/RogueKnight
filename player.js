@@ -46,10 +46,9 @@ class Player extends HealthEntity {
 
   takeDamage(amount) {
     this.#health -= amount; // Reduce health
-    if (this.#health < 0) {
+    if (this.#health <= 0) {
       this.#health = 0; // Ensure health doesn't go negative
       this.displayDamage(amount, false, -60);
-
       triggerDeathAnimation();
     } else {
       this.displayDamage(amount, false, -60);

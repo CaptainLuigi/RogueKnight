@@ -112,6 +112,54 @@ class Enemy extends HealthEntity {
 
 class Shroom extends Enemy {
   constructor() {
-    super("Shroom", 250, 15, "Assets/Transperent/Icon1.png");
+    super("Shroom", 200, 8, "Assets/Transperent/Icon1.png");
+  }
+}
+
+class Snail extends Enemy {
+  constructor() {
+    super("Snail", 300, 5, "Assets/Transperent/Icon5.png");
+  }
+}
+
+class SadShroom extends Enemy {
+  constructor() {
+    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png");
+  }
+}
+
+class BiteShroom extends Enemy {
+  constructor() {
+    super("Bite Shroom", 350, 10, "Assets/Transperent/Icon7.png");
+  }
+}
+
+class Scorpion extends Enemy {
+  constructor() {
+    super("Scorpion Shroom", 150, 10, "Assets/Transperent/Icon9.png");
+  }
+}
+
+class BitingPlant extends Enemy {
+  constructor() {
+    super("Biting Plant", 400, 10, "Assets/Transperent/Icon11.png");
+  }
+}
+
+class SlimeHive extends Enemy {
+  constructor() {
+    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png");
+  }
+}
+
+class Mantis extends Enemy {
+  constructor() {
+    super("Mantis", 150, 15, "Assets/Transperent/Icon39.png");
+  }
+}
+
+class Hornet extends Enemy {
+  constructor() {
+    super("Hornet", 100, 10, "Assets/Transperent/Icon42.png");
   }
 }

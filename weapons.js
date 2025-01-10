@@ -5,6 +5,7 @@ class Weapons {
   #criticalDamage;
   #criticalChance;
   #energy;
+  #description;
   #sprite;
   #requiresTargeting;
   #minRange;
@@ -19,6 +20,7 @@ class Weapons {
     criticalDamage,
     criticalChance,
     energy,
+    description,
     sprite,
     requiresTargeting = false,
     minRange = 0,
@@ -36,6 +38,7 @@ class Weapons {
     this.#requiresTargeting = requiresTargeting;
     this.#minRange = minRange;
     this.#maxRange = maxRange;
+    this.#description = description;
     if (!Array.isArray(effectsLeft)) {
       effectsLeft = parseInt(effectsLeft);
       if (isNaN(effectsLeft) || effectsLeft == 0) effectsLeft = [];
@@ -102,6 +105,10 @@ class Weapons {
     return this.#effectsRight;
   }
 
+  get description() {
+    return this.#description;
+  }
+
   possibleTargets() {
     if (!this.requiresTargeting) return [this.#minRange];
 
@@ -148,13 +155,34 @@ class Weapons {
 
 class BasicSword extends Weapons {
   constructor() {
-    super("Basic Sword", "melee", 25, 50, 25, 1, "Assets/sword.png");
+    super(
+      "Basic Sword",
+      "melee",
+      25,
+      50,
+      25,
+      1,
+      "Can only target the first enemy, click to instanty use weapon.",
+      "Assets/sword.png"
+    );
   }
 }
 
 class BasicAxe extends Weapons {
   constructor() {
-    super("Basic Axe", "melee", 55, 130, 15, 2, "Assets/axe.png", true, 0, 1);
+    super(
+      "Basic Axe",
+      "melee",
+      60,
+      140,
+      35,
+      2,
+      "Can target the closest two enemies, click weapon first, then the enemy you want to hit.",
+      "Assets/waraxe.png",
+      true,
+      0,
+      1
+    );
   }
 }
 
@@ -167,6 +195,7 @@ class BasicSpear extends Weapons {
       75,
       15,
       1,
+      "Can only target the first enemy and pierces two enemies, click to instantly use weapon.",
       "Assets/spear.png",
       false,
       0,
@@ -177,21 +206,52 @@ class BasicSpear extends Weapons {
   }
 }
 
-class Grenade extends Weapons {
+class Bomb extends Weapons {
   constructor() {
     super(
-      "Grenade",
-      "range",
+      "Bomb",
+      "far",
       50,
       90,
       20,
-      1,
-      "Assets/spear.png",
+      2,
+      "Can't target the first enemy and hits the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
+      "Assets/bomb.png",
       true,
       1,
-      3,
+      4,
       [0.5],
       [0.5]
+    );
+  }
+}
+
+class Herosword extends Weapons {
+  constructor() {
+    super(
+      "Hero Sword",
+      "melee",
+      15,
+      65,
+      60,
+      1,
+      "Can only target the first enemy, click to instanty use weapon.",
+      "Assets/herosword.png"
+    );
+  }
+}
+
+class Dagger extends Weapons {
+  constructor() {
+    super(
+      "Dagger",
+      "melee",
+      5,
+      85,
+      50,
+      1,
+      "Can only target the first enemy, click to instanty use weapon.",
+      "Assets/dagger.png"
     );
   }
 }
@@ -200,7 +260,9 @@ const weapons = [
   new BasicSword(),
   new BasicAxe(),
   new BasicSpear(),
-  new Grenade(),
+  new Bomb(),
+  new Herosword(),
+  new Dagger(),
 ];
 
 function displayWeapons() {
@@ -232,7 +294,8 @@ function displayWeapons() {
             <strong>Range:</strong> ${weapon.range} <br>
             <strong>Damage:</strong> ${weapon.damage} <br>
             <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
-            <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>           
+            <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
+            <strong></strong> ${weapon.description} <br>           
         `;
 
     // Append the tooltip to the weapon element

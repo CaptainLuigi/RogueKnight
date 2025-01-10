@@ -43,8 +43,9 @@ html, body {
 }
 
 .sprite-enemie.tempTargets {
-    border-bottom: 10px solid #ff07;
-    padding-bottom: 0;
+    border-top: 10px solid #ff08;
+    padding-top: 0;
+    border-radius: 5px;
 }
 
 .sprite-enemie img{
@@ -196,7 +197,7 @@ html, body {
     height: 200px;
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 40%;
     z-index: 3;
     gap: 15px;
 }
@@ -232,7 +233,7 @@ html, body {
     height: 50px;
     top: 90%;
     left: 70%;
-    color: white;
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -262,7 +263,5 @@ html, body {
     border: 2px solid #ffcc00;
     background-color: rgba(255, 204, 0, 0.3);
 }
-
-
 
 
