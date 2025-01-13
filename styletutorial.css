@@ -54,6 +54,29 @@ html, body {
     object-fit: contain;
 }
 
+.evil-knight {
+    transform: scale(2.0);
+    padding-bottom: 55px;
+    padding-top: 10px;
+}
+
+.evil-knight.tempTargets {
+    border-top: 10px solid #ff08;
+    padding-top: 0;
+    border-radius: 5px;
+}
+
+.evil-knight .health-bar-container-enemy {
+    width: 200px;
+
+}
+
+.evil-knight img {
+    width: 300px;
+    height: auto;
+
+}
+
 #health-bar-container-player {
     width: 200px;
     height: 15px;
@@ -263,5 +286,6 @@ html, body {
     border: 2px solid #ffcc00;
     background-color: rgba(255, 204, 0, 0.3);
 }
+
 
 
