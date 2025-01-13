@@ -39,6 +39,16 @@ html, body {
     align-items: center;
     gap: 20px;
     padding-bottom: 10px;
+}
+
+.sprite-enemie.death-smoke {
+    gap: 0;
+}
+
+
+.sprite-enemie.death-smoke .health-bar-container-enemy{
+visibility: hidden;
+height: 0;
 
 }
 
@@ -52,6 +62,27 @@ html, body {
     width: 100px;
     height: 100px;
     object-fit: contain;
+}
+
+.evil-knight {
+    transform: scale(2.0);
+    padding-bottom: 55px;
+    padding-top: 10px;
+}
+
+.evil-knight.tempTargets {
+    border-top: 10px solid #ff08;
+    padding-top: 0px;
+    border-radius: 5px;
+}
+
+.evil-knight .health-bar-container-enemy {
+    width: 200px;
+}
+
+.evil-knight img {
+    width: 300px;
+    height: auto;
 }
 
 #health-bar-container-player {
@@ -110,6 +141,40 @@ html, body {
     color: white;
     font-size: 15px; /* Adjust the font size as needed */
     font-weight: lighter;
+}
+
+.death-smoke img{
+    animation: deathAnimation 1s ease-in-out forwards;
+}
+
+@keyframes deathAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(4);
+    }
+}
+
+.death-smoke-shrink {
+    animation: shrinkSmoke 1.5s ease-in-out forwards;
+}
+
+@keyframes shrinkSmoke {
+    0% {
+        width: calc(100% + 20px);
+        margin-left: 0px;
+    }
+    66.66% {
+        width: calc(100% + 20px);
+        margin-left: 0px;
+    }
+    100% {
+        margin-left: -15px;
+        width: 0;
+    }
 }
 
 #weapons-container {
@@ -200,6 +265,7 @@ html, body {
     left: 40%;
     z-index: 3;
     gap: 15px;
+    transition: transform 1s ease-out;
 }
 
 #energy-circle {
@@ -263,5 +329,4 @@ html, body {
     border: 2px solid #ffcc00;
     background-color: rgba(255, 204, 0, 0.3);
 }
-
 

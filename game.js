@@ -103,7 +103,7 @@ function clearSelection() {
   for (let active of activeTargets) {
     active.classList.remove(possibleTargetsCls);
     active.classList.remove(tempTargetsCls);
-    active.removeAttribute("style");
+    //active.removeAttribute("style");
   }
 }
 
@@ -133,12 +133,14 @@ function executeAttack(weapon, enemyIndex) {
 
   // Call the damage calculation function
   let { startIndex, isCritical, damages } = weapon.calculateDamage(enemyIndex);
+  damages = damages.reverse();
+  startIndex += damages.length - 1;
 
   for (let enemyDamage of damages) {
     enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
     enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
 
-    startIndex++;
+    startIndex--;
   }
 
   // Optional: Reset the player's animation after the attack

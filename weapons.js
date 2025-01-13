@@ -211,8 +211,8 @@ class Bomb extends Weapons {
     super(
       "Bomb",
       "far",
-      50,
-      90,
+      500,
+      500,
       20,
       2,
       "Can't target the first enemy and hits the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
@@ -247,8 +247,8 @@ class Dagger extends Weapons {
       "Dagger",
       "melee",
       5,
-      85,
-      50,
+      250,
+      100,
       1,
       "Can only target the first enemy, click to instanty use weapon.",
       "Assets/dagger.png"
