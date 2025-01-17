@@ -23,9 +23,6 @@ function calculate damage
 
     
 
-Wenn mit EOE Waffen Gegner gekillt, trifft insgesamt einen Gegner mehr
-
-wenn EOE einen Gegner weiter hinten killt wird keine Energie abgezogen
 
 
 */

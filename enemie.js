@@ -118,7 +118,35 @@ class Enemy extends HealthEntity {
       enemies.splice(index, 1);
     }
 
+    const goldDropped = Math.floor(Math.random() * 6) + 10;
+    console.log(`${this.name} dropped ${goldDropped} gold!`);
+
     enemyDeathEvent();
+
+    const goldDisplay = document.createElement("div");
+    goldDisplay.textContent = `+${goldDropped} Gold`;
+    goldDisplay.style.position = "absolute";
+    goldDisplay.style.color = "gold";
+    goldDisplay.style.fontSize = "20px";
+    goldDisplay.style.fontWeight = "bold";
+    goldDisplay.style.zIndex = "1000";
+    goldDisplay.style.transition = "opacity 1s ease-out";
+
+    const enemyRect = this.#display.getBoundingClientRect();
+    goldDisplay.style.left = `${enemyRect.left + enemyRect.width / 2 - 20}px`;
+    goldDisplay.style.top = `${enemyRect.top - 30}px`;
+
+    document.body.appendChild(goldDisplay);
+
+    updatePlayerGold(goldDropped);
+
+    setTimeout(() => {
+      goldDisplay.style.opacity = "0";
+    }, 750);
+
+    setTimeout(() => {
+      goldDisplay.remove();
+    }, 1200);
 
     setTimeout(() => {
       this.#display.remove();

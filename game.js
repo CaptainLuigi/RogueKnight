@@ -258,3 +258,15 @@ function displayTurnMessage(message) {
     turnMessage.style.display = "none"; // Hide the message
   }, 2000);
 }
+
+let playerGold = 0;
+
+function updatePlayerGold(goldAmount) {
+  playerGold += goldAmount;
+  console.log(`Player now has ${playerGold} gold.`);
+
+  const goldDisplay = document.getElementById("playerGold");
+  if (goldDisplay) {
+    goldDisplay.textContent = `Gold: ${playerGold}`;
+  }
+}

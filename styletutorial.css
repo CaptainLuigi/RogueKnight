@@ -330,3 +330,11 @@ height: 0;
     background-color: rgba(255, 204, 0, 0.3);
 }
 
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
+}
