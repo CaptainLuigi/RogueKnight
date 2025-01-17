@@ -53,6 +53,12 @@ class Weapons {
     this.#effectsRight = effectsRight;
   }
 
+  applyRelicEffects(relics) {
+    relics.forEach((relic) => {
+      relic.applyEffect(this);
+    });
+  }
+
   get name() {
     return this.#name;
   }

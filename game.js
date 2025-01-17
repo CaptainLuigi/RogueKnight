@@ -270,3 +270,24 @@ function updatePlayerGold(goldAmount) {
     goldDisplay.textContent = `Gold: ${playerGold}`;
   }
 }
+
+function displayEquippedRelics(player) {
+  const relicsContainer = document.getElementById("relics-container");
+  relicsContainer.innerHTML = "";
+
+  player.relics.forEach((relic) => {
+    const relicElement = document.createElement("div");
+    relicElement.classList.add("relic");
+
+    const relicName = document.createElement("span");
+    relicName.textContent = relic.name;
+
+    const relicDescription = document.createElement("p");
+    relicDescription.textContent = relicDescription;
+
+    relicElement.appendChild(relicName);
+    relicElement.appendChild(relicDescription);
+
+    relicsContainer.appendChild(relicElement);
+  });
+}

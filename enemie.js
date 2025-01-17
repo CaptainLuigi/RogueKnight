@@ -151,6 +151,10 @@ class Enemy extends HealthEntity {
     setTimeout(() => {
       this.#display.remove();
     }, 2500);
+
+    if (player.relics.some((relic) => relic.name === "Grinding Monstera")) {
+      player.heal(2);
+    }
   }
 }
 
