@@ -63,6 +63,7 @@ function generateMap() {
     let nextRow = parentRow.nextElementSibling;
     if (nextRow == null) {
       buttonData.isFinalBoss = true;
+      buttonData.difficulty = 10;
       continue;
     }
 
