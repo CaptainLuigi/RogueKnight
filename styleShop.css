@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+
+}
+
+#ShopBackground {
+    width: 100%;
+    height: 100%;
+    
+    object-fit: cover;
+    position: absolute;
+    
+    margin-left: 0;
+}
+
+.Shop-removal {
+    z-index: 1;
+    width: 250px;
+    height: 100px;
+    position: relative;
+
+}
