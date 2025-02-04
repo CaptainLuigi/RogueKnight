@@ -28,58 +28,102 @@ const events = [
   "skull",
 ];
 
-const skullDifficulty = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3];
+const skullDifficulty = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 10];
 
+let mapState;
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM fully loaded and script is running!");
-
-  // Now try to find the navigation buttons
-  const navigationButtons = document.querySelectorAll(".navigation");
-  console.log("Found navigation buttons:", navigationButtons.length);
-
-  if (navigationButtons.length > 0) {
-    setSkullforFirstButton(navigationButtons);
-
-    assignRandomEvents(navigationButtons); // Pass the buttons to the function
-  } else {
-    console.log("No navigation buttons found!");
-  }
+  mapState = loadData("MapState");
+  if (mapState == null || mapState.wasFinalBoss == true) generateMap();
+  else loadMap();
+  markPossibleLocations();
 });
 
-function setSkullforFirstButton(navigationButtons) {
-  const firstButton = navigationButtons[0];
-  if (firstButton) {
-    firstButton.innerHTML = '<img src="Assets/skull.png" alt="Skull" />';
+function generateMap() {
+  mapState = null;
+  let tempMapState = {
+    locationStates: {},
+    activeLocation: null,
+    wasFinalBoss: false,
+  };
+
+  const navigationButtons = document.querySelectorAll(".navigation");
+  for (let i = 0; i < navigationButtons.length; i++) {
+    let button = navigationButtons[i];
+    button.setAttribute("index", i);
+
+    let buttonData = {
+      type: "skull",
+      difficulty: 1,
+      nextLocations: [],
+      isFinalBoss: false,
+    };
+    tempMapState.locationStates[i] = buttonData;
+
+    let parentRow = button.parentNode;
+    let nextRow = parentRow.nextElementSibling;
+    if (nextRow == null) {
+      buttonData.isFinalBoss = true;
+      continue;
+    }
+
+    buttonData.difficulty = getSkullDifficulty(i);
+    if (i != 0) buttonData.type = getLocationType(i);
+
+    if (nextRow.children.length == 1) {
+      buttonData.nextLocations.push(0);
+    } else if (parentRow.children.length == 3) {
+      if (button == parentRow.firstElementChild) {
+        buttonData.nextLocations.push(0);
+      } else if (button == parentRow.lastElementChild) {
+        buttonData.nextLocations.push(1);
+      } else {
+        buttonData.nextLocations.push(0, 1);
+      }
+    } else if (parentRow.children.length == 2) {
+      if (button == parentRow.firstElementChild) {
+        buttonData.nextLocations.push(0, 1);
+      } else {
+        buttonData.nextLocations.push(1, 2);
+      }
+    } else {
+      for (let next = 0; next < nextRow.children.length; next++)
+        buttonData.nextLocations.push(next);
+    }
+
+    setButtonData(button, buttonData);
+  }
+  mapState = tempMapState;
+  storeData("MapState", mapState);
+}
+function loadMap() {
+  const navigationButtons = document.querySelectorAll(".navigation");
+  for (let i = 0; i < navigationButtons.length; i++) {
+    let button = navigationButtons[i];
+    button.setAttribute("index", i);
+
+    let buttonData = mapState.locationStates[i];
+    if (buttonData.isFinalBoss) continue;
+
+    setButtonData(button, buttonData);
   }
 }
 
-function assignRandomEvents(navigationButtons) {
-  console.log("assignRandomEvents function called!");
-  navigationButtons.forEach((button, index) => {
-    if (button.id === "bossfight") return;
-    if (index === 0) return;
+function setButtonData(button, data) {
+  if (data.type === "elite") {
+    imageTag = '<img src="Assets/eliteSkullred.png" alt="Elite" />';
+  } else if (data.type === "shop") {
+    imageTag = '<img src="Assets/shopicon.png" alt="Shop" />';
+  } else if (data.type === "questionmark") {
+    imageTag = '<img src="Assets/questionmark.png" alt="Questionmark" />';
+  } else if (data.type === "skull") {
+    imageTag = '<img src="Assets/skull.png" alt="Skull" />';
+  }
 
-    button.innerHTML = "";
+  button.innerHTML = imageTag;
+}
 
-    // Randomly select an event
-    const randomEvent = events[Math.floor(Math.random() * events.length)];
-    console.log(`Random event selected: ${randomEvent}`);
-
-    let imageTag = "";
-
-    // Assign images based on the randomly selected event
-    if (randomEvent === "elite") {
-      imageTag = '<img src="Assets/eliteSkullred.png" alt="Elite" />';
-    } else if (randomEvent === "shop") {
-      imageTag = '<img src="Assets/shopicon.png" alt="Shop" />';
-    } else if (randomEvent === "questionmark") {
-      imageTag = '<img src="Assets/questionmark.png" alt="Questionmark" />';
-    } else if (randomEvent === "skull") {
-      imageTag = '<img src="Assets/skull.png" alt="Skull" />';
-    }
-
-    button.innerHTML = imageTag;
-  });
+function getLocationType(index) {
+  return events[Math.floor(Math.random() * events.length)];
 }
 
 function getSkullDifficulty(index) {
@@ -89,4 +133,50 @@ function getSkullDifficulty(index) {
 
 function triggerFight(difficulty) {
   console.log(`A fight is triggered with difficulty: $ {difficulty}`);
+}
+
+function enterLocation(button) {
+  let index = button.getAttribute("index");
+  if (mapState.activeLocation == null && index != 0) {
+    console.log("Bitte in Startgebiet beginnen");
+    return;
+  }
+
+  let active;
+  if (mapState.activeLocation != null) {
+    active = mapState.locationStates[mapState.activeLocation];
+    let indexInParent = [...button.parentNode.children].findIndex(
+      (e) => e == button
+    );
+    if (!active.nextLocations.includes(indexInParent)) {
+      console.log("Bitte gültiges Gebiet auswählen");
+      return;
+    }
+  }
+
+  mapState.activeLocation = index;
+  active = mapState.locationStates[mapState.activeLocation];
+  mapState.wasFinalBoss = active.isFinalBoss;
+  storeData("MapState", mapState);
+  globalSettings.difficulty = active.difficulty;
+
+  if (active.type == "skull") window.location.href = "./tutorial.html";
+  else window.location.reload();
+}
+
+function markPossibleLocations() {
+  let nextLocations = [];
+  let nextRow;
+  if (mapState.activeLocation == null) {
+    nextLocations.push(0);
+    nextRow = document.querySelector(`.map-row-start`);
+  } else {
+    let active = mapState.locationStates[mapState.activeLocation];
+    nextLocations = active.nextLocations;
+    nextRow = document.querySelector(
+      `div:has(> [index="${mapState.activeLocation}"])+div`
+    );
+  }
+  for (let index of nextLocations)
+    nextRow.children[index].classList.add("next");
 }

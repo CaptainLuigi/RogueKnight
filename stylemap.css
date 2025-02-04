@@ -29,22 +29,69 @@ html, body {
     z-index: 10; 
 }
 
+.navigation-container {
+  position: absolute;
+  width: 1400px;
+  height: 510px;
+  left: 13%;
+  top: 20%;
+  z-index: 15;
+  display: flex;
+  justify-content: space-around;
+}
+
+.navigation-container > div {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+}
+
 .navigation {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     background-color: transparent;
     z-index: 15;
     border: none;
+}
+
+.navigation-container .navigation img {
+  width: 60px;
+  height: auto;
+}
+
+.navigation-container #bossfight img {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+.navigation-container .navigation img:hover{
+  width: 150%;
+  height: auto;
+}
+
+.navigation-container #bossfight img:hover {
+  width: 300%;
+  height: auto;
+
+}
+
+.navigation-container > div:nth-child(2n+1) {
+  justify-content: space-evenly;
 }
 
 .navigation :hover {
     cursor: pointer;
 }
 
+.next {
+    background-color: black;
+}
+
+/*
 #bossfight {
     display: flex;
     justify-content: center;
@@ -171,4 +218,4 @@ html, body {
     width: 100px;
     height: auto;
     object-fit: contain;
-  }
+  }*/

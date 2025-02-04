@@ -3,7 +3,7 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 let sprite;
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM fully loaded");
+  console.log("DOM fully loaded, difficulty: " + globalSettings.difficulty);
   sprite = document.querySelector(".sprite-player");
   // Start the idle animation immediately when the page loads
   resetToIdleAnimation(); // This will start the idle animation
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //   //new Hornet()
   // );
 
-  fillEnemyArray(1);
+  fillEnemyArray(globalSettings.difficulty);
 
   setEnemyIndices();
   // Add the event listener to the "End Turn" button

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Startscreen</title>
     <link rel="stylesheet" href="stylestartscreen.css" />
+    <script src="saveGame.js"></script>
   </head>
   <body>
     <div>
@@ -22,7 +23,7 @@
       </button>
       <button
         class="start-button"
-        onclick="window.location.href='Tutorial.html'"
+        onclick="globalSettings.setTutorial();window.location.href='Tutorial.html'"
       >
         Tutorial
       </button>
@@ -42,6 +43,7 @@
 
     <div class="sprite"></div>
     <script>
+      globalSettings.clearTutorial();
       let frame = 0;
       const sprite = document.querySelector(".sprite");
 
