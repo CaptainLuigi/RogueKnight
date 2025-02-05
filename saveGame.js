@@ -49,4 +49,12 @@ class globalSettings {
   static set difficulty(value) {
     storeData("globalSetting_difficulty", value);
   }
+
+  static set playerGold(value) {
+    storeData("globalSetting_playerGold", value);
+  }
+
+  static get playerGold() {
+    return loadData("globalSetting_playerGold") ?? 0;
+  }
 }

@@ -1,27 +1,11 @@
 const events = [
   "elite",
   "elite",
-  "elite",
-  "elite",
-  "elite",
-  "shop",
-  "shop",
-  "shop",
-  "shop",
+  "chest",
+  "chest",
   "shop",
   "questionmark",
   "questionmark",
-  "questionmark",
-  "questionmark",
-  "questionmark",
-  "questionmark",
-  "questionmark",
-  "skull",
-  "skull",
-  "skull",
-  "skull",
-  "skull",
-  "skull",
   "skull",
   "skull",
   "skull",
@@ -118,6 +102,8 @@ function setButtonData(button, data) {
     imageTag = '<img src="Assets/questionmark.png" alt="Questionmark" />';
   } else if (data.type === "skull") {
     imageTag = '<img src="Assets/skull.png" alt="Skull" />';
+  } else if (data.type === "chest") {
+    imageTag = '<img src="Assets/chest.png" alt="Chest" />';
   }
 
   button.innerHTML = imageTag;
@@ -163,6 +149,10 @@ function enterLocation(button) {
 
   if (active.type == "skull") window.location.href = "./tutorial.html";
   else window.location.reload();
+
+  if (active.type == "shop") window.location.href = "./Shop.html";
+
+  if (active.type == "chest") window.location.href = "./chest.html";
 }
 
 function markPossibleLocations() {

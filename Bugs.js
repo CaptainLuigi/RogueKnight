@@ -21,7 +21,9 @@ function calculate damage
 
 
 
-    
+in der map kann erster kampf übersprungen werden   
+
+bei einem gegner, diesen centern
 
 
 

@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Start the idle animation immediately when the page loads
   resetToIdleAnimation(); // This will start the idle animation
   // Call the function to display the weapons
-  displayWeapons();
+
+  player.loadPlayerFromStorage();
+
+  displayWeapons(player.deck);
 
   Enemy.initialize();
 
@@ -27,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
   setEnemyIndices();
   // Add the event listener to the "End Turn" button
   document.getElementById("end-turn-btn").addEventListener("click", endTurn);
+
+  updatePlayerGold(0);
 });
 
 const enemies = [];
@@ -70,7 +75,7 @@ function useWeapon(weaponIndex) {
     displayTurnMessage("It's not your turn!");
     return;
   }
-  const weapon = weapons[weaponIndex];
+  const weapon = player.deck[weaponIndex];
   console.log("Using weapon:", weapon.name);
 
   // Check if the player has enough energy to use the weapon
@@ -88,7 +93,7 @@ function weaponHover(weaponNode) {
   console.log(index);
   index = parseInt(index);
   console.log(index);
-  let weapon = weapons[index];
+  let weapon = player.deck[index];
   console.log(weapon);
   const possibleTargets = weapon.possibleTargets();
   console.log(possibleTargets);
@@ -119,7 +124,7 @@ function setActiveWeapon(weaponIndex) {
     activePossibleTargets = null;
     return;
   }
-  activeWeapon = weapons[weaponIndex];
+  activeWeapon = player.deck[weaponIndex];
   activePossibleTargets = activeWeapon.possibleTargets();
 }
 
@@ -259,15 +264,13 @@ function displayTurnMessage(message) {
   }, 2000);
 }
 
-let playerGold = 0;
-
 function updatePlayerGold(goldAmount) {
-  playerGold += goldAmount;
-  console.log(`Player now has ${playerGold} gold.`);
+  globalSettings.playerGold += goldAmount;
+  console.log(`Player now has ${globalSettings.playerGold} gold.`);
 
   const goldDisplay = document.getElementById("playerGold");
   if (goldDisplay) {
-    goldDisplay.textContent = `Gold: ${playerGold}`;
+    goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
   }
 }
 

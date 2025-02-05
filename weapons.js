@@ -28,29 +28,21 @@ class Weapons {
     effectsLeft = 0,
     effectsRight = 0
   ) {
-    this.#name = name;
-    this.#range = range;
-    this.#damage = damage;
-    this.#criticalDamage = criticalDamage;
-    this.#criticalChance = criticalChance;
-    this.#energy = energy;
-    this.#sprite = sprite;
-    this.#requiresTargeting = requiresTargeting;
-    this.#minRange = minRange;
-    this.#maxRange = maxRange;
-    this.#description = description;
-    if (!Array.isArray(effectsLeft)) {
-      effectsLeft = parseInt(effectsLeft);
-      if (isNaN(effectsLeft) || effectsLeft == 0) effectsLeft = [];
-      else effectsLeft = [...new Array(effectsLeft)].map((e) => 1);
-    }
-    this.#effectsLeft = effectsLeft;
-    if (!Array.isArray(effectsRight)) {
-      effectsRight = parseInt(effectsRight);
-      if (isNaN(effectsRight) || effectsRight == 0) effectsRight = [];
-      else effectsRight = [...new Array(effectsRight)].map((e) => 1);
-    }
-    this.#effectsRight = effectsRight;
+    this.loadFromWeaponInfo({
+      name,
+      range,
+      damage,
+      criticalDamage,
+      criticalChance,
+      energy,
+      description,
+      sprite,
+      requiresTargeting,
+      minRange,
+      maxRange,
+      effectsLeft,
+      effectsRight,
+    });
   }
 
   applyRelicEffects(relics) {
@@ -157,6 +149,46 @@ class Weapons {
       damages,
     };
   }
+
+  getWeaponInfo() {
+    let getters = getAllGetters(this);
+    let info = {
+      className: this.__proto__.constructor.name,
+    };
+    for (let getter in getters) {
+      info[getter] = getters[getter].call(this);
+    }
+    return info;
+  }
+  loadFromWeaponInfo(info) {
+    this.#name = info.name;
+    this.#range = info.range;
+    this.#damage = info.damage;
+    this.#criticalDamage = info.criticalDamage;
+    this.#criticalChance = info.criticalChance;
+    this.#energy = info.energy;
+    this.#sprite = info.sprite;
+    this.#requiresTargeting = info.requiresTargeting;
+    this.#minRange = info.minRange;
+    this.#maxRange = info.maxRange;
+    this.#description = info.description;
+
+    let effectsLeft = info.effectsLeft;
+    if (!Array.isArray(effectsLeft)) {
+      info.effectsLeft = parseInt(info.effectsLeft);
+      if (isNaN(effectsLeft) || effectsLeft == 0) effectsLeft = [];
+      else effectsLeft = [...new Array(effectsLeft)].map((e) => 1);
+    }
+    this.#effectsLeft = effectsLeft;
+
+    let effectsRight = info.effectsRight;
+    if (!Array.isArray(effectsRight)) {
+      effectsRight = parseInt(effectsRight);
+      if (isNaN(effectsRight) || effectsRight == 0) effectsRight = [];
+      else effectsRight = [...new Array(effectsRight)].map((e) => 1);
+    }
+    this.#effectsRight = effectsRight;
+  }
 }
 
 class BasicSword extends Weapons {
@@ -221,7 +253,7 @@ class Bomb extends Weapons {
       500,
       20,
       2,
-      "Can't target the first enemy and hits the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
+      "Can't target the first enemy and hits also the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
       "Assets/bomb.png",
       true,
       1,
@@ -262,16 +294,23 @@ class Dagger extends Weapons {
   }
 }
 
-const weapons = [
-  new BasicSword(),
-  new BasicAxe(),
-  new BasicSpear(),
-  new Bomb(),
-  new Herosword(),
-  new Dagger(),
-];
+const weaponClassMapping = {
+  BasicSword,
+  BasicAxe,
+  BasicSpear,
+  Bomb,
+  Herosword,
+  Dagger,
+};
 
-function displayWeapons() {
+function createWeaponInstanceFromInfo(info) {
+  let cls = weaponClassMapping[info.className];
+  let instance = new cls();
+  instance.loadFromWeaponInfo(info);
+  return instance;
+}
+
+function displayWeapons(weapons) {
   const weaponsContainer = document.getElementById("weapons-container");
   weaponsContainer.innerHTML = ""; // Clear previous content if any
 

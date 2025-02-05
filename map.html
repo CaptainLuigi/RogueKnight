@@ -14,7 +14,15 @@
         alt="ForestBackground"
       />
     </div>
-    <div><img id="Map" src="Assets/scroll.png" alt="Map" /></div>
+    <div>
+      <img id="Map" src="Assets/scroll.png" alt="Map" />
+      <button
+        class="reload-map"
+        onclick="generateMap(); markPossibleLocations()"
+      >
+        Reload
+      </button>
+    </div>
 
     <div class="navigation-container">
       <div class="map-row-start">
@@ -51,6 +59,10 @@
       </div>
       <div class="map-row7">
         <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row8">
         <button class="navigation" onclick="enterLocation(this);"></button>
         <button class="navigation" onclick="enterLocation(this);"></button>
       </div>

@@ -3,26 +3,107 @@
     src: url(Assets/PirataOne-Regular.ttf) format('truetype');
 }
 
-body {
-    font-family: 'Pirata_One';
-    position: relative;
+html, body {
+    height: 100%;
+    margin: 0;
+}
 
+body, button {
+    font-family: 'Pirata_One';
+
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 #ShopBackground {
     width: 100%;
-    height: 100%;
-    
+    height: 100%;  
     object-fit: cover;
-    position: absolute;
-    
+    position: absolute;    
     margin-left: 0;
 }
+
+.container-order {
+    flex-direction: column;
+}
+
+.Shop-weapon {
+    width: 250px;
+    height: 250px;
+    background-color: rgba(214, 163, 21);
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 3;
+    margin-top: 100px;
+}
+
+ .Shop-weapon-container {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 150px;
+ }
+
+ .Shop-relic {
+    width: 250px;
+    height: 250px;
+    background-color: rgba(214, 163, 21);
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 3;
+    margin-top: 80px;
+}
+
+ .Shop-relic-container {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 150px;
+ }
 
 .Shop-removal {
     z-index: 1;
     width: 250px;
     height: 100px;
-    position: relative;
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(235, 118, 9);
+    text-align: center;
+    cursor: pointer;
+}
 
+.leave-shop {
+    z-index: 1;
+    width: 250px;
+    height: 100px;
+    position: fixed;
+    bottom: 40px;
+    left: 91%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(240, 26, 14);
+    text-align: center;
+    cursor: pointer;
+}
+
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
 }

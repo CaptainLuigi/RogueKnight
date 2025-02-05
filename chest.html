@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chest</title>
+    <link rel="stylesheet" href="styleChest.css" />
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+    <button id="chest-button">
+      <img id="Chest" src="Assets/Chest.png" alt="Chest" />
+    </button>
+
+    <div id="playerGold">Gold:</div>
+
+    <div class="sprite"></div>
+    <script>
+      let frame = 0;
+      const sprite = document.querySelector(".sprite");
+
+      const idleConfig = {
+        image: "Assets/Knight_1/Idlenew.png",
+        totalFrames: 4,
+        frameWidth: 200, // Width of each frame for idle
+        backgroundSize: "800px 200px", // Full sprite sheet size for idle
+        frameDelay: 350,
+      };
+
+      let currentConfig = idleConfig; // Start with the running animation
+
+      function setSpriteConfig(config) {
+        sprite.style.backgroundImage = `url(${config.image})`;
+        sprite.style.backgroundSize = config.backgroundSize;
+      }
+
+      function animateSprite() {
+        // Calculate the x-offset for the current frame
+        const xOffset = -(frame * currentConfig.frameWidth);
+        sprite.style.backgroundPosition = `${xOffset}px 0`;
+
+        // Loop through frames
+        frame = (frame + 1) % currentConfig.totalFrames;
+
+        // Use the delay from the current configuration
+        setTimeout(animateSprite, currentConfig.frameDelay);
+      }
+
+      setSpriteConfig(idleConfig);
+      animateSprite();
+    </script>
+  </body>
+</html>

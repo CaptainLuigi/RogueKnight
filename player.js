@@ -45,6 +45,14 @@ class Player extends HealthEntity {
     return this.#maxEnergy;
   }
 
+  get deck() {
+    return [...this.#deck];
+  }
+
+  addWeapon(weapon) {
+    this.#deck.push(weapon);
+  }
+
   takeDamage(amount) {
     this.#health -= amount; // Reduce health
     if (this.#health <= 0) {
@@ -90,6 +98,46 @@ class Player extends HealthEntity {
   equipRelic(relic) {
     this.relics.push(relic);
     this.applyRelics();
+  }
+
+  loadPlayerFromStorage() {
+    let state = loadData("playerState");
+    if (state == null) {
+      this.addWeapon(new BasicSword());
+      this.addWeapon(new BasicAxe());
+      this.addWeapon(new BasicSpear());
+      //this.addWeapon(new Bomb());
+      this.addWeapon(new Herosword());
+      this.addWeapon(new Dagger());
+    } else {
+      this.#name = state.name;
+      this.#health = state.health;
+      this.#maxHealth = state.maxHealth;
+      let deck = [];
+      for (let weapon of state.deck) {
+        let instance = createWeaponInstanceFromInfo(weapon);
+        deck.push(instance);
+      }
+      this.#deck = deck;
+      this.#maxEnergy = state.maxEnergy;
+      // this.relics = [];
+    }
+    this.restoreEnergy(this.#maxEnergy);
+  }
+  savePlayerToStorage() {
+    let state = {
+      name: this.#name,
+      health: this.#health,
+      maxHealth: this.#maxHealth,
+      maxEnergy: this.#maxEnergy,
+    };
+    let deck = [];
+    for (let weapon of this.#deck) {
+      let info = weapon.getWeaponInfo();
+      deck.push(info);
+    }
+    state.deck = deck;
+    storeData("playerState", state);
   }
 }
 
