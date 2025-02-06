@@ -3,6 +3,9 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 let sprite;
 
 document.addEventListener("DOMContentLoaded", function () {
+  initializeHealthBars(player);
+  updateEnergyDisplay();
+
   console.log("DOM fully loaded, difficulty: " + globalSettings.difficulty);
   sprite = document.querySelector(".sprite-player");
   // Start the idle animation immediately when the page loads

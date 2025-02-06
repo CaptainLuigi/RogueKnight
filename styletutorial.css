@@ -29,6 +29,7 @@ html, body {
     top: 450px;
     left: 20%;
     z-index: 2;
+    image-rendering: pixelated;
 }
 
 .sprite-enemie {
@@ -203,6 +204,7 @@ height: 0;
     padding: 5px;
     border: 3px solid black;
     border-radius: 5px;
+    image-rendering: pixelated;
 }
 
 .damage-popup {
@@ -266,6 +268,7 @@ height: 0;
     z-index: 3;
     gap: 15px;
     transition: transform 1s ease-out;
+    image-rendering: pixelated;
 }
 
 #energy-circle {

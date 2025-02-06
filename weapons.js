@@ -294,6 +294,17 @@ class Dagger extends Weapons {
   }
 }
 
+function getAvailableWeapons() {
+  return [
+    new BasicSword(),
+    new BasicAxe(),
+    new BasicSpear(),
+    new Bomb(),
+    new Herosword(),
+    new Dagger(),
+  ];
+}
+
 const weaponClassMapping = {
   BasicSword,
   BasicAxe,
@@ -310,7 +321,7 @@ function createWeaponInstanceFromInfo(info) {
   return instance;
 }
 
-function displayWeapons(weapons) {
+function displayWeapons(weapons, usesTargeting = true) {
   const weaponsContainer = document.getElementById("weapons-container");
   weaponsContainer.innerHTML = ""; // Clear previous content if any
 
@@ -320,8 +331,15 @@ function displayWeapons(weapons) {
     const weaponElement = document.createElement("div");
     weaponElement.classList.add("weapon");
     weaponElement.setAttribute("index", index);
-    weaponElement.setAttribute("onmouseenter", "weaponHover(this);");
-    weaponElement.setAttribute("onmouseleave", "clearSelection();");
+    if (usesTargeting) {
+      weaponElement.setAttribute("onmouseenter", "weaponHover(this);");
+      weaponElement.setAttribute("onmouseleave", "clearSelection();");
+
+      // Add event listener to use weapon on click
+      weaponElement.addEventListener("click", function () {
+        useWeapon(index); // Use the correct index
+      });
+    }
 
     // Create an image element for the weapon
     const weaponImage = document.createElement("img");
@@ -348,11 +366,6 @@ function displayWeapons(weapons) {
 
     // Append image to weapon element
     weaponElement.appendChild(weaponImage);
-
-    // Add event listener to use weapon on click
-    weaponElement.addEventListener("click", function () {
-      useWeapon(index); // Use the correct index
-    });
 
     // Append weapon element to the weapons container
     weaponsContainer.appendChild(weaponElement);

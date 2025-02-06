@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chest</title>
     <link rel="stylesheet" href="styleChest.css" />
+    <script src="weapons.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
   </head>
   <body>
     <div>
@@ -21,39 +24,22 @@
     <div id="playerGold">Gold:</div>
 
     <div class="sprite"></div>
+
+    <div id="weapons-container"></div>
+
     <script>
-      let frame = 0;
+      const availableWeapons = getAvailableWeapons();
+
+      document.getElementById("chest-button").addEventListener("click", () => {
+        const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+        const randomWeapon = availableWeapons[randomIndex];
+
+        displayWeapons([randomWeapon], false);
+      });
+
       const sprite = document.querySelector(".sprite");
 
-      const idleConfig = {
-        image: "Assets/Knight_1/Idlenew.png",
-        totalFrames: 4,
-        frameWidth: 200, // Width of each frame for idle
-        backgroundSize: "800px 200px", // Full sprite sheet size for idle
-        frameDelay: 350,
-      };
-
-      let currentConfig = idleConfig; // Start with the running animation
-
-      function setSpriteConfig(config) {
-        sprite.style.backgroundImage = `url(${config.image})`;
-        sprite.style.backgroundSize = config.backgroundSize;
-      }
-
-      function animateSprite() {
-        // Calculate the x-offset for the current frame
-        const xOffset = -(frame * currentConfig.frameWidth);
-        sprite.style.backgroundPosition = `${xOffset}px 0`;
-
-        // Loop through frames
-        frame = (frame + 1) % currentConfig.totalFrames;
-
-        // Use the delay from the current configuration
-        setTimeout(animateSprite, currentConfig.frameDelay);
-      }
-
-      setSpriteConfig(idleConfig);
-      animateSprite();
+      resetToIdleAnimation();
     </script>
   </body>
 </html>

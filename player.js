@@ -357,8 +357,3 @@ function updateEnergyDisplay() {
     energyCircle.style.backgroundColor = "#f44336"; // Red if energy is low
   }
 }
-
-window.onload = function () {
-  initializeHealthBars(player);
-  updateEnergyDisplay();
-};

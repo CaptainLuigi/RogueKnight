@@ -59,4 +59,5 @@ body {
     background-size: 1400px 200px;
     top: 450px;
     left: 350px;
+    image-rendering: pixelated;
 }
