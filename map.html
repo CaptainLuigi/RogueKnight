@@ -24,6 +24,8 @@
       </button>
     </div>
 
+    <div id="playerGold">Gold:</div>
+
     <div class="navigation-container">
       <div class="map-row-start">
         <button class="navigation" onclick="enterLocation(this);">
@@ -79,5 +81,11 @@
 
     <script src="saveGame.js"></script>
     <script src="map.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const goldDisplay = document.getElementById("playerGold");
+        goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+      });
+    </script>
   </body>
 </html>

@@ -29,6 +29,11 @@
     <div id="weapons-container"></div>
 
     <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const goldDisplay = document.getElementById("playerGold");
+        goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+      });
+
       const availableWeapons = getAvailableWeapons();
 
       document.getElementById("chest-button").addEventListener("click", () => {
