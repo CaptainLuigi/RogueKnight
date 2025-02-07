@@ -218,3 +218,9 @@ class EvilKnight extends Enemy {
     this.display.classList.add("evil-knight");
   }
 }
+
+class HermitShroom extends Enemy {
+  constructor() {
+    super("Hermit Shroom", 500, 3, "Assets/Icon10.png");
+  }
+}

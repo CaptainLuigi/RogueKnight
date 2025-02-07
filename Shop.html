@@ -53,53 +53,50 @@
     <button class="leave-shop">Leave Shop</button>
 
     <script>
-      const availableWeapons = getAvailableWeapons();
-
-      const weaponButtons = document.querySelectorAll(".Shop-weapon");
-
-      weaponButtons.forEach((button, index) => {
-        const weapon = availableWeapons[index];
-
-        if (weapon) {
-          button.style.backgroundImage = `url(${randomWeapon.sprite})`;
-          button.style.backgroundSize = "cover";
-          button.style.backgroundPosition = "center";
-          button.setAttribute("data-weapon-id", Weapon.id);
-        }
-      });
-
-      function weaponHover(weaponElement) {
+      window.addEventListener("DOMContentLoaded", function () {
+        const availableWeapons = getAvailableWeapons();
+        const weaponButtons = document.querySelectorAll(".Shop-weapon");
         const speechBubble = document.getElementById("speech-bubble");
         const weaponInfo = document.getElementById("weapon-info");
 
-        const weaponId = weaponElement.getAttribute("data-weapon-id");
+        weaponButtons.forEach((button) => {
+          const randomIndex = Math.floor(
+            Math.random() * availableWeapons.length
+          );
+          const randomWeapon = availableWeapons[randomIndex];
 
-        const weapon = availableWeapons.find((w) => w.id === weaponId);
-
-        if (weapon) {
-          weaponInfo.textContent = `${weapon.name} - Const: ${weapon.energy} Gold`;
-
-          speechBubble.style.display = "block";
-          speechBubble.style.top = "20%";
-          speechBubble.style.left = `${
-            weaponElement.getBoundingClientRect().left +
-            weaponElement.offsetWidth / 2
-          }px`;
-        } else {
-          console.error("Weapon not found:", weaponId);
-        }
-      }
-
-      function clearSelection() {
-        const speechBubble = document.getElementById("speech-bubble");
-        speechBubble.style.display = "none";
-      }
-
-      weaponButtons.forEach((button) => {
-        button.addEventListener("mouseenter", function () {
-          weaponHover(button);
+          button.style.backgroundImage = `url(${randomWeapon.sprite})`;
+          button.style.backgroundSize = "cover";
+          button.style.backgroundPosition = "center";
+          button.setAttribute("data-weapon-id", randomWeapon.name);
         });
-        button.addEventListener("mouseleave", clearSelection);
+
+        weaponButtons.forEach((button) => {
+          button.addEventListener("mouseenter", function () {
+            const weaponName = button.getAttribute("data-weapon-id");
+
+            const selectedWeapon = availableWeapons.find(
+              (weapon) => weapon.name === weaponName
+            );
+
+            if (selectedWeapon) {
+              weaponInfo.innerHTML = `
+              ${selectedWeapon.name} <br>
+              Energy Cost: ${selectedWeapon.energy} <br>
+              Range: ${selectedWeapon.range} <br>
+              Damage: ${selectedWeapon.damage} <br>
+              Critical Damage: ${selectedWeapon.criticalDamage} <br>
+              Critical Chance: ${selectedWeapon.criticalChance} <br>             
+              ${selectedWeapon.description} <br>
+              20 Gold
+              `;
+
+              speechBubble.style.display = "block";
+            } else {
+              console.error("Weapon not found:", weaponName);
+            }
+          });
+        });
       });
 
       let frame = 0;

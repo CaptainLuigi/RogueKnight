@@ -294,6 +294,46 @@ class Dagger extends Weapons {
   }
 }
 
+class Spearblade extends Weapons {
+  constructor() {
+    super(
+      "Spearblade",
+      "melee",
+      55,
+      80,
+      30,
+      2,
+      "Damages the first two enemies, click to instantly use weapon.",
+      "Assets/spearblade.png",
+      false,
+      0,
+      0,
+      0,
+      100
+    );
+  }
+}
+
+class Crossbow extends Weapons {
+  constructor() {
+    super(
+      "Crossbow",
+      "far",
+      20,
+      40,
+      35,
+      1,
+      "Can target any enemie and also damages the enemie behind, click weapon first, then the enemy you want to hit.",
+      "Assets/crossbow.png",
+      true,
+      0,
+      5,
+      0,
+      100
+    );
+  }
+}
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -302,6 +342,8 @@ function getAvailableWeapons() {
     new Bomb(),
     new Herosword(),
     new Dagger(),
+    new Spearblade(),
+    new Crossbow(),
   ];
 }
 
@@ -312,6 +354,7 @@ const weaponClassMapping = {
   Bomb,
   Herosword,
   Dagger,
+  Spearblade,
 };
 
 function createWeaponInstanceFromInfo(info) {
@@ -351,9 +394,9 @@ function displayWeapons(weapons, usesTargeting = true) {
     const tooltip = document.createElement("div");
     tooltip.classList.add("tooltip");
 
-    tooltip.innerHTML = `
+    tooltip.innerHTML = `          
+            <strong> ${weapon.name} </strong> <br>
             <strong>Energy Cost:</strong> ${weapon.energy} <br>
-            <strong>Name:</strong> ${weapon.name} <br>
             <strong>Range:</strong> ${weapon.range} <br>
             <strong>Damage:</strong> ${weapon.damage} <br>
             <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>

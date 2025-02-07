@@ -81,25 +81,6 @@ class Player extends HealthEntity {
     if (this.#energy > this.#maxEnergy) this.#energy = this.#maxEnergy; // Cap at max energy
   }
 
-  applyRelics() {
-    this.relics.forEach((relic) => {
-      relic.applyEffect(this);
-    });
-  }
-
-  defeatEnemy(enemy) {
-    this.applyRelics();
-
-    if (this.relics.some((relic) => relic.name === "Grinding Monstera")) {
-      this.maxHealth += 2;
-    }
-  }
-
-  equipRelic(relic) {
-    this.relics.push(relic);
-    this.applyRelics();
-  }
-
   loadPlayerFromStorage() {
     let state = loadData("playerState");
     if (state == null) {
@@ -109,6 +90,7 @@ class Player extends HealthEntity {
       //this.addWeapon(new Bomb());
       this.addWeapon(new Herosword());
       this.addWeapon(new Dagger());
+      this.addWeapon(new Spearblade());
     } else {
       this.#name = state.name;
       this.#health = state.health;
