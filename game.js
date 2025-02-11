@@ -62,6 +62,24 @@ let isPlayerTurn = true; // Flag to track if it's the player's turn
 
 function enemyDeathEvent() {
   setEnemyIndices();
+
+  if (enemies.every((enemy) => enemy.isDead())) {
+    triggerPostBattleScreen();
+    disableGameInteractions();
+  }
+}
+
+function disableGameInteractions() {
+  const weaponButtons = document.querySelectorAll(".weapon-button");
+  weaponButtons.forEach((button) => {
+    button.disabled = true;
+  });
+
+  const endTurnButton = document.getElementById("end-turn-btn");
+  if (endTurnButton) {
+    endTurnButton.disabled = true;
+  }
+  displayTurnMessage("All enemies defeated! The Battle is over!");
 }
 
 function setEnemyIndices() {
@@ -78,6 +96,12 @@ function useWeapon(weaponIndex) {
     displayTurnMessage("It's not your turn!");
     return;
   }
+
+  if (enemies.every((enemy) => enemy.isDead())) {
+    displayTurnMessage("They are already dead!");
+    return;
+  }
+
   const weapon = player.deck[weaponIndex];
   console.log("Using weapon:", weapon.name);
 
@@ -167,6 +191,11 @@ function setActiveWeapon(weaponIndex) {
  * @param {int} enemyIndex
  */
 function executeAttack(weapon, enemyIndex) {
+  if (enemies.every((enemy) => enemy.isDead())) {
+    displayTurnMessage("They are already dead!");
+    return;
+  }
+
   triggerAttackAnimation(); // Trigger the attack animation
 
   // Call the damage calculation function
@@ -326,4 +355,107 @@ function displayEquippedRelics(player) {
 
     relicsContainer.appendChild(relicElement);
   });
+}
+
+function triggerPostBattleScreen() {
+  const postBattleScreen = document.getElementById("post-battle-screen");
+  postBattleScreen.classList.remove("hidden");
+
+  displayRandomWeapons();
+
+  populateWeaponUpgradeOptions();
+
+  document.getElementById("heal-btn").addEventListener("click", function () {
+    healPlayer();
+  });
+
+  document
+    .getElementById("close-post-battle")
+    .addEventListener("click", function () {
+      postBattleScreen.classList.add("hidden");
+    });
+}
+
+function displayRandomWeapons() {
+  const weaponPurchaseOptions = document.getElementById(
+    "weapon-purchase-options"
+  );
+
+  weaponPurchaseOptions.innerHTML = "";
+
+  const availableWeapons = getAvailableWeapons();
+
+  const randomWeapons = [];
+
+  const weaponButtons = document.querySelectorAll(".weapon-option");
+  weaponButtons.forEach((button) => {
+    const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+    const randomWeapon = availableWeapons[randomIndex];
+
+    while (randomWeapons.includes(randomWeapon)) {
+      const newRandomIndex = Math.floor(
+        Math.random() * availableWeapons.length
+      );
+      randomWeapon = availableWeapons[newRandomIndex];
+    }
+
+    randomWeapons.push(randomWeapon);
+
+    button.textContent = randomWeapon.name;
+    button.classList.add("weapon-option");
+
+    button.addEventListener("click", function () {
+      purchaseWeapon(randomWeapon);
+    });
+  });
+}
+
+function purchaseWeapon(weapon) {
+  if (globalSettings.playerGold >= weapon.cost) {
+    player.deck.push(weapon);
+    globalSettings.playerGold -= weapon.cost;
+    updatePlayerGold(globalSettings.playerGold);
+    displayTurnMessage(`You purchased ${weapon.name}!`);
+  } else {
+    displayTurnMessage("Not enough gold!");
+  }
+}
+
+function populateWeaponUpgradeOptions() {
+  const upgradeOptionsContainer = document.getElementById(
+    "upgrade-weapon-options"
+  );
+  upgradeOptionsContainer.innerHTML = "";
+
+  player.deck.forEach((weapon) => {
+    const upgradeButton = document.createElement("button");
+    upgradeButton.textContent = `Upgrade ${weapon.name}`;
+    upgradeButton.classList.add("upgrade-button");
+
+    upgradeButton.addEventListener("click", function () {
+      upgradeWeapon(weapon);
+    });
+    upgradeOptionsContainer.appendChild(upgradeButton);
+  });
+}
+
+function upgradeWeapon(weapon) {
+  weapon.upgrade();
+
+  displayTurnMessage(`Upgraded ${weapon.name}!`);
+}
+
+function healPlayer() {
+  const healingCost = 50;
+
+  if (globalSettings.playerGold >= healingCost) {
+    updatePlayerGold(-healingCost);
+    player.heal(25);
+
+    updateHealthBar();
+
+    displayTurnMessage("You healed!");
+  } else {
+    displayTurnMessage("Not enough gold to heal!");
+  }
 }

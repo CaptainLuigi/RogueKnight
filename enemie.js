@@ -59,6 +59,10 @@ class Enemy extends HealthEntity {
     Enemy.#enemyDisplay.appendChild(this.#display);
   }
 
+  isDead() {
+    return this.health <= 0;
+  }
+
   takeDamage(amount) {
     this.#health -= amount;
     if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative

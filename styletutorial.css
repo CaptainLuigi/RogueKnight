@@ -341,3 +341,44 @@ height: 0;
     z-index: 1100;
     font-size: 36px;
 }
+
+#post-battle-screen.hidden {
+    display: none;
+}
+
+#post-battle-screen {
+    position: fixed;
+    width: 60%;
+    height: 80%;
+    top: 10%;
+    left: 65%;
+    transform: translateX(-50%);
+    background-color: burlywood;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid black;
+    z-index: 1500;
+}
+
+.weapon-option {
+    margin: 10px;
+    padding: 10px;
+    background-color: darkgoldenrod;
+}
+
+button {
+    background-color: #ff5722;
+    color: black;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#weapon-purchase-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}

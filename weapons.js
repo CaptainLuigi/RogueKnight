@@ -390,7 +390,7 @@ class Bomb extends Weapons {
       "Bomb",
       1,
       "far",
-      30,
+      500,
       40,
       20,
       2,
@@ -536,7 +536,7 @@ class Crossbow extends Weapons {
       "Assets/crossbow.png",
       true,
       0,
-      5,
+      4,
       0,
       [1]
     );
@@ -599,9 +599,7 @@ function displayWeapons(weapons, usesTargeting = true) {
   // Loop through weapons and create an image for each
   weapons.forEach((weapon, index) => {
     // Add index parameter here
-    const weaponElement = document.createElement("div");
-    weaponElement.classList.add("weapon");
-    weaponElement.setAttribute("index", index);
+    const weaponElement = 
     if (usesTargeting) {
       weaponElement.setAttribute("onmouseenter", "weaponHover(this);");
       weaponElement.setAttribute("onmouseleave", "clearSelection();");
@@ -612,35 +610,63 @@ function displayWeapons(weapons, usesTargeting = true) {
       });
     }
 
-    // Create an image element for the weapon
-    const weaponImage = document.createElement("img");
-    weaponImage.src = weapon.sprite;
-    weaponImage.alt = weapon.name;
-    weaponImage.classList.add("weapon-image");
-
-    // Create a tooltip for the weapon
-    const tooltip = document.createElement("div");
-    tooltip.classList.add("tooltip");
-
-    tooltip.innerHTML = `          
-            <strong> ${weapon.name} </strong> <br>
-            <strong>Level:</strong> ${weapon.level} <br>
-            <strong>Energy Cost:</strong> ${weapon.energy} <br>
-            <strong>Range:</strong> ${weapon.range} <br>
-            <strong>Damage:</strong> ${weapon.damage} <br>
-            <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
-            <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
-            <strong>Healing:</strong> ${weapon.healingAmount} <br>
-            <strong></strong> ${weapon.description} <br>           
-        `;
-
-    // Append the tooltip to the weapon element
-    weaponElement.appendChild(tooltip);
-
-    // Append image to weapon element
-    weaponElement.appendChild(weaponImage);
-
     // Append weapon element to the weapons container
     weaponsContainer.appendChild(weaponElement);
   });
+}
+
+function generateWeaponInfo(
+  weapon,
+  weaponIndex,
+  displayParent,
+  display,
+  tooltipElement
+) {
+  if (displayParent && !display) {
+    display = document.createElement("div");
+    displayParent.appendChild(display);
+    display.classList.add("weapon");
+    display.setAttribute("index", weaponIndex);
+  }
+
+  displayParent = display.parentNode;
+  display.innerHTML = "";
+
+  // Create an image element for the weapon
+  const weaponImage = document.createElement("img");
+  weaponImage.src = weapon.sprite;
+  weaponImage.alt = weapon.name;
+  weaponImage.classList.add("weapon-image");
+  display.appendChild(weaponImage);
+
+ let tooltipString = `          
+      <strong> ${weapon.name} </strong> <br>
+      <strong>Level:</strong> ${weapon.level} <br>
+      <strong>Energy Cost:</strong> ${weapon.energy} <br>
+      <strong>Range:</strong> ${weapon.range} <br>
+      <strong>Damage:</strong> ${weapon.damage} <br>
+      <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
+      <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
+      <strong>Healing:</strong> ${weapon.healingAmount} <br>
+      <strong></strong> ${weapon.description} <br>           
+  `;
+
+  if (!tooltipElement) {
+    // Create a tooltip for the weapon
+    tooltipElement = document.createElement("div");
+    
+    tooltipElement.innerHTML = tooltipString;
+
+    // Append the tooltip to the weapon element
+    display.appendChild(tooltipElement);
+  }
+  else
+    // Add event listener to use weapon on click
+    display.addEventListener("mouseenter", function () {
+      tooltipElement.innerHTML = tooltipString;
+    });
+
+  tooltipElement.classList.add("tooltip");
+
+  return display;
 }
