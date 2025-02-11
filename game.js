@@ -83,10 +83,40 @@ function useWeapon(weaponIndex) {
 
   // Check if the player has enough energy to use the weapon
   if (player.energy >= weapon.energy) {
-    if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
+    if (weapon instanceof HealthPotion) {
+      useHealthPotion(weapon);
+    } else if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
     else executeAttack(weapon, weapon.minRange);
   } else {
     displayTurnMessage("Not enough energy!");
+  }
+}
+
+function useHealthPotion(potion) {
+  console.log("Using Health Potion");
+
+  if (isNaN(potion.healingAmount) || potion.healingAmount <= 0) {
+    console.error("Invalid potion heal amount:", potion.healingAmount);
+    return; // Don't use the potion if the heal amount is invalid
+  }
+
+  // Check if the player has health and maxHealth defined
+  if (isNaN(player.health) || isNaN(player.maxHealth)) {
+    console.error(
+      "Invalid player health or maxHealth:",
+      player.health,
+      player.maxHealth
+    );
+    return; // Prevent healing if health or maxHealth is invalid
+  }
+
+  if (player.health < player.maxHealth) {
+    player.heal(potion.healingAmount); // Heal the player
+    updateHealthBar(player); // Update the health bar
+    player.useEnergy(potion.energy); // Deduct energy for using the potion
+    updateEnergyDisplay(); // Update the energy display
+  } else {
+    displayTurnMessage("You are already at full health!");
   }
 }
 

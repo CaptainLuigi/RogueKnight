@@ -64,10 +64,25 @@ class Player extends HealthEntity {
       triggerDamageAnimation();
     }
   }
+
   heal(amount) {
+    if (isNaN(amount) || amount <= 0) {
+      console.error("Invalid heal amount:", amount);
+      return; // Prevent healing if the amount is invalid
+    }
+
     this.#health += amount; // Increase health
-    if (this.#health > this.#maxHealth) this.#health = this.#maxHealth; // Cap at max health
+    if (this.#health > this.#maxHealth) {
+      this.#health = this.#maxHealth; // Cap at max health
+    }
+
+    // Ensure health is a valid number
+    if (isNaN(this.#health) || this.#health < 0) {
+      console.error("Invalid health value:", this.#health);
+      this.#health = 0; // Prevent health from going negative
+    }
   }
+
   useEnergy(amount) {
     if (this.#energy >= amount) {
       this.#energy -= amount; // Deduct energy
@@ -91,6 +106,7 @@ class Player extends HealthEntity {
       this.addWeapon(new Herosword());
       this.addWeapon(new Dagger());
       this.addWeapon(new Spearblade());
+      this.addWeapon(new HealthPotion());
     } else {
       this.#name = state.name;
       this.#health = state.health;
