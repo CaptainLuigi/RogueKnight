@@ -12,6 +12,7 @@ class Weapons {
   #maxRange;
   #effectsLeft;
   #effectsRight;
+  #healingAmount;
 
   constructor(
     name,
@@ -26,7 +27,8 @@ class Weapons {
     minRange = 0,
     maxRange = 0,
     effectsLeft = 0,
-    effectsRight = 0
+    effectsRight = 0,
+    healingAmount = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -42,6 +44,7 @@ class Weapons {
       maxRange,
       effectsLeft,
       effectsRight,
+      healingAmount,
     });
   }
 
@@ -105,6 +108,10 @@ class Weapons {
 
   get description() {
     return this.#description;
+  }
+
+  get healingAmount() {
+    return this.#healingAmount;
   }
 
   possibleTargets() {
@@ -188,6 +195,41 @@ class Weapons {
       else effectsRight = [...new Array(effectsRight)].map((e) => 1);
     }
     this.#effectsRight = effectsRight;
+
+    this.#healingAmount = info.healingAmount || 0;
+  }
+
+  applyHealing(target) {
+    if (this.#healingAmount > 0) {
+      target.health(this.#healingAmount);
+      console.log(
+        `${this.name} healed the player for ${this.#healingAmount} health.`
+      );
+    }
+  }
+}
+
+class HealthPotion extends Weapons {
+  constructor() {
+    super(
+      "Health Potion",
+      "item",
+      0,
+      0,
+      0,
+      1,
+      "Click to heal the player.",
+      "Assets/healthPotion.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      25
+    );
+  }
+  applyEffects(target) {
+    this.applyHealing(target);
   }
 }
 
@@ -344,6 +386,7 @@ function getAvailableWeapons() {
     new Dagger(),
     new Spearblade(),
     new Crossbow(),
+    new HealthPotion(),
   ];
 }
 
@@ -355,6 +398,8 @@ const weaponClassMapping = {
   Herosword,
   Dagger,
   Spearblade,
+  Crossbow,
+  HealthPotion,
 };
 
 function createWeaponInstanceFromInfo(info) {
@@ -401,6 +446,7 @@ function displayWeapons(weapons, usesTargeting = true) {
             <strong>Damage:</strong> ${weapon.damage} <br>
             <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
             <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
+            <strong>Healing:</strong> ${weapon.healingAmount} <br>
             <strong></strong> ${weapon.description} <br>           
         `;
 
