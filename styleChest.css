@@ -123,3 +123,35 @@ html, body {
     z-index: 1100;
     image-rendering: pixelated;
 }
+
+#addToDeck {
+    width: 150px;
+    height: 75px;
+    position: absolute;
+    font-size: 24px;
+    z-index: 1100;
+    display: none;
+    top: 65%;
+    left: 40%;
+    font-family: 'Pirata_One';
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: rgba(240, 26, 14);
+    cursor: pointer;
+}
+
+#skip {
+    width: 150px;
+    height: 75px;
+    position: absolute;
+    font-size: 24px;
+    z-index: 1100;
+    /*display: none;*/
+    top: 65%;
+    left: 52%;
+    font-family: 'Pirata_One';
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: rgba(240, 26, 14);
+    cursor: pointer;  
+}

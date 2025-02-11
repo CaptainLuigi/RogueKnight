@@ -281,7 +281,7 @@ class BasicSpear extends Weapons {
       0,
       0,
       0,
-      [0.8, 0.5]
+      [1, 1]
     );
   }
 }
@@ -300,8 +300,8 @@ class Bomb extends Weapons {
       true,
       1,
       4,
-      [0.5],
-      [0.5]
+      [1],
+      [1]
     );
   }
 }
@@ -371,7 +371,7 @@ class Crossbow extends Weapons {
       0,
       5,
       0,
-      100
+      [1]
     );
   }
 }

@@ -28,10 +28,28 @@
 
     <div id="weapons-container"></div>
 
+    <button id="addToDeck">Add</button>
+    <button id="skip">Skip</button>
+
     <script>
+      let selectedWeapon = null;
+
       document.addEventListener("DOMContentLoaded", () => {
         const goldDisplay = document.getElementById("playerGold");
         goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+
+        const addButton = document.getElementById("addToDeck");
+
+        addButton.style.display = "none";
+
+        addButton.addEventListener("click", () => {
+          if (selectedWeapon) {
+            player.addWeapon(selectedWeapon);
+            console.log("Weapon added to deck:", selectedWeapon);
+
+            addButton.style.display = "none";
+          }
+        });
       });
 
       const availableWeapons = getAvailableWeapons();
@@ -41,7 +59,15 @@
         const randomWeapon = availableWeapons[randomIndex];
 
         displayWeapons([randomWeapon], false);
+        showAddToDeck();
       });
+
+      function showAddToDeck() {
+        const addButton = document.getElementById("addToDeck");
+        if (addButton) {
+          addButton.style.display = "inline-block";
+        }
+      }
 
       const sprite = document.querySelector(".sprite");
 
