@@ -1,5 +1,6 @@
 class Weapons {
   #name;
+  #level;
   #range;
   #damage;
   #criticalDamage;
@@ -16,6 +17,7 @@ class Weapons {
 
   constructor(
     name,
+    level = 1,
     range,
     damage,
     criticalDamage,
@@ -32,6 +34,7 @@ class Weapons {
   ) {
     this.loadFromWeaponInfo({
       name,
+      level,
       range,
       damage,
       criticalDamage,
@@ -114,6 +117,26 @@ class Weapons {
     return this.#healingAmount;
   }
 
+  get level() {
+    return this.#level;
+  }
+
+  set damage(value) {
+    this.#damage = value;
+  }
+
+  set criticalDamage(value) {
+    this.#criticalDamage = value;
+  }
+
+  set criticalChance(value) {
+    this.#criticalChance = value;
+  }
+
+  set healingAmount(value) {
+    this.#healingAmount = value;
+  }
+
   possibleTargets() {
     if (!this.requiresTargeting) return [this.#minRange];
 
@@ -169,6 +192,7 @@ class Weapons {
   }
   loadFromWeaponInfo(info) {
     this.#name = info.name;
+    this.#level = info.level;
     this.#range = info.range;
     this.#damage = info.damage;
     this.#criticalDamage = info.criticalDamage;
@@ -197,6 +221,9 @@ class Weapons {
     this.#effectsRight = effectsRight;
 
     this.#healingAmount = info.healingAmount || 0;
+
+    this.#level = info.level || 1;
+    this.applyUpgrades();
   }
 
   applyHealing(target) {
@@ -207,12 +234,19 @@ class Weapons {
       );
     }
   }
+
+  applyUpgrades() {
+    console.log(
+      "applyUpgrades() should be overridden in each weapon subclass."
+    );
+  }
 }
 
 class HealthPotion extends Weapons {
   constructor() {
     super(
       "Health Potion",
+      1,
       "item",
       0,
       0,
@@ -225,9 +259,22 @@ class HealthPotion extends Weapons {
       0,
       0,
       0,
-      25
+      10
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.healingAmount += 5;
+        break;
+      case 3:
+        this.healingAmount += 10;
+        break;
+    }
+  }
+
   applyEffects(target) {
     this.applyHealing(target);
   }
@@ -237,6 +284,7 @@ class BasicSword extends Weapons {
   constructor() {
     super(
       "Basic Sword",
+      1,
       "melee",
       25,
       50,
@@ -246,12 +294,29 @@ class BasicSword extends Weapons {
       "Assets/sword.png"
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 5;
+        this.criticalDamage += 10;
+        this.criticalChance += 5;
+        break;
+      case 3:
+        this.damage += 5;
+        this.criticalDamage += 10;
+        this.criticalChance += 5;
+        break;
+    }
+  }
 }
 
 class BasicAxe extends Weapons {
   constructor() {
     super(
       "Basic Axe",
+      1,
       "melee",
       60,
       140,
@@ -264,15 +329,32 @@ class BasicAxe extends Weapons {
       1
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 15;
+        this.criticalDamage += 30;
+        this.criticalChance += 5;
+        break;
+      case 3:
+        this.damage += 15;
+        this.criticalDamage += 30;
+        this.criticalChance += 5;
+        break;
+    }
+  }
 }
 
 class BasicSpear extends Weapons {
   constructor() {
     super(
       "Basic Spear",
+      1,
       "medium",
       20,
-      75,
+      50,
       15,
       1,
       "Can only target the first enemy and pierces two enemies, click to instantly use weapon.",
@@ -284,15 +366,32 @@ class BasicSpear extends Weapons {
       [1, 1]
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 5;
+        this.criticalDamage += 10;
+        this.criticalChance += 5;
+        break;
+      case 3:
+        this.damage += 5;
+        this.criticalDamage += 10;
+        this.criticalChance += 10;
+        break;
+    }
+  }
 }
 
 class Bomb extends Weapons {
   constructor() {
     super(
       "Bomb",
+      1,
       "far",
-      500,
-      500,
+      30,
+      40,
       20,
       2,
       "Can't target the first enemy and hits also the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
@@ -304,12 +403,29 @@ class Bomb extends Weapons {
       [1]
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 10;
+        this.criticalDamage += 10;
+        this.criticalChance += 5;
+        break;
+      case 3:
+        this.damage += 10;
+        this.criticalDamage += 10;
+        this.criticalChance += 10;
+        break;
+    }
+  }
 }
 
 class Herosword extends Weapons {
   constructor() {
     super(
       "Hero Sword",
+      1,
       "melee",
       15,
       65,
@@ -319,20 +435,53 @@ class Herosword extends Weapons {
       "Assets/herosword.png"
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 5;
+        this.criticalDamage += 5;
+        this.criticalChance += 5;
+        break;
+      case 3:
+        this.damage += 10;
+        this.criticalDamage += 10;
+        this.criticalChance += 5;
+        break;
+    }
+  }
 }
 
 class Dagger extends Weapons {
   constructor() {
     super(
       "Dagger",
+      1,
       "melee",
       5,
-      250,
-      100,
+      70,
+      45,
       1,
       "Can only target the first enemy, click to instanty use weapon.",
       "Assets/dagger.png"
     );
+  }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 5;
+        this.criticalDamage += 10;
+        this.criticalChance += 10;
+        break;
+      case 3:
+        this.damage += 10;
+        this.criticalDamage += 10;
+        this.criticalChance += 15;
+        break;
+    }
   }
 }
 
@@ -340,6 +489,7 @@ class Spearblade extends Weapons {
   constructor() {
     super(
       "Spearblade",
+      1,
       "melee",
       55,
       80,
@@ -354,12 +504,29 @@ class Spearblade extends Weapons {
       [1]
     );
   }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 5;
+        this.criticalDamage += 10;
+        this.criticalChance += 10;
+        break;
+      case 3:
+        this.damage += 10;
+        this.criticalDamage += 10;
+        this.criticalChance += 10;
+        break;
+    }
+  }
 }
 
 class Crossbow extends Weapons {
   constructor() {
     super(
       "Crossbow",
+      1,
       "far",
       20,
       40,
@@ -373,6 +540,22 @@ class Crossbow extends Weapons {
       0,
       [1]
     );
+  }
+  applyUpgrades() {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        this.damage += 5;
+        this.criticalDamage += 5;
+        this.criticalChance += 5;
+        break;
+      case 3:
+        this.damage += 10;
+        this.criticalDamage += 10;
+        this.criticalChance += 15;
+        break;
+    }
   }
 }
 
@@ -441,6 +624,7 @@ function displayWeapons(weapons, usesTargeting = true) {
 
     tooltip.innerHTML = `          
             <strong> ${weapon.name} </strong> <br>
+            <strong>Level:</strong> ${weapon.level} <br>
             <strong>Energy Cost:</strong> ${weapon.energy} <br>
             <strong>Range:</strong> ${weapon.range} <br>
             <strong>Damage:</strong> ${weapon.damage} <br>
