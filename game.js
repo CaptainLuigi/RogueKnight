@@ -377,32 +377,23 @@ function triggerPostBattleScreen() {
 }
 
 function displayRandomWeapons() {
-  const weaponPurchaseOptions = document.getElementById(
-    "weapon-purchase-options"
-  );
-
-  weaponPurchaseOptions.innerHTML = "";
-
   const availableWeapons = getAvailableWeapons();
 
   const randomWeapons = [];
 
   const weaponButtons = document.querySelectorAll(".weapon-option");
   weaponButtons.forEach((button) => {
-    const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-    const randomWeapon = availableWeapons[randomIndex];
+    let randomWeapon;
+    let newRandomIndex;
 
-    while (randomWeapons.includes(randomWeapon)) {
-      const newRandomIndex = Math.floor(
-        Math.random() * availableWeapons.length
-      );
+    do {
+      newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
       randomWeapon = availableWeapons[newRandomIndex];
-    }
+    } while (randomWeapons.includes(randomWeapon));
 
     randomWeapons.push(randomWeapon);
 
-    button.textContent = randomWeapon.name;
-    button.classList.add("weapon-option");
+    generateWeaponInfo(randomWeapon, newRandomIndex, null, button, null, 30);
 
     button.addEventListener("click", function () {
       purchaseWeapon(randomWeapon);
@@ -422,6 +413,8 @@ function purchaseWeapon(weapon) {
 }
 
 function populateWeaponUpgradeOptions() {
+  displayWeapons(player.deck, false, "upgrade-weapon-options");
+  /*
   const upgradeOptionsContainer = document.getElementById(
     "upgrade-weapon-options"
   );
@@ -436,7 +429,7 @@ function populateWeaponUpgradeOptions() {
       upgradeWeapon(weapon);
     });
     upgradeOptionsContainer.appendChild(upgradeButton);
-  });
+  });//*/
 }
 
 function upgradeWeapon(weapon) {
@@ -459,3 +452,31 @@ function healPlayer() {
     displayTurnMessage("Not enough gold to heal!");
   }
 }
+
+function weaponSelectedUpgrade(event) {
+  let target = event.target;
+  while (target && target.classList && !target.classList.contains("weapon"))
+    target = target.parentNode;
+  if (!target?.classList?.contains("weapon")) return;
+
+  let index = target.getAttribute("index");
+  index = parseInt(index);
+  let weapon = player.deck[index];
+  console.log(weapon);
+}
+
+window.onload = function () {
+  document
+    .getElementById("choose-weapon-upgrade-btn")
+    .addEventListener("click", function () {
+      const upgradeOptions = document.getElementById("upgrade-weapon-options");
+      if (
+        upgradeOptions.style.display === "none" ||
+        upgradeOptions.style.display === ""
+      ) {
+        upgradeOptions.style.display = "flex";
+      } else {
+        upgradeOptions.style.display = "none";
+      }
+    });
+};

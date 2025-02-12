@@ -71,39 +71,16 @@
           );
           const randomWeapon = availableWeapons[randomIndex];
 
-          button.style.backgroundImage = `url(${randomWeapon.sprite})`;
-          button.style.backgroundSize = "cover";
-          button.style.backgroundPosition = "center";
+          generateWeaponInfo(
+            randomWeapon,
+            randomIndex,
+            null,
+            button,
+            weaponInfo,
+            20
+          );
+
           button.setAttribute("data-weapon-id", randomWeapon.name);
-        });
-
-        weaponButtons.forEach((button) => {
-          button.addEventListener("mouseenter", function () {
-            const weaponName = button.getAttribute("data-weapon-id");
-
-            const selectedWeapon = availableWeapons.find(
-              (weapon) => weapon.name === weaponName
-            );
-
-            if (selectedWeapon) {
-              weaponInfo.innerHTML = `
-              ${selectedWeapon.name} <br>
-              Level: ${selectedWeapon.level} <br>
-              Energy Cost: ${selectedWeapon.energy} <br>
-              Range: ${selectedWeapon.range} <br>
-              Damage: ${selectedWeapon.damage} <br>
-              Critical Damage: ${selectedWeapon.criticalDamage} <br>
-              Critical Chance: ${selectedWeapon.criticalChance} <br>   
-              Healing: ${selectedWeapon.healingAmount} <br>          
-              ${selectedWeapon.description} <br>
-              20 Gold
-              `;
-
-              speechBubble.style.display = "block";
-            } else {
-              console.error("Weapon not found:", weaponName);
-            }
-          });
         });
       });
 

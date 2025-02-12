@@ -136,6 +136,11 @@ div {
     z-index: 1200;
     text-align: center;
     border: 2px solid black;
+
+}
+
+#speech-bubble:has(> .visible) {
+    display: block;
 }
 
 #weapon-info {
@@ -164,4 +169,8 @@ div {
     z-index: 1100;
     image-rendering: pixelated;
     transform: scale(5.5);
+}
+
+img.weapon-image {
+    width: 100%;
 }

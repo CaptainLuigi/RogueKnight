@@ -25,6 +25,6 @@ in der map kann erster kampf übersprungen werden
 
 bei einem gegner, diesen centern
 
-
+post battle healing nur einmal
 
 */

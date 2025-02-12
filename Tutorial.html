@@ -59,19 +59,25 @@
     <button id="end-turn-btn">End Turn</button>
 
     <div id="post-battle-screen" class="hidden">
-      <h1>Fight complete</h1>
+      <div id="headline-post-battle">Fight complete</div>
       <div id="weapon-purchase-options">
         <div id="weapon-1" class="weapon-option"></div>
         <div id="weapon-2" class="weapon-option"></div>
         <div id="weapon-3" class="weapon-option"></div>
       </div>
-      <div id="upgrade-weapon-options">
-        <select id="weapon-to-upgrade"></select>
-      </div>
+      <button id="choose-weapon-upgrade-btn">
+        Choose a weapon to upgrade
+        <div
+          id="upgrade-weapon-options"
+          onclick="weaponSelectedUpgrade(event);"
+        >
+          <select id="weapon-to-upgrade"></select>
+        </div>
+      </button>
       <div id="heal-option">
         <button id="heal-btn">Heal 20 HP (50 Gold)</button>
       </div>
-      <button id="close-post-battle">Close</button>
+      <button id="close-post-battle">Next</button>
     </div>
   </body>
 </html>

@@ -592,14 +592,24 @@ function createWeaponInstanceFromInfo(info) {
   return instance;
 }
 
-function displayWeapons(weapons, usesTargeting = true) {
-  const weaponsContainer = document.getElementById("weapons-container");
+function displayWeapons(
+  weapons,
+  usesTargeting = true,
+  containerElementID = "weapons-container"
+) {
+  const weaponsContainer = document.getElementById(containerElementID);
   weaponsContainer.innerHTML = ""; // Clear previous content if any
 
   // Loop through weapons and create an image for each
   weapons.forEach((weapon, index) => {
     // Add index parameter here
-    const weaponElement = 
+    const weaponElement = generateWeaponInfo(
+      weapon,
+      index,
+      weaponsContainer,
+      null,
+      null
+    );
     if (usesTargeting) {
       weaponElement.setAttribute("onmouseenter", "weaponHover(this);");
       weaponElement.setAttribute("onmouseleave", "clearSelection();");
@@ -609,9 +619,6 @@ function displayWeapons(weapons, usesTargeting = true) {
         useWeapon(index); // Use the correct index
       });
     }
-
-    // Append weapon element to the weapons container
-    weaponsContainer.appendChild(weaponElement);
   });
 }
 
@@ -620,7 +627,8 @@ function generateWeaponInfo(
   weaponIndex,
   displayParent,
   display,
-  tooltipElement
+  tooltipElement,
+  weaponPrice
 ) {
   if (displayParent && !display) {
     display = document.createElement("div");
@@ -639,7 +647,7 @@ function generateWeaponInfo(
   weaponImage.classList.add("weapon-image");
   display.appendChild(weaponImage);
 
- let tooltipString = `          
+  let tooltipString = `          
       <strong> ${weapon.name} </strong> <br>
       <strong>Level:</strong> ${weapon.level} <br>
       <strong>Energy Cost:</strong> ${weapon.energy} <br>
@@ -648,23 +656,29 @@ function generateWeaponInfo(
       <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
       <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
       <strong>Healing:</strong> ${weapon.healingAmount} <br>
-      <strong></strong> ${weapon.description} <br>           
+      ${weapon.description} <br>           
   `;
+  weaponPrice = parseInt(weaponPrice);
+  if (!isNaN(weaponPrice) && weaponPrice > 0) {
+    tooltipString += `<strong>${weaponPrice} Gold</strong>`;
+  }
 
   if (!tooltipElement) {
     // Create a tooltip for the weapon
     tooltipElement = document.createElement("div");
-    
+
     tooltipElement.innerHTML = tooltipString;
 
     // Append the tooltip to the weapon element
     display.appendChild(tooltipElement);
   }
-  else
-    // Add event listener to use weapon on click
+  // Add event listener to use weapon on click
+  else {
     display.addEventListener("mouseenter", function () {
+      tooltipElement.classList.add("visible");
       tooltipElement.innerHTML = tooltipString;
     });
+  }
 
   tooltipElement.classList.add("tooltip");
 

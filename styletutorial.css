@@ -227,18 +227,26 @@ height: 0;
     padding: 10px;
     font-size: 20px;
     max-width: 500px;
-    width: 100%;
+    width: max-content;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: opacity 0.3s ease;
-    bottom: 100%; /* Position it above the weapon */
+    bottom: 110%; /* Position it above the weapon */
     left: 50%; /* Align it horizontally centered */
     transform: translateX(-50%); /* Center it relative to the weapon */
-    margin-bottom: 10px; /* Add space between the weapon and the tooltip */
+
 }
 
-.weapon:hover .tooltip {
+.weapon-option .tooltip {
+    bottom: unset;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    right: -100px;
+}
+
+.weapon:hover .tooltip, .weapon-option:hover .tooltip{
     display: block;
     opacity: 1;
 }
@@ -365,20 +373,78 @@ height: 0;
     margin: 10px;
     padding: 10px;
     background-color: darkgoldenrod;
-}
-
-button {
-    background-color: #ff5722;
-    color: black;
-    padding: 10px;
     border: 2px solid black;
     border-radius: 10px;
+    position: relative;
     cursor: pointer;
+
 }
 
 #weapon-purchase-options {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 20px;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.weapon-option img {
+    border: none;
+    height: 150px;
+    width: 150px;
+}
+
+#upgrade-weapon-options {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    gap: 25px;
+    position: relative;
+    top: 80%;
+    
+}
+
+#headline-post-battle {
+    font-size: 64px;
+    margin: 20px;
+}
+
+button {
+    font-family: 'Pirata_One';
+    display: flex;
+    font-size: 24px;
+    width: 300px;
+    height: 75px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+}
+
+#choose-weapon-upgrade-btn {
+    top: 50%;
+    z-index: 900;
+}
+
+#heal-btn {
+    top: 65%;
+}
+
+#close-post-battle {
+    top: 80%; 
+}
+
+#upgrade-weapon-options .weapon {
+    background-color: #f0e68c;
+    height: 90px;
+    width: 90px;
 }
