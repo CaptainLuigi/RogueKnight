@@ -372,7 +372,7 @@ function triggerPostBattleScreen() {
   document
     .getElementById("close-post-battle")
     .addEventListener("click", function () {
-      postBattleScreen.classList.add("hidden");
+      window.location.href = "map.html";
     });
 }
 
@@ -414,22 +414,6 @@ function purchaseWeapon(weapon) {
 
 function populateWeaponUpgradeOptions() {
   displayWeapons(player.deck, false, "upgrade-weapon-options");
-  /*
-  const upgradeOptionsContainer = document.getElementById(
-    "upgrade-weapon-options"
-  );
-  upgradeOptionsContainer.innerHTML = "";
-
-  player.deck.forEach((weapon) => {
-    const upgradeButton = document.createElement("button");
-    upgradeButton.textContent = `Upgrade ${weapon.name}`;
-    upgradeButton.classList.add("upgrade-button");
-
-    upgradeButton.addEventListener("click", function () {
-      upgradeWeapon(weapon);
-    });
-    upgradeOptionsContainer.appendChild(upgradeButton);
-  });//*/
 }
 
 function upgradeWeapon(weapon) {
@@ -443,7 +427,7 @@ function healPlayer() {
 
   if (globalSettings.playerGold >= healingCost) {
     updatePlayerGold(-healingCost);
-    player.heal(25);
+    player.heal(20);
 
     updateHealthBar();
 

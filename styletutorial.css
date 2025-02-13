@@ -399,12 +399,14 @@ height: 0;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: auto;
+    width: 350%;
+    height: 390%;
     gap: 25px;
-    position: relative;
-    top: 80%;
-    
+    position: absolute;
+    top: 110%;
+    background-color: peru;
+    border: 2px solid black;
+    border-radius: 2px;
 }
 
 #headline-post-battle {
@@ -433,6 +435,9 @@ button {
 #choose-weapon-upgrade-btn {
     top: 50%;
     z-index: 900;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 #heal-btn {
@@ -448,3 +453,4 @@ button {
     height: 90px;
     width: 90px;
 }
+
