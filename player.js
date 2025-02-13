@@ -119,7 +119,6 @@ class Player extends HealthEntity {
       }
       this.#deck = deck;
       this.#maxEnergy = state.maxEnergy;
-      // this.relics = [];
     }
     this.restoreEnergy(this.#maxEnergy);
   }
