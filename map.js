@@ -132,10 +132,18 @@ function enterLocation(button) {
   let active;
   if (mapState.activeLocation != null) {
     active = mapState.locationStates[mapState.activeLocation];
-    let indexInParent = [...button.parentNode.children].findIndex(
-      (e) => e == button
+    let activeButton = document.querySelector(
+      `[index="${mapState.activeLocation}"]`
     );
-    if (!active.nextLocations.includes(indexInParent)) {
+    let activeRow = activeButton.parentElement;
+
+    let buttonRow = button.parentElement;
+    let indexInParent = [...buttonRow.children].findIndex((e) => e == button);
+
+    if (
+      activeRow.nextElementSibling != buttonRow ||
+      !active.nextLocations.includes(indexInParent)
+    ) {
       console.log("Bitte gültiges Gebiet auswählen");
       return;
     }

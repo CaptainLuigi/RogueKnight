@@ -397,6 +397,7 @@ height: 0;
 #upgrade-weapon-options {
     display: none;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     width: 350%;
@@ -454,3 +455,6 @@ button {
     width: 90px;
 }
 
+button:disabled {
+    background-color: darkgrey;
+}

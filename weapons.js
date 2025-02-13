@@ -14,6 +14,7 @@ class Weapons {
   #effectsLeft;
   #effectsRight;
   #healingAmount;
+  #wasUsed = false;
 
   constructor(
     name,
@@ -115,6 +116,10 @@ class Weapons {
     return this.#level;
   }
 
+  get wasUsed() {
+    return this.#wasUsed;
+  }
+
   set damage(value) {
     this.#damage = value;
   }
@@ -131,6 +136,10 @@ class Weapons {
     this.#healingAmount = value;
   }
 
+  set wasUsed(value) {
+    this.#wasUsed = value === true;
+  }
+
   possibleTargets() {
     if (!this.requiresTargeting) return [this.#minRange];
 
@@ -142,6 +151,15 @@ class Weapons {
   }
 
   calculateDamage(enemyIndex) {
+    this.#wasUsed = true;
+
+    if (this.#damage == 0 && this.#criticalDamage == 0)
+      return {
+        startIndex: 0,
+        isCritical: false,
+        damages: [],
+      };
+
     const isCritical = Math.random() * 100 < this.criticalChance; // Random chance for critical hit
     const damage = isCritical ? this.criticalDamage : this.damage;
 
@@ -218,6 +236,11 @@ class Weapons {
 
     this.#level = info.level || 1;
     this.applyUpgrades();
+    this.#wasUsed = false;
+  }
+
+  calculateHealing(damages) {
+    return 0;
   }
 
   applyHealing(target) {
@@ -227,6 +250,7 @@ class Weapons {
         `${this.name} healed the player for ${this.#healingAmount} health.`
       );
     }
+    this.#wasUsed = true;
   }
 
   applyUpgrades() {

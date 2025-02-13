@@ -13,6 +13,7 @@
     <script src="weapons.js"></script>
     <script src="game.js"></script>
     <script src="saveGame.js"></script>
+    <script src="relics.js"></script>
   </head>
   <body>
     <div>
@@ -43,14 +44,7 @@
       </div>
     </div>
 
-    <div id="weapons-container">
-      <div class="weapon" onclick="useWeapon(0)">
-        <img class="weapon-image" src="Assets/sword.png" alt="Sword" />
-      </div>
-      <div class="weapon" onclick="useWeapon(1)">
-        <img class="weapon-image" src="Assets/spear.png" alt="Spear" />
-      </div>
-    </div>
+    <div id="weapons-container"></div>
 
     <!-- Your Turn Again message -->
     <div id="turn-message" style="display: none"></div>
@@ -76,7 +70,9 @@
         </div>
       </button>
       <div id="heal-option">
-        <button id="heal-btn">Heal 20 HP (50 Gold)</button>
+        <button id="heal-btn" onclick="healPlayer(this);">
+          Heal 20 HP (50 Gold)
+        </button>
       </div>
       <button id="close-post-battle">Next</button>
     </div>

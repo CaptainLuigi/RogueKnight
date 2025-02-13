@@ -14,19 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   player.loadPlayerFromStorage();
 
-  displayWeapons(player.deck);
+  displayWeapons(player.hand);
 
   Enemy.initialize();
-
-  // enemies.push(
-  //   new Snail(),
-  //   new Shroom(),
-  //   new SadShroom(),
-  //   new BiteShroom(),
-  //   new Scorpion(),
-  //   new Mantis()
-  //   //new Hornet()
-  // );
 
   fillEnemyArray(globalSettings.difficulty);
 
@@ -102,14 +92,12 @@ function useWeapon(weaponIndex) {
     return;
   }
 
-  const weapon = player.deck[weaponIndex];
+  const weapon = player.hand[weaponIndex];
   console.log("Using weapon:", weapon.name);
 
   // Check if the player has enough energy to use the weapon
   if (player.energy >= weapon.energy) {
-    if (weapon instanceof HealthPotion) {
-      useHealthPotion(weapon);
-    } else if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
+    if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
     else executeAttack(weapon, weapon.minRange);
   } else {
     displayTurnMessage("Not enough energy!");
@@ -150,7 +138,7 @@ function weaponHover(weaponNode) {
   console.log(index);
   index = parseInt(index);
   console.log(index);
-  let weapon = player.deck[index];
+  let weapon = player.hand[index];
   console.log(weapon);
   const possibleTargets = weapon.possibleTargets();
   console.log(possibleTargets);
@@ -181,7 +169,7 @@ function setActiveWeapon(weaponIndex) {
     activePossibleTargets = null;
     return;
   }
-  activeWeapon = player.deck[weaponIndex];
+  activeWeapon = player.hand[weaponIndex];
   activePossibleTargets = activeWeapon.possibleTargets();
 }
 
@@ -196,12 +184,11 @@ function executeAttack(weapon, enemyIndex) {
     return;
   }
 
-  triggerAttackAnimation(); // Trigger the attack animation
-
   // Call the damage calculation function
   let { startIndex, isCritical, damages } = weapon.calculateDamage(enemyIndex);
   damages = damages.reverse();
   startIndex += damages.length - 1;
+  if (damages.length > 0) triggerAttackAnimation(); // Trigger the attack animation
 
   for (let enemyDamage of damages) {
     enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
@@ -217,10 +204,15 @@ function executeAttack(weapon, enemyIndex) {
     resetToIdleAnimation();
   }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
 
+  let healing = weapon.calculateHealing(damages);
+  player.heal(healing);
+
   player.useEnergy(weapon.energy);
 
   updateEnergyDisplay();
   setActiveWeapon(-1);
+  player.removeUsed();
+  displayWeapons(player.hand);
 }
 
 function selectEnemy(enemyNode) {
@@ -279,6 +271,10 @@ function endTurn() {
 
     setTimeout(() => {
       isPlayerTurn = true;
+
+      player.drawHand();
+      displayWeapons(player.hand);
+
       enableWeapons(); // Enable the weapons after the delay
     }, 1500); // Enable after 2 seconds (can adjust based on animation time)
   }, 500); // Add a 1.5-second delay before the enemy attacks (adjust the delay as needed)
@@ -344,10 +340,6 @@ function triggerPostBattleScreen() {
 
   populateWeaponUpgradeOptions();
 
-  document.getElementById("heal-btn").addEventListener("click", function () {
-    healPlayer();
-  });
-
   document
     .getElementById("close-post-battle")
     .addEventListener("click", function () {
@@ -376,15 +368,16 @@ function displayRandomWeapons() {
 
     button.addEventListener("click", function () {
       purchaseWeapon(randomWeapon);
+      button.remove();
     });
   });
 }
 
 function purchaseWeapon(weapon) {
-  if (globalSettings.playerGold >= weapon.cost) {
-    player.deck.push(weapon);
-    globalSettings.playerGold -= weapon.cost;
-    updatePlayerGold(globalSettings.playerGold);
+  if (globalSettings.playerGold >= 30) {
+    player.addWeapon(weapon);
+    updatePlayerGold(-30);
+    populateWeaponUpgradeOptions();
     displayTurnMessage(`You purchased ${weapon.name}!`);
   } else {
     displayTurnMessage("Not enough gold!");
@@ -401,7 +394,7 @@ function upgradeWeapon(weapon) {
   displayTurnMessage(`Upgraded ${weapon.name}!`);
 }
 
-function healPlayer() {
+function healPlayer(button) {
   const healingCost = 50;
 
   if (globalSettings.playerGold >= healingCost) {
@@ -411,6 +404,7 @@ function healPlayer() {
     updateHealthBar();
 
     displayTurnMessage("You healed!");
+    button.disabled = true;
   } else {
     displayTurnMessage("Not enough gold to heal!");
   }

@@ -9,6 +9,9 @@ class Player extends HealthEntity {
   #deck = [];
   #energy;
   #maxEnergy;
+  #hand = [];
+  #drawPile = [];
+  maxHandSize = 4;
 
   constructor(name, health, maxHealth, deck, energy, maxEnergy) {
     super();
@@ -19,6 +22,8 @@ class Player extends HealthEntity {
     this.#energy = energy;
     this.#maxEnergy = maxEnergy;
     this.relics = [];
+
+    this.drawHand();
   }
 
   get name() {
@@ -33,10 +38,6 @@ class Player extends HealthEntity {
     return this.#maxHealth;
   }
 
-  get deck() {
-    return this.#deck;
-  }
-
   get energy() {
     return this.#energy;
   }
@@ -49,8 +50,55 @@ class Player extends HealthEntity {
     return [...this.#deck];
   }
 
+  get hand() {
+    return [...this.#hand];
+  }
+
+  removeUsed() {
+    this.#hand = this.#hand.filter((e) => !e.wasUsed);
+  }
+
+  drawHand() {
+    this.removeUsed();
+    let toBeDrawn = this.maxHandSize - this.#hand.length;
+    if (this.#drawPile.length == 0) {
+      this.#resetDrawPile();
+    }
+    if (this.#deck.length <= this.maxHandSize) {
+      this.#hand.push(...this.#drawPile);
+      this.#drawPile = [];
+      return;
+    }
+    for (let i = 0; i < toBeDrawn; i++) {
+      let weapon = this.#drawPile.shift();
+      this.#hand.push(weapon);
+      if (this.#drawPile.length == 0) {
+        this.#resetDrawPile();
+      }
+    }
+  }
+
+  #resetDrawPile() {
+    this.#drawPile = [...this.#deck];
+    this.#drawPile = this.#drawPile.filter((e) => !this.#hand.includes(e));
+    this.#drawPile.forEach((e) => (e.wasUsed = false));
+    for (let i = this.#drawPile.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
+      [this.#drawPile[i], this.#drawPile[j]] = [
+        this.#drawPile[j],
+        this.#drawPile[i],
+      ]; // Swap elements
+    }
+  }
+
   addWeapon(weapon) {
     this.#deck.push(weapon);
+    this.savePlayerToStorage();
+  }
+
+  addRelic(relic) {
+    this.relics.push(relic);
+    relic.apply(this);
   }
 
   takeDamage(amount) {
@@ -66,7 +114,7 @@ class Player extends HealthEntity {
   }
 
   heal(amount) {
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(amount) || amount < 0) {
       console.error("Invalid heal amount:", amount);
       return; // Prevent healing if the amount is invalid
     }
@@ -102,12 +150,10 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicAxe());
       this.addWeapon(new BasicSpear());
-      this.addWeapon(new Herosword());
-      this.addWeapon(new Dagger());
-      this.addWeapon(new Spearblade());
-      this.addWeapon(new HealthPotion());
-      this.addWeapon(new Crossbow());
-      this.addWeapon(new Bomb());
+      this.addWeapon(new BasicSword());
+      this.addWeapon(new BasicAxe());
+      this.addWeapon(new BasicSpear());
+      this.addWeapon(new BasicSword());
     } else {
       this.#name = state.name;
       this.#health = state.health;
@@ -121,6 +167,7 @@ class Player extends HealthEntity {
       this.#maxEnergy = state.maxEnergy;
     }
     this.restoreEnergy(this.#maxEnergy);
+    this.drawHand();
   }
   savePlayerToStorage() {
     let state = {
