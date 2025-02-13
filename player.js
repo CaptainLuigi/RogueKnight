@@ -123,11 +123,9 @@ class Player extends HealthEntity {
     if (this.#health > this.#maxHealth) {
       this.#health = this.#maxHealth; // Cap at max health
     }
-
-    // Ensure health is a valid number
     if (isNaN(this.#health) || this.#health < 0) {
       console.error("Invalid health value:", this.#health);
-      this.#health = 0; // Prevent health from going negative
+      this.#health = 0;
     }
   }
 

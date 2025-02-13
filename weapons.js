@@ -14,6 +14,7 @@ class Weapons {
   #effectsLeft;
   #effectsRight;
   #healingAmount;
+  #canHeal;
   #wasUsed = false;
 
   constructor(
@@ -31,7 +32,8 @@ class Weapons {
     maxRange = 0,
     effectsLeft = 0,
     effectsRight = 0,
-    healingAmount = 0
+    healingAmount = 0,
+    canHeal = false
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -49,6 +51,7 @@ class Weapons {
       effectsLeft,
       effectsRight,
       healingAmount,
+      canHeal,
     });
   }
 

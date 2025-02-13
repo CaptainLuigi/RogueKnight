@@ -104,7 +104,7 @@ function useWeapon(weaponIndex) {
   }
 }
 
-function useHealthPotion(potion) {
+/*function useHealthPotion(potion) {
   console.log("Using Health Potion");
 
   if (isNaN(potion.healingAmount) || potion.healingAmount <= 0) {
@@ -130,7 +130,7 @@ function useHealthPotion(potion) {
   } else {
     displayTurnMessage("You are already at full health!");
   }
-}
+}*/
 
 function weaponHover(weaponNode) {
   console.log(weaponNode);
