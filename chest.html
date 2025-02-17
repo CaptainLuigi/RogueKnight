@@ -32,11 +32,32 @@
     <button id="skip">Skip</button>
 
     <button id="current-deck">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn">Close</button>
+      </div>
+    </div>
 
     <script>
       let selectedWeapon = null;
 
+      let player = new Player("Knight", 100, 100, [], 3, 3);
+
       document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("current-deck")
+          .addEventListener("click", () => {
+            player.showDeck();
+          });
+        document
+          .getElementById("close-deck-btn")
+          .addEventListener("click", () => {
+            document
+              .getElementById("weapon-deck-screen")
+              .classList.add("hidden");
+          });
+
         const goldDisplay = document.getElementById("playerGold");
         goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
 

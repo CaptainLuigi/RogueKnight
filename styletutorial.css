@@ -33,6 +33,7 @@ html, body {
 }
 
 .sprite-enemie {
+    --base-scale: 1;
     height: fit-content;
     width: fit-content;
     display: flex;
@@ -40,6 +41,17 @@ html, body {
     align-items: center;
     gap: 20px;
     padding-bottom: 10px;
+    
+}
+
+@keyframes growShrink {
+    0% { transform: scale(var(--base-scale)); }
+    50% { transform: scale(calc(var(--base-scale) * 1.2)); }
+    100% { transform: scale(var(--base-scale)); }
+}
+
+.grow-shrink {
+    animation: growShrink 0.5s ease-in-out;
 }
 
 .sprite-enemie.death-smoke {
@@ -63,9 +75,11 @@ height: 0;
     width: 100px;
     height: 100px;
     object-fit: contain;
+    image-rendering: pixelated;
 }
 
 .evil-knight {
+    --base-scale: 2;
     transform: scale(2.0);
     padding-bottom: 55px;
     padding-top: 10px;

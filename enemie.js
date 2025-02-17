@@ -70,8 +70,14 @@ class Enemy extends HealthEntity {
     else this.updateDisplay();
   }
   attack(player) {
+    this.#display.classList.add("grow-shrink");
     player.takeDamage(this.#attackPower);
+
+    setTimeout(() => {
+      this.#display.classList.remove("grow-shrink");
+    }, 500);
   }
+
   heal(amount) {
     this.#health += amount; // Increase health
     if (this.#health > this.#maxHealth) this.#health = this.#maxHealth; // Cap at max health
