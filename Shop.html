@@ -51,7 +51,7 @@
     <div><button class="Shop-removal">Remove Weapon</button></div>
 
     <div id="Shopkeeper"></div>
-    <button class="leave-shop">Leave Shop</button>
+    <button id="close-post-battle">Leave Shop</button>
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -117,6 +117,12 @@
 
       setSpriteConfig(idleShopkeeper);
       animateSprite();
+
+      document
+        .getElementById("close-post-battle")
+        .addEventListener("click", function () {
+          window.location.href = "map.html";
+        });
     </script>
   </body>
 </html>

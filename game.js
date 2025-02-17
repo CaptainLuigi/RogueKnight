@@ -332,6 +332,16 @@ function updatePlayerGold(goldAmount) {
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("current-deck").addEventListener("click", () => {
+    player.showDeck();
+  });
+
+  document.getElementById("close-deck-btn").addEventListener("click", () => {
+    document.getElementById("weapon-deck-screen").classList.add("hidden");
+  });
+});
+
 function triggerPostBattleScreen() {
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");

@@ -142,6 +142,13 @@ class Player extends HealthEntity {
     if (this.#energy > this.#maxEnergy) this.#energy = this.#maxEnergy; // Cap at max energy
   }
 
+  showDeck() {
+    const deckScreen = document.getElementById("weapon-deck-screen");
+    deckScreen.classList.remove("hidden");
+
+    displayWeapons(this.deck, false, "weapon-list");
+  }
+
   loadPlayerFromStorage() {
     let state = loadData("playerState");
     if (state == null) {

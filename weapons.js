@@ -631,6 +631,11 @@ function displayWeapons(
       null,
       null
     );
+
+    if (weapon.wasUsed) {
+      weaponElement.classList.add("used");
+    }
+
     if (usesTargeting) {
       weaponElement.setAttribute("onmouseenter", "weaponHover(this);");
       weaponElement.setAttribute("onmouseleave", "clearSelection();");
