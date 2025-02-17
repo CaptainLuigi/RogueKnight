@@ -1,10 +1,13 @@
 class Enemy extends HealthEntity {
-  static #templateNote;
+  static #templateNode;
   static #enemyDisplay;
   static initialize() {
+    //Zuweisung enemyDisplay entspricht dem Element, das alle angezeigten Gegner beeinhaltet (Node)
     this.#enemyDisplay = document.getElementById("enemies");
-    this.#templateNote = this.#enemyDisplay.firstElementChild;
-    this.#templateNote.remove();
+    //Zuweisung der Vorlage der Gegner
+    this.#templateNode = this.#enemyDisplay.firstElementChild;
+    //Entfernt die Vorlage der Gegner (damit keine leere Vorlage mit dabei ist)
+    this.#templateNode.remove();
   }
   #health;
   #name;
@@ -48,12 +51,16 @@ class Enemy extends HealthEntity {
     this.#attackPower = attackPower;
     this.#maxHealth = maxHealth;
     this.#icon = icon;
-    this.#display = Enemy.#templateNote.cloneNode(true);
+    this.#display = Enemy.#templateNode.cloneNode(true);
     let image = this.#display.querySelector(".enemy-icon");
     image.src = icon;
     image.alt = name;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
+  }
+
+  isDead() {
+    return this.health <= 0;
   }
 
   takeDamage(amount) {
@@ -102,11 +109,52 @@ class Enemy extends HealthEntity {
   }
 
   enemyDeath() {
+    let deathSprite = this.#display.querySelector(".enemy-icon");
+
+    deathSprite.src = "Assets/smoke.png";
+    deathSprite.alt = "Dead " + this.name;
+
+    this.display.classList.add("death-smoke");
+    this.display.classList.add("death-smoke-shrink");
+
     let index = enemies.findIndex((e) => e == this);
-    enemies.splice(index, 1);
-    this.#display.remove();
+    if (index > -1) {
+      enemies.splice(index, 1);
+    }
+
+    const goldDropped = Math.floor(Math.random() * 6) + 10;
+    console.log(`${this.name} dropped ${goldDropped} gold!`);
 
     enemyDeathEvent();
+
+    const goldDisplay = document.createElement("div");
+    goldDisplay.textContent = `+${goldDropped} Gold`;
+    goldDisplay.style.position = "absolute";
+    goldDisplay.style.color = "gold";
+    goldDisplay.style.fontSize = "20px";
+    goldDisplay.style.fontWeight = "bold";
+    goldDisplay.style.zIndex = "1000";
+    goldDisplay.style.transition = "opacity 1s ease-out";
+
+    const enemyRect = this.#display.getBoundingClientRect();
+    goldDisplay.style.left = `${enemyRect.left + enemyRect.width / 2 - 20}px`;
+    goldDisplay.style.top = `${enemyRect.top - 30}px`;
+
+    document.body.appendChild(goldDisplay);
+
+    updatePlayerGold(goldDropped);
+
+    setTimeout(() => {
+      goldDisplay.style.opacity = "0";
+    }, 750);
+
+    setTimeout(() => {
+      goldDisplay.remove();
+    }, 1200);
+
+    setTimeout(() => {
+      this.#display.remove();
+    }, 2500);
   }
 }
 
@@ -161,5 +209,18 @@ class Mantis extends Enemy {
 class Hornet extends Enemy {
   constructor() {
     super("Hornet", 100, 10, "Assets/Transperent/Icon42.png");
+  }
+}
+
+class EvilKnight extends Enemy {
+  constructor() {
+    super("Evil Knight", 750, 15, "Assets/evilknight.png");
+    this.display.classList.add("evil-knight");
+  }
+}
+
+class HermitShroom extends Enemy {
+  constructor() {
+    super("Hermit Shroom", 500, 3, "Assets/Icon10.png");
   }
 }

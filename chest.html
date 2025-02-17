@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chest</title>
+    <link rel="stylesheet" href="styleChest.css" />
+    <script src="weapons.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="player.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+    <button id="chest-button">
+      <img id="Chest" src="Assets/Chest.png" alt="Chest" />
+    </button>
+
+    <div id="playerGold">Gold:</div>
+
+    <div class="sprite"></div>
+
+    <div id="weapons-container"></div>
+
+    <button id="addToDeck">Add</button>
+    <button id="skip">Skip</button>
+
+    <script>
+      let selectedWeapon = null;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const goldDisplay = document.getElementById("playerGold");
+        goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+
+        const addButton = document.getElementById("addToDeck");
+
+        addButton.style.display = "none";
+
+        addButton.addEventListener("click", () => {
+          if (selectedWeapon) {
+            player.addWeapon(selectedWeapon);
+            console.log("Weapon added to deck:", selectedWeapon);
+
+            addButton.style.display = "none";
+          }
+        });
+      });
+
+      const availableWeapons = getAvailableWeapons();
+
+      document.getElementById("chest-button").addEventListener("click", () => {
+        const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+        const randomWeapon = availableWeapons[randomIndex];
+
+        displayWeapons([randomWeapon], false);
+        showAddToDeck();
+      });
+
+      function showAddToDeck() {
+        const addButton = document.getElementById("addToDeck");
+        if (addButton) {
+          addButton.style.display = "inline-block";
+        }
+      }
+
+      const sprite = document.querySelector(".sprite");
+
+      resetToIdleAnimation();
+    </script>
+  </body>
+</html>

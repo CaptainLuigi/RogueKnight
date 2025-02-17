@@ -29,6 +29,7 @@ html, body {
     top: 450px;
     left: 20%;
     z-index: 2;
+    image-rendering: pixelated;
 }
 
 .sprite-enemie {
@@ -39,6 +40,16 @@ html, body {
     align-items: center;
     gap: 20px;
     padding-bottom: 10px;
+}
+
+.sprite-enemie.death-smoke {
+    gap: 0;
+}
+
+
+.sprite-enemie.death-smoke .health-bar-container-enemy{
+visibility: hidden;
+height: 0;
 
 }
 
@@ -62,19 +73,17 @@ html, body {
 
 .evil-knight.tempTargets {
     border-top: 10px solid #ff08;
-    padding-top: 0;
+    padding-top: 0px;
     border-radius: 5px;
 }
 
 .evil-knight .health-bar-container-enemy {
     width: 200px;
-
 }
 
 .evil-knight img {
     width: 300px;
     height: auto;
-
 }
 
 #health-bar-container-player {
@@ -135,6 +144,40 @@ html, body {
     font-weight: lighter;
 }
 
+.death-smoke img{
+    animation: deathAnimation 1s ease-in-out forwards;
+}
+
+@keyframes deathAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(4);
+    }
+}
+
+.death-smoke-shrink {
+    animation: shrinkSmoke 1.5s ease-in-out forwards;
+}
+
+@keyframes shrinkSmoke {
+    0% {
+        width: calc(100% + 20px);
+        margin-left: 0px;
+    }
+    66.66% {
+        width: calc(100% + 20px);
+        margin-left: 0px;
+    }
+    100% {
+        margin-left: -15px;
+        width: 0;
+    }
+}
+
 #weapons-container {
     position: fixed; /* Fix position relative to the viewport */
     bottom: 20px; /* Distance from the bottom of the screen */
@@ -161,6 +204,7 @@ html, body {
     padding: 5px;
     border: 3px solid black;
     border-radius: 5px;
+    image-rendering: pixelated;
 }
 
 .damage-popup {
@@ -183,18 +227,26 @@ html, body {
     padding: 10px;
     font-size: 20px;
     max-width: 500px;
-    width: 100%;
+    width: max-content;
     z-index: 1000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transition: opacity 0.3s ease;
-    bottom: 100%; /* Position it above the weapon */
+    bottom: 110%; /* Position it above the weapon */
     left: 50%; /* Align it horizontally centered */
     transform: translateX(-50%); /* Center it relative to the weapon */
-    margin-bottom: 10px; /* Add space between the weapon and the tooltip */
+
 }
 
-.weapon:hover .tooltip {
+.weapon-option .tooltip {
+    bottom: unset;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    right: -100px;
+}
+
+.weapon:hover .tooltip, .weapon-option:hover .tooltip{
     display: block;
     opacity: 1;
 }
@@ -223,6 +275,8 @@ html, body {
     left: 40%;
     z-index: 3;
     gap: 15px;
+    transition: transform 1s ease-out;
+    image-rendering: pixelated;
 }
 
 #energy-circle {
@@ -255,9 +309,9 @@ html, body {
     width: 100px;
     height: 50px;
     top: 90%;
-    left: 70%;
+    left: 80%;
     color: black;
-    border: none;
+    border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
     background-color: #ff5722;
@@ -287,5 +341,120 @@ html, body {
     background-color: rgba(255, 204, 0, 0.3);
 }
 
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
+}
 
+#post-battle-screen.hidden {
+    display: none;
+}
 
+#post-battle-screen {
+    position: fixed;
+    width: 60%;
+    height: 80%;
+    top: 10%;
+    left: 65%;
+    transform: translateX(-50%);
+    background-color: burlywood;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid black;
+    z-index: 1500;
+}
+
+.weapon-option {
+    margin: 10px;
+    padding: 10px;
+    background-color: darkgoldenrod;
+    border: 2px solid black;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+
+}
+
+#weapon-purchase-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.weapon-option img {
+    border: none;
+    height: 150px;
+    width: 150px;
+}
+
+#upgrade-weapon-options {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 350%;
+    height: 390%;
+    gap: 25px;
+    position: absolute;
+    top: 110%;
+    background-color: peru;
+    border: 2px solid black;
+    border-radius: 2px;
+}
+
+#headline-post-battle {
+    font-size: 64px;
+    margin: 20px;
+}
+
+button {
+    font-family: 'Pirata_One';
+    display: flex;
+    font-size: 24px;
+    width: 300px;
+    height: 75px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: black;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+}
+
+#choose-weapon-upgrade-btn {
+    top: 50%;
+    z-index: 900;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+#heal-btn {
+    top: 65%;
+}
+
+#close-post-battle {
+    top: 80%; 
+}
+
+#upgrade-weapon-options .weapon {
+    background-color: #f0e68c;
+    height: 90px;
+    width: 90px;
+}
+
+button:disabled {
+    background-color: darkgrey;
+}

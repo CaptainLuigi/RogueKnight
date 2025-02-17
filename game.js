@@ -3,30 +3,28 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 let sprite;
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM fully loaded");
+  initializeHealthBars(player);
+  updateEnergyDisplay();
+
+  console.log("DOM fully loaded, difficulty: " + globalSettings.difficulty);
   sprite = document.querySelector(".sprite-player");
   // Start the idle animation immediately when the page loads
   resetToIdleAnimation(); // This will start the idle animation
   // Call the function to display the weapons
-  displayWeapons();
+
+  player.loadPlayerFromStorage();
+
+  displayWeapons(player.hand);
 
   Enemy.initialize();
 
-  // enemies.push(
-  //   new Snail(),
-  //   new Shroom(),
-  //   new SadShroom(),
-  //   new BiteShroom(),
-  //   new Scorpion(),
-  //   new Mantis()
-  //   //new Hornet()
-  // );
-
-  fillEnemyArray(1);
+  fillEnemyArray(globalSettings.difficulty);
 
   setEnemyIndices();
   // Add the event listener to the "End Turn" button
   document.getElementById("end-turn-btn").addEventListener("click", endTurn);
+
+  updatePlayerGold(0);
 });
 
 const enemies = [];
@@ -54,6 +52,24 @@ let isPlayerTurn = true; // Flag to track if it's the player's turn
 
 function enemyDeathEvent() {
   setEnemyIndices();
+
+  if (enemies.every((enemy) => enemy.isDead())) {
+    triggerPostBattleScreen();
+    disableGameInteractions();
+  }
+}
+
+function disableGameInteractions() {
+  const weaponButtons = document.querySelectorAll(".weapon-button");
+  weaponButtons.forEach((button) => {
+    button.disabled = true;
+  });
+
+  const endTurnButton = document.getElementById("end-turn-btn");
+  if (endTurnButton) {
+    endTurnButton.disabled = true;
+  }
+  displayTurnMessage("All enemies defeated! The Battle is over!");
 }
 
 function setEnemyIndices() {
@@ -70,7 +86,13 @@ function useWeapon(weaponIndex) {
     displayTurnMessage("It's not your turn!");
     return;
   }
-  const weapon = weapons[weaponIndex];
+
+  if (enemies.every((enemy) => enemy.isDead())) {
+    displayTurnMessage("They are already dead!");
+    return;
+  }
+
+  const weapon = player.hand[weaponIndex];
   console.log("Using weapon:", weapon.name);
 
   // Check if the player has enough energy to use the weapon
@@ -82,13 +104,41 @@ function useWeapon(weaponIndex) {
   }
 }
 
+/*function useHealthPotion(potion) {
+  console.log("Using Health Potion");
+
+  if (isNaN(potion.healingAmount) || potion.healingAmount <= 0) {
+    console.error("Invalid potion heal amount:", potion.healingAmount);
+    return; // Don't use the potion if the heal amount is invalid
+  }
+
+  // Check if the player has health and maxHealth defined
+  if (isNaN(player.health) || isNaN(player.maxHealth)) {
+    console.error(
+      "Invalid player health or maxHealth:",
+      player.health,
+      player.maxHealth
+    );
+    return; // Prevent healing if health or maxHealth is invalid
+  }
+
+  if (player.health < player.maxHealth) {
+    player.heal(potion.healingAmount); // Heal the player
+    updateHealthBar(player); // Update the health bar
+    player.useEnergy(potion.energy); // Deduct energy for using the potion
+    updateEnergyDisplay(); // Update the energy display
+  } else {
+    displayTurnMessage("You are already at full health!");
+  }
+}*/
+
 function weaponHover(weaponNode) {
   console.log(weaponNode);
   let index = weaponNode.getAttribute("index");
   console.log(index);
   index = parseInt(index);
   console.log(index);
-  let weapon = weapons[index];
+  let weapon = player.hand[index];
   console.log(weapon);
   const possibleTargets = weapon.possibleTargets();
   console.log(possibleTargets);
@@ -103,7 +153,7 @@ function clearSelection() {
   for (let active of activeTargets) {
     active.classList.remove(possibleTargetsCls);
     active.classList.remove(tempTargetsCls);
-    active.removeAttribute("style");
+    //active.removeAttribute("style");
   }
 }
 
@@ -119,7 +169,7 @@ function setActiveWeapon(weaponIndex) {
     activePossibleTargets = null;
     return;
   }
-  activeWeapon = weapons[weaponIndex];
+  activeWeapon = player.hand[weaponIndex];
   activePossibleTargets = activeWeapon.possibleTargets();
 }
 
@@ -129,16 +179,22 @@ function setActiveWeapon(weaponIndex) {
  * @param {int} enemyIndex
  */
 function executeAttack(weapon, enemyIndex) {
-  triggerAttackAnimation(); // Trigger the attack animation
+  if (enemies.every((enemy) => enemy.isDead())) {
+    displayTurnMessage("They are already dead!");
+    return;
+  }
 
   // Call the damage calculation function
   let { startIndex, isCritical, damages } = weapon.calculateDamage(enemyIndex);
+  damages = damages.reverse();
+  startIndex += damages.length - 1;
+  if (damages.length > 0) triggerAttackAnimation(); // Trigger the attack animation
 
   for (let enemyDamage of damages) {
     enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
     enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
 
-    startIndex++;
+    startIndex--;
   }
 
   // Optional: Reset the player's animation after the attack
@@ -148,10 +204,15 @@ function executeAttack(weapon, enemyIndex) {
     resetToIdleAnimation();
   }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
 
+  let healing = weapon.calculateHealing(damages);
+  player.heal(healing);
+
   player.useEnergy(weapon.energy);
 
   updateEnergyDisplay();
   setActiveWeapon(-1);
+  player.removeUsed();
+  displayWeapons(player.hand);
 }
 
 function selectEnemy(enemyNode) {
@@ -210,6 +271,10 @@ function endTurn() {
 
     setTimeout(() => {
       isPlayerTurn = true;
+
+      player.drawHand();
+      displayWeapons(player.hand);
+
       enableWeapons(); // Enable the weapons after the delay
     }, 1500); // Enable after 2 seconds (can adjust based on animation time)
   }, 500); // Add a 1.5-second delay before the enemy attacks (adjust the delay as needed)
@@ -256,3 +321,119 @@ function displayTurnMessage(message) {
     turnMessage.style.display = "none"; // Hide the message
   }, 2000);
 }
+
+function updatePlayerGold(goldAmount) {
+  globalSettings.playerGold += goldAmount;
+  console.log(`Player now has ${globalSettings.playerGold} gold.`);
+
+  const goldDisplay = document.getElementById("playerGold");
+  if (goldDisplay) {
+    goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
+  }
+}
+
+function triggerPostBattleScreen() {
+  const postBattleScreen = document.getElementById("post-battle-screen");
+  postBattleScreen.classList.remove("hidden");
+
+  displayRandomWeapons();
+
+  populateWeaponUpgradeOptions();
+
+  document
+    .getElementById("close-post-battle")
+    .addEventListener("click", function () {
+      window.location.href = "map.html";
+    });
+}
+
+function displayRandomWeapons() {
+  const availableWeapons = getAvailableWeapons();
+
+  const randomWeapons = [];
+
+  const weaponButtons = document.querySelectorAll(".weapon-option");
+  weaponButtons.forEach((button) => {
+    let randomWeapon;
+    let newRandomIndex;
+
+    do {
+      newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
+      randomWeapon = availableWeapons[newRandomIndex];
+    } while (randomWeapons.includes(randomWeapon));
+
+    randomWeapons.push(randomWeapon);
+
+    generateWeaponInfo(randomWeapon, newRandomIndex, null, button, null, 30);
+
+    button.addEventListener("click", function () {
+      purchaseWeapon(randomWeapon);
+      button.remove();
+    });
+  });
+}
+
+function purchaseWeapon(weapon) {
+  if (globalSettings.playerGold >= 30) {
+    player.addWeapon(weapon);
+    updatePlayerGold(-30);
+    populateWeaponUpgradeOptions();
+    displayTurnMessage(`You purchased ${weapon.name}!`);
+  } else {
+    displayTurnMessage("Not enough gold!");
+  }
+}
+
+function populateWeaponUpgradeOptions() {
+  displayWeapons(player.deck, false, "upgrade-weapon-options");
+}
+
+function upgradeWeapon(weapon) {
+  weapon.upgrade();
+
+  displayTurnMessage(`Upgraded ${weapon.name}!`);
+}
+
+function healPlayer(button) {
+  const healingCost = 50;
+
+  if (globalSettings.playerGold >= healingCost) {
+    updatePlayerGold(-healingCost);
+    player.heal(20);
+
+    updateHealthBar();
+
+    displayTurnMessage("You healed!");
+    button.disabled = true;
+  } else {
+    displayTurnMessage("Not enough gold to heal!");
+  }
+}
+
+function weaponSelectedUpgrade(event) {
+  let target = event.target;
+  while (target && target.classList && !target.classList.contains("weapon"))
+    target = target.parentNode;
+  if (!target?.classList?.contains("weapon")) return;
+
+  let index = target.getAttribute("index");
+  index = parseInt(index);
+  let weapon = player.deck[index];
+  console.log(weapon);
+}
+
+window.onload = function () {
+  document
+    .getElementById("choose-weapon-upgrade-btn")
+    .addEventListener("click", function () {
+      const upgradeOptions = document.getElementById("upgrade-weapon-options");
+      if (
+        upgradeOptions.style.display === "none" ||
+        upgradeOptions.style.display === ""
+      ) {
+        upgradeOptions.style.display = "flex";
+      } else {
+        upgradeOptions.style.display = "none";
+      }
+    });
+};

@@ -21,11 +21,12 @@ function calculate damage
 
 
 
-    
+in der map kann erster kampf übersprungen werden   
 
-Wenn mit EOE Waffen Gegner gekillt, trifft insgesamt einen Gegner mehr
+bei einem gegner, diesen centern
 
-wenn EOE einen Gegner weiter hinten killt wird keine Energie abgezogen
+post battle healing nur einmal, wenn schon full -> heal nicht möglich
 
-wenn nur ein Gegner, diesen Center
+möchte waffe kaufen, nicht genug gold
+
 */

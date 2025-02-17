@@ -18,5 +18,5 @@ const enemyConstellationTemplates = [
     difficultyFrom: 10,
     difficultyTo: 10,
     enemies: [EvilKnight],
-  }
+  },
 ];

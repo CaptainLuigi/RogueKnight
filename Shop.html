@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop</title>
+    <link rel="stylesheet" href="styleShop.css" />
+    <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="saveGame.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="ShopBackground"
+        src="Assets/BrickWall.png"
+        alt="ShopBackground"
+      />
+    </div>
+    <div>
+      <img
+        id="WoodBackground"
+        src="Assets/wood-background.jpg"
+        alt="WoodBackground"
+      />
+    </div>
+
+    <img id="WoodFloor" src="Assets/wood-background.jpg" alt="WoodBackground" />
+
+    <div id="playerGold">Gold:</div>
+
+    <div class="container-order">
+      <div class="Shop-weapon-container">
+        <button class="Shop-weapon"></button>
+        <button class="Shop-weapon"></button>
+        <button class="Shop-weapon"></button>
+        <button class="Shop-weapon"></button>
+        <button class="Shop-weapon"></button>
+      </div>
+      <div class="Shop-relic-container">
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+      </div>
+    </div>
+    <div id="speech-bubble">
+      <span id="weapon-info"></span>
+    </div>
+    <div><button class="Shop-removal">Remove Weapon</button></div>
+
+    <div id="Shopkeeper"></div>
+    <button class="leave-shop">Leave Shop</button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const goldDisplay = document.getElementById("playerGold");
+        goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+      });
+
+      window.addEventListener("DOMContentLoaded", function () {
+        const availableWeapons = getAvailableWeapons();
+        const weaponButtons = document.querySelectorAll(".Shop-weapon");
+        const speechBubble = document.getElementById("speech-bubble");
+        const weaponInfo = document.getElementById("weapon-info");
+
+        weaponButtons.forEach((button) => {
+          const randomIndex = Math.floor(
+            Math.random() * availableWeapons.length
+          );
+          const randomWeapon = availableWeapons[randomIndex];
+
+          generateWeaponInfo(
+            randomWeapon,
+            randomIndex,
+            null,
+            button,
+            weaponInfo,
+            20
+          );
+
+          button.setAttribute("data-weapon-id", randomWeapon.name);
+        });
+      });
+
+      let frame = 0;
+      const sprite = document.querySelector("#Shopkeeper");
+
+      const idleShopkeeper = {
+        image: "Assets/BLACKSMITHv2.png",
+        totalFrames: 7,
+        frameWidth: 96, // Width of each frame for idle
+        frameHeight: 80,
+        backgroundSize: "672px 80px", // Full sprite sheet size for idle
+        frameDelay: 175,
+      };
+
+      let currentConfig = idleShopkeeper; // Start with the running animation
+
+      function setSpriteConfig(config) {
+        sprite.style.backgroundImage = `url(${config.image})`;
+        sprite.style.backgroundSize = config.backgroundSize;
+      }
+
+      function animateSprite() {
+        // Calculate the x-offset for the current frame
+        const xOffset = -(frame * currentConfig.frameWidth);
+        sprite.style.backgroundPosition = `${xOffset}px 0`;
+
+        // Loop through frames
+        frame = (frame + 1) % currentConfig.totalFrames;
+
+        // Use the delay from the current configuration
+        setTimeout(animateSprite, currentConfig.frameDelay);
+      }
+
+      setSpriteConfig(idleShopkeeper);
+      animateSprite();
+    </script>
+  </body>
+</html>

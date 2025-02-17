@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Startscreen</title>
     <link rel="stylesheet" href="stylestartscreen.css" />
+    <script src="saveGame.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
   </head>
   <body>
     <div>
@@ -22,7 +25,7 @@
       </button>
       <button
         class="start-button"
-        onclick="window.location.href='Tutorial.html'"
+        onclick="globalSettings.setTutorial();window.location.href='Tutorial.html'"
       >
         Tutorial
       </button>
@@ -42,6 +45,7 @@
 
     <div class="sprite"></div>
     <script>
+      globalSettings.clearTutorial();
       let frame = 0;
       const sprite = document.querySelector(".sprite");
 
@@ -53,19 +57,18 @@
         frameDelay: 100,
       };
 
-      const idleConfig = {
+      /* const idleConfig = {
         image: "Assets/Knight_1/Idlenew.png",
         totalFrames: 4,
         frameWidth: 200, // Width of each frame for idle
         backgroundSize: "800px 200px", // Full sprite sheet size for idle
         frameDelay: 350,
-      };
+      };*/
 
       let currentConfig = runningConfig; // Start with the running animation
       let spritePositionX = 0; // Initial position of the sprite
       const spriteSpeed = 2; // Speed of the sprite movement
       const switchPoint2 = 45; // Distance in percentage to switch to idle animation
-      let isIdle = false; // Flag to check if sprite is idle
 
       function setSpriteConfig(config) {
         sprite.style.backgroundImage = `url(${config.image})`;
@@ -77,25 +80,18 @@
         const xOffset = -(frame * currentConfig.frameWidth);
         sprite.style.backgroundPosition = `${xOffset}px 0`;
 
-        // Move the sprite if it's not idle
-        if (!isIdle) {
-          spritePositionX += spriteSpeed;
-          sprite.style.left = `${spritePositionX}%`;
-        }
+        spritePositionX += spriteSpeed;
+        sprite.style.left = `${spritePositionX}%`;
 
         // Switch to the idle animation if the sprite has reached the switch point
-        if (!isIdle && spritePositionX >= switchPoint2) {
-          currentConfig = idleConfig; // Switch to the idle configuration
-          setSpriteConfig(currentConfig); // Apply the new configuration
-          isIdle = true; // Set the idle flag
-          frame = 0; // Reset the frame counter
+        if (spritePositionX >= switchPoint2) {
+          resetToIdleAnimation();
         }
+        // Use the delay from the current configuration
+        else setTimeout(animateSprite, currentConfig.frameDelay);
 
         // Loop through frames
         frame = (frame + 1) % currentConfig.totalFrames;
-
-        // Use the delay from the current configuration
-        setTimeout(animateSprite, currentConfig.frameDelay);
       }
 
       // Apply the initial running animation config and start the animation

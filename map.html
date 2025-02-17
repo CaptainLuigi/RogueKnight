@@ -14,40 +14,78 @@
         alt="ForestBackground"
       />
     </div>
-    <div><img id="Map" src="Assets/scroll.png" alt="Map" /></div>
-
-    <div class="navigation-container">
-      <button class="navigation">
-        <img src="Assets/skull.png" alt="Skull" />
-      </button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation"></button>
-      <button class="navigation">
-        <img src="Assets/eliteSkullred.png" alt="Elite" />
-      </button>
-      <button class="navigation">
-        <img src="Assets/shopicon.png" alt="Shop" />
-      </button>
-      <button class="navigation">
-        <img src="Assets/questionmark.png" alt="Questionmark" />
-      </button>
-      <button id="bossfight">
-        <img src="Assets/fireskull.png" alt="Fireskull" />
+    <div>
+      <img id="Map" src="Assets/scroll.png" alt="Map" />
+      <button
+        class="reload-map"
+        onclick="generateMap(); markPossibleLocations()"
+      >
+        Reload
       </button>
     </div>
+
+    <div id="playerGold">Gold:</div>
+
+    <div class="navigation-container">
+      <div class="map-row-start">
+        <button class="navigation" onclick="enterLocation(this);">
+          <img src="Assets/skull.png" alt="Skull" />
+        </button>
+      </div>
+      <div class="map-row1">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row2">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row3">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row4">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row5">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row6">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row7">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row8">
+        <button class="navigation" onclick="enterLocation(this);"></button>
+        <button class="navigation" onclick="enterLocation(this);"></button>
+      </div>
+      <div class="map-row-end">
+        <button
+          class="navigation"
+          onclick="enterLocation(this);"
+          id="bossfight"
+        >
+          <img src="Assets/fireskull.png" alt="Fireskull" />
+        </button>
+      </div>
+    </div>
+
+    <script src="saveGame.js"></script>
+    <script src="map.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const goldDisplay = document.getElementById("playerGold");
+        goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+      });
+    </script>
   </body>
 </html>

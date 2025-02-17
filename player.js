@@ -9,6 +9,9 @@ class Player extends HealthEntity {
   #deck = [];
   #energy;
   #maxEnergy;
+  #hand = [];
+  #drawPile = [];
+  maxHandSize = 4;
 
   constructor(name, health, maxHealth, deck, energy, maxEnergy) {
     super();
@@ -18,6 +21,9 @@ class Player extends HealthEntity {
     this.#deck = deck;
     this.#energy = energy;
     this.#maxEnergy = maxEnergy;
+    this.relics = [];
+
+    this.drawHand();
   }
 
   get name() {
@@ -32,16 +38,67 @@ class Player extends HealthEntity {
     return this.#maxHealth;
   }
 
-  get deck() {
-    return this.#deck;
-  }
-
   get energy() {
     return this.#energy;
   }
 
   get maxEnergy() {
     return this.#maxEnergy;
+  }
+
+  get deck() {
+    return [...this.#deck];
+  }
+
+  get hand() {
+    return [...this.#hand];
+  }
+
+  removeUsed() {
+    this.#hand = this.#hand.filter((e) => !e.wasUsed);
+  }
+
+  drawHand() {
+    this.removeUsed();
+    let toBeDrawn = this.maxHandSize - this.#hand.length;
+    if (this.#drawPile.length == 0) {
+      this.#resetDrawPile();
+    }
+    if (this.#deck.length <= this.maxHandSize) {
+      this.#hand.push(...this.#drawPile);
+      this.#drawPile = [];
+      return;
+    }
+    for (let i = 0; i < toBeDrawn; i++) {
+      let weapon = this.#drawPile.shift();
+      this.#hand.push(weapon);
+      if (this.#drawPile.length == 0) {
+        this.#resetDrawPile();
+      }
+    }
+  }
+
+  #resetDrawPile() {
+    this.#drawPile = [...this.#deck];
+    this.#drawPile = this.#drawPile.filter((e) => !this.#hand.includes(e));
+    this.#drawPile.forEach((e) => (e.wasUsed = false));
+    for (let i = this.#drawPile.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
+      [this.#drawPile[i], this.#drawPile[j]] = [
+        this.#drawPile[j],
+        this.#drawPile[i],
+      ]; // Swap elements
+    }
+  }
+
+  addWeapon(weapon) {
+    this.#deck.push(weapon);
+    this.savePlayerToStorage();
+  }
+
+  addRelic(relic) {
+    this.relics.push(relic);
+    relic.apply(this);
   }
 
   takeDamage(amount) {
@@ -55,10 +112,23 @@ class Player extends HealthEntity {
       triggerDamageAnimation();
     }
   }
+
   heal(amount) {
+    if (isNaN(amount) || amount < 0) {
+      console.error("Invalid heal amount:", amount);
+      return; // Prevent healing if the amount is invalid
+    }
+
     this.#health += amount; // Increase health
-    if (this.#health > this.#maxHealth) this.#health = this.#maxHealth; // Cap at max health
+    if (this.#health > this.#maxHealth) {
+      this.#health = this.#maxHealth; // Cap at max health
+    }
+    if (isNaN(this.#health) || this.#health < 0) {
+      console.error("Invalid health value:", this.#health);
+      this.#health = 0;
+    }
   }
+
   useEnergy(amount) {
     if (this.#energy >= amount) {
       this.#energy -= amount; // Deduct energy
@@ -70,6 +140,47 @@ class Player extends HealthEntity {
   restoreEnergy(amount) {
     this.#energy += amount; // Restore energy
     if (this.#energy > this.#maxEnergy) this.#energy = this.#maxEnergy; // Cap at max energy
+  }
+
+  loadPlayerFromStorage() {
+    let state = loadData("playerState");
+    if (state == null) {
+      this.addWeapon(new BasicSword());
+      this.addWeapon(new BasicAxe());
+      this.addWeapon(new BasicSpear());
+      this.addWeapon(new BasicSword());
+      this.addWeapon(new BasicAxe());
+      this.addWeapon(new BasicSpear());
+      this.addWeapon(new BasicSword());
+    } else {
+      this.#name = state.name;
+      this.#health = state.health;
+      this.#maxHealth = state.maxHealth;
+      let deck = [];
+      for (let weapon of state.deck) {
+        let instance = createWeaponInstanceFromInfo(weapon);
+        deck.push(instance);
+      }
+      this.#deck = deck;
+      this.#maxEnergy = state.maxEnergy;
+    }
+    this.restoreEnergy(this.#maxEnergy);
+    this.drawHand();
+  }
+  savePlayerToStorage() {
+    let state = {
+      name: this.#name,
+      health: this.#health,
+      maxHealth: this.#maxHealth,
+      maxEnergy: this.#maxEnergy,
+    };
+    let deck = [];
+    for (let weapon of this.#deck) {
+      let info = weapon.getWeaponInfo();
+      deck.push(info);
+    }
+    state.deck = deck;
+    storeData("playerState", state);
   }
 }
 
@@ -289,8 +400,3 @@ function updateEnergyDisplay() {
     energyCircle.style.backgroundColor = "#f44336"; // Red if energy is low
   }
 }
-
-window.onload = function () {
-  initializeHealthBars(player);
-  updateEnergyDisplay();
-};

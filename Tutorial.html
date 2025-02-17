@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tutorial</title>
     <link rel="stylesheet" href="styletutorial.css" />
+    <script src="utility.js"></script>
     <script src="baseClasses.js"></script>
     <script src="player.js"></script>
     <script src="enemie.js"></script>
     <script src="enemyconstellation.js"></script>
     <script src="weapons.js"></script>
     <script src="game.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="relics.js"></script>
   </head>
   <body>
     <div>
@@ -41,18 +44,37 @@
       </div>
     </div>
 
-    <div id="weapons-container">
-      <div class="weapon" onclick="useWeapon(0)">
-        <img class="weapon-image" src="Assets/sword.png" alt="Sword" />
-      </div>
-      <div class="weapon" onclick="useWeapon(1)">
-        <img class="weapon-image" src="Assets/spear.png" alt="Spear" />
-      </div>
-    </div>
+    <div id="weapons-container"></div>
 
     <!-- Your Turn Again message -->
     <div id="turn-message" style="display: none"></div>
+    <div id="playerGold">Gold:</div>
 
     <button id="end-turn-btn">End Turn</button>
+
+    <div id="post-battle-screen" class="hidden">
+      <div id="headline-post-battle">Fight complete</div>
+      <div id="weapon-purchase-options">
+        <div id="weapon-1" class="weapon-option"></div>
+        <div id="weapon-2" class="weapon-option"></div>
+        <div id="weapon-3" class="weapon-option"></div>
+      </div>
+      <button id="choose-weapon-upgrade-btn">
+        Choose a weapon to upgrade
+
+        <div
+          id="upgrade-weapon-options"
+          onclick="weaponSelectedUpgrade(event);"
+        >
+          <select id="weapon-to-upgrade"></select>
+        </div>
+      </button>
+      <div id="heal-option">
+        <button id="heal-btn" onclick="healPlayer(this);">
+          Heal 20 HP (50 Gold)
+        </button>
+      </div>
+      <button id="close-post-battle">Next</button>
+    </div>
   </body>
 </html>
