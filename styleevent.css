@@ -1,0 +1,132 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+
+}
+#StartscreenBackground {
+    width: 95%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    margin-left: 2.5%;
+    position: absolute;
+    z-index: 1;
+}
+
+.textbox {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 500px;
+    width: 750px;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1500;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+button {
+    font-family: 'Pirata_one';
+    width: 200px;
+    height: 50px;
+    font-size: 24px;
+    padding: 10px 20px;
+    border: none;
+    background-color: antiquewhite;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.hidden {
+    display: none;
+}
+
+.sprite {
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: 1400px 200px;
+    top: 450px;
+    left: 250px;
+    z-index: 1100;
+    image-rendering: pixelated;
+}
+
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
+}
+
+#current-deck {
+    font-family: 'Pirata_One';
+    font-size: 20px;
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    top: 90%;
+    left: 20%;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ff5722;
+    z-index: 1000; 
+}
+
+#weapon-deck-screen {
+    position: fixed;
+    top: 40%;
+    left: 10%;
+    width: 80%;
+    height: 57%;
+    background-color: burlywood;
+    z-index: 2000;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#weapon-deck-container {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid black;
+    text-align: center;
+    width: 90%;
+}
+
+#weapon-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#weapon-list .weapon {
+    margin: 10px;
+    width: 90px;
+    height: 90px;
+    box-sizing: border-box;
+}

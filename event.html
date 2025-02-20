@@ -5,6 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event</title>
     <link rel="stylesheet" href="styleevent.css" />
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="utility.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+    <div id="playerGold">Gold:</div>
+
+    <div class="sprite"></div>
+
+    <button id="current-deck">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn">Close</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="thorsHammer">
+      <span>
+        After walking through the forest for a long amount of time, you came
+        across a small clearing in between the dark shadows of the giant
+        trees.<br />
+        On an altar was laying an ancient weapon of imense power, but no mortal
+        beeing was strong enough to lift it.<br /><br />
+        So far...<br /><br />
+        Trying to lift it would come with a price.<br />
+      </span>
+      <div>
+        <button class="thorsHammer-btn">Try to lift it</button>
+        <button>Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="foundGold">
+      <span>
+        You were walking through the forest, minding your own business and
+        always ready for an ambush.<br />
+        But after a while, something caught your eye.<br />
+        You came closer, with your sword in your hand.<br />
+        But then you realised, that it was an abandoned purse from a traveller
+        or adventurer before you.<br />
+      </span>
+      <div>
+        <button class="foundGold">Take the gold</button>
+        <button>Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="dropWeapon">
+      <span>
+        You were walking through the forest, adrenaline still rushing through
+        your body from the last fight.<br />
+        Slowly you were getting calmer, as you heard something behind you.<br />
+        It was a mother bear with her two cubs.<br />
+        You had to retrieve slowly to avoid a fight, but two of your weapons
+        fell out of your backpack and you just had enough time to pick up one of
+        them.<br /><br />
+        Which weapon will you leave behind?<br />
+      </span>
+      <div>
+        <button>Placeholder 1</button>
+        <button>Placeholder 2</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="gambling">
+      <span>
+        After a few hours into the forest you met a wandering trader.<br />
+        "Hello fine sir, I can't offer you my goods, I sold them all in the last
+        town,<br />
+        but what about a little gamble?", the man spoke.<br />
+        "Play with half your gold, and if you win the coinflip, you will gain
+        double the amount."<br />
+      </span>
+      <div>
+        <button class="acceptGamble">Let's gamble</button>
+        <button>Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox" id="upgradeWeapon">
+      <span> </span>
+    </div>
+
+    <script>
+      let player = new Player("Knight", 100, 100, [], 3, 3);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("current-deck")
+          .addEventListener("click", () => {
+            player.showDeck();
+          });
+        document
+          .getElementById("close-deck-btn")
+          .addEventListener("click", () => {
+            document
+              .getElementById("weapon-deck-screen")
+              .classList.add("hidden");
+          });
+      });
+
+      const goldDisplay = document.getElementById("playerGold");
+      goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+      const sprite = document.querySelector(".sprite");
+
+      resetToIdleAnimation();
+    </script>
+  </body>
 </html>
