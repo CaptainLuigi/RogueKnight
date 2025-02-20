@@ -14,6 +14,7 @@ class Enemy extends HealthEntity {
   #maxHealth;
   #attackPower;
   #icon;
+  #ranged;
   #display;
 
   get icon() {
@@ -44,7 +45,11 @@ class Enemy extends HealthEntity {
     return this.#display;
   }
 
-  constructor(name, maxHealth, attackPower, icon) {
+  get ranged() {
+    return this.#ranged;
+  }
+
+  constructor(name, maxHealth, attackPower, icon, ranged) {
     super();
     this.#health = maxHealth;
     this.#name = name;
@@ -55,6 +60,7 @@ class Enemy extends HealthEntity {
     let image = this.#display.querySelector(".enemy-icon");
     image.src = icon;
     image.alt = name;
+    this.#ranged = ranged;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
   }
@@ -166,67 +172,67 @@ class Enemy extends HealthEntity {
 
 class Shroom extends Enemy {
   constructor() {
-    super("Shroom", 200, 8, "Assets/Transperent/Icon1.png");
+    super("Shroom", 200, 8, "Assets/Transperent/Icon1.png", true);
   }
 }
 
 class Snail extends Enemy {
   constructor() {
-    super("Snail", 300, 5, "Assets/Transperent/Icon5.png");
+    super("Snail", 300, 5, "Assets/Transperent/Icon5.png", false);
   }
 }
 
 class SadShroom extends Enemy {
   constructor() {
-    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png");
+    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png", false);
   }
 }
 
 class BiteShroom extends Enemy {
   constructor() {
-    super("Bite Shroom", 350, 10, "Assets/Transperent/Icon7.png");
+    super("Bite Shroom", 350, 10, "Assets/Transperent/Icon7.png", false);
   }
 }
 
 class Scorpion extends Enemy {
   constructor() {
-    super("Scorpion Shroom", 150, 10, "Assets/Transperent/Icon9.png");
+    super("Scorpion Shroom", 150, 10, "Assets/Transperent/Icon9.png", true);
   }
 }
 
 class BitingPlant extends Enemy {
   constructor() {
-    super("Biting Plant", 400, 10, "Assets/Transperent/Icon11.png");
+    super("Biting Plant", 400, 10, "Assets/Transperent/Icon11.png", false);
   }
 }
 
 class SlimeHive extends Enemy {
   constructor() {
-    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png");
+    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png", false);
   }
 }
 
 class Mantis extends Enemy {
   constructor() {
-    super("Mantis", 150, 15, "Assets/Transperent/Icon39.png");
+    super("Mantis", 150, 15, "Assets/Transperent/Icon39.png", false);
   }
 }
 
 class Hornet extends Enemy {
   constructor() {
-    super("Hornet", 100, 10, "Assets/Transperent/Icon42.png");
+    super("Hornet", 100, 10, "Assets/Transperent/Icon42.png", true);
   }
 }
 
 class EvilKnight extends Enemy {
   constructor() {
-    super("Evil Knight", 750, 15, "Assets/evilknight.png");
+    super("Evil Knight", 750, 15, "Assets/evilknight.png", false);
     this.display.classList.add("evil-knight");
   }
 }
 
 class HermitShroom extends Enemy {
   constructor() {
-    super("Hermit Shroom", 500, 3, "Assets/Icon10.png");
+    super("Hermit Shroom", 500, 3, "Assets/Icon10.png", false);
   }
 }

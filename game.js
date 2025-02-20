@@ -257,9 +257,14 @@ function endTurn() {
   isPlayerTurn = false;
 
   setTimeout(() => {
-    enemies[0].attack(player); // Call the attack function in the enemy.js file
-
-    updateHealthBar(player); // Make sure you update the health bar after damage
+    enemies.forEach((enemy, index) => {
+      if (index === 0 || enemy.ranged) {
+        setTimeout(() => {
+          enemy.attack(player); // Call the attack function in the enemy.js file
+          updateHealthBar(player);
+        }, index * 700);
+      }
+    });
 
     setTimeout(() => {
       displayTurnMessage("Your Turn Again!");
@@ -267,7 +272,7 @@ function endTurn() {
       refillEnergy();
 
       updateEnergyDisplay();
-    }, 500);
+    }, enemies.length * 700 + 500);
 
     setTimeout(() => {
       isPlayerTurn = true;
@@ -276,7 +281,7 @@ function endTurn() {
       displayWeapons(player.hand);
 
       enableWeapons(); // Enable the weapons after the delay
-    }, 1500); // Enable after 2 seconds (can adjust based on animation time)
+    }, enemies.length * 700 + 500); // Enable after 2 seconds (can adjust based on animation time)
   }, 500); // Add a 1.5-second delay before the enemy attacks (adjust the delay as needed)
 }
 
