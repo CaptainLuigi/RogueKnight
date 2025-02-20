@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("end-turn-btn").addEventListener("click", endTurn);
 
   updatePlayerGold(0);
+  updateHealthBar(player);
 });
 
 const enemies = [];
@@ -208,6 +209,7 @@ function executeAttack(weapon, enemyIndex) {
   player.heal(healing);
 
   player.useEnergy(weapon.energy);
+  updateHealthBar(player);
 
   updateEnergyDisplay();
   setActiveWeapon(-1);
@@ -405,6 +407,7 @@ function populateWeaponUpgradeOptions() {
 
 function upgradeWeapon(weapon) {
   weapon.upgrade();
+  player.savePlayerToStorage();
 
   displayTurnMessage(`Upgraded ${weapon.name}!`);
 }
@@ -417,6 +420,7 @@ function healPlayer(button) {
     player.heal(20);
 
     updateHealthBar();
+    player.savePlayerToStorage();
 
     displayTurnMessage("You healed!");
     button.disabled = true;
@@ -434,6 +438,9 @@ function weaponSelectedUpgrade(event) {
   let index = target.getAttribute("index");
   index = parseInt(index);
   let weapon = player.deck[index];
+
+  upgradeWeapon(weapon);
+
   console.log(weapon);
 }
 

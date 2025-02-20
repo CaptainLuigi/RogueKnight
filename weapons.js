@@ -119,6 +119,10 @@ class Weapons {
     return this.#level;
   }
 
+  get canHeal() {
+    return this.#canHeal;
+  }
+
   get wasUsed() {
     return this.#wasUsed;
   }
@@ -218,6 +222,7 @@ class Weapons {
     this.#minRange = info.minRange;
     this.#maxRange = info.maxRange;
     this.#description = info.description;
+    this.#canHeal = info.canHeal;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -238,12 +243,30 @@ class Weapons {
     this.#healingAmount = info.healingAmount || 0;
 
     this.#level = info.level || 1;
-    this.applyUpgrades();
     this.#wasUsed = false;
   }
 
   calculateHealing(damages) {
-    return 0;
+    if (!this.#canHeal) {
+      return 0;
+    }
+    if (!Array.isArray(this.#healingAmount)) {
+      return this.#healingAmount;
+    }
+    if (this.#healingAmount.length == 1) {
+      let totalDamage = damages.reduce((c, e) => c + e, 0);
+      return (this.#healingAmount[0] * totalDamage) / 100;
+    }
+    let ttlHealing = 0;
+    for (let i = 0; i < this.#healingAmount.length; i++) {
+      let currentHealing = this.#healingAmount[i];
+      let currentDamage = 0;
+      if (i < damages.length) {
+        currentDamage = damages[i];
+      }
+      ttlHealing += (currentDamage * currentHealing) / 100;
+    }
+    return ttlHealing;
   }
 
   applyHealing(target) {
@@ -256,10 +279,18 @@ class Weapons {
     this.#wasUsed = true;
   }
 
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     console.log(
       "applyUpgrades() should be overridden in each weapon subclass."
     );
+  }
+
+  upgrade() {
+    this.#level += 1;
+
+    let weaponInfo = this.getWeaponInfo();
+    this.applyUpgrades(weaponInfo);
+    this.loadFromWeaponInfo(weaponInfo);
   }
 }
 
@@ -280,18 +311,19 @@ class HealthPotion extends Weapons {
       0,
       0,
       0,
-      10
+      10,
+      true
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.healingAmount += 5;
+        weaponInfo.healingAmount += 5;
         break;
       case 3:
-        this.healingAmount += 10;
+        weaponInfo.healingAmount += 10;
         break;
     }
   }
@@ -315,19 +347,19 @@ class BasicSword extends Weapons {
       "Assets/sword.png"
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 5;
-        this.criticalDamage += 10;
-        this.criticalChance += 5;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
         break;
       case 3:
-        this.damage += 5;
-        this.criticalDamage += 10;
-        this.criticalChance += 5;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
         break;
     }
   }
@@ -350,19 +382,19 @@ class BasicAxe extends Weapons {
       1
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 15;
-        this.criticalDamage += 30;
-        this.criticalChance += 5;
+        weaponInfo.damage += 15;
+        weaponInfo.criticalDamage += 30;
+        weaponInfo.criticalChance += 5;
         break;
       case 3:
-        this.damage += 15;
-        this.criticalDamage += 30;
-        this.criticalChance += 5;
+        weaponInfo.damage += 15;
+        weaponInfo.criticalDamage += 30;
+        weaponInfo.criticalChance += 5;
         break;
     }
   }
@@ -387,19 +419,23 @@ class BasicSpear extends Weapons {
       [1, 1]
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 5;
-        this.criticalDamage += 10;
-        this.criticalChance += 5;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
+
         break;
       case 3:
-        this.damage += 5;
-        this.criticalDamage += 10;
-        this.criticalChance += 10;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
+
+        weaponInfo.canHeal = true;
+        weaponInfo.healingAmount = [20, 10, 5];
         break;
     }
   }
@@ -424,19 +460,19 @@ class Bomb extends Weapons {
       [1]
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 10;
-        this.criticalDamage += 10;
-        this.criticalChance += 5;
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
         break;
       case 3:
-        this.damage += 10;
-        this.criticalDamage += 10;
-        this.criticalChance += 10;
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
         break;
     }
   }
@@ -456,19 +492,19 @@ class Herosword extends Weapons {
       "Assets/herosword.png"
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 5;
-        this.criticalDamage += 5;
-        this.criticalChance += 5;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 5;
+        weaponInfo.criticalChance += 5;
         break;
       case 3:
-        this.damage += 10;
-        this.criticalDamage += 10;
-        this.criticalChance += 5;
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
         break;
     }
   }
@@ -485,22 +521,29 @@ class Dagger extends Weapons {
       45,
       1,
       "Can only target the first enemy, click to instanty use weapon.",
-      "Assets/dagger.png"
+      "Assets/dagger.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      [10],
+      true
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 5;
-        this.criticalDamage += 10;
-        this.criticalChance += 10;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
         break;
       case 3:
-        this.damage += 10;
-        this.criticalDamage += 10;
-        this.criticalChance += 15;
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 15;
         break;
     }
   }
@@ -525,19 +568,19 @@ class Spearblade extends Weapons {
       [1]
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 5;
-        this.criticalDamage += 10;
-        this.criticalChance += 10;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
         break;
       case 3:
-        this.damage += 10;
-        this.criticalDamage += 10;
-        this.criticalChance += 10;
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
         break;
     }
   }
@@ -562,19 +605,19 @@ class Crossbow extends Weapons {
       [1]
     );
   }
-  applyUpgrades() {
+  applyUpgrades(weaponInfo) {
     switch (this.level) {
       case 1:
         break;
       case 2:
-        this.damage += 5;
-        this.criticalDamage += 5;
-        this.criticalChance += 5;
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 5;
+        weaponInfo.criticalChance += 5;
         break;
       case 3:
-        this.damage += 10;
-        this.criticalDamage += 10;
-        this.criticalChance += 15;
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 15;
         break;
     }
   }
@@ -673,38 +716,37 @@ function generateWeaponInfo(
   weaponImage.classList.add("weapon-image");
   display.appendChild(weaponImage);
 
-  let tooltipString = `          
-      <strong> ${weapon.name} </strong> <br>
-      <strong>Level:</strong> ${weapon.level} <br>
-      <strong>Energy Cost:</strong> ${weapon.energy} <br>
-      <strong>Range:</strong> ${weapon.range} <br>
-      <strong>Damage:</strong> ${weapon.damage} <br>
-      <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
-      <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
-      <strong>Healing:</strong> ${weapon.healingAmount} <br>
-      ${weapon.description} <br>           
-  `;
-  weaponPrice = parseInt(weaponPrice);
-  if (!isNaN(weaponPrice) && weaponPrice > 0) {
-    tooltipString += `<strong>${weaponPrice} Gold</strong>`;
-  }
+  var getTooltip = () => {
+    let tooltipString = `          
+        <strong> ${weapon.name} </strong> <br>
+        <strong>Level:</strong> ${weapon.level} <br>
+        <strong>Energy Cost:</strong> ${weapon.energy} <br>
+        <strong>Range:</strong> ${weapon.range} <br>
+        <strong>Damage:</strong> ${weapon.damage} <br>
+        <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
+        <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
+        <strong>Healing:</strong> ${weapon.healingAmount} <br>
+        ${weapon.description} <br>           
+    `;
+    weaponPrice = parseInt(weaponPrice);
+    if (!isNaN(weaponPrice) && weaponPrice > 0) {
+      tooltipString += `<strong>${weaponPrice} Gold</strong>`;
+    }
+    return tooltipString;
+  };
 
   if (!tooltipElement) {
     // Create a tooltip for the weapon
     tooltipElement = document.createElement("div");
 
-    tooltipElement.innerHTML = tooltipString;
-
     // Append the tooltip to the weapon element
     display.appendChild(tooltipElement);
   }
-  // Add event listener to use weapon on click
-  else {
-    display.addEventListener("mouseenter", function () {
-      tooltipElement.classList.add("visible");
-      tooltipElement.innerHTML = tooltipString;
-    });
-  }
+
+  display.addEventListener("mouseenter", function () {
+    tooltipElement.classList.add("visible");
+    tooltipElement.innerHTML = getTooltip();
+  });
 
   tooltipElement.classList.add("tooltip");
 

@@ -12,7 +12,7 @@ const events = [
   "skull",
 ];
 
-const skullDifficulty = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 10];
+const skullDifficulty = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3];
 
 let mapState;
 document.addEventListener("DOMContentLoaded", function () {
@@ -155,12 +155,12 @@ function enterLocation(button) {
   storeData("MapState", mapState);
   globalSettings.difficulty = active.difficulty;
 
-  if (active.type == "skull") window.location.href = "./tutorial.html";
+  if (active.type == "questionmark") {
+    triggerRandomEvent();
+  } else if (active.type == "skull") window.location.href = "./tutorial.html";
+  else if (active.type == "shop") window.location.href = "./Shop.html";
+  else if (active.type == "chest") window.location.href = "./chest.html";
   else window.location.reload();
-
-  if (active.type == "shop") window.location.href = "./Shop.html";
-
-  if (active.type == "chest") window.location.href = "./chest.html";
 }
 
 function markPossibleLocations() {
@@ -178,4 +178,31 @@ function markPossibleLocations() {
   }
   for (let index of nextLocations)
     nextRow.children[index].classList.add("next");
+}
+
+function triggerRandomEvent() {
+  const randomEvents = [
+    /* { type: "eliteFight", action: startEliteFight },*/
+    { type: "normalFight", action: startNormalFight },
+    { type: "chest", action: openChest },
+    /*{ type: "upgradeWeapon", action: upgradeWeapon },
+    { type: "thinDeck", action: thinDeck },
+    { type: "thorsHammer", action: thorsHammer },
+    { type: "findGold", action: findGold },*/
+  ];
+
+  const randomEvent =
+    randomEvents[Math.floor(Math.random() * randomEvents.length)];
+
+  randomEvent.action();
+}
+
+function startEliteFight() {}
+
+function startNormalFight() {
+  window.location.href = "./tutorial.html";
+}
+
+function openChest() {
+  window.location.href = "./chest.html";
 }
