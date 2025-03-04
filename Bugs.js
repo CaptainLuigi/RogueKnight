@@ -21,12 +21,12 @@ function calculate damage
 
 
 
-in der map kann erster kampf übersprungen werden   
+
 
 bei einem gegner, diesen centern
 
-post battle healing nur einmal, wenn schon full -> heal nicht möglich
+post battle healing, wenn schon full -> heal nicht möglich
 
-möchte waffe kaufen, nicht genug gold
+deck liste in shop, wie styling
 
 */
