@@ -1,6 +1,6 @@
 let player = new Player("Knight", 100, 100, [], 3, 3);
 
-var sprite;
+let sprite;
 
 function updatePlayerGold(goldAmount) {
   globalSettings.playerGold += goldAmount;
