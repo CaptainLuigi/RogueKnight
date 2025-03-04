@@ -424,6 +424,7 @@ button {
 
 #choose-weapon-upgrade-btn {
     top: 50%;
+    width: 270px;
     z-index: 900;
     justify-content: center;
     align-items: center;
@@ -432,10 +433,12 @@ button {
 
 #heal-btn {
     top: 65%;
+    width: 270px;
 }
 
 #close-post-battle {
     top: 80%; 
+    width: 270px;
 }
 
 #upgrade-weapon-options .weapon {
@@ -445,5 +448,5 @@ button {
 }
 
 button:disabled {
-    background-color: darkgrey;
+    background-color: darkgrey !important;
 }
