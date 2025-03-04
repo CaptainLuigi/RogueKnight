@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tutorial</title>
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
     <link rel="stylesheet" href="styletutorial.css" />
     <script src="utility.js"></script>
     <script src="baseClasses.js"></script>
@@ -50,14 +51,14 @@
     <div id="turn-message" style="display: none"></div>
     <div id="playerGold">Gold:</div>
 
-    <button id="current-deck">Your Deck</button>
+    <button id="current-deck" class="orange-btn">Your Deck</button>
 
-    <button id="end-turn-btn">End Turn</button>
+    <button id="end-turn-btn" class="orange-btn">End Turn</button>
 
     <div id="weapon-deck-screen" class="hidden">
       <div id="weapon-deck-container">
         <div id="weapon-list"></div>
-        <button id="close-deck-btn">Close</button>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
       </div>
     </div>
 
@@ -68,7 +69,7 @@
         <div id="weapon-2" class="weapon-option"></div>
         <div id="weapon-3" class="weapon-option"></div>
       </div>
-      <button id="choose-weapon-upgrade-btn">
+      <button id="choose-weapon-upgrade-btn" class="orange-btn">
         Choose a weapon to upgrade
 
         <div
@@ -79,11 +80,11 @@
         </div>
       </button>
       <div id="heal-option">
-        <button id="heal-btn" onclick="healPlayer(this);">
+        <button id="heal-btn" class="orange-btn" onclick="healPlayer(this);">
           Heal 20 HP (50 Gold)
         </button>
       </div>
-      <button id="close-post-battle">Next</button>
+      <button id="close-post-battle" class="orange-btn">Next</button>
     </div>
   </body>
 </html>

@@ -39,7 +39,7 @@ html, body {
     flex-direction: column;
 }
 
-button {
+.textbox-btn {
     font-family: 'Pirata_one';
     width: 200px;
     height: 50px;
@@ -78,55 +78,28 @@ button {
     font-size: 36px;
 }
 
-#current-deck {
-    font-family: 'Pirata_One';
-    font-size: 20px;
-    position: absolute;
-    width: 100px;
-    height: 50px;
-    top: 90%;
-    left: 20%;
-    color: black;
-    border: 2px solid black;
+.weapon-image {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    padding: 5px;
+    border: 3px solid black;
     border-radius: 5px;
-    cursor: pointer;
-    background-color: #ff5722;
-    z-index: 1000; 
+    image-rendering: pixelated;
 }
 
-#weapon-deck-screen {
-    position: fixed;
-    top: 40%;
-    left: 10%;
-    width: 80%;
-    height: 57%;
-    background-color: burlywood;
-    z-index: 2000;
-    border: 2px solid black;
-    border-radius: 10px;
+.tooltip {
+    top: -100%; /* Vertically center it */
+    left: 50%; /* Horizontally center it */
+    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
+    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
 }
 
-#weapon-deck-container {
+.orange-btn {
+    width: 300px;
+    height: 75px;
     position: absolute;
-    top: 10%;
     left: 50%;
     transform: translateX(-50%);
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid black;
-    text-align: center;
-    width: 90%;
 }
 
-#weapon-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-#weapon-list .weapon {
-    margin: 10px;
-    width: 90px;
-    height: 90px;
-    box-sizing: border-box;
-}

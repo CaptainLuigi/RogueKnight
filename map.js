@@ -1,3 +1,5 @@
+let player = new Player("Knight", 100, 100, [], 3, 3);
+
 const events = [
   "elite",
   "elite",
@@ -15,11 +17,20 @@ const events = [
 const skullDifficulty = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3];
 
 let mapState;
+
+player.loadPlayerFromStorage();
+
 document.addEventListener("DOMContentLoaded", function () {
   mapState = loadData("MapState");
   if (mapState == null || mapState.wasFinalBoss == true) generateMap();
   else loadMap();
   markPossibleLocations();
+  document.getElementById("current-deck").addEventListener("click", () => {
+    player.showDeck();
+  });
+  document.getElementById("close-deck-btn").addEventListener("click", () => {
+    document.getElementById("weapon-deck-screen").classList.add("hidden");
+  });
 });
 
 function generateMap() {
@@ -183,18 +194,18 @@ function markPossibleLocations() {
 function triggerRandomEvent() {
   const randomEvents = [
     /* { type: "eliteFight", action: startEliteFight },*/
-    { type: "normalFight", action: startNormalFight },
-    { type: "chest", action: openChest },
-    /*{ type: "upgradeWeapon", action: upgradeWeapon },
-    { type: "thinDeck", action: thinDeck },
-    { type: "thorsHammer", action: thorsHammer },
-    { type: "findGold", action: findGold },*/
+    // { type: "normalFight", action: startNormalFight },
+    // { type: "chest", action: openChest },
+    /*{ type: "upgradeWeapon", action: showEvent },*/
+    { type: "dropWeapon", action: showEvent },
+    { type: "thorsHammer", action: showEvent },
+    { type: "foundGold", action: showEvent },
   ];
 
   const randomEvent =
     randomEvents[Math.floor(Math.random() * randomEvents.length)];
 
-  randomEvent.action();
+  randomEvent.action(randomEvent.type);
 }
 
 function startEliteFight() {}
@@ -205,4 +216,9 @@ function startNormalFight() {
 
 function openChest() {
   window.location.href = "./chest.html";
+}
+
+function showEvent(type) {
+  storeData("RandomEvent", type);
+  window.location.href = "./event.html";
 }

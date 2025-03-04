@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Event</title>
     <link rel="stylesheet" href="styleevent.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
     <script src="baseClasses.js"></script>
     <script src="player.js"></script>
     <script src="weapons.js"></script>
     <script src="saveGame.js"></script>
     <script src="utility.js"></script>
+    <script src="event.js"></script>
   </head>
   <body>
     <div>
@@ -23,11 +25,11 @@
 
     <div class="sprite"></div>
 
-    <button id="current-deck">Your Deck</button>
+    <button id="current-deck" class="orange-btn">Your Deck</button>
     <div id="weapon-deck-screen" class="hidden">
       <div id="weapon-deck-container">
         <div id="weapon-list"></div>
-        <button id="close-deck-btn">Close</button>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
       </div>
     </div>
 
@@ -42,8 +44,8 @@
         Trying to lift it would come with a price.<br />
       </span>
       <div>
-        <button class="thorsHammer-btn">Try to lift it</button>
-        <button>Leave</button>
+        <button class="thorsHammer-btn textbox-btn">Try to lift it</button>
+        <button class="textbox-btn">Leave</button>
       </div>
     </div>
 
@@ -57,8 +59,8 @@
         or adventurer before you.<br />
       </span>
       <div>
-        <button class="foundGold">Take the gold</button>
-        <button>Leave</button>
+        <button class="foundGold textbox-btn">Take the gold</button>
+        <button class="textbox-btn">Leave</button>
       </div>
     </div>
 
@@ -74,8 +76,8 @@
         Which weapon will you leave behind?<br />
       </span>
       <div>
-        <button>Placeholder 1</button>
-        <button>Placeholder 2</button>
+        <button class="textbox-btn">Placeholder 1</button>
+        <button class="textbox-btn">Placeholder 2</button>
       </div>
     </div>
 
@@ -89,38 +91,13 @@
         double the amount."<br />
       </span>
       <div>
-        <button class="acceptGamble">Let's gamble</button>
-        <button>Leave</button>
+        <button class="acceptGamble textbox-btn">Let's gamble</button>
+        <button class="textbox-btn">Leave</button>
       </div>
     </div>
 
-    <div class="textbox" id="upgradeWeapon">
+    <div class="textbox hidden" id="upgradeWeapon">
       <span> </span>
     </div>
-
-    <script>
-      let player = new Player("Knight", 100, 100, [], 3, 3);
-
-      document.addEventListener("DOMContentLoaded", () => {
-        document
-          .getElementById("current-deck")
-          .addEventListener("click", () => {
-            player.showDeck();
-          });
-        document
-          .getElementById("close-deck-btn")
-          .addEventListener("click", () => {
-            document
-              .getElementById("weapon-deck-screen")
-              .classList.add("hidden");
-          });
-      });
-
-      const goldDisplay = document.getElementById("playerGold");
-      goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
-      const sprite = document.querySelector(".sprite");
-
-      resetToIdleAnimation();
-    </script>
   </body>
 </html>

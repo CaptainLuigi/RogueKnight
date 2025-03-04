@@ -1,0 +1,97 @@
+#close-deck-btn {
+    width: 300px;
+    height: 75px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); 
+}
+
+#current-deck {
+    position: absolute;
+    height: 50px;
+    top: 90%;
+    left: 20%;
+    z-index: 1000; 
+}
+
+#weapon-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#weapon-list .weapon {
+    margin: 10px;
+    width: 90px;
+    height: 90px;
+    box-sizing: border-box;
+}
+
+#weapon-deck-container {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid black;
+    text-align: center;
+    width: 90%;
+}
+
+#weapon-deck-screen {
+    position: fixed;
+    top: 40%;
+    left: 10%;
+    width: 80%;
+    height: 57%;
+    background-color: burlywood;
+    z-index: 2000;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    z-index: 1000; /* Ensure the tooltip appears above other elements */
+    font-size: 24px;
+    max-width: 500px;
+    width: max-content;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.weapon:hover .tooltip, .weapon-option:hover .tooltip {
+    opacity: 1;
+    visibility: visible; /* Show the tooltip when hovering */
+    display: block;
+}
+
+.orange-btn {
+    display: flex;
+    font-family: 'Pirata_One';
+    font-size: 24px;
+    color: black;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 10px;
+}
+
+.orange-btn:hover {
+    background-color: #e64a19;
+}
+
+.hidden {
+    display: none;
+}

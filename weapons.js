@@ -596,7 +596,7 @@ class Crossbow extends Weapons {
       40,
       35,
       1,
-      "Can target any enemie and also damages the enemie behind, click weapon first, then the enemy you want to hit.",
+      "Can target any enemy and also damages the enemy behind, click weapon first, then the enemy you want to hit.",
       "Assets/crossbow.png",
       true,
       0,

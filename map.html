@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Map</title>
     <link rel="stylesheet" href="stylemap.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
   </head>
   <body>
     <div>
@@ -25,6 +26,14 @@
     </div>
 
     <div id="playerGold">Gold:</div>
+
+    <button id="current-deck" class="orange-btn">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
+      </div>
+    </div>
 
     <div class="navigation-container">
       <div class="map-row-start">
@@ -79,6 +88,9 @@
       </div>
     </div>
 
+    <script src="baseClasses.js"></script>
+    <script src="weapons.js"></script>
+    <script src="player.js"></script>
     <script src="saveGame.js"></script>
     <script src="map.js"></script>
     <script>
