@@ -8,7 +8,7 @@ const events = [
   "shop",
   "questionmark",
   "questionmark",
-  "skull",
+  "questionmark",
   "skull",
   "skull",
   "skull",
@@ -196,10 +196,12 @@ function triggerRandomEvent() {
     /* { type: "eliteFight", action: startEliteFight },*/
     // { type: "normalFight", action: startNormalFight },
     // { type: "chest", action: openChest },
-    /*{ type: "upgradeWeapon", action: showEvent },*/
+    { type: "upgradeWeapon", action: showEvent },
     { type: "dropWeapon", action: showEvent },
     { type: "thorsHammer", action: showEvent },
     { type: "foundGold", action: showEvent },
+    { type: "gambling", action: showEvent },
+    { type: "rest", action: showEvent },
   ];
 
   const randomEvent =

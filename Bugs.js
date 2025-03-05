@@ -27,6 +27,8 @@ bei einem gegner, diesen centern
 
 post battle healing, wenn schon full -> heal nicht möglich
 
-deck liste in shop, wie styling
+deck liste in shop, wie styling?s
+
+post battle screen, wenn nicht genug gold verschwindet waffe zur auswahl trotzdem
 
 */

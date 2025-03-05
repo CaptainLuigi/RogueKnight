@@ -7,7 +7,7 @@ html, body {
     margin: 0;
     font-family: 'Pirata_One';
     position: relative;
-
+    overflow: hidden;
 }
 #StartscreenBackground {
     width: 95%;

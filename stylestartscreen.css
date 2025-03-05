@@ -5,6 +5,7 @@
 body {
     font-family: 'Pirata_One';
     position: relative;
+    overflow: hidden;
 
 }
 #StartscreenBackground {

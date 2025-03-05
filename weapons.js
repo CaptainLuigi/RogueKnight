@@ -623,6 +623,43 @@ class Crossbow extends Weapons {
   }
 }
 
+class ThorsHammer extends Weapons {
+  constructor() {
+    super(
+      "Thor's Hammer",
+      1,
+      "far",
+      50,
+      80,
+      30,
+      3,
+      "Damages all enemies, click to instanty use weapon.",
+      "Assets/ThorsHammer.png",
+      false,
+      0,
+      5,
+      0,
+      [1, 1, 1, 1, 1]
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponinfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
+        break;
+      case 3:
+        weaponInfo.damage += 15;
+        weaponInfo.criticalDamage += 15;
+        weaponInfo.criticalChance += 10;
+        break;
+    }
+  }
+}
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -647,6 +684,7 @@ const weaponClassMapping = {
   Spearblade,
   Crossbow,
   HealthPotion,
+  ThorsHammer,
 };
 
 function createWeaponInstanceFromInfo(info) {

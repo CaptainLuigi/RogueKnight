@@ -11,7 +11,6 @@
     <script src="weapons.js"></script>
     <script src="saveGame.js"></script>
     <script src="utility.js"></script>
-    <script src="event.js"></script>
   </head>
   <body>
     <div>
@@ -24,6 +23,10 @@
     <div id="playerGold">Gold:</div>
 
     <div class="sprite"></div>
+
+    <div id="health-bar-container-player">
+      <div id="health-bar"></div>
+    </div>
 
     <button id="current-deck" class="orange-btn">Your Deck</button>
     <div id="weapon-deck-screen" class="hidden">
@@ -45,6 +48,23 @@
       </span>
       <div>
         <button class="thorsHammer-btn textbox-btn">Try to lift it</button>
+        <button class="textbox-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="thorsHammerTaken">
+      <span>
+        You put your hands around the handle and pulled with all your
+        strength.<br />
+        The weapon wasn't moving, but you didn't care and kept trying as hard as
+        you could.<br />
+        Blood started running down your arms and just before you couldn't take
+        it any longer,<br />
+        the weapon moved and got lighter and lighter for you.<br /><br />
+        You looked down on your bloody hands.<br />
+        You got the legendary weapon.
+      </span>
+      <div>
         <button class="textbox-btn">Leave</button>
       </div>
     </div>
@@ -76,8 +96,8 @@
         Which weapon will you leave behind?<br />
       </span>
       <div>
-        <button class="textbox-btn">Placeholder 1</button>
-        <button class="textbox-btn">Placeholder 2</button>
+        <button class="textbox-btn"></button>
+        <button class="textbox-btn"></button>
       </div>
     </div>
 
@@ -96,8 +116,65 @@
       </div>
     </div>
 
-    <div class="textbox hidden" id="upgradeWeapon">
-      <span> </span>
+    <div class="textbox hidden" id="gamblingLost">
+      <span>
+        Skillfully the trader snapped a coin in the air.<br />
+        You watched the coin with excitement, as it was flying through the
+        air.<br />
+        The coin landed back in the hands of the trader and...<br /><br />
+        You lost!<br /><br />
+        You knew you shouldn't be this greedy, but now it's too late.
+      </span>
+      <div>
+        <button class="textbox-btn">Leave</button>
+      </div>
     </div>
+
+    <div class="textbox hidden" id="gamblingWon">
+      <span>
+        Skillfully the trader snapped a coin in the air.<br />
+        You watched the coin with excitement, as it was flying through the
+        air.<br />
+        The coin landed back in the hands of the trader and...<br /><br />
+        You won!<br /><br />
+        You knew it was risky, but fortunately luck was on your side, this time.
+      </span>
+      <div>
+        <button class="textbox-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="rest">
+      <span>
+        Exhausted from the journey through the forest you sat down on a lonely
+        stump surrounded by giant trees.<br />
+        It was peacefull with a few sumbeams managing their way through dense
+        canopy.<br />
+        You decide to take a little nap and rest for a while.<br /><br />
+        Well rested you get on your way again.
+      </span>
+      <div>
+        <button class="textbox-btn" id="leaveRest">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="upgradeWeapon">
+      <span>
+        As you were wandering through the forest, you saw a young lady beeing
+        harassed by some outlaws.<br />
+        Ready for battle, you approach the men, but at the sight of your
+        combat-ready stance, they flee.<br />
+        "You came at the right moment", the woman said,<br />
+        "but I'm not an ordinary human, I'm an elf and can make one of your
+        weapons stronger."<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="current-deck-upgrade">
+          Upgrade Weapon
+        </button>
+      </div>
+    </div>
+
+    <script src="event.js"></script>
   </body>
 </html>
