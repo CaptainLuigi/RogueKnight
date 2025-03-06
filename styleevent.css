@@ -135,3 +135,7 @@ html, body {
     transform: translateX(-50%);
 }
 
+body.upgrade-mode .weapon {
+    cursor: pointer;
+}
+

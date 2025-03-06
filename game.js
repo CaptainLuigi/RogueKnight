@@ -406,6 +406,10 @@ function populateWeaponUpgradeOptions() {
 }
 
 function upgradeWeapon(weapon) {
+  if (weapon.level >= 3) {
+    displayTurnMessage(`${weapon.name} is already max level.`);
+    return;
+  }
   weapon.upgrade();
   player.savePlayerToStorage();
 

@@ -27,6 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeHealthBars();
 });
 
+function displayTurnMessage(message) {
+  const turnMessage = document.getElementById("turn-message");
+
+  if (!turnMessage) {
+    console.error("Turn message element not found!");
+    return;
+  }
+
+  console.log("Displaying turn message:", message);
+  turnMessage.textContent = message;
+  turnMessage.style.display = "block"; // Show the message
+
+  // Hide the message after 2 seconds (you can adjust this delay)
+  setTimeout(() => {
+    turnMessage.style.display = "none"; // Hide the message
+  }, 2000);
+}
+
 //returning to map after leaving
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -133,88 +151,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //upgrade Weapon
 
-function populateWeaponList() {
-  const weaponList = document.getElementById("weapon-list");
-
-  weaponList.innerHTML = "";
-
-  player.deck.forEach((weapon) => {
-    const weaponItem = document.createElement("li");
-    weaponItem.textContent = weapon.name;
-    weaponItem.setAttribute("data-id", weapon.id);
-    weaponList.appendChild(weaponItem);
-  });
-}
-
-function upgradeWeapon(weapon) {
-  console.log(`Upgrading weapon: ${weapon.name}`);
-
-  weapon.upgrade();
-
-  player.savePlayerToStorage();
-  displayTurnMessage(`Upgraded ${weapon.name}`);
-
-  window.location.href = "map.html";
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  document
-    .getElementById("current-deck-upgrade")
-    .addEventListener("click", () => {
-      document.getElementById("weapon-deck-screen").classList.remove("hidden");
+  let upgradeMode = false; // Track upgrade mode
 
-      populateWeaponList();
-    });
-});
+  const upgradeButton = document.getElementById("current-deck-upgrade");
+  const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+  const closeDeckButton = document.getElementById("close-deck-btn");
 
-const weaponList = document.getElementById("weapon-list");
-if (weaponList) {
-  weaponList.addEventListener("click", (e) => {
-    const selectedWeapon = e.target;
-    if (selectedWeapon.tagName === "LI") {
-      const weaponId = selectedWeapon.getAttribute("data-id");
-      const weapon = player.deck.find((w) => w.id === weaponId);
+  upgradeButton?.addEventListener("click", () => {
+    console.log("Upgrade button clicked");
+    weaponDeckScreen?.classList.remove("hidden");
+    player.showDeck("upgrade"); // This should generate .weapon elements
+    upgradeMode = true;
+
+    document.body.classList.add("upgrade-mode");
+  });
+
+  // Listen for clicks on #weapon-deck-screen and check if it was a .weapon (not .weapon-item)
+  weaponDeckScreen?.addEventListener("click", (event) => {
+    // Check if the click target is a .weapon (using index class for selection)
+    const weaponElement = event.target.closest(".weapon");
+
+    if (weaponElement) {
+      console.log("Weapon clicked");
+
+      // Get the index of the clicked weapon
+      const weaponIndex = Array.from(
+        weaponDeckScreen.querySelectorAll(".weapon")
+      ).indexOf(weaponElement);
+      console.log("Weapon clicked, index:", weaponIndex); // Debugging the index
+
+      if (weaponIndex === -1) {
+        console.error("Weapon index not found!");
+        return;
+      }
+
+      const weapon = player.deck[weaponIndex]; // Get weapon by index
+      console.log("Weapon found:", weapon); // Debugging the weapon object
 
       if (weapon) {
-        upgradeWeapon(weapon);
+        console.log("Upgrading weapon:", weapon.name); // Confirm weapon to be upgraded
+        if (typeof upgradeWeapon === "function") {
+          upgradeWeapon(weapon); // Upgrade weapon
+        } else {
+          console.error("upgradeWeapon is not defined or is not a function.");
+        }
+        upgradeMode = false;
+      } else {
+        console.error("Weapon not found in player's deck");
       }
     }
   });
-}
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   document
-//     .getElementById("current-deck-upgrade")
-//     .addEventListener("click", () => {
-//       player.showDeck();
-//     });
-//   document.getElementById("close-deck-btn").addEventListener("click", () => {
-//     document.getElementById("weapon-deck-screen").classList.add("hidden");
-//   });
-// });
+  closeDeckButton?.addEventListener("click", () => {
+    console.log("Closing deck");
+    weaponDeckScreen?.classList.add("hidden");
+    upgradeMode = false;
+  });
 
-// const weaponList = document.getElementById("weapon-list");
+  function upgradeWeapon(weapon) {
+    console.log(`Upgrading weapon: ${weapon.name}`);
 
-// if (weaponList) {
-//   weaponList.addEventListener("click", (e) => {
-//     const selectedWeapon = e.target;
+    if (weapon.level >= 3) {
+      displayTurnMessage(`${weapon.name} is already max level.`);
+      return;
+    }
 
-//     if (selectedWeapon.tagName === "LI") {
-//       const weaponId = selectedWeapon.getAttribute("data-id");
-//       const weapon = player.deck.find((w) => w.id === weaponId);
+    weapon.upgrade();
+    player.savePlayerToStorage();
 
-//       if (weapon) {
-//         upgradeWeapon(weapon);
-//       }
-//     }
-//   });
-// }
+    displayTurnMessage(`Upgraded ${weapon.name}`);
 
-// function upgradeWeapon(weapon) {
-//   weapon.upgrade();
-//   player.savePlayerToStorage();
-
-//   displayTurnMessage(`Upgraded ${weapon.name}!`);
-
-//   window.location.href = "map.html";
-// }
+    window.location.href = "map.html";
+  }
+});

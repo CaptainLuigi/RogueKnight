@@ -441,6 +441,44 @@ class BasicSpear extends Weapons {
   }
 }
 
+class VampiricDagger extends Weapons {
+  constructor() {
+    super(
+      "Vampiric Dagger",
+      1,
+      "melee",
+      20,
+      50,
+      25,
+      1,
+      "Can only target the first enemy and has 10% lifesteal, click to instantly use weapon.",
+      "Assets/VampiricDagger.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      [10],
+      true
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        break;
+      case 3:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
+        break;
+    }
+  }
+}
+
 class Bomb extends Weapons {
   constructor() {
     super(
@@ -671,6 +709,7 @@ function getAvailableWeapons() {
     new Spearblade(),
     new Crossbow(),
     new HealthPotion(),
+    new VampiricDagger(),
   ];
 }
 
@@ -685,6 +724,7 @@ const weaponClassMapping = {
   Crossbow,
   HealthPotion,
   ThorsHammer,
+  VampiricDagger,
 };
 
 function createWeaponInstanceFromInfo(info) {
