@@ -121,7 +121,8 @@ html, body {
 }
 
 .tooltip {
-    top: -100%; /* Vertically center it */
+    font-family: 'Pirata_One';
+    top: -70%; /* Vertically center it */
     left: 50%; /* Horizontally center it */
     transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
@@ -139,3 +140,29 @@ body.upgrade-mode .weapon {
     cursor: pointer;
 }
 
+button#randomWeapon1 .weapon img,
+button#randomWeapon2 .weapon img {
+    width: 100px;
+    height: 100px;
+    image-rendering: pixelated;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+}
+
+button#randomWeapon1,
+button#randomWeapon2 {
+    background-color: antiquewhite;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+#randomWeapon1 .weapon,
+#randomWeapon2 .weapon {
+  position: relative;
+}
+
+#randomWeapon1 .weapon .tooltip,
+#randomWeapon2 .weapon .tooltip {
+    top: -150%;
+}

@@ -1,18 +1,31 @@
 let player = new Player("Knight", 100, 100, [], 3, 3);
 
 const events = [
-  "elite",
-  "elite",
-  "chest",
-  "chest",
-  "shop",
-  "questionmark",
-  "questionmark",
-  "questionmark",
-  "skull",
-  "skull",
-  "skull",
+  {
+    name: "questionmark",
+    propability: 10,
+  },
+  {
+    name: "skull",
+    propability: 5,
+  },
+  {
+    name: "shop",
+    propability: 1,
+  },
+  {
+    name: "elite",
+    propability: 3,
+  },
+  {
+    name: "chest",
+    propability: 5,
+  },
 ];
+
+const DEFAULT_EVENT_TYPE = "skull";
+
+let globalEventArray = [];
 
 const skullDifficulty = [1, 1, 1, 2, 2, 2, 3, 3, 3, 3];
 
@@ -33,7 +46,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function fillGlobalEventArray() {
+  globalEventArray.length = 0;
+  events.forEach((event) => {
+    for (let i = 0; i < event.propability; i++) {
+      globalEventArray.push(event.name);
+    }
+  });
+}
+
 function generateMap() {
+  fillGlobalEventArray();
   mapState = null;
   let tempMapState = {
     locationStates: {},
@@ -63,7 +86,9 @@ function generateMap() {
     }
 
     buttonData.difficulty = getSkullDifficulty(i);
-    if (i != 0) buttonData.type = getLocationType(i);
+    if (i != 0) {
+      buttonData.type = getLocationType(i);
+    }
 
     if (nextRow.children.length == 1) {
       buttonData.nextLocations.push(0);
@@ -105,6 +130,7 @@ function loadMap() {
 }
 
 function setButtonData(button, data) {
+  let imageTag;
   if (data.type === "elite") {
     imageTag = '<img src="Assets/eliteSkullred.png" alt="Elite" />';
   } else if (data.type === "shop") {
@@ -121,7 +147,13 @@ function setButtonData(button, data) {
 }
 
 function getLocationType(index) {
-  return events[Math.floor(Math.random() * events.length)];
+  if (globalEventArray.length === 0) {
+    return DEFAULT_EVENT_TYPE;
+  }
+  let tempIndex = Math.floor(Math.random() * globalEventArray.length);
+  let result = globalEventArray.splice(tempIndex, 1)[0];
+
+  return result;
 }
 
 function getSkullDifficulty(index) {
@@ -193,15 +225,15 @@ function markPossibleLocations() {
 
 function triggerRandomEvent() {
   const randomEvents = [
-    /* { type: "eliteFight", action: startEliteFight },*/
+    // { type: "eliteFight", action: startEliteFight },
     // { type: "normalFight", action: startNormalFight },
     // { type: "chest", action: openChest },
-    { type: "upgradeWeapon", action: showEvent },
+    // { type: "upgradeWeapon", action: showEvent },
     { type: "dropWeapon", action: showEvent },
-    { type: "thorsHammer", action: showEvent },
-    { type: "foundGold", action: showEvent },
-    { type: "gambling", action: showEvent },
-    { type: "rest", action: showEvent },
+    // { type: "thorsHammer", action: showEvent },
+    // { type: "foundGold", action: showEvent },
+    // { type: "gambling", action: showEvent },
+    // { type: "rest", action: showEvent },
   ];
 
   const randomEvent =
