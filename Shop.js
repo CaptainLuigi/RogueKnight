@@ -19,12 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
   sprite = document.querySelector("#Shopkeeper");
   setSpriteConfig(idleShopkeeper);
   animateSprite();
+
+  document.getElementById("current-deck").addEventListener("click", () => {
+    player.showDeck();
+  });
+  document.getElementById("close-deck-btn").addEventListener("click", () => {
+    document.getElementById("weapon-deck-screen").classList.add("hidden");
+  });
 });
 
 window.addEventListener("DOMContentLoaded", function () {
   const availableWeapons = getAvailableWeapons();
   const weaponButtons = document.querySelectorAll(".Shop-weapon");
-  const speechBubble = document.getElementById("speech-buabble");
+  const speechBubble = document.getElementById("speech-bubble");
   const weaponInfo = document.getElementById("weapon-info");
 
   weaponButtons.forEach((button) => {
@@ -32,6 +39,8 @@ window.addEventListener("DOMContentLoaded", function () {
     const randomWeapon = availableWeapons[randomIndex];
 
     generateWeaponInfo(randomWeapon, randomIndex, button, null, weaponInfo, 20);
+
+    weaponInfo.classList.remove("tooltip");
 
     button.firstElementChild.addEventListener("click", function () {
       purchaseWeapon(randomWeapon);
@@ -48,6 +57,44 @@ function purchaseWeapon(weapon) {
     updatePlayerGold(-20);
   }
 }
+
+// document.getElementById("Shop-removal").addEventListener("click", () => {
+//   player.showDeck();
+// });
+
+// document.getElementById("close-deck-btn").addEventListener("click", () => {
+//   document.getElementById("weapon-deck-screen").classList.add("hidden");
+// });
+
+// function dropWeapon(indexToDrop) {
+//   console.log(`Dropping weapon at index: ${indexToDrop}`);
+
+//   let currentDeck = player.deck;
+
+//   if (
+//     indexToDrop === undefined ||
+//     indexToDrop < 0 ||
+//     indexToDrop >= currentDeck.length
+//   ) {
+//     console.error("Invalid weapon index");
+//     return;
+//   }
+
+//   console.log("Player deck before removing weapon:", currentDeck);
+
+//   let updatedDeck = currentDeck.filter((_, index) => index !== indexToDrop);
+
+//   console.log("Updated Player Deck:", updatedDeck);
+
+//   player.savePlayerToStorage = function () {
+//     let state = {
+//       deck: updatedDeck.map((weapon) => weapon.getWeaponInfo()),
+//     };
+//     storeData("playerState", state);
+//   };
+
+//   player.deck = updatedDeck;
+// }
 
 let frame = 0;
 

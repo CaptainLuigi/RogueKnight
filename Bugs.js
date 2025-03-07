@@ -31,4 +31,5 @@ deck liste in shop, wie styling?s
 
 post battle screen, wenn nicht genug gold verschwindet waffe zur auswahl trotzdem
 
+manchmal refresh der seite notwending um nach drop weapon event nächste location auswählen zu können
 */

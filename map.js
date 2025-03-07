@@ -225,10 +225,10 @@ function markPossibleLocations() {
 
 function triggerRandomEvent() {
   const randomEvents = [
-    // { type: "eliteFight", action: startEliteFight },
-    // { type: "normalFight", action: startNormalFight },
-    // { type: "chest", action: openChest },
-    // { type: "upgradeWeapon", action: showEvent },
+    //{ type: "eliteFight", action: startEliteFight },
+    //{ type: "normalFight", action: startNormalFight },
+    //{ type: "chest", action: openChest },
+    //{ type: "upgradeWeapon", action: showEvent },
     { type: "dropWeapon", action: showEvent },
     // { type: "thorsHammer", action: showEvent },
     // { type: "foundGold", action: showEvent },

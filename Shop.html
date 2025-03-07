@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shop</title>
     <link rel="stylesheet" href="styleShop.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
 
     <script src="baseClasses.js"></script>
     <script src="player.js"></script>
@@ -31,6 +32,14 @@
     <img id="WoodFloor" src="Assets/wood-background.jpg" alt="WoodBackground" />
 
     <div id="playerGold">Gold:</div>
+
+    <button id="current-deck" class="orange-btn">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
+      </div>
+    </div>
 
     <div class="container-order">
       <div class="Shop-weapon-container">

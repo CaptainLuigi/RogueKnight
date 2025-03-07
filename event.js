@@ -45,6 +45,51 @@ function displayTurnMessage(message) {
   }, 2000);
 }
 
+// Function to drop the selected weapon by index
+function dropWeapon(indexToDrop) {
+  console.log(`Dropping weapon at index: ${indexToDrop}`);
+
+  let currentDeck = player.deck; // Get a copy of the deck (since the getter returns a copy)
+
+  if (
+    indexToDrop === undefined ||
+    indexToDrop < 0 ||
+    indexToDrop >= currentDeck.length
+  ) {
+    console.error("Invalid weapon index!");
+    return;
+  }
+
+  // Log deck before removing weapon
+  console.log("Player deck before removing weapon:", currentDeck);
+
+  // Create a new deck with the selected weapon removed
+  let updatedDeck = currentDeck.filter((_, index) => index !== indexToDrop);
+
+  // Log the updated deck after removing the weapon
+  console.log("Updated Player Deck:", updatedDeck);
+
+  // Manually override the player's deck by calling savePlayerToStorage
+  player.savePlayerToStorage = function () {
+    let state = {
+      name: player.name,
+      health: player.health,
+      maxHealth: player.maxHealth,
+      maxEnergy: player.maxEnergy,
+      deck: updatedDeck.map((weapon) => weapon.getWeaponInfo()), // Save new deck
+    };
+    storeData("playerState", state);
+  };
+
+  // Call savePlayerToStorage to update storage with new deck
+  player.savePlayerToStorage();
+
+  console.log("Player deck saved to storage.");
+
+  // Redirect to map
+  window.location.href = "map.html";
+}
+
 //returning to map after leaving
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -206,47 +251,6 @@ document.addEventListener("DOMContentLoaded", function () {
     button2.addEventListener("click", () => {
       dropWeapon(randomWeapon2); // Drop the second weapon by index
     });
-
-    // Function to drop the selected weapon by index
-    function dropWeapon(indexToDrop) {
-      console.log(`Dropping weapon at index: ${indexToDrop}`);
-
-      // Log the weapon that is being removed
-      console.log("Weapon to drop:", player.deck[indexToDrop]);
-
-      if (
-        indexToDrop === undefined ||
-        indexToDrop < 0 ||
-        indexToDrop >= player.deck.length
-      ) {
-        console.error("Invalid weapon index!");
-        return;
-      }
-
-      // Log deck before removing weapon
-      console.log("Player deck before removing weapon:", player.deck);
-
-      // Attempt to remove the weapon from the player's deck using its index
-      const removedWeapon = player.deck.splice(indexToDrop, 1); // Remove the weapon at the selected index
-
-      // Log the result of the splice operation
-      console.log("Removed Weapon:", removedWeapon);
-
-      // Log deck after removing weapon
-      console.log("Player deck after removing weapon:", player.deck);
-
-      // Update the player's deck by setting the modified deck back to the player object
-      player.deck = player.deck; // Ensuring the updated deck is assigned
-
-      // Save the updated deck to local storage
-      player.savePlayerToStorage();
-
-      // Log to confirm that the deck has been saved
-      console.log("Player deck saved to storage.");
-
-      // Redirect to map (or any other page)
-      window.location.href = "map.html";
-    }
   }
 
   //upgrade Weapon
