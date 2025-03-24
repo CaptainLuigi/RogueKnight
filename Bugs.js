@@ -25,11 +25,9 @@ function calculate damage
 
 bei einem gegner, diesen centern
 
-post battle healing, wenn schon full -> heal nicht möglich
-
-deck liste in shop, wie styling?s
-
-post battle screen, wenn nicht genug gold verschwindet waffe zur auswahl trotzdem
+drop weapon event not working wenn weniger als 2 weapons im deck
 
 manchmal refresh der seite notwending um nach drop weapon event nächste location auswählen zu können
+
+bei event duplicate, neue waffe immer level 1
 */

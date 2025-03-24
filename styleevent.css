@@ -122,7 +122,7 @@ html, body {
 
 .tooltip {
     font-family: 'Pirata_One';
-    top: -70%; /* Vertically center it */
+    top: -100%; /* Vertically center it */
     left: 50%; /* Horizontally center it */
     transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */

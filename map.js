@@ -224,22 +224,47 @@ function markPossibleLocations() {
 }
 
 function triggerRandomEvent() {
-  const randomEvents = [
-    //{ type: "eliteFight", action: startEliteFight },
-    //{ type: "normalFight", action: startNormalFight },
-    //{ type: "chest", action: openChest },
-    //{ type: "upgradeWeapon", action: showEvent },
-    { type: "dropWeapon", action: showEvent },
+  const allEvents = [
+    // { type: "eliteFight", action: startEliteFight },
+    // { type: "normalFight", action: startNormalFight },
+    { type: "chest", action: openChest },
+    // { type: "upgradeWeapon", action: showEvent },
+    // { type: "ambushGold", action: showEvent },
+    // { type: "hurtAnkle", action: showEvent },
+    // { type: "duplicateWeapon", action: showEvent },
     // { type: "thorsHammer", action: showEvent },
     // { type: "foundGold", action: showEvent },
     // { type: "gambling", action: showEvent },
     // { type: "rest", action: showEvent },
+    { type: "lightning", action: showEvent },
   ];
 
-  const randomEvent =
-    randomEvents[Math.floor(Math.random() * randomEvents.length)];
+  if (player.deck.length > 2) {
+    allEvents.push({ type: "dropWeapon", action: showEvent });
+  }
 
-  randomEvent.action(randomEvent.type);
+  let triggeredEvents =
+    JSON.parse(localStorage.getItem("triggeredEvents")) || {};
+
+  const availableEvents = allEvents.filter((event) => {
+    return (
+      !triggeredEvents[event.type] ||
+      ["eliteFight", "normalFight", "chest"].includes(event.type)
+    );
+  });
+
+  if (availableEvents.length > 0) {
+    const randomEvent =
+      availableEvents[Math.floor(Math.random() * availableEvents.length)];
+
+    randomEvent.action(randomEvent.type);
+
+    triggeredEvents[randomEvent.type] = true;
+
+    localStorage.setItem("triggeredEvents", JSON.stringify(triggeredEvents));
+  } else {
+    console.log("No available events left to trigger!");
+  }
 }
 
 function startEliteFight() {}
@@ -253,6 +278,6 @@ function openChest() {
 }
 
 function showEvent(type) {
-  storeData("RandomEvent", type);
+  storeData("triggeredEvents", type);
   window.location.href = "./event.html";
 }

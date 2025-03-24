@@ -50,7 +50,7 @@
       </span>
       <div>
         <button class="thorsHammer-btn textbox-btn">Try to lift it</button>
-        <button class="textbox-btn">Leave</button>
+        <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
 
@@ -67,7 +67,7 @@
         You got the legendary weapon.
       </span>
       <div>
-        <button class="textbox-btn">Leave</button>
+        <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
 
@@ -82,7 +82,7 @@
       </span>
       <div>
         <button class="foundGold textbox-btn">Take the gold</button>
-        <button class="textbox-btn">Leave</button>
+        <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
 
@@ -114,7 +114,7 @@
       </span>
       <div>
         <button class="acceptGamble textbox-btn">Let's gamble</button>
-        <button class="textbox-btn">Leave</button>
+        <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
 
@@ -128,7 +128,7 @@
         You knew you shouldn't be this greedy, but now it's too late.
       </span>
       <div>
-        <button class="textbox-btn">Leave</button>
+        <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
 
@@ -142,7 +142,7 @@
         You knew it was risky, but fortunately luck was on your side, this time.
       </span>
       <div>
-        <button class="textbox-btn">Leave</button>
+        <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
 
@@ -175,6 +175,105 @@
           Upgrade Weapon
         </button>
       </div>
+    </div>
+
+    <div class="textbox hidden" id="ambushGold">
+      <span>
+        As you walk through the quiet forest, the peaceful atmosphere suddenly
+        shifts. A sharp pain strikes the back of your head, and everything goes
+        black.<br /><br />
+
+        You wake up moments later, your head pounding. The forest is still and
+        silent, but something feels wrong. As you gather your bearings, you
+        notice your pouch is lighter, your is gold gone!<br /><br />
+
+        But then, as your fingers brush the folds of your tunic, you feel
+        something — your hidden pocket. Reaching inside, you find a remaining
+        stash of gold, just enough to keep you going. It seems the thieves
+        missed this one small detail.
+      </span>
+      <div>
+        <button class="textbox-btn" id="ambushGold-leave">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="hurtAnkle">
+      <span>
+        You were moving swiftly through the rugged terrain of the forest when
+        suddenly,<br />
+        your foot caught on an unseen root. The world tilted as you stumbled
+        forward, your body crashing against the ground.<br />
+        A sharp pain shot through your ankle as you tried to stand up, the
+        weight of your steps causing more discomfort.<br /><br />
+        You grit your teeth, the pain radiating from your foot, but you gather
+        your strengh and push through.<br />
+        Still, you know you'll have to take it easy for a while.
+      </span>
+      <div>
+        <button class="textbox-btn" id="hurtAnkle-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="duplicateWeapon">
+      <span>
+        As you walk through the dense fog, the air around you shimmers with an
+        unnatural glow.<br />
+        A faint whisper calls your name, drawing you toward a figure cloaked in
+        silver mist. Its form shifts, never quite solid, never quite real.<br />
+        The creature tilts its head, eyes gleaming with ancient wisdom, and
+        gestures toward your weapons. Without a word, it reaches out, its
+        ethereal fingers hovering over them, waiting.<br />
+        A strange realization washes over you — you must choose.<br /><br />
+        Which of your weapons will be reflected in the mist?
+      </span>
+      <div>
+        <button class="textbox-btn" id="duplicateWeapon-btn">
+          Choose Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="duplicateWeapon2">
+      <span>
+        The air ripples, and before your eyes, an exact copy of your chosen
+        weapon materializes in your hands.<br />
+        You blink, and the figure is gone — vanished into the mist as if it had
+        never been there.<br /><br />
+        But the weight of the extra weapon in your grasp is proof that it was.
+      </span>
+      <button class="textbox-btn leave-btn">Leave</button>
+    </div>
+
+    <div class="textbox hidden" id="lightning">
+      <span>
+        The rain begins to fall, cold and relentless. Thunder rumbles in the
+        distance as you stand in the middle of a clearing, exposed beneath the
+        open sky.<br />
+        Lightning flashes — brief, blinding. In that instant, you see it:<br />
+        a lone tree at the clearing's middle, its branches trembling in the
+        wind. The storm roars overhead, the next strike drawing closer.<br />
+        You have a choice.<br />
+        Stay in the open, defenseless against the storm, or run to the tree —
+        risking that the next bolt may find you.
+      </span>
+      <div>
+        <button class="textbox-btn" id="takeLightning">Seek shelter</button>
+        <button class="textbox-btn leave-btn">Keep going</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="takeLightning2">
+      <span>
+        You reach the tree just as the storm roars. Then — A blinding flash. A
+        deafening crack splits the air, and a force hurls you into darkness.<br />
+        When you wake, the storm has passed. The tree is a smoldering ruin. Your
+        weapons are gone — vanished without a trace.<br />
+        But something remains.<br />
+        A strange warmth hums in your hands, flickers of light dancing between
+        your fingers. Something has changed.
+      </span>
+      <button class="textbox-btn leave-btn">Leave</button>
     </div>
 
     <script src="event.js"></script>

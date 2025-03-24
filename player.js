@@ -149,6 +149,11 @@ class Player extends HealthEntity {
     displayWeapons(this.deck, false, "weapon-list");
   }
 
+  clearDeck() {
+    this.#deck = [];
+    this.savePlayerToStorage();
+  }
+
   loadPlayerFromStorage() {
     let state = loadData("playerState");
     if (state == null) {

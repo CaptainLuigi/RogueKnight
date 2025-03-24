@@ -486,8 +486,8 @@ class Bomb extends Weapons {
       1,
       "far",
       500,
-      40,
-      20,
+      500,
+      0,
       2,
       "Can't target the first enemy and hits also the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
       "Assets/bomb.png",
@@ -685,7 +685,7 @@ class ThorsHammer extends Weapons {
       case 1:
         break;
       case 2:
-        weaponinfo.damage += 10;
+        weaponInfo.damage += 10;
         weaponInfo.criticalDamage += 10;
         weaponInfo.criticalChance += 5;
         break;
@@ -693,6 +693,43 @@ class ThorsHammer extends Weapons {
         weaponInfo.damage += 15;
         weaponInfo.criticalDamage += 15;
         weaponInfo.criticalChance += 10;
+        break;
+    }
+  }
+}
+
+class Lightning extends Weapons {
+  constructor() {
+    super(
+      "Lightning Strike",
+      1,
+      "far",
+      20,
+      150,
+      3,
+      1,
+      "Also hits the enemy to the left and to the right, click weapon first, then the enemy you want to hit",
+      "Assets/Lightning.png",
+      true,
+      0,
+      5,
+      [1],
+      [1]
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 50;
+        weaponInfo.criticalChance += 1;
+        break;
+      case 3:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 50;
+        weaponInfo.criticalChance += 1;
         break;
     }
   }
@@ -725,6 +762,7 @@ const weaponClassMapping = {
   HealthPotion,
   ThorsHammer,
   VampiricDagger,
+  Lightning,
 };
 
 function createWeaponInstanceFromInfo(info) {

@@ -384,18 +384,18 @@ function displayRandomWeapons() {
     generateWeaponInfo(randomWeapon, newRandomIndex, null, button, null, 30);
 
     button.addEventListener("click", function () {
-      purchaseWeapon(randomWeapon);
-      button.remove();
+      purchaseWeapon(randomWeapon, button);
     });
   });
 }
 
-function purchaseWeapon(weapon) {
+function purchaseWeapon(weapon, button) {
   if (globalSettings.playerGold >= 30) {
     player.addWeapon(weapon);
     updatePlayerGold(-30);
     populateWeaponUpgradeOptions();
     displayTurnMessage(`You purchased ${weapon.name}!`);
+    button.remove();
   } else {
     displayTurnMessage("Not enough gold!");
   }
@@ -419,7 +419,10 @@ function upgradeWeapon(weapon) {
 function healPlayer(button) {
   const healingCost = 50;
 
-  if (globalSettings.playerGold >= healingCost) {
+  if (player.health >= player.maxHealth) {
+    button.disabled = true;
+    displayTurnMessage("Already full HP!");
+  } else if (globalSettings.playerGold >= healingCost) {
     updatePlayerGold(-healingCost);
     player.heal(20);
 

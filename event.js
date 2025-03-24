@@ -69,6 +69,8 @@ function dropWeapon(indexToDrop) {
   // Log the updated deck after removing the weapon
   console.log("Updated Player Deck:", updatedDeck);
 
+  player.deck = updatedDeck;
+
   // Manually override the player's deck by calling savePlayerToStorage
   player.savePlayerToStorage = function () {
     let state = {
@@ -85,9 +87,6 @@ function dropWeapon(indexToDrop) {
   player.savePlayerToStorage();
 
   console.log("Player deck saved to storage.");
-
-  // Redirect to map
-  window.location.href = "map.html";
 }
 
 //returning to map after leaving
@@ -96,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const leaveButtons = document.querySelectorAll(".textbox-btn");
 
   leaveButtons.forEach((button) => {
-    if (button.textContent.trim() === "Leave") {
+    if (button.classList.contains("leave-btn")) {
       button.addEventListener("click", function () {
         window.location.href = "map.html";
       });
@@ -118,7 +117,30 @@ document.addEventListener("DOMContentLoaded", function () {
       player.heal(20);
       updateHealthBar(player);
       player.savePlayerToStorage();
+      window.location.href = "map.html";
     });
+  }
+
+  //Lightning
+
+  if (eventType === "lightning") {
+    document.getElementById("lightning").classList.remove("hidden");
+    document
+      .getElementById("takeLightning")
+      .addEventListener("click", function () {
+        document.getElementById("lightning").classList.add("hidden");
+        document.getElementById("takeLightning2").classList.remove("hidden");
+
+        player.clearDeck();
+
+        player.addWeapon(new Lightning());
+        player.addWeapon(new Lightning());
+        player.addWeapon(new Lightning());
+
+        player.savePlayerToStorage();
+
+        console.log("Updated player deck after event", player.deck);
+      });
   }
 
   //Thors Hammer Code
@@ -246,10 +268,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add event listeners to drop the weapon that was NOT chosen
     button1.addEventListener("click", () => {
       dropWeapon(randomWeapon1); // Drop the first weapon by index
+      window.location.href = "map.html";
     });
 
     button2.addEventListener("click", () => {
       dropWeapon(randomWeapon2); // Drop the second weapon by index
+      window.location.href = "map.html";
     });
   }
 
@@ -328,6 +352,124 @@ document.addEventListener("DOMContentLoaded", function () {
 
       window.location.href = "map.html";
     }
+  }
+
+  //gold ambush
+
+  if (eventType === "ambushGold") {
+    const ambushGoldLeaveBtn = document.getElementById("ambushGold-leave");
+
+    if (ambushGoldLeaveBtn) {
+      ambushGoldLeaveBtn.addEventListener("click", () => {
+        // Corrected the Math.floor function
+        const goldToLose = Math.floor(globalSettings.playerGold * (2 / 3));
+
+        // Log and update the player's gold
+        globalSettings.playerGold -= goldToLose;
+
+        console.log(
+          `Lost ${goldToLose} gold! You now have ${globalSettings.playerGold} gold.`
+        );
+
+        // Update the gold display
+        const goldDisplay = document.getElementById("playerGold");
+        if (goldDisplay) {
+          goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
+        }
+
+        player.savePlayerToStorage();
+        window.location.href = "map.html";
+      });
+    } else {
+      console.error("Ambush gold button not found!");
+    }
+  }
+
+  if (eventType === "hurtAnkle") {
+    const hurtAnkleBtn = document.getElementById("hurtAnkle-btn");
+
+    if (hurtAnkleBtn) {
+      hurtAnkleBtn.addEventListener("click", () => {
+        player.takeDamage(10);
+        updateHealthBar(player);
+        player.savePlayerToStorage();
+        window.location.href = "map.html";
+      });
+    }
+  }
+
+  //duplicate Weapon
+
+  if (eventType === "duplicateWeapon") {
+    const duplicateWeaponBtn = document.getElementById("duplicateWeapon-btn");
+    const duplicateWeaponBox = document.getElementById("duplicateWeapon");
+    const duplicateWeaponBox2 = document.getElementById("duplicateWeapon2");
+    const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+
+    if (duplicateWeaponBtn) {
+      duplicateWeaponBtn.addEventListener("click", function () {
+        weaponDeckScreen?.classList.remove("hidden");
+        player.showDeck("duplicate"); // Display player's weapons for selection
+      });
+    }
+
+    // Listen for clicks on weapons in the deck
+    weaponDeckScreen?.addEventListener("click", (event) => {
+      const weaponElement = event.target.closest(".weapon"); // Get the clicked weapon element
+
+      if (weaponElement) {
+        // Get the index of the clicked weapon in the weapon deck
+        const weaponIndex = Array.from(
+          weaponDeckScreen.querySelectorAll(".weapon")
+        ).indexOf(weaponElement);
+        console.log("Weapon clicked, index:", weaponIndex); // Debugging the index
+
+        if (weaponIndex === -1) {
+          console.error("Weapon index not found!");
+          return;
+        }
+
+        // Get the weapon from player's deck using the index
+        const selectedWeapon = player.deck[weaponIndex];
+        console.log("Weapon found:", selectedWeapon); // Debugging the weapon object
+
+        // Debugging the level of the selected weapon
+        console.log(`Original weapon level: ${selectedWeapon.level}`);
+
+        // Proceed to duplicate the weapon
+        if (selectedWeapon) {
+          console.log(`Duplicating weapon: ${selectedWeapon.name}`);
+
+          // Create a new instance of the selected weapon, ensuring proper handling of private fields
+          const duplicatedWeapon = new selectedWeapon.constructor(); // This ensures the new weapon is created using the same constructor
+
+          // Copy all properties over to the duplicated weapon (including private fields and level)
+          Object.getOwnPropertyNames(selectedWeapon).forEach((key) => {
+            // Ensure we're not duplicating the constructor property
+            if (key !== "constructor") {
+              duplicatedWeapon[key] = selectedWeapon[key];
+            }
+          });
+
+          // If the level is a private field, use the getter to assign the value
+          duplicatedWeapon.level = selectedWeapon.level; // Use the getter for level
+
+          console.log(
+            `Duplicated weapon level after handling: ${duplicatedWeapon.level}`
+          );
+
+          player.addWeapon(duplicatedWeapon); // Add the duplicated weapon to player's deck
+          player.savePlayerToStorage(); // Save the updated deck to local storage
+
+          // Hide the weapon deck screen and show the next event box
+          weaponDeckScreen.classList.add("hidden");
+          duplicateWeaponBox.classList.add("hidden");
+          duplicateWeaponBox2.classList.remove("hidden");
+        } else {
+          console.error("Selected weapon not found in player's deck");
+        }
+      }
+    });
   }
 });
 
