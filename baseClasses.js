@@ -33,7 +33,9 @@ class HealthEntity {
 
     // Set styles for the popup
     damageElement.style.color = isCritical ? "#b8860b" : "red";
-    damageElement.style.fontSize = "24px";
+    damageElement.style.fontSize = "32px";
+    damageElement.style.fontWeight = "bold";
+    damageElement.style.webkitTextStroke = "0.1px black";
     damageElement.style.position = "absolute";
     damageElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
@@ -50,6 +52,48 @@ class HealthEntity {
     // Remove the element after 1 second
     setTimeout(() => {
       damageElement.remove();
+    }, 1500);
+  }
+
+  /**
+   * Display lifesteal popup above the health bar
+   * @param {number} amount The amount of lifesteal to display
+   */
+  displayLifesteal(amount) {
+    const healthBar = this.healthBar;
+    if (!healthBar) {
+      console.error("Health bar not found!");
+      return;
+    }
+
+    const healthBarRect = healthBar.getBoundingClientRect();
+
+    // Create a lifesteal popup element
+    const lifestealElement = document.createElement("div");
+    lifestealElement.classList.add("lifesteal-popup");
+    lifestealElement.textContent = `+${amount}`;
+
+    // Set styles for the popup
+    lifestealElement.style.color = "#4caf50"; // Green color for lifesteal
+    lifestealElement.style.fontSize = "32px";
+    lifestealElement.style.fontWeight = "bold";
+    lifestealElement.style.webkitTextStroke = "0.1px black";
+    lifestealElement.style.position = "absolute";
+    lifestealElement.style.left = `${
+      healthBarRect.left + healthBarRect.width / 2
+    }px`;
+    lifestealElement.style.top = `${healthBarRect.top - 40}px`; // Slightly above the health bar
+    lifestealElement.style.transform = "translateX(-50%)"; // Center horizontally
+    lifestealElement.style.zIndex = "1000"; // Ensure it's visible above other elements
+
+    lifestealElement.style.background = "none";
+    lifestealElement.style.border = "none";
+
+    document.body.appendChild(lifestealElement);
+
+    // Remove the element after 1 second
+    setTimeout(() => {
+      lifestealElement.remove();
     }, 1500);
   }
 }

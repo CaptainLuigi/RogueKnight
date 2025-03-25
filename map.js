@@ -176,7 +176,7 @@ function enterLocation(button) {
   if (mapState.activeLocation != null) {
     active = mapState.locationStates[mapState.activeLocation];
     let activeButton = document.querySelector(
-      `[index="${mapState.activeLocation}"]`
+      `.navigation[index="${mapState.activeLocation}"]`
     );
     let activeRow = activeButton.parentElement;
 
@@ -227,7 +227,7 @@ function triggerRandomEvent() {
   const allEvents = [
     // { type: "eliteFight", action: startEliteFight },
     // { type: "normalFight", action: startNormalFight },
-    { type: "chest", action: openChest },
+    // { type: "chest", action: openChest },
     // { type: "upgradeWeapon", action: showEvent },
     // { type: "ambushGold", action: showEvent },
     // { type: "hurtAnkle", action: showEvent },
@@ -236,7 +236,9 @@ function triggerRandomEvent() {
     // { type: "foundGold", action: showEvent },
     // { type: "gambling", action: showEvent },
     // { type: "rest", action: showEvent },
-    { type: "lightning", action: showEvent },
+    // { type: "lightning", action: showEvent },
+    { type: "goldenStatue", action: showEvent },
+    // { type: "succubus", action: showEvent },
   ];
 
   if (player.deck.length > 2) {
@@ -278,6 +280,16 @@ function openChest() {
 }
 
 function showEvent(type) {
-  storeData("triggeredEvents", type);
+  storeData("RandomEvent", type);
   window.location.href = "./event.html";
 }
+
+document.getElementById("reset-save-btn").addEventListener("click", () => {
+  localStorage.removeItem("playerState");
+  localStorage.removeItem("MapState");
+  localStorage.removeItem("triggeredEvents");
+
+  globalSettings.playerGold = 0;
+
+  window.location.reload();
+});

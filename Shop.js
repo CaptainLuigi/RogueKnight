@@ -26,6 +26,61 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("close-deck-btn").addEventListener("click", () => {
     document.getElementById("weapon-deck-screen").classList.add("hidden");
   });
+
+  function populateWeaponRemovalOptions() {
+    // Display the player's current weapons in the "remove-weapon-options" section
+    displayWeapons(player.deck, false, "remove-weapon-options");
+  }
+
+  function removeWeapon(weapon) {
+    // Display a message if the weapon was successfully removed
+    displayTurnMessage(`Removed ${weapon.name} from your deck!`);
+
+    // Remove the weapon from the player's deck
+    let index = player.deck.indexOf(weapon);
+    if (index > -1) {
+      player.deck.splice(index, 1); // Remove the weapon from the deck array
+    }
+
+    // Optionally, update the player's gold if needed. For example:
+    updatePlayerGold(50); // Adding 50 gold for removing the weapon (adjust this amount based on your game logic)
+
+    // Save the updated player state
+    player.savePlayerToStorage();
+  }
+
+  function weaponSelectedRemoval(event) {
+    let target = event.target;
+    while (target && target.classList && !target.classList.contains("weapon"))
+      target = target.parentNode;
+    if (!target?.classList?.contains("weapon")) return;
+
+    let index = target.getAttribute("index");
+    index = parseInt(index);
+    let weapon = player.deck[index];
+
+    // Call the removeWeapon function when a weapon is selected
+    removeWeapon(weapon);
+
+    console.log(`Removed weapon: ${weapon.name}`);
+  }
+
+  window.onload = function () {
+    // Toggle the visibility of the weapon removal options
+    document
+      .getElementById("choose-weapon-remove-btn")
+      .addEventListener("click", function () {
+        const removeOptions = document.getElementById("remove-weapon-options");
+        if (
+          removeOptions.style.display === "none" ||
+          removeOptions.style.display === ""
+        ) {
+          removeOptions.style.display = "flex"; // Show removal options
+        } else {
+          removeOptions.style.display = "none"; // Hide removal options
+        }
+      });
+  };
 });
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -57,44 +112,6 @@ function purchaseWeapon(weapon) {
     updatePlayerGold(-20);
   }
 }
-
-// document.getElementById("Shop-removal").addEventListener("click", () => {
-//   player.showDeck();
-// });
-
-// document.getElementById("close-deck-btn").addEventListener("click", () => {
-//   document.getElementById("weapon-deck-screen").classList.add("hidden");
-// });
-
-// function dropWeapon(indexToDrop) {
-//   console.log(`Dropping weapon at index: ${indexToDrop}`);
-
-//   let currentDeck = player.deck;
-
-//   if (
-//     indexToDrop === undefined ||
-//     indexToDrop < 0 ||
-//     indexToDrop >= currentDeck.length
-//   ) {
-//     console.error("Invalid weapon index");
-//     return;
-//   }
-
-//   console.log("Player deck before removing weapon:", currentDeck);
-
-//   let updatedDeck = currentDeck.filter((_, index) => index !== indexToDrop);
-
-//   console.log("Updated Player Deck:", updatedDeck);
-
-//   player.savePlayerToStorage = function () {
-//     let state = {
-//       deck: updatedDeck.map((weapon) => weapon.getWeaponInfo()),
-//     };
-//     storeData("playerState", state);
-//   };
-
-//   player.deck = updatedDeck;
-// }
 
 let frame = 0;
 

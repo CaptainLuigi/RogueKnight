@@ -708,7 +708,7 @@ class Lightning extends Weapons {
       150,
       3,
       1,
-      "Also hits the enemy to the left and to the right, click weapon first, then the enemy you want to hit",
+      "Also hits the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
       "Assets/Lightning.png",
       true,
       0,

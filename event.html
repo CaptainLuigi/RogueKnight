@@ -11,6 +11,7 @@
     <script src="weapons.js"></script>
     <script src="saveGame.js"></script>
     <script src="utility.js"></script>
+    <script src="enemie.js"></script>
   </head>
   <body>
     <div>
@@ -37,6 +38,8 @@
         <button id="close-deck-btn" class="orange-btn">Close</button>
       </div>
     </div>
+
+    <!-- Thors Hammer -->
 
     <div class="textbox hidden" id="thorsHammer">
       <span>
@@ -71,6 +74,8 @@
       </div>
     </div>
 
+    <!-- Found Gold -->
+
     <div class="textbox hidden" id="foundGold">
       <span>
         You were walking through the forest, minding your own business and
@@ -85,6 +90,8 @@
         <button class="textbox-btn leave-btn">Leave</button>
       </div>
     </div>
+
+    <!-- Drop weapon -->
 
     <div class="textbox hidden" id="dropWeapon">
       <span>
@@ -102,6 +109,8 @@
         <button id="randomWeapon2"></button>
       </div>
     </div>
+
+    <!-- Gambling -->
 
     <div class="textbox hidden" id="gambling">
       <span>
@@ -146,6 +155,8 @@
       </div>
     </div>
 
+    <!-- rest -->
+
     <div class="textbox hidden" id="rest">
       <span>
         Exhausted from the journey through the forest you sat down on a lonely
@@ -159,6 +170,8 @@
         <button class="textbox-btn" id="leaveRest">Leave</button>
       </div>
     </div>
+
+    <!-- upgrade Weapon -->
 
     <div class="textbox hidden" id="upgradeWeapon">
       <span>
@@ -176,6 +189,8 @@
         </button>
       </div>
     </div>
+
+    <!-- ambush Gold -->
 
     <div class="textbox hidden" id="ambushGold">
       <span>
@@ -197,6 +212,8 @@
       </div>
     </div>
 
+    <!-- hurt Ankle -->
+
     <div class="textbox hidden" id="hurtAnkle">
       <span>
         You were moving swiftly through the rugged terrain of the forest when
@@ -213,6 +230,8 @@
         <button class="textbox-btn" id="hurtAnkle-btn">Leave</button>
       </div>
     </div>
+
+    <!-- duplicate Weapon -->
 
     <div class="textbox hidden" id="duplicateWeapon">
       <span>
@@ -245,14 +264,16 @@
       <button class="textbox-btn leave-btn">Leave</button>
     </div>
 
+    <!-- lightning -->
+
     <div class="textbox hidden" id="lightning">
       <span>
         The rain begins to fall, cold and relentless. Thunder rumbles in the
         distance as you stand in the middle of a clearing, exposed beneath the
         open sky.<br />
         Lightning flashes — brief, blinding. In that instant, you see it:<br />
-        a lone tree at the clearing's middle, its branches trembling in the
-        wind. The storm roars overhead, the next strike drawing closer.<br />
+        a lone tree, its branches trembling in the wind. The storm roars
+        overhead, the next strike drawing closer.<br />
         You have a choice.<br />
         Stay in the open, defenseless against the storm, or run to the tree —
         risking that the next bolt may find you.
@@ -274,6 +295,63 @@
         your fingers. Something has changed.
       </span>
       <button class="textbox-btn leave-btn">Leave</button>
+    </div>
+
+    <!-- golden Statue -->
+
+    <div class="textbox hidden" id="goldenStatue">
+      <span>
+        As you move through the forest, a faint shimmer flickers between the
+        trees.<br />
+        Pushing past the undergrowth, you find a cave hidden among the roots.
+        Inside, dim light reflects off a golden statue, its surface worn and
+        ancient.<br />
+        You reach for it, but it's far too heavy to lift.<br />
+        A thought crosses your mind. You could break the statue, shattering gold
+        from its form — but the act feels... <br />wrong.<br />
+        The weight of it settles in your chest. This gold will come at a cost.
+      </span>
+      <div>
+        <button class="textbox-btn" id="smashStatue">Break it</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- succubus -->
+
+    <div class="textbox hidden" id="succubus">
+      <span>
+        Soft laughter drifts through the air, smooth as silk. A woman stands
+        before you, radiant, her eyes alight with knowing mischief.<br />
+        She steps closer, her touch featherlight.<br />“Stay a while,” <br />she
+        murmurs, lips curling into a promise. The air thickens, heavy with the
+        scent of something sweet, something dangerous.<br />
+        A warning prickles at the edge of your mind — this beauty is not what
+        she seems.<br /><br />
+        Will you surrender to her embrace or pull away before it's too late?
+      </span>
+      <div>
+        <button class="textbox-btn" id="succubus1">Give in</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="succubus2">
+      <span>
+        Her fingers trace your skin, igniting a warmth that clouds your
+        thoughts.<br />
+        The world narrows to the curve of her smile, the whisper of her breath
+        against your ear. A sweet lethargy settles in, urging you to stay, to
+        fall deeper.<br />
+        Then — pain. <br />A sharp, searing pull, like your very essence is
+        being drained. You gasp, blinking through the haze, and see her now for
+        what she truly is.<br />
+        Her beauty twists, eyes darkening, fangs glinting in the dim light.<br />A
+        succubus. <br />She grins, no longer inviting but predatory. Clawed
+        hands reach for you again, but this time, you're ready. <br />The fight
+        begins.
+      </span>
+      <button class="textbox-btn" id="succubusFight">Fight</button>
     </div>
 
     <script src="event.js"></script>

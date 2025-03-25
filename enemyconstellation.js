@@ -15,6 +15,11 @@ const enemyConstellationTemplates = [
     enemies: [Snail, Mantis, Mantis],
   },
   {
+    difficultyFrom: 9,
+    difficultyTo: 9,
+    enemies: [Succubus],
+  },
+  {
     difficultyFrom: 10,
     difficultyTo: 10,
     enemies: [EvilKnight],

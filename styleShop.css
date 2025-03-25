@@ -99,7 +99,7 @@ div {
     margin-right: 450px;
  }
 
-.Shop-removal {
+#Shop-removal {
     z-index: 1;
     width: 250px;
     height: 100px;

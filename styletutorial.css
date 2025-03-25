@@ -101,6 +101,11 @@ height: 0;
     height: auto;
 }
 
+.succubus img {
+    width: 200px;
+    height: auto;
+}
+
 #health-bar-container-player {
     width: 200px;
     height: 15px;
@@ -222,15 +227,6 @@ height: 0;
     image-rendering: pixelated;
 }
 
-.damage-popup {
-    position: absolute;
-    font-size: 18px;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.8); /* Add background for visibility */
-    border: 1px solid black; /* Add border for debugging */
-    opacity: 1; /* Temporarily set to fully visible */
-    animation: none; /* Disable animation temporarily */
-}
 
 /* Tooltip styling */
 .tooltip {

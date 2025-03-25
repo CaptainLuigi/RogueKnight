@@ -121,6 +121,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  //golden Statue
+
+  if (eventType === "goldenStatue") {
+    document
+      .getElementById("smashStatue")
+      .addEventListener("click", function () {
+        player.takeDamage(25);
+        updateHealthBar(player);
+        updatePlayerGold(75);
+        player.savePlayerToStorage();
+        window.location.href = "map.html";
+      });
+  }
+
   //Lightning
 
   if (eventType === "lightning") {
@@ -142,6 +156,62 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Updated player deck after event", player.deck);
       });
   }
+
+  //succubus
+
+  if (eventType === "succubus") {
+    // Show succubus event dialogue
+    document.getElementById("succubus").classList.remove("hidden");
+    document.getElementById("succubus1").addEventListener("click", function () {
+      console.log("Clicked on succubus1, advancing dialogue...");
+      document.getElementById("succubus").classList.add("hidden");
+      document.getElementById("succubus2").classList.remove("hidden");
+
+      document
+        .getElementById("succubusFight")
+        .addEventListener("click", function () {
+          console.log("Starting Succubus fight...");
+
+          // Set the flag to start the succubus fight
+          localStorage.setItem("startSuccubusFight", "true");
+
+          // Set the difficulty for succubus fight before redirect
+          localStorage.setItem("succubusDifficulty", 9); // Set the difficulty for succubus event
+
+          // Redirect to the tutorial page
+          window.location.href = "tutorial.html";
+        });
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", function () {
+    // Check if the page is "tutorial.html"
+    if (window.location.pathname.includes("tutorial.html")) {
+      if (localStorage.getItem("startSuccubusFight") === "true") {
+        console.log("Succubus fight triggered!");
+
+        // Remove the flag after it's been processed
+        localStorage.removeItem("startSuccubusFight");
+
+        // Set the difficulty for the succubus fight based on stored value
+        const succubusDifficulty = localStorage.getItem("succubusDifficulty");
+
+        if (succubusDifficulty) {
+          console.log(
+            "Setting difficulty for succubus fight: " + succubusDifficulty
+          );
+          // Set the difficulty for the succubus fight
+          difficulty = parseInt(succubusDifficulty);
+        }
+
+        // Initialize the succubus fight
+        setTimeout(() => {
+          console.log("Initializing Succubus fight...");
+          initializeSuccubusFight(); // This function should handle the enemy setup
+        }, 100);
+      }
+    }
+  });
 
   //Thors Hammer Code
 

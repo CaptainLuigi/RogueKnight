@@ -15,6 +15,7 @@ class Enemy extends HealthEntity {
   #attackPower;
   #icon;
   #ranged;
+  #lifesteal;
   #display;
 
   get icon() {
@@ -49,7 +50,7 @@ class Enemy extends HealthEntity {
     return this.#ranged;
   }
 
-  constructor(name, maxHealth, attackPower, icon, ranged) {
+  constructor(name, maxHealth, attackPower, icon, ranged, lifesteal = 0) {
     super();
     this.#health = maxHealth;
     this.#name = name;
@@ -61,6 +62,7 @@ class Enemy extends HealthEntity {
     image.src = icon;
     image.alt = name;
     this.#ranged = ranged;
+    this.#lifesteal = lifesteal;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
   }
@@ -79,6 +81,10 @@ class Enemy extends HealthEntity {
     this.#display.classList.add("grow-shrink");
     player.takeDamage(this.#attackPower);
 
+    if (this.#lifesteal > 0) {
+      this.heal(this.#lifesteal);
+    }
+
     setTimeout(() => {
       this.#display.classList.remove("grow-shrink");
     }, 500);
@@ -88,6 +94,10 @@ class Enemy extends HealthEntity {
     this.#health += amount; // Increase health
     if (this.#health > this.#maxHealth) this.#health = this.#maxHealth; // Cap at max health
     this.updateDisplay();
+
+    if (amount > 0) {
+      this.displayLifesteal(amount);
+    }
   }
 
   updateDisplay() {
@@ -234,5 +244,12 @@ class EvilKnight extends Enemy {
 class HermitShroom extends Enemy {
   constructor() {
     super("Hermit Shroom", 500, 3, "Assets/Icon10.png", false);
+  }
+}
+
+class Succubus extends Enemy {
+  constructor() {
+    super("Succubus", 750, 15, "Assets/succubus.png", false, 15);
+    this.display.classList.add("succubus");
   }
 }
