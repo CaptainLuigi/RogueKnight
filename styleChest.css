@@ -65,6 +65,16 @@ html, body {
 }
 
 
+.weapon-image {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    padding: 5px;
+    border: 3px solid black;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
 .relic-image {
     width: 75px;
     height: 75px;
@@ -75,7 +85,27 @@ html, body {
     image-rendering: pixelated;
 }
 
+.tooltip {
+    position: absolute;
+    top: -100%; /* Vertically center it */
+    left: 50%; /* Horizontally center it */
+    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
+    z-index: 10; /* Ensure the tooltip appears above other elements */
+    font-size: 24px;
+    width: 250px; /* Set width for the tooltip */
+}
 
+.weapon:hover .tooltip {
+    opacity: 1;
+    visibility: visible; /* Show the tooltip when hovering */
+}
 
 .sprite {
     width: 200px;

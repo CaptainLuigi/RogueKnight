@@ -10,6 +10,7 @@
     <script src="baseClasses.js"></script>
     <script src="saveGame.js"></script>
     <script src="player.js"></script>
+    <script src="relics.js"></script>
   </head>
   <body>
     <div>
@@ -27,7 +28,7 @@
 
     <div class="sprite"></div>
 
-    <div id="weapons-container"></div>
+    <div id="relic-container"></div>
 
     <button id="addToDeck">Add</button>
     <button id="skip">Skip</button>
@@ -42,7 +43,6 @@
 
     <script>
       let player = new Player("Knight", 100, 100, [], 3, 3);
-
       player.loadPlayerFromStorage();
 
       document.addEventListener("DOMContentLoaded", () => {
@@ -51,6 +51,7 @@
           .addEventListener("click", () => {
             player.showDeck();
           });
+
         document
           .getElementById("close-deck-btn")
           .addEventListener("click", () => {
@@ -61,15 +62,101 @@
 
         const goldDisplay = document.getElementById("playerGold");
         goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+
+        document
+          .getElementById("chest-button")
+          .addEventListener("click", openChest);
+        document
+          .getElementById("addToDeck")
+          .addEventListener("click", addRelicToDeck);
+        document.getElementById("skip").addEventListener("click", skipRelic);
       });
 
       const sprite = document.querySelector(".sprite");
-
       resetToIdleAnimation();
 
-      document.getElementById("skip").addEventListener("click", function () {
+      /**
+       * Function to open the chest and reveal a random relic.
+       */
+      function openChest() {
+        console.log("Chest opened!");
+
+        const relicContainer = document.getElementById("relic-container");
+
+        // Ensure the relic container exists before modifying it
+        if (!relicContainer) {
+          console.error("Relic container not found!");
+          return;
+        }
+
+        // Display the buttons
+        document.getElementById("addToDeck").style.display = "block";
+        document.getElementById("skip").style.display = "block";
+
+        // Select a random relic
+        const randomRelicName =
+          relicNames[Math.floor(Math.random() * relicNames.length)];
+        const randomRelic = relics[randomRelicName];
+
+        // Clear previous relics and display new one
+        relicContainer.innerHTML = "";
+
+        const relicImage = document.createElement("img");
+        relicImage.src = randomRelic.icon;
+        relicImage.alt = randomRelic.name;
+        relicImage.classList.add("relic-image");
+
+        relicContainer.appendChild(relicImage);
+
+        // Store selected relic name
+        relicContainer.setAttribute("data-selected-relic", randomRelicName);
+      }
+
+      /**
+       * Function to add the selected relic to the player's inventory and update equippedRelics.
+       */
+      function addRelicToDeck() {
+        const relicContainer = document.getElementById("relic-container");
+
+        if (!relicContainer) {
+          console.error("Relic container not found!");
+          return;
+        }
+
+        const selectedRelicName = relicContainer.getAttribute(
+          "data-selected-relic"
+        );
+
+        if (selectedRelicName) {
+          const selectedRelic = relics[selectedRelicName];
+
+          // Add relic to equipped relics array
+          player.equippedRelics.push(selectedRelicName);
+
+          // Apply relic effect
+          selectedRelic.equipRelic(player);
+
+          console.log(`Added relic: ${selectedRelicName} to equippedRelics.`);
+          alert(`${selectedRelicName} added to inventory!`);
+        } else {
+          console.warn("No relic selected.");
+        }
+
+        player.savePlayerToStorage();
+
+        // Redirect to map.html
         window.location.href = "map.html";
-      });
+      }
+
+      /**
+       * Function to skip selecting a relic and go to map.html.
+       */
+      function skipRelic() {
+        console.log("Relic skipped!");
+
+        // Redirect to map.html
+        window.location.href = "map.html";
+      }
     </script>
   </body>
 </html>

@@ -257,6 +257,7 @@ function endTurn() {
       isPlayerTurn = true;
 
       player.blockAmount = 0;
+      player.currentBlock = 0;
       const blockContainer = document.getElementById("block-container");
       blockContainer.classList.add("hidden");
 

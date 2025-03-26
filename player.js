@@ -208,6 +208,7 @@ class Player extends HealthEntity {
       health: this.#health,
       maxHealth: this.#maxHealth,
       maxEnergy: this.#maxEnergy,
+      equippedRelics: this.#equippedRelics,
     };
     let deck = [];
     for (let weapon of this.#deck) {

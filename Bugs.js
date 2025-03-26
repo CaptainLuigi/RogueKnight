@@ -27,7 +27,7 @@ bei einem gegner, diesen centern
 
 remove weapon im shop fehlt
 
-succubus event triggert fight, aber nur normale gegner
+block kann über runden stacken, wenn in vorherigem turn aller damage geblockt wurde und im neuen turn wieder geblockt wird
 
 
 bei event duplicate, neue waffe immer level 1

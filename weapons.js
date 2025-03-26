@@ -780,7 +780,7 @@ class BasicShield extends Weapons {
       0,
       0,
       1,
-      "Block incoming damage.",
+      "Block incoming damage. Block is removed at the beginning of your next turn.",
       "Assets/Shield.png",
       false,
       0,
@@ -806,6 +806,84 @@ class BasicShield extends Weapons {
   }
 }
 
+class MasterShield extends Weapons {
+  constructor() {
+    super(
+      "Master Shield",
+      1,
+      "Block",
+      0,
+      0,
+      0,
+      2,
+      "Block incoming damage. Block is removed at the beginning of your next turn.",
+      "Assets/masterShield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      40
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.blockAmount += 10;
+        break;
+      case 3:
+        weaponInfo.blockAmount += 10;
+        break;
+    }
+  }
+}
+
+class SpikedShield extends Weapons {
+  constructor() {
+    super(
+      "Spiked Shield",
+      1,
+      "Melee",
+      20,
+      30,
+      30,
+      2,
+      "Deals damage to the first enemy and blocks incoming damage. Block is removed at the beginning of your next turn.",
+      "Assets/spikedShield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      20
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
+        weaponInfo.blockAmount += 10;
+        break;
+      case 3:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 5;
+        weaponInfo.blockAmount += 10;
+        break;
+    }
+  }
+}
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -819,6 +897,8 @@ function getAvailableWeapons() {
     new HealthPotion(),
     new VampiricDagger(),
     new BasicShield(),
+    new MasterShield(),
+    new SpikedShield(),
   ];
 }
 
@@ -837,6 +917,8 @@ const weaponClassMapping = {
   Lightning,
   Stone,
   BasicShield,
+  MasterShield,
+  SpikedShield,
 };
 
 function createWeaponInstanceFromInfo(info) {
