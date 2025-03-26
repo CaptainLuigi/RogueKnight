@@ -1,7 +1,7 @@
 const enemyConstellationTemplates = [
   {
-    difficultyFrom: 1,
-    difficultyTo: 1,
+    difficultyFrom: 3,
+    difficultyTo: 3,
     enemies: [Shroom, Shroom, Shroom, SadShroom],
   },
   {
@@ -22,6 +22,6 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 10,
     difficultyTo: 10,
-    enemies: [EvilKnight],
+    enemies: [MinonKnight, MinonKnight, MinonKnight, MinonKnight, EvilKnight],
   },
 ];

@@ -11,9 +11,18 @@ class Player extends HealthEntity {
   #maxEnergy;
   #hand = [];
   #drawPile = [];
-  maxHandSize = 4;
+  #equippedRelics = [];
+  maxHandSize = 5;
 
-  constructor(name, health, maxHealth, deck, energy, maxEnergy) {
+  constructor(
+    name,
+    health,
+    maxHealth,
+    deck,
+    energy,
+    maxEnergy,
+    equippedRelics
+  ) {
     super();
     this.#name = name;
     this.#health = health;
@@ -54,6 +63,10 @@ class Player extends HealthEntity {
     return [...this.#hand];
   }
 
+  get equippedRelics() {
+    return [...this.#equippedRelics];
+  }
+
   removeUsed() {
     this.#hand = this.#hand.filter((e) => !e.wasUsed);
   }
@@ -91,6 +104,11 @@ class Player extends HealthEntity {
     }
   }
 
+  increaseMaxHealth(amount, addToCurrentHealth) {
+    this.#maxHealth += amount;
+    if (addToCurrentHealth) this.heal(amount);
+  }
+
   addWeapon(weapon) {
     this.#deck.push(weapon);
     this.savePlayerToStorage();
@@ -111,6 +129,7 @@ class Player extends HealthEntity {
       this.displayDamage(amount, false, -60);
       triggerDamageAnimation();
     }
+    this.savePlayerToStorage();
   }
 
   heal(amount) {
@@ -127,6 +146,7 @@ class Player extends HealthEntity {
       console.error("Invalid health value:", this.#health);
       this.#health = 0;
     }
+    this.savePlayerToStorage();
   }
 
   useEnergy(amount) {
@@ -164,6 +184,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicAxe());
       this.addWeapon(new BasicSpear());
       this.addWeapon(new BasicSword());
+      this.addWeapon(new BasicShield());
     } else {
       this.#name = state.name;
       this.#health = state.health;
@@ -178,6 +199,8 @@ class Player extends HealthEntity {
     }
     this.restoreEnergy(this.#maxEnergy);
     this.drawHand();
+
+    //relics["Dummy Relic"].equipRelic(this);
   }
   savePlayerToStorage() {
     let state = {

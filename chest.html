@@ -41,8 +41,6 @@
     </div>
 
     <script>
-      let selectedWeapon = null;
-
       let player = new Player("Knight", 100, 100, [], 3, 3);
 
       player.loadPlayerFromStorage();
@@ -63,37 +61,7 @@
 
         const goldDisplay = document.getElementById("playerGold");
         goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
-
-        const addButton = document.getElementById("addToDeck");
-
-        addButton.style.display = "none";
-
-        addButton.addEventListener("click", () => {
-          if (selectedWeapon) {
-            player.addWeapon(selectedWeapon);
-            console.log("Weapon added to deck:", selectedWeapon);
-
-            addButton.style.display = "none";
-          }
-        });
       });
-
-      const availableWeapons = getAvailableWeapons();
-
-      document.getElementById("chest-button").addEventListener("click", () => {
-        const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-        const randomWeapon = availableWeapons[randomIndex];
-
-        displayWeapons([randomWeapon], false);
-        showAddToDeck();
-      });
-
-      function showAddToDeck() {
-        const addButton = document.getElementById("addToDeck");
-        if (addButton) {
-          addButton.style.display = "inline-block";
-        }
-      }
 
       const sprite = document.querySelector(".sprite");
 

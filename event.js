@@ -170,48 +170,11 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .getElementById("succubusFight")
         .addEventListener("click", function () {
-          console.log("Starting Succubus fight...");
-
-          // Set the flag to start the succubus fight
-          localStorage.setItem("startSuccubusFight", "true");
-
-          // Set the difficulty for succubus fight before redirect
-          localStorage.setItem("succubusDifficulty", 9); // Set the difficulty for succubus event
-
-          // Redirect to the tutorial page
+          globalSettings.difficulty = 9;
           window.location.href = "tutorial.html";
         });
     });
   }
-
-  window.addEventListener("DOMContentLoaded", function () {
-    // Check if the page is "tutorial.html"
-    if (window.location.pathname.includes("tutorial.html")) {
-      if (localStorage.getItem("startSuccubusFight") === "true") {
-        console.log("Succubus fight triggered!");
-
-        // Remove the flag after it's been processed
-        localStorage.removeItem("startSuccubusFight");
-
-        // Set the difficulty for the succubus fight based on stored value
-        const succubusDifficulty = localStorage.getItem("succubusDifficulty");
-
-        if (succubusDifficulty) {
-          console.log(
-            "Setting difficulty for succubus fight: " + succubusDifficulty
-          );
-          // Set the difficulty for the succubus fight
-          difficulty = parseInt(succubusDifficulty);
-        }
-
-        // Initialize the succubus fight
-        setTimeout(() => {
-          console.log("Initializing Succubus fight...");
-          initializeSuccubusFight(); // This function should handle the enemy setup
-        }, 100);
-      }
-    }
-  });
 
   //Thors Hammer Code
 
@@ -272,6 +235,33 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         document.getElementById("gamblingLost").classList.remove("hidden");
       }
+    });
+  }
+
+  //get stoned
+
+  if (eventType === "stoned") {
+    document.getElementById("stoned").classList.remove("hidden");
+
+    const catchButton = document.getElementById("getStoned");
+    catchButton.addEventListener("click", function () {
+      player.addWeapon(new Stone());
+      player.addWeapon(new Stone());
+
+      player.savePlayerToStorage();
+
+      window.location.href = "map.html";
+    });
+
+    const fleeButton = document.getElementById("leaveStoned");
+    fleeButton.addEventListener("click", function () {
+      player.takeDamage(15);
+
+      updateHealthBar(player);
+
+      player.savePlayerToStorage();
+
+      window.location.href = "map.html";
     });
   }
 

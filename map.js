@@ -161,9 +161,9 @@ function getSkullDifficulty(index) {
   return skullDifficulty[difficultyIndex];
 }
 
-function triggerFight(difficulty) {
-  console.log(`A fight is triggered with difficulty: $ {difficulty}`);
-}
+// function triggerFight(difficulty) {
+//   console.log(`A fight is triggered with difficulty: $ {difficulty}`);
+// }
 
 function enterLocation(button) {
   let index = button.getAttribute("index");
@@ -226,7 +226,7 @@ function markPossibleLocations() {
 function triggerRandomEvent() {
   const allEvents = [
     // { type: "eliteFight", action: startEliteFight },
-    // { type: "normalFight", action: startNormalFight },
+    { type: "normalFight", action: startNormalFight },
     // { type: "chest", action: openChest },
     // { type: "upgradeWeapon", action: showEvent },
     // { type: "ambushGold", action: showEvent },
@@ -237,8 +237,9 @@ function triggerRandomEvent() {
     // { type: "gambling", action: showEvent },
     // { type: "rest", action: showEvent },
     // { type: "lightning", action: showEvent },
-    { type: "goldenStatue", action: showEvent },
-    // { type: "succubus", action: showEvent },
+    // { type: "goldenStatue", action: showEvent },
+    { type: "succubus", action: showEvent },
+    // { type: "stoned", action: showEvent },
   ];
 
   if (player.deck.length > 2) {

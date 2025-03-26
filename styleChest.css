@@ -53,7 +53,7 @@ html, body {
     font-size: 36px;
 }
 
-#weapons-container {
+#relic-container {
   display: flex;
   justify-content: center;
   position: relative;
@@ -65,7 +65,7 @@ html, body {
 }
 
 
-.weapon-image {
+.relic-image {
     width: 75px;
     height: 75px;
     object-fit: contain;
@@ -75,27 +75,7 @@ html, body {
     image-rendering: pixelated;
 }
 
-.tooltip {
-    position: absolute;
-    top: -100%; /* Vertically center it */
-    left: 50%; /* Horizontally center it */
-    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
-    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
-    color: white;
-    padding: 10px;
-    border-radius: 8px;
-    opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Initially hidden */
-    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
-    z-index: 10; /* Ensure the tooltip appears above other elements */
-    font-size: 24px;
-    width: 250px; /* Set width for the tooltip */
-}
 
-.weapon:hover .tooltip {
-    opacity: 1;
-    visibility: visible; /* Show the tooltip when hovering */
-}
 
 .sprite {
     width: 200px;
@@ -132,7 +112,7 @@ html, body {
     position: absolute;
     font-size: 24px;
     z-index: 1100;
-    /*display: none;*/
+    display: none;
     top: 65%;
     left: 52%;
     font-family: 'Pirata_One';

@@ -15,6 +15,7 @@ class Weapons {
   #effectsRight;
   #healingAmount;
   #canHeal;
+  #blockAmount;
   #wasUsed = false;
 
   constructor(
@@ -33,7 +34,8 @@ class Weapons {
     effectsLeft = 0,
     effectsRight = 0,
     healingAmount = 0,
-    canHeal = false
+    canHeal = false,
+    blockAmount = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -52,6 +54,7 @@ class Weapons {
       effectsRight,
       healingAmount,
       canHeal,
+      blockAmount,
     });
   }
 
@@ -123,6 +126,10 @@ class Weapons {
     return this.#canHeal;
   }
 
+  get blockAmount() {
+    return this.#blockAmount;
+  }
+
   get wasUsed() {
     return this.#wasUsed;
   }
@@ -141,6 +148,10 @@ class Weapons {
 
   set healingAmount(value) {
     this.#healingAmount = value;
+  }
+
+  set blockAmount(value) {
+    this.#blockAmount = value;
   }
 
   set wasUsed(value) {
@@ -223,6 +234,7 @@ class Weapons {
     this.#maxRange = info.maxRange;
     this.#description = info.description;
     this.#canHeal = info.canHeal;
+    this.#blockAmount = info.blockAmount;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -735,6 +747,65 @@ class Lightning extends Weapons {
   }
 }
 
+class Stone extends Weapons {
+  constructor() {
+    super(
+      "Stone",
+      3,
+      "far",
+      15,
+      20,
+      30,
+      1,
+      "Can hit any enemy, click weapon first, then the enemy you want to hit.",
+      "Assets/Stone.png",
+      true,
+      0,
+      5,
+      0,
+      0,
+      0,
+      false
+    );
+  }
+}
+
+class BasicShield extends Weapons {
+  constructor() {
+    super(
+      "Basic Shield",
+      1,
+      "Block",
+      0,
+      0,
+      0,
+      1,
+      "Block incoming damage.",
+      "Assets/Shield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      15
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.blockAmount += 5;
+        break;
+      case 3:
+        weaponInfo.blockAmount += 5;
+        break;
+    }
+  }
+}
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -747,6 +818,7 @@ function getAvailableWeapons() {
     new Crossbow(),
     new HealthPotion(),
     new VampiricDagger(),
+    new BasicShield(),
   ];
 }
 
@@ -763,6 +835,8 @@ const weaponClassMapping = {
   ThorsHammer,
   VampiricDagger,
   Lightning,
+  Stone,
+  BasicShield,
 };
 
 function createWeaponInstanceFromInfo(info) {
@@ -837,13 +911,29 @@ function generateWeaponInfo(
         <strong> ${weapon.name} </strong> <br>
         <strong>Level:</strong> ${weapon.level} <br>
         <strong>Energy Cost:</strong> ${weapon.energy} <br>
-        <strong>Range:</strong> ${weapon.range} <br>
-        <strong>Damage:</strong> ${weapon.damage} <br>
-        <strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>
-        <strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>
-        <strong>Healing:</strong> ${weapon.healingAmount} <br>
-        ${weapon.description} <br>           
-    `;
+        <strong>Range:</strong> ${weapon.range} <br>`;
+
+    if (weapon.damage > 0) {
+      tooltipString += `<strong>Damage:</strong> ${weapon.damage} <br>`;
+    }
+
+    if (weapon.criticalDamage > 0) {
+      tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>`;
+    }
+
+    if (weapon.criticalChance > 0) {
+      tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>`;
+    }
+
+    if (weapon.healingAmount > 0) {
+      tooltipString += `<strong>Healing:</strong> ${weapon.healingAmount} <br>`;
+    }
+
+    if (weapon.blockAmount > 0) {
+      tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} <br>`;
+    }
+
+    tooltipString += `${weapon.description} <br>`;
     weaponPrice = parseInt(weaponPrice);
     if (!isNaN(weaponPrice) && weaponPrice > 0) {
       tooltipString += `<strong>${weaponPrice} Gold</strong>`;
@@ -867,4 +957,21 @@ function generateWeaponInfo(
   tooltipElement.classList.add("tooltip");
 
   return display;
+}
+
+function applyBlock(weapon) {
+  if (weapon.blockAmount > 0) {
+    const blockContainer = document.getElementById("block-container");
+    const blockText = document.getElementById("block-text");
+
+    let currentBlock = parseInt(blockText.innerText) || 0;
+
+    currentBlock += weapon.blockAmount;
+
+    player.blockAmount = currentBlock;
+
+    blockText.innerText = currentBlock;
+
+    blockContainer.classList.remove("hidden");
+  }
 }

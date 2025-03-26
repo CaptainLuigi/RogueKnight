@@ -1,36 +1,58 @@
-class Relic {
-  constructor(name, description, effect) {
-    this.name = name;
-    this.description = description;
-    this.effect = effect;
+class Relics {
+  #name;
+  #icon;
+  #relicFunction;
+
+  get icon() {
+    return this.#icon;
   }
 
-  apply(player) {
-    this.effect(player);
+  get name() {
+    return this.#name;
+  }
+
+  constructor(name, icon, relicFunction) {
+    this.#name = name;
+    this.#icon = icon;
+    this.#relicFunction = relicFunction;
+  }
+
+  equipRelic(player) {
+    if (!loadData("relic_" + this.#name)) {
+      this.#relicFunction(player);
+      this.markEquipped();
+    }
+  }
+
+  markEquipped() {
+    storeData("relic_" + this.#name, true);
   }
 }
 
-const GrindingMonstera = new Relic(
-  "Grinding Monstera",
-  "Gain 2 max HP after defeating an enemy",
-  (player) => {
-    player.onEnemyDeath = (enemy) => {
-      player.setMaxHealth(player.getMaxHealth() + 2);
-      player.setHealth(player.getHealth() + 2);
-    };
+class ActiveRelics extends Relics {
+  constructor(name, icon, relicFunction) {
+    super(name, icon, relicFunction);
   }
-);
+  markEquipped() {}
+}
 
-const BersekersCharm = new Relic(
-  "Berserker's Charm",
-  "All weapons gain +10 damage when below 50% max HP",
-  (player) => {
-    player.onTurnStart = () => {
-      if (player.getHealth() < player.getMaxHealth() / 2) {
-        player.weapon.forEach((weapon) => {
-          weapon.damage += 10;
-        });
-      }
-    };
-  }
-);
+const relics = [
+  new ActiveRelics("Dummy Relic", "Assets/Monstera.png", dummyRelic),
+  new Relics("Dummy Relic 1", "Assets/Monstera.png", dummyRelic1),
+].reduce((o, r) => {
+  o[r.name] = r;
+  return o;
+}, {});
+const relicNames = [...Object.keys(relics)].sort();
+
+function dummyRelic(player) {
+  window.addEventListener("EnemyDeath", () => {
+    player.increaseMaxHealth(2, true);
+  });
+  alert("dummy relic received");
+}
+
+function dummyRelic1(player) {
+  player.increaseMaxHealth(30, true);
+  alert("this is also a dummy relic");
+}

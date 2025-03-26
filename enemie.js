@@ -79,7 +79,27 @@ class Enemy extends HealthEntity {
   }
   attack(player) {
     this.#display.classList.add("grow-shrink");
-    player.takeDamage(this.#attackPower);
+
+    if (player.blockAmount > 0) {
+      if (player.blockAmount >= this.#attackPower) {
+        player.blockAmount -= this.#attackPower;
+      } else {
+        const remainingDamage = this.#attackPower - player.blockAmount;
+        player.blockAmount = 0;
+        player.takeDamage(remainingDamage);
+      }
+    } else {
+      player.takeDamage(this.#attackPower);
+    }
+
+    const blockText = document.getElementById("block-text");
+    const blockContainer = document.getElementById("block-container");
+
+    blockText.innerText = player.blockAmount;
+
+    if (player.blockAmount === 0) {
+      blockContainer.classList.add("hidden");
+    }
 
     if (this.#lifesteal > 0) {
       this.heal(this.#lifesteal);
@@ -188,7 +208,7 @@ class Shroom extends Enemy {
 
 class Snail extends Enemy {
   constructor() {
-    super("Snail", 300, 5, "Assets/Transperent/Icon5.png", false);
+    super("Snail", 300, 7, "Assets/Transperent/Icon5.png", false);
   }
 }
 
@@ -212,7 +232,7 @@ class Scorpion extends Enemy {
 
 class BitingPlant extends Enemy {
   constructor() {
-    super("Biting Plant", 400, 10, "Assets/Transperent/Icon11.png", false);
+    super("Biting Plant", 400, 10, "Assets/Transperent/Icon11.png", true);
   }
 }
 
@@ -236,7 +256,7 @@ class Hornet extends Enemy {
 
 class EvilKnight extends Enemy {
   constructor() {
-    super("Evil Knight", 750, 15, "Assets/evilknight.png", false);
+    super("Evil Knight", 750, 15, "Assets/evilknight.png", true);
     this.display.classList.add("evil-knight");
   }
 }
@@ -251,5 +271,17 @@ class Succubus extends Enemy {
   constructor() {
     super("Succubus", 750, 15, "Assets/succubus.png", false, 15);
     this.display.classList.add("succubus");
+  }
+}
+
+class Gnome extends Enemy {
+  constructor() {
+    super("Gnome", 250, 10, "Assets/Transperent/Icon44", false);
+  }
+}
+
+class MinonKnight extends Enemy {
+  constructor() {
+    super("Minon Knight", 300, 10, "Assets/SoulKnight.png", false);
   }
 }

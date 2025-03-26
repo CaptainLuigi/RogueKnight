@@ -25,9 +25,10 @@ function calculate damage
 
 bei einem gegner, diesen centern
 
-drop weapon event not working wenn weniger als 2 weapons im deck
+remove weapon im shop fehlt
 
-manchmal refresh der seite notwending um nach drop weapon event nächste location auswählen zu können
+succubus event triggert fight, aber nur normale gegner
+
 
 bei event duplicate, neue waffe immer level 1
 */

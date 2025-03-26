@@ -52,6 +52,9 @@ function fillEnemyArray(currentDifficulty) {
 let isPlayerTurn = true; // Flag to track if it's the player's turn
 
 function enemyDeathEvent() {
+  let event = new CustomEvent("EnemyDeath");
+  window.dispatchEvent(event);
+
   setEnemyIndices();
 
   if (enemies.every((enemy) => enemy.isDead())) {
@@ -163,6 +166,8 @@ function executeAttack(weapon, enemyIndex) {
   startIndex += damages.length - 1;
   if (damages.length > 0) triggerAttackAnimation(); // Trigger the attack animation
 
+  applyBlock(weapon);
+
   for (let enemyDamage of damages) {
     enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
     enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
@@ -250,6 +255,10 @@ function endTurn() {
 
     setTimeout(() => {
       isPlayerTurn = true;
+
+      player.blockAmount = 0;
+      const blockContainer = document.getElementById("block-container");
+      blockContainer.classList.add("hidden");
 
       player.drawHand();
       displayWeapons(player.hand);
