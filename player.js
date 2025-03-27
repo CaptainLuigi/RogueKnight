@@ -12,17 +12,10 @@ class Player extends HealthEntity {
   #hand = [];
   #drawPile = [];
   #equippedRelics = [];
+  #foundRelics = [];
   maxHandSize = 5;
 
-  constructor(
-    name,
-    health,
-    maxHealth,
-    deck,
-    energy,
-    maxEnergy,
-    equippedRelics
-  ) {
+  constructor(name, health, maxHealth, deck, energy, maxEnergy) {
     super();
     this.#name = name;
     this.#health = health;
@@ -30,7 +23,6 @@ class Player extends HealthEntity {
     this.#deck = deck;
     this.#energy = energy;
     this.#maxEnergy = maxEnergy;
-    this.relics = [];
 
     this.drawHand();
   }
@@ -65,6 +57,10 @@ class Player extends HealthEntity {
 
   get equippedRelics() {
     return [...this.#equippedRelics];
+  }
+
+  get foundRelics() {
+    return [...this.#foundRelics];
   }
 
   removeUsed() {
@@ -114,9 +110,11 @@ class Player extends HealthEntity {
     this.savePlayerToStorage();
   }
 
-  addRelic(relic) {
-    this.relics.push(relic);
-    relic.apply(this);
+  foundRelic(relicName, wasEquipped) {
+    this.#foundRelics.push(relicName);
+    if (wasEquipped === true) {
+      this.#equippedRelics.push(relicName);
+    }
   }
 
   takeDamage(amount) {
@@ -178,12 +176,14 @@ class Player extends HealthEntity {
     let state = loadData("playerState");
     if (state == null) {
       this.addWeapon(new BasicSword());
-      this.addWeapon(new BasicAxe());
-      this.addWeapon(new BasicSpear());
+      this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicAxe());
       this.addWeapon(new BasicSpear());
-      this.addWeapon(new BasicSword());
+      this.addWeapon(new BasicSpear());
+      this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
     } else {
       this.#name = state.name;
@@ -196,11 +196,14 @@ class Player extends HealthEntity {
       }
       this.#deck = deck;
       this.#maxEnergy = state.maxEnergy;
+      this.#equippedRelics = state.equippedRelics;
     }
     this.restoreEnergy(this.#maxEnergy);
     this.drawHand();
 
-    //relics["Dummy Relic"].equipRelic(this);
+    for (let relicName of this.#equippedRelics) {
+      relicList[relicName].equipRelic(this);
+    }
   }
   savePlayerToStorage() {
     let state = {
@@ -229,6 +232,14 @@ const attackConfig = {
   frameWidth: 200, // Width of each frame for attack
   backgroundSize: "800px 200px", // Full sprite sheet size for attack animation
   frameDelay: 150, // Delay between frames (milliseconds)
+};
+
+const blockConfig = {
+  image: "Assets/Knight_1/Defendnew4.png",
+  totalFrames: 5,
+  frameWidth: 200,
+  backgroundSize: "1010px 200px",
+  frameDelay: 225,
 };
 
 // Define the idle animation configuration
@@ -353,6 +364,43 @@ function triggerAttackAnimation() {
 
   attackFrame = 0; // Reset to the first frame
   attackInterval = setInterval(animateAttack, attackConfig.frameDelay); // Start the attack animation
+}
+
+function triggerBlockAnimation() {
+  if (isAttacking) return;
+  isAttacking = true;
+
+  clearInterval(attackInterval);
+  clearInterval(idleInterval);
+
+  sprite.style.backgroundImage = `url(${blockConfig.image})`;
+  sprite.style.backgroundSize = blockConfig.backgroundSize;
+
+  attackFrame = 0;
+  attackInterval = setInterval(animateBlock, blockConfig.frameDelay);
+
+  setTimeout(() => {
+    clearInterval(attackInterval);
+    isAttacking = false;
+  }, blockConfig.totalFrames * blockConfig.frameDelay);
+}
+
+function animateBlock() {
+  attackFrame++;
+  if (attackFrame >= blockConfig.totalFrames) {
+    clearInterval(attackInterval);
+    isAttacking = false;
+  }
+}
+
+function setIdleTimeout() {
+  // Optional: Reset the player's animation after the attack
+  setTimeout(() => {
+    // If using idle animation, you can do this after the attack animation is complete
+    // Call the function to reset the player's animation back to idle
+
+    resetToIdleAnimation();
+  }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
 }
 
 // Reset to idle animation

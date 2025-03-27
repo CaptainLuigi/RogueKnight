@@ -225,8 +225,8 @@ function markPossibleLocations() {
 
 function triggerRandomEvent() {
   const allEvents = [
-    // { type: "eliteFight", action: startEliteFight },
-    { type: "normalFight", action: startNormalFight },
+    { type: "eliteFight", action: startEliteFight },
+    // { type: "normalFight", action: startNormalFight },
     // { type: "chest", action: openChest },
     // { type: "upgradeWeapon", action: showEvent },
     // { type: "ambushGold", action: showEvent },
@@ -238,7 +238,7 @@ function triggerRandomEvent() {
     // { type: "rest", action: showEvent },
     // { type: "lightning", action: showEvent },
     // { type: "goldenStatue", action: showEvent },
-    { type: "succubus", action: showEvent },
+    // { type: "succubus", action: showEvent },
     // { type: "stoned", action: showEvent },
   ];
 
@@ -270,7 +270,10 @@ function triggerRandomEvent() {
   }
 }
 
-function startEliteFight() {}
+function startEliteFight() {
+  globalSettings.difficulty = 8;
+  window.location.href = "tutorial.html";
+}
 
 function startNormalFight() {
   window.location.href = "./tutorial.html";
@@ -285,7 +288,7 @@ function showEvent(type) {
   window.location.href = "./event.html";
 }
 
-document.getElementById("reset-save-btn").addEventListener("click", () => {
+function resetAll() {
   localStorage.removeItem("playerState");
   localStorage.removeItem("MapState");
   localStorage.removeItem("triggeredEvents");
@@ -293,4 +296,4 @@ document.getElementById("reset-save-btn").addEventListener("click", () => {
   globalSettings.playerGold = 0;
 
   window.location.reload();
-});
+}

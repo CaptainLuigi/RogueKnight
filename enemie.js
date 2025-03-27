@@ -83,10 +83,14 @@ class Enemy extends HealthEntity {
     if (player.blockAmount > 0) {
       if (player.blockAmount >= this.#attackPower) {
         player.blockAmount -= this.#attackPower;
+        triggerBlockAnimation();
+        setIdleTimeout();
       } else {
         const remainingDamage = this.#attackPower - player.blockAmount;
         player.blockAmount = 0;
         player.takeDamage(remainingDamage);
+        triggerBlockAnimation();
+        setIdleTimeout();
       }
     } else {
       player.takeDamage(this.#attackPower);
@@ -202,7 +206,7 @@ class Enemy extends HealthEntity {
 
 class Shroom extends Enemy {
   constructor() {
-    super("Shroom", 200, 8, "Assets/Transperent/Icon1.png", true);
+    super("Shroom", 200, 3, "Assets/Transperent/Icon1.png", true);
   }
 }
 
@@ -239,6 +243,7 @@ class BitingPlant extends Enemy {
 class SlimeHive extends Enemy {
   constructor() {
     super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png", false);
+    this.display.classList.add("biggerEnemy");
   }
 }
 
@@ -257,20 +262,20 @@ class Hornet extends Enemy {
 class EvilKnight extends Enemy {
   constructor() {
     super("Evil Knight", 750, 15, "Assets/evilknight.png", true);
-    this.display.classList.add("evil-knight");
+    this.display.classList.add("biggestEnemy");
   }
 }
 
 class HermitShroom extends Enemy {
   constructor() {
-    super("Hermit Shroom", 500, 3, "Assets/Icon10.png", false);
+    super("Hermit Shroom", 500, 3, "Assets/Transperent/Icon10.png", false);
   }
 }
 
 class Succubus extends Enemy {
   constructor() {
     super("Succubus", 750, 15, "Assets/succubus.png", false, 15);
-    this.display.classList.add("succubus");
+    this.display.classList.add("biggerEnemy");
   }
 }
 
@@ -282,6 +287,19 @@ class Gnome extends Enemy {
 
 class MinonKnight extends Enemy {
   constructor() {
-    super("Minon Knight", 300, 10, "Assets/SoulKnight.png", false);
+    super("Minon Knight", 300, 5, "Assets/SoulKnight.png", true);
+  }
+}
+
+class TreeSlime extends Enemy {
+  constructor() {
+    super("Tree Slime", 200, 5, "Assets/Transperent/Icon24.png", true);
+  }
+}
+
+class Amalgam extends Enemy {
+  constructor() {
+    super("Amalgam", 200, 20, "Assets/Transperent/Icon25.png", false);
+    this.display.classList.add("biggerEnemy");
   }
 }

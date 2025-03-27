@@ -15,6 +15,21 @@ const enemyConstellationTemplates = [
     enemies: [Snail, Mantis, Mantis],
   },
   {
+    difficultyFrom: 8,
+    difficultyTo: 8,
+    enemies: [Hornet, Hornet, Hornet, Hornet],
+  },
+  {
+    difficultyFrom: 8,
+    difficultyTo: 8,
+    enemies: [Amalgam],
+  },
+  {
+    difficultyFrom: 8,
+    difficultyTo: 8,
+    enemies: [SlimeHive, TreeSlime, TreeSlime, TreeSlime, TreeSlime, TreeSlime],
+  },
+  {
     difficultyFrom: 9,
     difficultyTo: 9,
     enemies: [Succubus],

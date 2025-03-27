@@ -164,9 +164,17 @@ function executeAttack(weapon, enemyIndex) {
   let { startIndex, isCritical, damages } = weapon.calculateDamage(enemyIndex);
   damages = damages.reverse();
   startIndex += damages.length - 1;
-  if (damages.length > 0) triggerAttackAnimation(); // Trigger the attack animation
 
   applyBlock(weapon);
+
+  if (
+    weapon.blockAmount > 0 ||
+    (weapon.healingAmount > 0 && weapon.damage === 0)
+  ) {
+    triggerBlockAnimation();
+  } else {
+    triggerAttackAnimation();
+  }
 
   for (let enemyDamage of damages) {
     enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
@@ -175,12 +183,7 @@ function executeAttack(weapon, enemyIndex) {
     startIndex--;
   }
 
-  // Optional: Reset the player's animation after the attack
-  setTimeout(() => {
-    // If using idle animation, you can do this after the attack animation is complete
-    // Call the function to reset the player's animation back to idle
-    resetToIdleAnimation();
-  }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
+  setIdleTimeout();
 
   let healing = weapon.calculateHealing(damages);
   player.heal(healing);
@@ -246,6 +249,15 @@ function endTurn() {
     });
 
     setTimeout(() => {
+      player.blockAmount = 0;
+      player.currentBlock = 0;
+
+      const blockText = document.getElementById("block-text");
+      blockText.innerText = "0";
+
+      const blockContainer = document.getElementById("block-container");
+      blockContainer.classList.add("hidden");
+
       displayTurnMessage("Your Turn Again!");
 
       refillEnergy();
@@ -255,11 +267,6 @@ function endTurn() {
 
     setTimeout(() => {
       isPlayerTurn = true;
-
-      player.blockAmount = 0;
-      player.currentBlock = 0;
-      const blockContainer = document.getElementById("block-container");
-      blockContainer.classList.add("hidden");
 
       player.drawHand();
       displayWeapons(player.hand);
@@ -392,10 +399,17 @@ function upgradeWeapon(weapon) {
     displayTurnMessage(`${weapon.name} is already max level.`);
     return;
   }
-  weapon.upgrade();
-  player.savePlayerToStorage();
 
-  displayTurnMessage(`Upgraded ${weapon.name}!`);
+  if (globalSettings.playerGold >= 50) {
+    updatePlayerGold(-50);
+
+    weapon.upgrade();
+    player.savePlayerToStorage();
+
+    displayTurnMessage(`Upgraded ${weapon.name}!`);
+  } else {
+    displayTurnMessage("Not enough gold to upgrade!");
+  }
 }
 
 function healPlayer(button) {

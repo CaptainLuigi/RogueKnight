@@ -80,29 +80,29 @@ height: 0;
     z-index: 10;
 }
 
-.evil-knight {
+.biggestEnemy {
     --base-scale: 2;
     transform: scale(2.0);
     padding-bottom: 55px;
     padding-top: 10px;
 }
 
-.evil-knight.tempTargets {
+.biggestEnemy.tempTargets {
     border-top: 10px solid #ff08;
     padding-top: 0px;
     border-radius: 5px;
 }
 
-.evil-knight .health-bar-container-enemy {
+.biggestEnemy .health-bar-container-enemy {
     width: 200px;
 }
 
-.evil-knight img {
+.biggestEnemy img {
     width: 300px;
     height: auto;
 }
 
-.succubus img {
+.biggerEnemy img {
     width: 200px;
     height: auto;
 }

@@ -789,7 +789,7 @@ class BasicShield extends Weapons {
       0,
       0,
       false,
-      15
+      5
     );
   }
   applyUpgrades(weaponInfo) {
@@ -884,6 +884,80 @@ class SpikedShield extends Weapons {
   }
 }
 
+class TowerShield extends Weapons {
+  constructor() {
+    super(
+      "Tower Shield",
+      1,
+      "Block",
+      0,
+      0,
+      0,
+      1,
+      "Blocks incoming damage. Block is removed at the beginning of your next turn.",
+      "Assets/towerShield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      10
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.blockAmount += 7;
+        break;
+      case 3:
+        weaponInfo.blockAmount += 8;
+        break;
+    }
+  }
+}
+
+class SurvivalPotion extends Weapons {
+  constructor() {
+    super(
+      "Survival Potion",
+      1,
+      "Item",
+      0,
+      0,
+      0,
+      3,
+      "Heals you and blocks incoming damage. Block is removed at the beginning of your next turn.",
+      "Assets/purplePotion.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      20,
+      true,
+      20
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.healingAmount += 5;
+        weaponInfo.blockAmount += 10;
+        break;
+      case 3:
+        weaponInfo.healingAmount += 5;
+        weaponInfo.blockAmount += 10;
+        break;
+    }
+  }
+}
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -899,6 +973,8 @@ function getAvailableWeapons() {
     new BasicShield(),
     new MasterShield(),
     new SpikedShield(),
+    new SurvivalPotion(),
+    new TowerShield(),
   ];
 }
 
@@ -919,6 +995,8 @@ const weaponClassMapping = {
   BasicShield,
   MasterShield,
   SpikedShield,
+  SurvivalPotion,
+  TowerShield,
 };
 
 function createWeaponInstanceFromInfo(info) {

@@ -2,6 +2,7 @@ class Relics {
   #name;
   #icon;
   #relicFunction;
+  #relicDescription;
 
   get icon() {
     return this.#icon;
@@ -11,10 +12,15 @@ class Relics {
     return this.#name;
   }
 
-  constructor(name, icon, relicFunction) {
+  get relicDescription() {
+    return this.#relicDescription;
+  }
+
+  constructor(name, icon, relicFunction, relicDescription) {
     this.#name = name;
     this.#icon = icon;
     this.#relicFunction = relicFunction;
+    this.#relicDescription = relicDescription;
   }
 
   equipRelic(player) {
@@ -30,29 +36,41 @@ class Relics {
 }
 
 class ActiveRelics extends Relics {
-  constructor(name, icon, relicFunction) {
-    super(name, icon, relicFunction);
+  constructor(name, icon, relicFunction, relicDescription) {
+    super(name, icon, relicFunction, relicDescription);
   }
   markEquipped() {}
 }
 
-const relics = [
-  new ActiveRelics("Dummy Relic", "Assets/Monstera.png", dummyRelic),
-  new Relics("Dummy Relic 1", "Assets/Monstera.png", dummyRelic1),
+const relicList = [
+  new ActiveRelics(
+    "Grinding Monstera",
+    "Assets/Monstera.png",
+    grindingMonstera,
+    "Get +2 max HP for every enemy killed."
+  ),
+
+  new Relics("Beefy Steak", "Assets/Steak.png", beefySteak, "Get +30 max HP."),
+  new Relics(
+    "Whetstone",
+    "Assets/sword.png",
+    whetstone,
+    "All attack weapons get +15 critical chance."
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
 }, {});
-const relicNames = [...Object.keys(relics)].sort();
+const relicNames = [...Object.keys(relicList)].sort();
 
-function dummyRelic(player) {
+function grindingMonstera(player) {
   window.addEventListener("EnemyDeath", () => {
     player.increaseMaxHealth(2, true);
   });
-  alert("dummy relic received");
 }
 
-function dummyRelic1(player) {
+function beefySteak(player) {
   player.increaseMaxHealth(30, true);
-  alert("this is also a dummy relic");
 }
+
+function whetstone(player) {}

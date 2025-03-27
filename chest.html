@@ -6,6 +6,7 @@
     <title>Chest</title>
     <link rel="stylesheet" href="styleChest.css" />
     <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="utility.js"></script>
     <script src="weapons.js"></script>
     <script src="baseClasses.js"></script>
     <script src="saveGame.js"></script>
@@ -96,7 +97,7 @@
         // Select a random relic
         const randomRelicName =
           relicNames[Math.floor(Math.random() * relicNames.length)];
-        const randomRelic = relics[randomRelicName];
+        const randomRelic = relicList[randomRelicName];
 
         // Clear previous relics and display new one
         relicContainer.innerHTML = "";
@@ -128,10 +129,10 @@
         );
 
         if (selectedRelicName) {
-          const selectedRelic = relics[selectedRelicName];
+          const selectedRelic = relicList[selectedRelicName];
 
           // Add relic to equipped relics array
-          player.equippedRelics.push(selectedRelicName);
+          player.foundRelic(selectedRelicName, true);
 
           // Apply relic effect
           selectedRelic.equipRelic(player);
@@ -152,7 +153,14 @@
        * Function to skip selecting a relic and go to map.html.
        */
       function skipRelic() {
+        const relicContainer = document.getElementById("relic-container");
+
+        const selectedRelicName = relicContainer.getAttribute(
+          "data-selected-relic"
+        );
+
         console.log("Relic skipped!");
+        player.foundRelic(selectedRelicName, false);
 
         // Redirect to map.html
         window.location.href = "map.html";
