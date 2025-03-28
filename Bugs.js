@@ -21,7 +21,9 @@ function calculate damage
 
 
 
+wie überall equipped relics anzeigen lassen?
 
+beefy steak equipped, aber kein effekt
 
 bei einem gegner, diesen centern
 

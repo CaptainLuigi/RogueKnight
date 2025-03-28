@@ -203,7 +203,10 @@ function enterLocation(button) {
   } else if (active.type == "skull") window.location.href = "./tutorial.html";
   else if (active.type == "shop") window.location.href = "./Shop.html";
   else if (active.type == "chest") window.location.href = "./chest.html";
-  else window.location.reload();
+  else if (active.type == "elite") {
+    globalSettings.difficulty = 8;
+    window.location.href = "./tutorial.html";
+  } else window.location.reload();
 }
 
 function markPossibleLocations() {
@@ -226,20 +229,20 @@ function markPossibleLocations() {
 function triggerRandomEvent() {
   const allEvents = [
     { type: "eliteFight", action: startEliteFight },
-    // { type: "normalFight", action: startNormalFight },
-    // { type: "chest", action: openChest },
-    // { type: "upgradeWeapon", action: showEvent },
-    // { type: "ambushGold", action: showEvent },
-    // { type: "hurtAnkle", action: showEvent },
-    // { type: "duplicateWeapon", action: showEvent },
-    // { type: "thorsHammer", action: showEvent },
-    // { type: "foundGold", action: showEvent },
-    // { type: "gambling", action: showEvent },
-    // { type: "rest", action: showEvent },
-    // { type: "lightning", action: showEvent },
-    // { type: "goldenStatue", action: showEvent },
-    // { type: "succubus", action: showEvent },
-    // { type: "stoned", action: showEvent },
+    { type: "normalFight", action: startNormalFight },
+    { type: "chest", action: openChest },
+    { type: "upgradeWeapon", action: showEvent },
+    { type: "ambushGold", action: showEvent },
+    { type: "hurtAnkle", action: showEvent },
+    { type: "duplicateWeapon", action: showEvent },
+    { type: "thorsHammer", action: showEvent },
+    { type: "foundGold", action: showEvent },
+    { type: "gambling", action: showEvent },
+    { type: "rest", action: showEvent },
+    { type: "lightning", action: showEvent },
+    { type: "goldenStatue", action: showEvent },
+    { type: "succubus", action: showEvent },
+    { type: "stoned", action: showEvent },
   ];
 
   if (player.deck.length > 2) {
@@ -292,6 +295,14 @@ function resetAll() {
   localStorage.removeItem("playerState");
   localStorage.removeItem("MapState");
   localStorage.removeItem("triggeredEvents");
+
+  relicNames.forEach((relicName) => {
+    localStorage.removeItem("relic_" + relicName);
+  });
+
+  if (player && player.equippedRelics) {
+    player.equippedRelics = [];
+  }
 
   globalSettings.playerGold = 0;
 

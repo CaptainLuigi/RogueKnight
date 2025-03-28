@@ -105,6 +105,14 @@ class Player extends HealthEntity {
     if (addToCurrentHealth) this.heal(amount);
   }
 
+  increaseWeaponCritChance(amount) {
+    this.#deck.forEach((weapon) => {
+      if (weapon.criticalChance > 0) {
+        weapon.criticalChance += amount;
+      }
+    });
+  }
+
   addWeapon(weapon) {
     this.#deck.push(weapon);
     this.savePlayerToStorage();
