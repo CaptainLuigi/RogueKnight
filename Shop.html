@@ -42,6 +42,8 @@
       </div>
     </div>
 
+    <div id="equipped-relic-container"></div>
+
     <div class="container-order">
       <div class="Shop-weapon-container">
         <div class="Shop-weapon"></div>
@@ -69,5 +71,10 @@
     <button id="close-post-battle">Leave Shop</button>
 
     <script src="Shop.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        displayEquippedRelics();
+      });
+    </script>
   </body>
 </html>

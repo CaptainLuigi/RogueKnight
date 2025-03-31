@@ -34,6 +34,7 @@ let mapState;
 player.loadPlayerFromStorage();
 
 document.addEventListener("DOMContentLoaded", function () {
+  displayEquippedRelics();
   mapState = loadData("MapState");
   if (mapState == null || mapState.wasFinalBoss == true) generateMap();
   else loadMap();
@@ -204,8 +205,7 @@ function enterLocation(button) {
   else if (active.type == "shop") window.location.href = "./Shop.html";
   else if (active.type == "chest") window.location.href = "./chest.html";
   else if (active.type == "elite") {
-    globalSettings.difficulty = 8;
-    window.location.href = "./tutorial.html";
+    startEliteFight();
   } else window.location.reload();
 }
 
@@ -275,6 +275,8 @@ function triggerRandomEvent() {
 
 function startEliteFight() {
   globalSettings.difficulty = 8;
+  globalSettings.relicGroup = "elite";
+  globalSettings.redirectToChest = true;
   window.location.href = "tutorial.html";
 }
 
@@ -283,6 +285,7 @@ function startNormalFight() {
 }
 
 function openChest() {
+  globalSettings.relicGroup = "chest";
   window.location.href = "./chest.html";
 }
 

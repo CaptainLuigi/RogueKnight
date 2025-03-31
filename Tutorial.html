@@ -46,6 +46,8 @@
       </div>
     </div>
 
+    <div id="equipped-relic-container"></div>
+
     <div id="weapons-container"></div>
 
     <div class="hidden" id="block-container">
@@ -93,5 +95,11 @@
       </div>
       <button id="close-post-battle" class="orange-btn">Next</button>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        displayEquippedRelics();
+      });
+    </script>
   </body>
 </html>

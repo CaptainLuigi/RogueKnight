@@ -21,9 +21,10 @@ function calculate damage
 
 
 
-wie überall equipped relics anzeigen lassen?
 
-beefy steak equipped, aber kein effekt
+
+
+relics (omnipotence, souleater, mehr crit, mehr damage, mehr crit chance) betrifft nur aktuelle waffen, nicht neue
 
 bei einem gegner, diesen centern
 

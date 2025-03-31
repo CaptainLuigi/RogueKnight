@@ -97,18 +97,25 @@
         document.getElementById("addToDeck").style.display = "block";
         document.getElementById("skip").style.display = "block";
 
+        let availableRelics = [];
+
+        let chestRelic = globalSettings.relicGroup;
+
+        for (let currentRelicName of relicNames) {
+          if (!player.foundRelics.includes(currentRelicName)) {
+            let currentRelic = relicList[currentRelicName];
+            if (currentRelic.relicGroup === chestRelic)
+              availableRelics.push(currentRelicName);
+          }
+        }
+
         // Select a random relic
         const randomRelicName =
-          relicNames[Math.floor(Math.random() * relicNames.length)];
+          availableRelics[Math.floor(Math.random() * availableRelics.length)];
         const randomRelic = relicList[randomRelicName];
 
         // Clear previous relics and display new one
         relicContainer.innerHTML = "";
-
-        // const relicImage = document.createElement("img");
-        // relicImage.src = randomRelic.icon;
-        // relicImage.alt = randomRelic.name;
-        // relicImage.classList.add("relic-image");
 
         const relicElement = createRelicElement(randomRelic);
 

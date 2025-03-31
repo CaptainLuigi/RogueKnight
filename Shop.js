@@ -38,7 +38,15 @@ window.addEventListener("DOMContentLoaded", function () {
     const randomIndex = Math.floor(Math.random() * availableWeapons.length);
     const randomWeapon = availableWeapons[randomIndex];
 
-    generateWeaponInfo(randomWeapon, randomIndex, button, null, weaponInfo, 20);
+    generateWeaponInfo(
+      player,
+      randomWeapon,
+      randomIndex,
+      button,
+      null,
+      weaponInfo,
+      20
+    );
 
     weaponInfo.classList.remove("tooltip");
 

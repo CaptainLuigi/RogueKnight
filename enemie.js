@@ -80,6 +80,9 @@ class Enemy extends HealthEntity {
   attack(player) {
     this.#display.classList.add("grow-shrink");
 
+    player.attackingEnemy = this;
+    console.log("Player is beeing attacked by:", player.attackingEnemy);
+
     if (player.blockAmount > 0) {
       if (player.blockAmount >= this.#attackPower) {
         player.blockAmount -= this.#attackPower;
@@ -107,6 +110,16 @@ class Enemy extends HealthEntity {
 
     if (this.#lifesteal > 0) {
       this.heal(this.#lifesteal);
+    }
+
+    if (player.attackingEnemy) {
+      const enemy = player.attackingEnemy;
+
+      const isBrambleEquipped = loadData("relic_Bramble Mantle");
+
+      if (isBrambleEquipped) {
+        enemy.takeDamage(5);
+      }
     }
 
     setTimeout(() => {

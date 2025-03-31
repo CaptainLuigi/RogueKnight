@@ -3,6 +3,7 @@ class Relics {
   #icon;
   #relicFunction;
   #relicDescription;
+  #relicGroup;
 
   get icon() {
     return this.#icon;
@@ -16,11 +17,16 @@ class Relics {
     return this.#relicDescription;
   }
 
-  constructor(name, icon, relicFunction, relicDescription) {
+  get relicGroup() {
+    return this.#relicGroup;
+  }
+
+  constructor(name, icon, relicFunction, relicDescription, relicGroup) {
     this.#name = name;
     this.#icon = icon;
     this.#relicFunction = relicFunction;
     this.#relicDescription = relicDescription;
+    this.#relicGroup = relicGroup;
   }
 
   equipRelic(player) {
@@ -54,20 +60,88 @@ const relicList = [
     "Grinding Monstera",
     "Assets/monsteraLeaf.png",
     grindingMonstera,
-    "Get +2 max HP for every enemy killed."
+    "Get +2 max HP for every enemy killed.",
+    "elite"
+  ),
+
+  new ActiveRelics(
+    "Sanguine Blessing",
+    "Assets/sanguineBlessing.png",
+    sanguineBlessing,
+    "Heal 3 HP for every enemy killed.",
+    "chest"
+  ),
+
+  new Relics(
+    "Souleater",
+    "Assets/souleater.png",
+    souleater,
+    "All weapons get +5% lifesteal",
+    "succubus"
   ),
 
   new Relics(
     "Beefy Steak",
     "Assets/pixelSteak.png",
     beefySteak,
-    "Get +30 max HP."
+    "Get +30 max HP.",
+    "chest"
   ),
+
   new Relics(
     "Whetstone",
-    "Assets/sword.png",
+    "Assets/whetstone.png",
     whetstone,
-    "All attack weapons get +15 critical chance."
+    "All weapons get +15 critical chance.",
+    "chest"
+  ),
+
+  new Relics(
+    "Scroll of Knowledge",
+    "Assets/scrollRelic.png",
+    scrollOfKnowledge,
+    "Hand size increased by 1.",
+    "chest"
+  ),
+
+  new Relics(
+    "Bramble Mantle",
+    "Assets/brambleMantle.png",
+    brambleMantle,
+    "Whenever an enemy attacks you, deal 5 damage back.",
+    "chest"
+  ),
+
+  new Relics(
+    "Relic of Vigor",
+    "Assets/sword.png",
+    relicOfVigor,
+    "All weapons get +15 damage.",
+    "chest"
+  ),
+
+  new Relics(
+    "Defender's Seal",
+    "Assets/shield.png",
+    defendersSeal,
+    "All shields get +5 block.",
+    "elite"
+  ),
+
+  new Relics(
+    "Critical Surge",
+    "Assets/criticalSurge.png",
+    criticalSurge,
+    "All weapons get +25 critical damage.",
+    "elite"
+  ),
+
+  new Relics(
+    "Omnipotence",
+    "Assets/blackHole.png",
+    omnipotence,
+    "Actions don't cost energy, but set max HP to 20.",
+    "elite"
   ),
 ].reduce((o, r) => {
   o[r.name] = r;
@@ -81,6 +155,12 @@ function grindingMonstera(player) {
   });
 }
 
+function sanguineBlessing(player) {
+  window.addEventListener("EnemyDeath", () => {
+    player.heal(3);
+  });
+}
+
 function beefySteak(player) {
   console.log("Beefy Steak effect applied!");
   player.increaseMaxHealth(30, true);
@@ -88,6 +168,60 @@ function beefySteak(player) {
 
 function whetstone(player) {
   player.increaseWeaponCritChance(15);
+}
+
+function criticalSurge(player) {
+  player.increaseWeaponCritDamage(25);
+}
+
+function defendersSeal(player) {
+  player.increaseWeaponBlock(5);
+}
+
+function relicOfVigor(player) {
+  player.increaseWeaponDamage(15);
+}
+
+function scrollOfKnowledge(player) {
+  player.maxHandSize += 1;
+  player.drawHand();
+}
+
+function brambleMantle(player) {
+  // No need to modify the attack function anymore
+  // Just check if the relic is equipped when the player is attacked.
+  const isBrambleEquipped = loadData("relic_Bramble Mantle");
+  console.log("Is Bramble Mantle equipped?", isBrambleEquipped); // Debugging log
+
+  // Check if Bramble Mantle relic is equipped and player has an attacking enemy
+  if (isBrambleEquipped && player.attackingEnemy) {
+    const enemy = player.attackingEnemy;
+
+    // Log the enemy being attacked and the damage
+    console.log("Enemy is attacking the player: ", enemy);
+    console.log("Dealing 5 damage back to the enemy: ", enemy); // Debugging log
+
+    // Deal 5 damage back to the enemy
+    enemy.takeDamage(5);
+  } else {
+    console.log("Bramble Mantle is not equipped or no enemy is attacking.");
+  }
+}
+
+function omnipotence(player) {
+  player.setWeaponEnergy(0);
+  player.setMaxHealth(20);
+}
+
+function souleater(player) {
+  console.log("Player'S weapons:", player.hand);
+
+  player.deck.forEach((weapon) => {
+    if (weapon.damage > 0) {
+      weapon.canHeal = true;
+      weapon.healingAmount += 5;
+    }
+  });
 }
 
 function createRelicElement(relic) {

@@ -54,7 +54,23 @@ class globalSettings {
     storeData("globalSetting_playerGold", value);
   }
 
+  static set relicGroup(value) {
+    storeData("globalSetting_relicGroup", value);
+  }
+
+  static set redirectToChest(value) {
+    storeData("globalSetting_redirectToChest", value === true);
+  }
+
   static get playerGold() {
     return loadData("globalSetting_playerGold") ?? 0;
+  }
+
+  static get relicGroup() {
+    return loadData("globalSetting_relicGroup");
+  }
+
+  static get redirectToChest() {
+    return loadData("globalSetting_redirectToChest") === true;
   }
 }

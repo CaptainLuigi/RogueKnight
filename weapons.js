@@ -134,6 +134,14 @@ class Weapons {
     return this.#wasUsed;
   }
 
+  set canHeal(value) {
+    this.#canHeal = value;
+  }
+
+  set energy(value) {
+    this.#energy = value;
+  }
+
   set damage(value) {
     this.#damage = value;
   }
@@ -168,7 +176,12 @@ class Weapons {
     return displayTargets;
   }
 
-  calculateDamage(enemyIndex) {
+  calculateDamage(
+    enemyIndex,
+    damageModifier,
+    critChanceModifier,
+    critDamageModifier
+  ) {
     this.#wasUsed = true;
 
     if (this.#damage == 0 && this.#criticalDamage == 0)
@@ -178,8 +191,11 @@ class Weapons {
         damages: [],
       };
 
-    const isCritical = Math.random() * 100 < this.criticalChance; // Random chance for critical hit
-    const damage = isCritical ? this.criticalDamage : this.damage;
+    const isCritical =
+      Math.random() * 100 < this.criticalChance + critChanceModifier; // Random chance for critical hit
+    const damage = isCritical
+      ? this.criticalDamage + critDamageModifier
+      : this.damage + damageModifier;
 
     let startIndex = enemyIndex - this.#effectsLeft.length;
     let leftOffset = 0;
@@ -1007,6 +1023,7 @@ function createWeaponInstanceFromInfo(info) {
 }
 
 function displayWeapons(
+  player,
   weapons,
   usesTargeting = true,
   containerElementID = "weapons-container"
@@ -1018,6 +1035,7 @@ function displayWeapons(
   weapons.forEach((weapon, index) => {
     // Add index parameter here
     const weaponElement = generateWeaponInfo(
+      player,
       weapon,
       index,
       weaponsContainer,
@@ -1042,6 +1060,7 @@ function displayWeapons(
 }
 
 function generateWeaponInfo(
+  player,
   weapon,
   weaponIndex,
   displayParent,
@@ -1074,15 +1093,27 @@ function generateWeaponInfo(
         <strong>Range:</strong> ${weapon.range} <br>`;
 
     if (weapon.damage > 0) {
-      tooltipString += `<strong>Damage:</strong> ${weapon.damage} <br>`;
+      let modifierDisplay = "";
+      if (player.damageModifier > 0) {
+        modifierDisplay = `(+${player.damageModifier})`;
+      }
+      tooltipString += `<strong>Damage:</strong> ${weapon.damage} ${modifierDisplay} <br>`;
     }
 
     if (weapon.criticalDamage > 0) {
-      tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} <br>`;
+      let modifierDisplay = "";
+      if (player.critDamageModifier > 0) {
+        modifierDisplay = `(+${player.critDamageModifier})`;
+      }
+      tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} ${modifierDisplay} <br>`;
     }
 
     if (weapon.criticalChance > 0) {
-      tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}% <br>`;
+      let modifierDisplay = "";
+      if (player.critChanceModifier > 0) {
+        modifierDisplay = `(+${player.critChanceModifier}%)`;
+      }
+      tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}%  ${modifierDisplay}<br>`;
     }
 
     if (weapon.healingAmount > 0) {
@@ -1090,7 +1121,11 @@ function generateWeaponInfo(
     }
 
     if (weapon.blockAmount > 0) {
-      tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} <br>`;
+      let modifierDisplay = "";
+      if (player.blockModifier > 0) {
+        modifierDisplay = `(+${player.blockModifier})`;
+      }
+      tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} ${modifierDisplay}<br>`;
     }
 
     tooltipString += `${weapon.description} <br>`;
@@ -1119,14 +1154,14 @@ function generateWeaponInfo(
   return display;
 }
 
-function applyBlock(weapon) {
+function applyBlock(weapon, blockModifier) {
   if (weapon.blockAmount > 0) {
     const blockContainer = document.getElementById("block-container");
     const blockText = document.getElementById("block-text");
 
     let currentBlock = parseInt(blockText.innerText) || 0;
 
-    currentBlock += weapon.blockAmount;
+    currentBlock += weapon.blockAmount + blockModifier;
 
     player.blockAmount = currentBlock;
 

@@ -8,6 +8,8 @@ function updatePlayerGold(goldAmount) {
 
 let sprite;
 document.addEventListener("DOMContentLoaded", () => {
+  displayEquippedRelics();
+
   document.getElementById("current-deck").addEventListener("click", () => {
     player.showDeck();
   });
@@ -171,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .getElementById("succubusFight")
         .addEventListener("click", function () {
           globalSettings.difficulty = 9;
+          globalSettings.relicGroup = "succubus";
+          globalSettings.redirectToChest = true;
           window.location.href = "tutorial.html";
         });
     });
@@ -302,6 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Generate detailed weapon info inside the buttons
         generateWeaponInfo(
+          player,
           weaponChoices[0], // Weapon 1
           randomWeapon1, // Index of weapon 1 in deck
           button1, // Parent button
@@ -311,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         generateWeaponInfo(
+          player,
           weaponChoices[1], // Weapon 2
           randomWeapon2, // Index of weapon 2 in deck
           button2, // Parent button

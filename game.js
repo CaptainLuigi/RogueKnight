@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   player.loadPlayerFromStorage();
 
-  displayWeapons(player.hand);
+  displayWeapons(player, player.hand);
 
   Enemy.initialize();
 
@@ -161,11 +161,16 @@ function executeAttack(weapon, enemyIndex) {
   }
 
   // Call the damage calculation function
-  let { startIndex, isCritical, damages } = weapon.calculateDamage(enemyIndex);
+  let { startIndex, isCritical, damages } = weapon.calculateDamage(
+    enemyIndex,
+    player.damageModifier,
+    player.critChanceModifier,
+    player.critDamageModifier
+  );
   damages = damages.reverse();
   startIndex += damages.length - 1;
 
-  applyBlock(weapon);
+  applyBlock(weapon, player.blockModifier);
 
   if (
     weapon.blockAmount > 0 ||
@@ -194,7 +199,7 @@ function executeAttack(weapon, enemyIndex) {
   updateEnergyDisplay();
   setActiveWeapon(-1);
   player.removeUsed();
-  displayWeapons(player.hand);
+  displayWeapons(player, player.hand);
 }
 
 function selectEnemy(enemyNode) {
@@ -269,7 +274,7 @@ function endTurn() {
       isPlayerTurn = true;
 
       player.drawHand();
-      displayWeapons(player.hand);
+      displayWeapons(player, player.hand);
 
       enableWeapons(); // Enable the weapons after the delay
     }, enemies.length * 700 + 500); // Enable after 2 seconds (can adjust based on animation time)
@@ -349,7 +354,12 @@ function triggerPostBattleScreen() {
   document
     .getElementById("close-post-battle")
     .addEventListener("click", function () {
-      window.location.href = "map.html";
+      if (globalSettings.redirectToChest) {
+        globalSettings.redirectToChest = false;
+        window.location.href = "chest.html";
+      } else {
+        window.location.href = "map.html";
+      }
     });
 }
 
@@ -370,7 +380,15 @@ function displayRandomWeapons() {
 
     randomWeapons.push(randomWeapon);
 
-    generateWeaponInfo(randomWeapon, newRandomIndex, null, button, null, 30);
+    generateWeaponInfo(
+      player,
+      randomWeapon,
+      newRandomIndex,
+      null,
+      button,
+      null,
+      30
+    );
 
     button.addEventListener("click", function () {
       purchaseWeapon(randomWeapon, button);
@@ -391,7 +409,7 @@ function purchaseWeapon(weapon, button) {
 }
 
 function populateWeaponUpgradeOptions() {
-  displayWeapons(player.deck, false, "upgrade-weapon-options");
+  displayWeapons(player, player.deck, false, "upgrade-weapon-options");
 }
 
 function upgradeWeapon(weapon) {
