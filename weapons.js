@@ -283,7 +283,7 @@ class Weapons {
     }
     if (this.#healingAmount.length == 1) {
       let totalDamage = damages.reduce((c, e) => c + e, 0);
-      return (this.#healingAmount[0] * totalDamage) / 100;
+      return Math.floor((this.#healingAmount[0] * totalDamage) / 100);
     }
     let ttlHealing = 0;
     for (let i = 0; i < this.#healingAmount.length; i++) {
@@ -292,7 +292,7 @@ class Weapons {
       if (i < damages.length) {
         currentDamage = damages[i];
       }
-      ttlHealing += (currentDamage * currentHealing) / 100;
+      ttlHealing += Math.floor((currentDamage * currentHealing) / 100);
     }
     return ttlHealing;
   }
@@ -974,6 +974,30 @@ class SurvivalPotion extends Weapons {
   }
 }
 
+class devWeapon extends Weapons {
+  constructor() {
+    super(
+      "Dev Weapon",
+      1,
+      "melee",
+      1000,
+      1000,
+      0,
+      0,
+      "Instakill",
+      "Assets/morningstar.png",
+      false,
+      0,
+      0,
+      0,
+      [1, 1, 1, 1, 1, 1],
+      0,
+      false,
+      0
+    );
+  }
+}
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -1013,6 +1037,7 @@ const weaponClassMapping = {
   SpikedShield,
   SurvivalPotion,
   TowerShield,
+  devWeapon,
 };
 
 function createWeaponInstanceFromInfo(info) {
@@ -1116,8 +1141,22 @@ function generateWeaponInfo(
       tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}%  ${modifierDisplay}<br>`;
     }
 
-    if (weapon.healingAmount > 0) {
-      tooltipString += `<strong>Healing:</strong> ${weapon.healingAmount} <br>`;
+    if (weapon.canHeal) {
+      let healingString = "";
+      let modifierDisplay = "";
+      //prüft, ob healing relativ zu Schaden berechnet wird
+      if (Array.isArray(weapon.healingAmount)) {
+        healingString = weapon.healingAmount.join("%, ") + "%";
+
+        if (player.lifestealModifier > 0) {
+          modifierDisplay = `(+${player.lifestealModifier}%)`;
+        }
+      } else {
+        healingString = weapon.healingAmount;
+      }
+      tooltipString += `<strong>Healing:</strong> ${healingString} ${modifierDisplay}<br>`;
+    } else if (player.lifestealModifier > 0) {
+      tooltipString += `<strong>Healing:</strong> (+${player.lifestealModifier}%)<br>`;
     }
 
     if (weapon.blockAmount > 0) {

@@ -13,6 +13,7 @@ class Player extends HealthEntity {
   #critChanceModifier = 0;
   #critDamageModifier = 0;
   #blockModifier = 0;
+  #lifestealModifier = 0;
   #hand = [];
   #drawPile = [];
   #equippedRelics = [];
@@ -27,6 +28,7 @@ class Player extends HealthEntity {
     this.#deck = deck;
     this.#energy = energy;
     this.#maxEnergy = maxEnergy;
+    this.#equippedRelics = this.equippedRelics ?? [];
 
     this.drawHand();
   }
@@ -65,6 +67,10 @@ class Player extends HealthEntity {
 
   get blockModifier() {
     return this.#blockModifier;
+  }
+
+  get lifestealModifier() {
+    return this.#lifestealModifier;
   }
 
   get deck() {
@@ -125,6 +131,10 @@ class Player extends HealthEntity {
     if (addToCurrentHealth) this.heal(amount);
   }
 
+  increaseMaxEnergy(amount) {
+    this.#maxEnergy += amount;
+  }
+
   setMaxHealth(amount) {
     this.#maxHealth = amount;
     this.#health = this.#maxHealth;
@@ -142,6 +152,10 @@ class Player extends HealthEntity {
     this.#damageModifier += amount;
   }
 
+  increaseWeaponLifesteal(amount) {
+    this.#lifestealModifier += amount;
+  }
+
   increaseWeaponBlock(amount) {
     this.#blockModifier += amount;
   }
@@ -154,6 +168,16 @@ class Player extends HealthEntity {
 
   addWeapon(weapon) {
     this.#deck.push(weapon);
+    this.savePlayerToStorage();
+  }
+
+  dropWeapon(index) {
+    index = parseInt(index);
+    if (isNaN(index) || index < 0 || index >= this.deck.length) {
+      return;
+    }
+
+    this.#deck.splice(index, 1);
     this.savePlayerToStorage();
   }
 
@@ -183,7 +207,7 @@ class Player extends HealthEntity {
       return; // Prevent healing if the amount is invalid
     }
 
-    this.#health += amount; // Increase health
+    this.#health += Math.floor(amount); // Increase health
     if (this.#health > this.#maxHealth) {
       this.#health = this.#maxHealth; // Cap at max health
     }
@@ -232,6 +256,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
+      this.addWeapon(new devWeapon());
     } else {
       this.#name = state.name;
       this.#health = state.health;
@@ -240,6 +265,7 @@ class Player extends HealthEntity {
       this.#critChanceModifier = state.critChanceModifier;
       this.#critDamageModifier = state.critDamageModifier;
       this.#blockModifier = state.blockModifier;
+      this.#lifestealModifier = state.lifestealModifier;
       let deck = [];
       for (let weapon of state.deck) {
         let instance = createWeaponInstanceFromInfo(weapon);
@@ -247,7 +273,7 @@ class Player extends HealthEntity {
       }
       this.#deck = deck;
       this.#maxEnergy = state.maxEnergy;
-      this.#foundRelics = state.foundRelics;
+      this.#foundRelics = state.foundRelics ?? [];
       this.#equippedRelics = state.equippedRelics;
       this.maxHandSize = state.maxHandSize;
     }
@@ -271,6 +297,7 @@ class Player extends HealthEntity {
       critChanceModifier: this.#critChanceModifier,
       critDamageModifier: this.#critDamageModifier,
       blockModifier: this.#blockModifier,
+      lifestealModifier: this.#lifestealModifier,
     };
     let deck = [];
     for (let weapon of this.#deck) {

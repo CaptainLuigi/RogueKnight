@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updatePlayerGold(0);
   updateHealthBar(player);
+  updateEnergyDisplay(player);
 });
 
 const enemies = [];
@@ -181,16 +182,33 @@ function executeAttack(weapon, enemyIndex) {
     triggerAttackAnimation();
   }
 
+  let overallDamageTaken = 0;
+
+  let damageIndex = 0;
+
   for (let enemyDamage of damages) {
     enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
-    enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
+    let damageTaken = enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
 
+    damages[damageIndex] = damageTaken;
+
+    overallDamageTaken += damageTaken;
     startIndex--;
+
+    damageIndex++;
   }
+  damages = damages.reverse();
 
   setIdleTimeout();
 
-  let healing = weapon.calculateHealing(damages);
+  // Apply lifesteal if the Souleater relic is equipped
+  let healing = 0;
+
+  healing += (overallDamageTaken * player.lifestealModifier) / 100;
+
+  // Calculate additional healing from the weapon
+  healing += weapon.calculateHealing(damages);
+
   player.heal(healing);
 
   player.useEnergy(weapon.energy);
@@ -242,6 +260,11 @@ function endTurn() {
   disableWeapons();
 
   isPlayerTurn = false;
+
+  if (player.equippedRelics.includes("Overcharged Core")) {
+    player.takeDamage(5);
+    updateHealthBar(player);
+  }
 
   setTimeout(() => {
     enemies.forEach((enemy, index) => {

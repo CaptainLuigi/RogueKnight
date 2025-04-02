@@ -72,10 +72,13 @@ class Enemy extends HealthEntity {
   }
 
   takeDamage(amount) {
+    let takenDamage = Math.min(this.#health, amount);
+
     this.#health -= amount;
     if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
     if (this.#health === 0) this.enemyDeath();
     else this.updateDisplay();
+    return takenDamage;
   }
   attack(player) {
     this.#display.classList.add("grow-shrink");

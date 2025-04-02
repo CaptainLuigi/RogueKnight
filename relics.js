@@ -49,8 +49,8 @@ class Relics {
 }
 
 class ActiveRelics extends Relics {
-  constructor(name, icon, relicFunction, relicDescription) {
-    super(name, icon, relicFunction, relicDescription);
+  constructor(name, icon, relicFunction, relicDescription, relicGroup) {
+    super(name, icon, relicFunction, relicDescription, relicGroup);
   }
   markEquipped() {}
 }
@@ -114,7 +114,7 @@ const relicList = [
 
   new Relics(
     "Relic of Vigor",
-    "Assets/sword.png",
+    "Assets/relicOfVigor.png",
     relicOfVigor,
     "All weapons get +15 damage.",
     "chest"
@@ -122,7 +122,7 @@ const relicList = [
 
   new Relics(
     "Defender's Seal",
-    "Assets/shield.png",
+    "Assets/defendersSeal.png",
     defendersSeal,
     "All shields get +5 block.",
     "elite"
@@ -141,6 +141,22 @@ const relicList = [
     "Assets/blackHole.png",
     omnipotence,
     "Actions don't cost energy, but set max HP to 20.",
+    "elite"
+  ),
+
+  new Relics(
+    "Cursed Gauntlet",
+    "Assets/cursedGauntlet.png",
+    cursedGauntlet,
+    "Max Energy reduced by 1, but all attacks deal +50 damage, +75 critical damage and shields get +10 block.",
+    "elite"
+  ),
+
+  new Relics(
+    "Overcharged Core",
+    "Assets/overchargedCore.png",
+    overchargedCore,
+    "Max Energy is increased by 1, but it deals 5 damage to you at the end of your turn.",
     "elite"
   ),
 ].reduce((o, r) => {
@@ -164,6 +180,17 @@ function sanguineBlessing(player) {
 function beefySteak(player) {
   console.log("Beefy Steak effect applied!");
   player.increaseMaxHealth(30, true);
+}
+
+function cursedGauntlet(player) {
+  player.increaseWeaponDamage(50);
+  player.increaseWeaponCritDamage(75);
+  player.increaseWeaponBlock(10);
+  player.increaseMaxEnergy(-1);
+}
+
+function overchargedCore(player) {
+  player.increaseMaxEnergy(1);
 }
 
 function whetstone(player) {
@@ -215,13 +242,7 @@ function omnipotence(player) {
 
 function souleater(player) {
   console.log("Player'S weapons:", player.hand);
-
-  player.deck.forEach((weapon) => {
-    if (weapon.damage > 0) {
-      weapon.canHeal = true;
-      weapon.healingAmount += 5;
-    }
-  });
+  player.increaseWeaponLifesteal(5);
 }
 
 function createRelicElement(relic) {

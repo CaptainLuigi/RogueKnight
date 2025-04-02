@@ -62,33 +62,21 @@ function dropWeapon(indexToDrop) {
     return;
   }
 
+  player.dropWeapon(indexToDrop);
+
   // Log deck before removing weapon
   console.log("Player deck before removing weapon:", currentDeck);
 
-  // Create a new deck with the selected weapon removed
-  let updatedDeck = currentDeck.filter((_, index) => index !== indexToDrop);
-
-  // Log the updated deck after removing the weapon
-  console.log("Updated Player Deck:", updatedDeck);
-
-  player.deck = updatedDeck;
-
-  // Manually override the player's deck by calling savePlayerToStorage
-  player.savePlayerToStorage = function () {
-    let state = {
-      name: player.name,
-      health: player.health,
-      maxHealth: player.maxHealth,
-      maxEnergy: player.maxEnergy,
-      deck: updatedDeck.map((weapon) => weapon.getWeaponInfo()), // Save new deck
-    };
-    storeData("playerState", state);
-  };
-
-  // Call savePlayerToStorage to update storage with new deck
-  player.savePlayerToStorage();
-
   console.log("Player deck saved to storage.");
+}
+
+//golden Statue
+function smashStatueAction() {
+  player.takeDamage(25);
+  updateHealthBar(player);
+  updatePlayerGold(75);
+  player.savePlayerToStorage();
+  window.location.href = "map.html";
 }
 
 //returning to map after leaving
@@ -105,6 +93,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+function restAction() {
+  player.heal(20);
+  updateHealthBar(player);
+  player.savePlayerToStorage();
+  window.location.href = "map.html";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   let eventType = loadData("RandomEvent");
 
@@ -115,26 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const leaveButton = document.getElementById("leaveRest");
 
-    leaveButton.addEventListener("click", function () {
-      player.heal(20);
-      updateHealthBar(player);
-      player.savePlayerToStorage();
-      window.location.href = "map.html";
-    });
-  }
-
-  //golden Statue
-
-  if (eventType === "goldenStatue") {
-    document
-      .getElementById("smashStatue")
-      .addEventListener("click", function () {
-        player.takeDamage(25);
-        updateHealthBar(player);
-        updatePlayerGold(75);
-        player.savePlayerToStorage();
-        window.location.href = "map.html";
-      });
+    leaveButton.addEventListener("click", restAction);
   }
 
   //Lightning
@@ -331,14 +307,19 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error("Weapon buttons not found!");
     }
 
+    console.log("Equipped Relics before weapon drop:", player.equippedRelics);
+
     // Add event listeners to drop the weapon that was NOT chosen
     button1.addEventListener("click", () => {
       dropWeapon(randomWeapon1); // Drop the first weapon by index
+      console.log("Equipped Relics after weapon drop:", player.equippedRelics);
+
       window.location.href = "map.html";
     });
 
     button2.addEventListener("click", () => {
       dropWeapon(randomWeapon2); // Drop the second weapon by index
+      console.log("Equipped Relics after weapon drop:", player.equippedRelics);
       window.location.href = "map.html";
     });
   }
@@ -506,19 +487,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (selectedWeapon) {
           console.log(`Duplicating weapon: ${selectedWeapon.name}`);
 
-          // Create a new instance of the selected weapon, ensuring proper handling of private fields
-          const duplicatedWeapon = new selectedWeapon.constructor(); // This ensures the new weapon is created using the same constructor
+          //Extrahiert Daten als JSON Objekt der ausgewählten Waffe
+          let weaponData = selectedWeapon.getWeaponInfo();
 
-          // Copy all properties over to the duplicated weapon (including private fields and level)
-          Object.getOwnPropertyNames(selectedWeapon).forEach((key) => {
-            // Ensure we're not duplicating the constructor property
-            if (key !== "constructor") {
-              duplicatedWeapon[key] = selectedWeapon[key];
-            }
-          });
-
-          // If the level is a private field, use the getter to assign the value
-          duplicatedWeapon.level = selectedWeapon.level; // Use the getter for level
+          //Erzeugt aus JSON Objekt neue Waffeninstanz
+          const duplicatedWeapon = createWeaponInstanceFromInfo(weaponData);
 
           console.log(
             `Duplicated weapon level after handling: ${duplicatedWeapon.level}`
