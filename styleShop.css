@@ -185,6 +185,11 @@ img.weapon-image {
     height: 150px;
 }
 
+.Shop-relic img {
+    width: 150px;
+    height: 150px;
+}
+
 #weapon-list .weapon .weapon-image {
     width: 75px;
     height: 75px;

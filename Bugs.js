@@ -26,15 +26,13 @@ function calculate damage
 
 
 
-cursed gauntlet -> erste energyanzeige pro kampf immer noch 3 anstatt 2
-
 bei einem gegner, diesen centern
 
-remove weapon im shop fehlt
+
 
 succubus greift instant an
 
-bei event duplicate, neue waffe immer level 1
+
 
 
 

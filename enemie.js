@@ -84,42 +84,45 @@ class Enemy extends HealthEntity {
     this.#display.classList.add("grow-shrink");
 
     player.attackingEnemy = this;
-    console.log("Player is beeing attacked by:", player.attackingEnemy);
+    console.log("Player is being attacked by:", player.attackingEnemy);
+
+    let actualDamage = this.#attackPower; // Start with base attack power
 
     if (player.blockAmount > 0) {
       if (player.blockAmount >= this.#attackPower) {
         player.blockAmount -= this.#attackPower;
         triggerBlockAnimation();
         setIdleTimeout();
+        actualDamage = 0; // Fully blocked
       } else {
-        const remainingDamage = this.#attackPower - player.blockAmount;
+        actualDamage = this.#attackPower - player.blockAmount;
         player.blockAmount = 0;
-        player.takeDamage(remainingDamage);
         triggerBlockAnimation();
         setIdleTimeout();
       }
-    } else {
-      player.takeDamage(this.#attackPower);
+    }
+
+    if (actualDamage > 0) {
+      player.takeDamage(actualDamage);
     }
 
     const blockText = document.getElementById("block-text");
     const blockContainer = document.getElementById("block-container");
 
     blockText.innerText = player.blockAmount;
-
     if (player.blockAmount === 0) {
       blockContainer.classList.add("hidden");
     }
 
-    if (this.#lifesteal > 0) {
-      this.heal(this.#lifesteal);
+    // ✅ Apply Lifesteal Only on Unblocked Damage
+    if (this.#lifesteal > 0 && actualDamage > 0) {
+      let lifestealHeal = Math.min(this.#lifesteal, actualDamage);
+      this.heal(lifestealHeal);
     }
 
     if (player.attackingEnemy) {
       const enemy = player.attackingEnemy;
-
       const isBrambleEquipped = loadData("relic_Bramble Mantle");
-
       if (isBrambleEquipped) {
         enemy.takeDamage(5);
       }

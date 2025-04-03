@@ -66,6 +66,236 @@ function purchaseWeapon(weapon) {
   }
 }
 
+// 1. When Shop-removal button is clicked, show the deck and enable removal functionality
+document.getElementById("Shop-removal").addEventListener("click", () => {
+  // Display the player's deck and enter the removal mode
+  const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+  weaponDeckScreen.classList.remove("hidden");
+
+  player.showDeck("remove"); // Use the same method as upgrading to show the deck
+
+  // Add class for remove mode
+  document.body.classList.add("remove-mode");
+});
+
+// 2. Listen for clicks on the #weapon-deck-screen to select and remove a weapon
+document
+  .getElementById("weapon-deck-screen")
+  .addEventListener("click", (event) => {
+    // Check if the click target is a weapon item
+    const weaponElement = event.target.closest(".weapon");
+
+    if (weaponElement) {
+      // Get the index of the clicked weapon
+      const weaponIndex = Array.from(
+        document.querySelectorAll("#weapon-deck-screen .weapon")
+      ).indexOf(weaponElement);
+
+      if (weaponIndex === -1) {
+        console.error("Weapon index not found!");
+        return;
+      }
+
+      const weapon = player.deck[weaponIndex]; // Get the selected weapon
+      if (weapon) {
+        // Check if player has 50 or more gold
+        if (globalSettings.playerGold >= 50) {
+          console.log(`Removing weapon: ${weapon.name}`);
+
+          // Call dropWeapon to remove the weapon
+          dropWeapon(weaponIndex);
+
+          // Subtract 50 gold from the player
+          updatePlayerGold(-50);
+
+          // Close the deck screen and disable the Shop-removal button
+          document.getElementById("weapon-deck-screen").classList.add("hidden");
+          document.getElementById("Shop-removal").disabled = true;
+
+          displayTurnMessage(`You removed the weapon and lost 50 gold.`); // Show a message to the player
+        } else {
+          // If player doesn't have enough gold, close the deck and show a message
+          document.getElementById("weapon-deck-screen").classList.add("hidden");
+          displayTurnMessage("You don't have enough gold to remove a weapon."); // Show the message
+        }
+      } else {
+        console.error("Weapon not found in player's deck");
+      }
+    }
+  });
+
+// 3. Drop/Remove the weapon from the player's deck
+function dropWeapon(indexToDrop) {
+  let currentDeck = player.deck;
+
+  if (
+    indexToDrop === undefined ||
+    indexToDrop < 0 ||
+    indexToDrop >= currentDeck.length
+  ) {
+    console.error("Invalid weapon index!");
+    return;
+  }
+
+  // Remove the weapon from the deck
+  player.dropWeapon(indexToDrop);
+  player.showDeck("remove"); // Re-render the deck after removal
+
+  console.log("Weapon removed.");
+}
+
+function displayTurnMessage(message) {
+  const turnMessage = document.getElementById("turn-message");
+
+  if (!turnMessage) {
+    console.error("Turn message element not found!");
+    return;
+  }
+
+  console.log("Displaying turn message:", message);
+  turnMessage.textContent = message;
+  turnMessage.style.display = "block"; // Show the message
+
+  // Hide the message after 2 seconds (you can adjust this delay)
+  setTimeout(() => {
+    turnMessage.style.display = "none"; // Hide the message
+  }, 2000);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const availableRelics = getAvailableRelics(); // Get the initial pool of relics
+  const relicButtons = document.querySelectorAll(".Shop-relic"); // Assuming these are the buttons for relics
+  const speechBubble = document.getElementById("speech-bubble");
+  const relicInfo = document.getElementById("weapon-info");
+
+  let displayedRelics = []; // Track relics that have already been displayed
+
+  relicButtons.forEach((button) => {
+    // Ensure there's at least one relic left to display
+    if (availableRelics.length === 0) {
+      console.log("No relics available to display.");
+      return;
+    }
+
+    // Randomly select a relic from the available ones, ensuring it hasn't been displayed already
+    let randomIndex = Math.floor(Math.random() * availableRelics.length);
+    let randomRelic = availableRelics[randomIndex];
+
+    // Check if the relic has already been displayed
+    while (displayedRelics.includes(randomRelic.name)) {
+      randomIndex = Math.floor(Math.random() * availableRelics.length);
+      randomRelic = availableRelic[randomIndex];
+    }
+
+    // Add the selected relic to the displayedRelics array
+    displayedRelics.push(randomRelic.name);
+
+    // Remove the selected relic from the availableRelics pool
+    availableRelics.splice(randomIndex, 1);
+
+    // Generate relic info (tooltips, descriptions, etc.)
+    generateRelicInfo(player, randomRelic, randomIndex, button, relicInfo);
+
+    // Remove tooltip class
+    relicInfo.classList.remove("tooltip");
+
+    // Event listener for relic purchase
+    button.firstElementChild.addEventListener("click", function () {
+      purchaseRelic(randomRelic);
+      button.firstElementChild.remove();
+    });
+
+    button.setAttribute("data-relic-id", randomRelic.name);
+  });
+});
+
+// Function to filter available relics (chest or elite group, not already found)
+// Function to filter available relics (chest or elite group, not already found)
+function getAvailableRelics() {
+  // Log relicList to check its state
+  console.log("relicList:", relicList);
+
+  // Ensure relicList is an object and not an array
+  if (typeof relicList !== "object" || relicList === null) {
+    console.error("relicList is not an object.");
+    return []; // Return an empty array if relicList is invalid
+  }
+
+  // Convert relicList to an array of relic objects
+  const relicArray = Object.values(relicList);
+
+  // Ensure player.foundRelics is an array
+  if (!Array.isArray(player.foundRelics)) {
+    console.error("player.foundRelics is not an array.");
+    player.foundRelics = []; // Reset it to an empty array if needed
+  }
+
+  return relicArray.filter(
+    (relic) =>
+      (relic.relicGroup === "chest" || relic.relicGroup === "elite") &&
+      !player.foundRelics.includes(relic.name)
+  );
+}
+
+function purchaseRelic(relic) {
+  // Check if the player has enough gold
+  if (globalSettings.playerGold >= 100) {
+    // Equip the relic
+    relic.equipRelic(player);
+
+    // Update player gold
+    updatePlayerGold(-100);
+
+    // Show a message to the player
+    displayTurnMessage(`You purchased the relic: ${relic.name}`);
+  } else {
+    // If the player doesn't have enough gold
+    displayTurnMessage("You don't have enough gold to purchase this relic.");
+  }
+}
+
+function generateRelicInfo(player, relic, index, button, relicInfo) {
+  // Create the tooltip information for the relic (name and description)
+  const tooltip = document.createElement("div");
+  tooltip.classList.add("relicTooltip");
+  tooltip.innerHTML = `<strong>${relic.name}</strong><br>${relic.relicDescription}`;
+
+  // Create an image for the relic and set it as the button's content
+  const relicImage = document.createElement("img");
+  relicImage.src = relic.icon;
+  relicImage.alt = relic.name;
+
+  // Add the image and tooltip to the button
+  button.appendChild(relicImage);
+  button.appendChild(tooltip);
+
+  // Event listener for relic hover
+  button.addEventListener("mouseover", function () {
+    // Show the tooltip in the speech bubble
+    const speechBubble = document.getElementById("speech-bubble");
+
+    if (speechBubble) {
+      speechBubble.textContent = `${relic.name}: ${relic.relicDescription}`;
+      speechBubble.style.display = "block"; // Make sure speech bubble is visible
+    }
+  });
+
+  // Event listener for relic hover out (hide tooltip)
+  button.addEventListener("mouseout", function () {
+    const speechBubble = document.getElementById("speech-bubble");
+
+    if (speechBubble) {
+      speechBubble.style.display = "none"; // Hide the speech bubble when mouse leaves the relic
+    }
+  });
+
+  // Event listener for relic purchase
+  button.addEventListener("click", function () {
+    purchaseRelic(relic);
+    button.remove(); // Remove the button once the relic is purchased
+  });
+}
+
 let frame = 0;
 
 const idleShopkeeper = {

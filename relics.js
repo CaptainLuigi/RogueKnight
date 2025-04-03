@@ -60,7 +60,7 @@ const relicList = [
     "Grinding Monstera",
     "Assets/monsteraLeaf.png",
     grindingMonstera,
-    "Get +2 max HP for every enemy killed.",
+    "Get +1 max HP for every enemy killed.",
     "elite"
   ),
 
@@ -108,7 +108,7 @@ const relicList = [
     "Bramble Mantle",
     "Assets/brambleMantle.png",
     brambleMantle,
-    "Whenever an enemy attacks you, deal 5 damage back.",
+    "Whenever an enemy attacks you,<br> deal 5 damage back.",
     "chest"
   ),
 
@@ -125,7 +125,7 @@ const relicList = [
     "Assets/defendersSeal.png",
     defendersSeal,
     "All shields get +5 block.",
-    "elite"
+    "chest"
   ),
 
   new Relics(
@@ -133,7 +133,7 @@ const relicList = [
     "Assets/criticalSurge.png",
     criticalSurge,
     "All weapons get +25 critical damage.",
-    "elite"
+    "chest"
   ),
 
   new Relics(
@@ -148,7 +148,7 @@ const relicList = [
     "Cursed Gauntlet",
     "Assets/cursedGauntlet.png",
     cursedGauntlet,
-    "Max Energy reduced by 1, but all attacks deal +50 damage, +75 critical damage and shields get +10 block.",
+    "Max Energy reduced by 1, but all attacks deal <br> +50 damage, +75 critical damage <br> and shields get +10 block.",
     "elite"
   ),
 
@@ -156,7 +156,7 @@ const relicList = [
     "Overcharged Core",
     "Assets/overchargedCore.png",
     overchargedCore,
-    "Max Energy is increased by 1, but it deals 5 damage to you at the end of your turn.",
+    "Max Energy is increased by 1, but <br> deals 5 damage to you at the end of your turn.",
     "elite"
   ),
 ].reduce((o, r) => {
@@ -167,7 +167,7 @@ const relicNames = [...Object.keys(relicList)].sort();
 
 function grindingMonstera(player) {
   window.addEventListener("EnemyDeath", () => {
-    player.increaseMaxHealth(2, true);
+    player.increaseMaxHealth(1, true);
   });
 }
 

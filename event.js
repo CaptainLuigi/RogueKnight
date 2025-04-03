@@ -64,9 +64,6 @@ function dropWeapon(indexToDrop) {
 
   player.dropWeapon(indexToDrop);
 
-  // Log deck before removing weapon
-  console.log("Player deck before removing weapon:", currentDeck);
-
   console.log("Player deck saved to storage.");
 }
 
