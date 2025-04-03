@@ -30,7 +30,7 @@ bei einem gegner, diesen centern
 
 
 
-succubus greift instant an
+succubus soll instant angreifen
 
 
 

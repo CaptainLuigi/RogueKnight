@@ -50,9 +50,53 @@ window.addEventListener("DOMContentLoaded", function () {
 
     weaponInfo.classList.remove("tooltip");
 
+    button.addEventListener("mouseover", function () {
+      if (speechBubble) {
+        speechBubble.innerHTML = `<strong>${randomWeapon.name}</strong><br>${randomWeapon.description}<br>`;
+        // Add additional information to the tooltip if applicable
+        if (randomWeapon.damage > 0) {
+          speechBubble.innerHTML += `<strong>Damage:</strong> ${randomWeapon.damage}<br>`;
+        }
+        if (randomWeapon.criticalDamage > 0) {
+          speechBubble.innerHTML += `<strong>Critical Damage:</strong> ${randomWeapon.criticalDamage}<br>`;
+        }
+        if (randomWeapon.criticalChance > 0) {
+          speechBubble.innerHTML += `<strong>Critical Chance:</strong> ${randomWeapon.criticalChance}%<br>`;
+        }
+        if (randomWeapon.blockAmount > 0) {
+          speechBubble.innerHTML += `<strong>Block:</strong> ${randomWeapon.blockAmount}<br>`;
+        }
+        if (randomWeapon.canHeal) {
+          let healingString = "";
+
+          if (Array.isArray(randomWeapon.healingAmount)) {
+            healingString = randomWeapon.healingAmount.join("%, ") + "%";
+          } else {
+            healingString = randomWeapon.healingAmount;
+          }
+
+          speechBubble.innerHTML += `<strong>Healing:</strong> ${healingString}<br>`;
+        }
+
+        speechBubble.innerHTML += `<strong>Price:</strong> 20 Gold`;
+        speechBubble.style.display = "block";
+      }
+    });
+
+    button.addEventListener("mouseout", function () {
+      if (speechBubble) {
+        speechBubble.style.display = "none";
+      }
+    });
+
     button.firstElementChild.addEventListener("click", function () {
-      purchaseWeapon(randomWeapon);
-      button.firstElementChild.remove();
+      if (globalSettings.playerGold >= 20) {
+        updatePlayerGold(-20);
+        purchaseWeapon(randomWeapon);
+        button.firstElementChild.remove();
+      } else {
+        displayTurnMessage("You don't have enough gold.");
+      }
     });
 
     button.setAttribute("data-weapon-id", randomWeapon.name);
@@ -184,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Check if the relic has already been displayed
     while (displayedRelics.includes(randomRelic.name)) {
       randomIndex = Math.floor(Math.random() * availableRelics.length);
-      randomRelic = availableRelic[randomIndex];
+      randomRelic = availableRelics[randomIndex];
     }
 
     // Add the selected relic to the displayedRelics array
@@ -199,17 +243,33 @@ document.addEventListener("DOMContentLoaded", () => {
     // Remove tooltip class
     relicInfo.classList.remove("tooltip");
 
-    // Event listener for relic purchase
+    button.addEventListener("mouseover", function () {
+      if (speechBubble) {
+        speechBubble.innerHTML = `<strong>${randomRelic.name}</strong><br>${randomRelic.relicDescription}<br><strong>Price:</strong> ${randomRelic.relicPrice} Gold`;
+        speechBubble.style.display = "block";
+      }
+    });
+
+    button.addEventListener("mouseout", function () {
+      if (speechBubble) {
+        speechBubble.style.display = "none";
+      }
+    });
+
     button.firstElementChild.addEventListener("click", function () {
-      purchaseRelic(randomRelic);
-      button.firstElementChild.remove();
+      if (globalSettings.playerGold >= randomRelic.relicPrice) {
+        updatePlayerGold(-randomRelic.relicPrice);
+        purchaseRelic(randomRelic);
+        button.firstElementChild.remove();
+      } else {
+        displayTurnMessage("You don't have enough gold.");
+      }
     });
 
     button.setAttribute("data-relic-id", randomRelic.name);
   });
 });
 
-// Function to filter available relics (chest or elite group, not already found)
 // Function to filter available relics (chest or elite group, not already found)
 function getAvailableRelics() {
   // Log relicList to check its state
@@ -238,20 +298,13 @@ function getAvailableRelics() {
 }
 
 function purchaseRelic(relic) {
-  // Check if the player has enough gold
-  if (globalSettings.playerGold >= 100) {
-    // Equip the relic
-    relic.equipRelic(player);
+  // Equip the relic
+  player.foundRelic(relic.name, true);
+  displayEquippedRelics();
+  player.savePlayerToStorage();
 
-    // Update player gold
-    updatePlayerGold(-100);
-
-    // Show a message to the player
-    displayTurnMessage(`You purchased the relic: ${relic.name}`);
-  } else {
-    // If the player doesn't have enough gold
-    displayTurnMessage("You don't have enough gold to purchase this relic.");
-  }
+  // Show a message to the player
+  displayTurnMessage(`You purchased the relic: ${relic.name}`);
 }
 
 function generateRelicInfo(player, relic, index, button, relicInfo) {
@@ -268,32 +321,6 @@ function generateRelicInfo(player, relic, index, button, relicInfo) {
   // Add the image and tooltip to the button
   button.appendChild(relicImage);
   button.appendChild(tooltip);
-
-  // Event listener for relic hover
-  button.addEventListener("mouseover", function () {
-    // Show the tooltip in the speech bubble
-    const speechBubble = document.getElementById("speech-bubble");
-
-    if (speechBubble) {
-      speechBubble.textContent = `${relic.name}: ${relic.relicDescription}`;
-      speechBubble.style.display = "block"; // Make sure speech bubble is visible
-    }
-  });
-
-  // Event listener for relic hover out (hide tooltip)
-  button.addEventListener("mouseout", function () {
-    const speechBubble = document.getElementById("speech-bubble");
-
-    if (speechBubble) {
-      speechBubble.style.display = "none"; // Hide the speech bubble when mouse leaves the relic
-    }
-  });
-
-  // Event listener for relic purchase
-  button.addEventListener("click", function () {
-    purchaseRelic(relic);
-    button.remove(); // Remove the button once the relic is purchased
-  });
 }
 
 let frame = 0;

@@ -231,7 +231,7 @@ function triggerRandomEvent() {
     // { type: "eliteFight", action: startEliteFight },
     // { type: "normalFight", action: startNormalFight },
     // { type: "chest", action: openChest },
-    { type: "upgradeWeapon", action: showEvent },
+    // { type: "upgradeWeapon", action: showEvent },
     // { type: "ambushGold", action: showEvent },
     // { type: "hurtAnkle", action: showEvent },
     // { type: "duplicateWeapon", action: showEvent },
@@ -240,7 +240,7 @@ function triggerRandomEvent() {
     // { type: "gambling", action: showEvent },
     // { type: "rest", action: showEvent },
     // { type: "lightning", action: showEvent },
-    // { type: "goldenStatue", action: showEvent },
+    { type: "goldenStatue", action: showEvent },
     // { type: "succubus", action: showEvent },
     // { type: "stoned", action: showEvent },
   ];

@@ -69,7 +69,7 @@ function dropWeapon(indexToDrop) {
 
 //golden Statue
 function smashStatueAction() {
-  player.takeDamage(25);
+  player.takeDamage(15);
   updateHealthBar(player);
   updatePlayerGold(75);
   player.savePlayerToStorage();

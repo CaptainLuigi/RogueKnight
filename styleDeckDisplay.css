@@ -76,12 +76,16 @@
     border-radius: 8px;
     font-size: 24px;
     max-width: 400px;
+    width: max-content;
     white-space: nowrap;
     word-wrap: break-word;
     text-align: center;
     z-index: 100;
     left: 110%;
-    
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
 }
 
 .relic-wrapper {

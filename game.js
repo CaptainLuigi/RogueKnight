@@ -367,6 +367,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function triggerPostBattleScreen() {
+  if (player.equippedRelics.includes("Eternal Bloom")) {
+    eternalBloom(player);
+  }
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");
 

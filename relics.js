@@ -4,6 +4,7 @@ class Relics {
   #relicFunction;
   #relicDescription;
   #relicGroup;
+  #relicPrice;
 
   get icon() {
     return this.#icon;
@@ -21,12 +22,24 @@ class Relics {
     return this.#relicGroup;
   }
 
-  constructor(name, icon, relicFunction, relicDescription, relicGroup) {
+  get relicPrice() {
+    return this.#relicPrice;
+  }
+
+  constructor(
+    name,
+    icon,
+    relicFunction,
+    relicDescription,
+    relicGroup,
+    relicPrice
+  ) {
     this.#name = name;
     this.#icon = icon;
     this.#relicFunction = relicFunction;
     this.#relicDescription = relicDescription;
     this.#relicGroup = relicGroup;
+    this.#relicPrice = relicPrice;
   }
 
   equipRelic(player) {
@@ -49,8 +62,15 @@ class Relics {
 }
 
 class ActiveRelics extends Relics {
-  constructor(name, icon, relicFunction, relicDescription, relicGroup) {
-    super(name, icon, relicFunction, relicDescription, relicGroup);
+  constructor(
+    name,
+    icon,
+    relicFunction,
+    relicDescription,
+    relicGroup,
+    relicPrice
+  ) {
+    super(name, icon, relicFunction, relicDescription, relicGroup, relicPrice);
   }
   markEquipped() {}
 }
@@ -61,7 +81,8 @@ const relicList = [
     "Assets/monsteraLeaf.png",
     grindingMonstera,
     "Get +1 max HP for every enemy killed.",
-    "elite"
+    "elite",
+    150
   ),
 
   new ActiveRelics(
@@ -69,7 +90,17 @@ const relicList = [
     "Assets/sanguineBlessing.png",
     sanguineBlessing,
     "Heal 3 HP for every enemy killed.",
-    "chest"
+    "chest",
+    150
+  ),
+
+  new Relics(
+    "Eternal Bloom",
+    "Assets/Sword.png",
+    () => {},
+    "Heal 10 HP at the end of combat.",
+    "chest",
+    125
   ),
 
   new Relics(
@@ -85,7 +116,8 @@ const relicList = [
     "Assets/pixelSteak.png",
     beefySteak,
     "Get +30 max HP.",
-    "chest"
+    "chest",
+    100
   ),
 
   new Relics(
@@ -93,7 +125,8 @@ const relicList = [
     "Assets/whetstone.png",
     whetstone,
     "All weapons get +15 critical chance.",
-    "chest"
+    "chest",
+    100
   ),
 
   new Relics(
@@ -101,15 +134,17 @@ const relicList = [
     "Assets/scrollRelic.png",
     scrollOfKnowledge,
     "Hand size increased by 1.",
-    "chest"
+    "chest",
+    75
   ),
 
   new Relics(
     "Bramble Mantle",
     "Assets/brambleMantle.png",
     brambleMantle,
-    "Whenever an enemy attacks you,<br> deal 5 damage back.",
-    "chest"
+    "Whenever an enemy attacks you, deal 5 damage back.",
+    "chest",
+    100
   ),
 
   new Relics(
@@ -117,7 +152,8 @@ const relicList = [
     "Assets/relicOfVigor.png",
     relicOfVigor,
     "All weapons get +15 damage.",
-    "chest"
+    "chest",
+    100
   ),
 
   new Relics(
@@ -125,7 +161,8 @@ const relicList = [
     "Assets/defendersSeal.png",
     defendersSeal,
     "All shields get +5 block.",
-    "chest"
+    "chest",
+    100
   ),
 
   new Relics(
@@ -133,7 +170,8 @@ const relicList = [
     "Assets/criticalSurge.png",
     criticalSurge,
     "All weapons get +25 critical damage.",
-    "chest"
+    "chest",
+    125
   ),
 
   new Relics(
@@ -141,23 +179,35 @@ const relicList = [
     "Assets/blackHole.png",
     omnipotence,
     "Actions don't cost energy, but set max HP to 20.",
-    "elite"
+    "elite",
+    175
   ),
 
   new Relics(
     "Cursed Gauntlet",
     "Assets/cursedGauntlet.png",
     cursedGauntlet,
-    "Max Energy reduced by 1, but all attacks deal <br> +50 damage, +75 critical damage <br> and shields get +10 block.",
-    "elite"
+    "Max Energy reduced by 1, but all attacks deal +50 damage, +75 critical damage and shields get +10 block.",
+    "elite",
+    175
   ),
 
   new Relics(
     "Overcharged Core",
     "Assets/overchargedCore.png",
     overchargedCore,
-    "Max Energy is increased by 1, but <br> deals 5 damage to you at the end of your turn.",
-    "elite"
+    "Max Energy is increased by 1, but deals 5 unblockable damage to you at the end of your turn.",
+    "elite",
+    175
+  ),
+
+  new Relics(
+    "Cloak of Protection",
+    "Assets/cloakOfProtection.png",
+    cloakOfProtection,
+    "Reduces incoming damage during battle by 1.",
+    "chest",
+    125
   ),
 ].reduce((o, r) => {
   o[r.name] = r;
@@ -212,6 +262,15 @@ function relicOfVigor(player) {
 function scrollOfKnowledge(player) {
   player.maxHandSize += 1;
   player.drawHand();
+}
+
+function cloakOfProtection(player) {
+  player.increaseDamageReduction(1);
+}
+
+function eternalBloom(player) {
+  player.heal(10);
+  updateHealthBar(player);
 }
 
 function brambleMantle(player) {

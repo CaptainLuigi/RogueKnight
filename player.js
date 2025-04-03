@@ -14,6 +14,7 @@ class Player extends HealthEntity {
   #critDamageModifier = 0;
   #blockModifier = 0;
   #lifestealModifier = 0;
+  #damageReductionModifier = 0;
   #hand = [];
   #drawPile = [];
   #equippedRelics = [];
@@ -71,6 +72,10 @@ class Player extends HealthEntity {
 
   get lifestealModifier() {
     return this.#lifestealModifier;
+  }
+
+  get damageReductionModifier() {
+    return this.#damageReductionModifier;
   }
 
   get deck() {
@@ -160,6 +165,11 @@ class Player extends HealthEntity {
     this.#blockModifier += amount;
   }
 
+  increaseDamageReduction(amount) {
+    this.#damageReductionModifier -= amount;
+    if (this.#damageReductionModifier < 0) this.#damageReductionModifier = 0;
+  }
+
   setWeaponEnergy(amount) {
     this.#deck.forEach((weapon) => {
       weapon.energy = amount;
@@ -189,13 +199,20 @@ class Player extends HealthEntity {
   }
 
   takeDamage(amount) {
-    this.#health -= amount; // Reduce health
+    const reduceAmount = player.equippedRelics.includes("Cloak of Protection")
+      ? amount - 1
+      : amount;
+
+    const finalDamage = Math.max(0, reduceAmount);
+
+    this.#health -= finalDamage;
+
     if (this.#health <= 0) {
       this.#health = 0; // Ensure health doesn't go negative
-      this.displayDamage(amount, false, -60);
+      this.displayDamage(finalDamage, false, -60);
       triggerDeathAnimation();
     } else {
-      this.displayDamage(amount, false, -60);
+      this.displayDamage(finalDamage, false, -60);
       triggerDamageAnimation();
     }
     this.savePlayerToStorage();
@@ -266,6 +283,7 @@ class Player extends HealthEntity {
       this.#critDamageModifier = state.critDamageModifier;
       this.#blockModifier = state.blockModifier;
       this.#lifestealModifier = state.lifestealModifier;
+      this.#damageReductionModifier = state.damageReductionModifier;
       let deck = [];
       for (let weapon of state.deck) {
         let instance = createWeaponInstanceFromInfo(weapon);
@@ -298,6 +316,7 @@ class Player extends HealthEntity {
       critDamageModifier: this.#critDamageModifier,
       blockModifier: this.#blockModifier,
       lifestealModifier: this.#lifestealModifier,
+      damageReductionModifier: this.#damageReductionModifier,
     };
     let deck = [];
     for (let weapon of this.#deck) {

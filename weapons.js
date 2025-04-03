@@ -339,7 +339,7 @@ class HealthPotion extends Weapons {
       0,
       0,
       0,
-      10,
+      5,
       true
     );
   }
@@ -351,7 +351,7 @@ class HealthPotion extends Weapons {
         weaponInfo.healingAmount += 5;
         break;
       case 3:
-        weaponInfo.healingAmount += 10;
+        weaponInfo.healingAmount += 5;
         break;
     }
   }
@@ -953,9 +953,9 @@ class SurvivalPotion extends Weapons {
       0,
       0,
       0,
-      20,
+      10,
       true,
-      20
+      15
     );
   }
   applyUpgrades(weaponInfo) {
@@ -964,7 +964,7 @@ class SurvivalPotion extends Weapons {
         break;
       case 2:
         weaponInfo.healingAmount += 5;
-        weaponInfo.blockAmount += 10;
+        weaponInfo.blockAmount += 5;
         break;
       case 3:
         weaponInfo.healingAmount += 5;
