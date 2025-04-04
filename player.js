@@ -210,7 +210,14 @@ class Player extends HealthEntity {
     if (this.#health <= 0) {
       this.#health = 0; // Ensure health doesn't go negative
       this.displayDamage(finalDamage, false, -60);
-      triggerDeathAnimation();
+
+      setTimeout(() => {
+        triggerDeathAnimation();
+
+        setTimeout(() => {
+          window.location.href = "deathscreen.html";
+        }, 2500);
+      }, 750);
     } else {
       this.displayDamage(finalDamage, false, -60);
       triggerDamageAnimation();
@@ -266,13 +273,12 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
-      this.addWeapon(new BasicAxe());
-      this.addWeapon(new BasicSpear());
       this.addWeapon(new BasicSpear());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicBow());
       this.addWeapon(new devWeapon());
     } else {
       this.#name = state.name;

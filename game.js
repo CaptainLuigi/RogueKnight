@@ -59,8 +59,14 @@ function enemyDeathEvent() {
   setEnemyIndices();
 
   if (enemies.every((enemy) => enemy.isDead())) {
-    triggerPostBattleScreen();
-    disableGameInteractions();
+    // Check if the location corresponds to the boss fight (difficulty 10)
+    if (globalSettings.difficulty === 10) {
+      window.location.href = "winscreen.html"; // Redirect to the win screen after defeating the boss
+    } else {
+      triggerPostBattleScreen(); // Trigger post-battle screen for regular battles
+    }
+
+    disableGameInteractions(); // Disable game interactions after the battle
   }
 }
 

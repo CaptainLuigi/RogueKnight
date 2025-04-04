@@ -469,6 +469,46 @@ class BasicSpear extends Weapons {
   }
 }
 
+class BasicBow extends Weapons {
+  constructor() {
+    super(
+      "Basic Bow",
+      1,
+      "far",
+      20,
+      55,
+      25,
+      1,
+      "Can target any enemy, click weapon first, then the enemy you want to hit.",
+      "Assets/bow.png",
+      true,
+      0,
+      5,
+      0,
+      0,
+      0,
+      false,
+      0
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 5;
+        weaponInfo.criticalChance += 10;
+        break;
+      case 3:
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
+        break;
+    }
+  }
+}
+
 class VampiricDagger extends Weapons {
   constructor() {
     super(
@@ -1015,6 +1055,7 @@ function getAvailableWeapons() {
     new SpikedShield(),
     new SurvivalPotion(),
     new TowerShield(),
+    new BasicBow(),
   ];
 }
 
@@ -1037,6 +1078,7 @@ const weaponClassMapping = {
   SpikedShield,
   SurvivalPotion,
   TowerShield,
+  BasicBow,
   devWeapon,
 };
 

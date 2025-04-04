@@ -69,11 +69,18 @@ function dropWeapon(indexToDrop) {
 
 //golden Statue
 function smashStatueAction() {
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => (button.disabled = true));
   player.takeDamage(15);
   updateHealthBar(player);
   updatePlayerGold(75);
   player.savePlayerToStorage();
-  window.location.href = "map.html";
+
+  if (player.health > 0) {
+    setTimeout(() => {
+      window.location.href = "map.html";
+    }, 2000);
+  }
 }
 
 //returning to map after leaving
@@ -91,10 +98,14 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function restAction() {
+  const buttons = document.querySelectorAll("button");
+  buttons.forEach((button) => (button.disabled = true));
   player.heal(20);
   updateHealthBar(player);
   player.savePlayerToStorage();
-  window.location.href = "map.html";
+  setTimeout(() => {
+    window.location.href = "map.html";
+  }, 2000);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -162,12 +173,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (thorsHammerBtn) {
       thorsHammerBtn.addEventListener("click", function () {
-        thorsHammerBox.classList.add("hidden");
-        thorsHammerTakenBox.classList.remove("hidden");
         player.takeDamage(15);
-        player.addWeapon(new ThorsHammer());
         updateHealthBar(player);
-        player.savePlayerToStorage();
+        if (player.health > 0) {
+          thorsHammerBox.classList.add("hidden");
+          thorsHammerTakenBox.classList.remove("hidden");
+          player.addWeapon(new ThorsHammer());
+          player.savePlayerToStorage();
+        }
       });
     }
   }
@@ -232,13 +245,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const fleeButton = document.getElementById("leaveStoned");
     fleeButton.addEventListener("click", function () {
+      const buttons = document.querySelectorAll("button");
+      buttons.forEach((button) => (button.disabled = true));
       player.takeDamage(15);
 
       updateHealthBar(player);
 
-      player.savePlayerToStorage();
-
-      window.location.href = "map.html";
+      if (player.health > 0) {
+        player.savePlayerToStorage();
+        setTimeout(() => {
+          window.location.href = "map.html";
+        }, 2000);
+      }
     });
   }
 
@@ -434,10 +452,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (hurtAnkleBtn) {
       hurtAnkleBtn.addEventListener("click", () => {
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => (button.disabled = true));
         player.takeDamage(10);
         updateHealthBar(player);
-        player.savePlayerToStorage();
-        window.location.href = "map.html";
+
+        if (player.health > 0) {
+          player.savePlayerToStorage();
+          setTimeout(() => {
+            window.location.href = "map.html";
+          }, 2000);
+        }
       });
     }
   }

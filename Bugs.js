@@ -20,10 +20,10 @@ function calculate damage
 (possibly calculating with increasing/decreasing index of enemy)
 
 
+manchmal nach ersten fight direkt chest
 
 
-
-
+enemy intends sichtbar machen
 
 
 bei einem gegner, diesen centern

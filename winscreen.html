@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deathscreen</title>
-    <link rel="stylesheet" href="styleDeathScreen.css" />
+    <title>Winscreen</title>
+    <link rel="stylesheet" href="styleWinScreen.css" />
     <link rel="stylesheet" href="styleDeckDisplay.css" />
     <script src="baseClasses.js"></script>
     <script src="player.js"></script>
@@ -13,18 +13,16 @@
   </head>
   <body>
     <div>
-      <span>You died!</span>
-      <div>
-        <img
-          id="deadPlayer"
-          src="Assets/Knight_1/DeadPicture.png"
-          alt="deadPlayer"
-        />
-      </div>
+      <span>You won!</span>
+      <div class="sprite"></div>
       <button id="backToMenu">Back to menu</button>
     </div>
     <script>
+      let sprite;
       document.addEventListener("DOMContentLoaded", () => {
+        sprite = document.querySelector(".sprite");
+        resetToIdleAnimation();
+
         document.getElementById("backToMenu").addEventListener("click", () => {
           // Clear relevant localStorage items
           localStorage.removeItem("playerState");
