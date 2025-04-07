@@ -16,7 +16,12 @@ class Enemy extends HealthEntity {
   #icon;
   #ranged;
   #lifesteal;
+  #blockAmount = 0;
+  #activeShield = 0;
+  #poison = 0;
   #display;
+  #nextAction = "";
+  #possibleActions = [];
 
   get icon() {
     return this.#icon;
@@ -50,7 +55,44 @@ class Enemy extends HealthEntity {
     return this.#ranged;
   }
 
-  constructor(name, maxHealth, attackPower, icon, ranged, lifesteal = 0) {
+  get blockAmount() {
+    return this.#blockAmount;
+  }
+
+  get activeShield() {
+    return this.#activeShield;
+  }
+
+  get posion() {
+    return this.#poison;
+  }
+
+  get nextAction() {
+    return this.#nextAction;
+  }
+
+  get canAttack() {
+    return this.#attackPower > 0;
+  }
+
+  get canBlock() {
+    return this.#blockAmount > 0;
+  }
+
+  get canPoison() {
+    return this.#poison > 0;
+  }
+
+  constructor(
+    name,
+    maxHealth,
+    attackPower,
+    icon,
+    ranged,
+    lifesteal = 0,
+    blockAmount = 0,
+    poison = 0
+  ) {
     super();
     this.#health = maxHealth;
     this.#name = name;
@@ -63,8 +105,79 @@ class Enemy extends HealthEntity {
     image.alt = name;
     this.#ranged = ranged;
     this.#lifesteal = lifesteal;
+    this.#blockAmount = blockAmount;
+    this.#poison = poison;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
+
+    if (this.canAttack) {
+      this.#possibleActions.push("attack");
+    }
+    if (this.canBlock) {
+      this.#possibleActions.push("block");
+    }
+    if (this.canPoison) {
+      this.#possibleActions.push("poison");
+    }
+  }
+
+  randomizeAction() {
+    let actionIndex = Math.floor(Math.random() * this.#possibleActions.length);
+    this.#nextAction = this.#possibleActions[actionIndex];
+    this.updateDisplay();
+  }
+
+  displayIntent() {
+    const enemyElement = this.#display;
+    const intentElement = enemyElement.querySelector(".enemy-intent");
+
+    if (!intentElement) {
+      console.error("Enemy intent display element not found");
+      return;
+    }
+
+    intentElement.style.display = "block";
+    intentElement.style.visibility = "visible";
+
+    console.log("Intent element:", intentElement);
+
+    if (this.#nextAction === "attack") {
+      intentElement.textContent = `⚔️${this.#attackPower}`;
+    } else if (this.#nextAction === "block") {
+      intentElement.textContent = `🛡️${this.#blockAmount}`;
+    } else if (this.#nextAction === "poison") {
+      intentElement.textContent = `☠️${this.#poison}`;
+    }
+
+    console.log(
+      `Enemy ${this.name} intent: ${this.nextAction} - ${intentElement.textContent}`
+    );
+  }
+
+  performAction(player) {
+    this.#display.classList.add("grow-shrink");
+    console.log(`${this.name} is performing action: ${this.#nextAction}`);
+
+    this.displayIntent();
+
+    switch (this.#nextAction) {
+      case "attack":
+        this.attack(player);
+        break;
+      case "block":
+        this.block(this.#blockAmount);
+        break;
+      case "poison":
+        this.applyPoison(player, this.#poison);
+        break;
+      default:
+        console.log("No action performed");
+    }
+    this.#nextAction = "";
+
+    setTimeout(() => {
+      this.#display.classList.remove("grow-shrink");
+    }, 500);
   }
 
   isDead() {
@@ -72,17 +185,23 @@ class Enemy extends HealthEntity {
   }
 
   takeDamage(amount) {
-    let takenDamage = Math.min(this.#health, amount);
+    let blocked = Math.min(this.#activeShield, amount);
+    this.#activeShield -= blocked;
+    if (this.#activeShield < 0) this.#activeShield = 0;
 
-    this.#health -= amount;
+    let actualDamage = amount - blocked;
+    actualDamage = Math.min(this.#health, actualDamage);
+
+    this.#health -= actualDamage;
     if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
     if (this.#health === 0) this.enemyDeath();
-    else this.updateDisplay();
-    return takenDamage;
+    else {
+      this.updateDisplay();
+    }
+    return actualDamage;
   }
-  attack(player) {
-    this.#display.classList.add("grow-shrink");
 
+  attack(player) {
     player.attackingEnemy = this;
     console.log("Player is being attacked by:", player.attackingEnemy);
 
@@ -127,10 +246,6 @@ class Enemy extends HealthEntity {
         enemy.takeDamage(5);
       }
     }
-
-    setTimeout(() => {
-      this.#display.classList.remove("grow-shrink");
-    }, 500);
   }
 
   heal(amount) {
@@ -143,15 +258,40 @@ class Enemy extends HealthEntity {
     }
   }
 
+  block(amount) {
+    this.#activeShield += amount;
+    this.updateDisplay();
+  }
+
+  removeBlock(amount) {
+    this.#activeShield -= amount;
+    this.#activeShield = Math.max(this.#activeShield, 0);
+  }
+
+  applyPoison(player, amount) {
+    player.applyPoison(amount);
+  }
+
   updateDisplay() {
+    const intentElement = this.#display.querySelector(".enemy-intent");
     const healthPercentage = (this.health / this.maxHealth) * 100;
+
     console.log("Updating enemy health bar:", this.health, "/", this.maxHealth); // debugging
+
     const healthBarContainerEnemy = this.healthBar;
     const healthBarEnemy = this.#display.querySelector(".health-bar-enemy");
 
     if (!healthBarContainerEnemy) {
       console.error("Enemy health bar not found!");
       return;
+    }
+
+    let displayedBlock = this.#display.querySelector(".enemy-block");
+    displayedBlock.textContent = this.#activeShield;
+    if (this.#activeShield > 0) {
+      displayedBlock.classList.remove("hidden");
+    } else {
+      displayedBlock.classList.add("hidden");
     }
 
     // Set the width of the health bar based on health percentage
@@ -171,13 +311,51 @@ class Enemy extends HealthEntity {
     }
 
     healthText.textContent = `${this.health} / ${this.maxHealth}`; // Show health value
+
+    if (intentElement) {
+      intentElement.style.display = "block"; // Ensure it's visible
+      intentElement.style.visibility = "visible"; // Ensure it's visible
+
+      if (this.#nextAction === "attack") {
+        intentElement.textContent = `⚔️ ${this.#attackPower}`;
+      } else if (this.#nextAction === "block") {
+        intentElement.textContent = `🛡️ ${this.#blockAmount}`;
+      } else if (this.#nextAction === "poison") {
+        intentElement.textContent = `☠️ ${this.#poison}`;
+      }
+
+      console.log(
+        `Enemy ${this.name} intent: ${this.#nextAction} - ${
+          intentElement.textContent
+        }`
+      );
+    } else {
+      console.error("Intent element not found!");
+    }
   }
+
+  // if (this.ranged == true) {
+  //   intentElement.textContent = `🏹 ${this.#attackPower}`;
+  // } else {
+  //   intentElement.textContent = `⚔️ ${this.#attackPower}`;
+  // }
+
+  // const blockElement = this.#display.querySelector(".enemy-block");
+  // if (this.#blockAmount > 0) {
+  //   blockElement.textContent = `🛡️ ${this.#blockAmount}`;
+  //   blockElement.style.display = "block";
+  // } else {
+  //   blockElement.style.display = "none";
+  // }
 
   enemyDeath() {
     let deathSprite = this.#display.querySelector(".enemy-icon");
 
     deathSprite.src = "Assets/smoke.png";
     deathSprite.alt = "Dead " + this.name;
+
+    const intent = this.#display.querySelector(".enemy-intent");
+    if (intent) intent.remove();
 
     this.display.classList.add("death-smoke");
     this.display.classList.add("death-smoke-shrink");
@@ -225,19 +403,19 @@ class Enemy extends HealthEntity {
 
 class Shroom extends Enemy {
   constructor() {
-    super("Shroom", 200, 3, "Assets/Transperent/Icon1.png", true);
+    super("Shroom", 200, 3, "Assets/Transperent/Icon1.png", true, 0, 15);
   }
 }
 
 class Snail extends Enemy {
   constructor() {
-    super("Snail", 300, 7, "Assets/Transperent/Icon5.png", false);
+    super("Snail", 300, 7, "Assets/Transperent/Icon5.png", true, 0, 10);
   }
 }
 
 class SadShroom extends Enemy {
   constructor() {
-    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png", false);
+    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png", true, 0, 5);
   }
 }
 

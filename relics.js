@@ -96,7 +96,7 @@ const relicList = [
 
   new Relics(
     "Eternal Bloom",
-    "Assets/Sword.png",
+    "Assets/eternalBloom.png",
     () => {},
     "Heal 10 HP at the end of combat.",
     "chest",

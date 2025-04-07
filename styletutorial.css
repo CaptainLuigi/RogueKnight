@@ -328,7 +328,7 @@ height: 0;
     width: 200px;
     height: 200px;
     position: absolute;
-    top: 50%;
+    top: 57%;
     left: 40%;
     z-index: 3;
     gap: 15px;
@@ -467,4 +467,31 @@ button {
 
 button:disabled {
     background-color: darkgrey !important;
+}
+
+
+.enemy-intent {
+    display: block;
+    visibility: visible;
+    font-size: 24px;
+    min-width: 40px;
+    min-height: 40px;
+    color: white;
+    z-index: 100;
+}
+
+.enemy-block {
+    width: 40px;  /* Small circle diameter */
+    height: 40px; /* Small circle diameter */
+    background-color: #1834b3; /* Green color for the energy */
+    border-radius: 50%;  /* Make it circular */
+    display: flex;
+    left: 10%;
+    align-items: center;
+    color: white;  /* Text color inside the circle */
+    font-size: 24px;  /* Size of the text */
+    font-weight: bold;  /* Make the number bold */
+    border: 2px solid black;
+    box-sizing: border-box;
+    justify-content: center;
 }

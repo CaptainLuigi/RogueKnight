@@ -263,11 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
   //drop weapon
 
   if (eventType === "dropWeapon") {
-    // Function to randomly select an index from the deck
-    function randomWeaponIndex() {
-      return Math.floor(Math.random() * player.deck.length);
-    }
-
     // Get two random weapon indices
     let randomWeapon1 = randomWeaponIndex();
     let randomWeapon2 = randomWeaponIndex();
@@ -545,5 +540,7 @@ function updatePlayerGold(goldAmount) {
 }
 
 function randomWeaponIndex() {
-  return Math.floor(Math.random() * player.deck.length);
+  let index = Math.floor(Math.random() * player.deck.length);
+  if (index >= player.deck.length) index = player.deck.length - 1;
+  return index;
 }

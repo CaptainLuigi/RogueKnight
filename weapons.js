@@ -219,6 +219,11 @@ class Weapons {
     ];
     let damages = factors.map((factor) => factor * damage);
 
+    const targetEnemy = enemies[enemyIndex];
+    const blockAmount = targetEnemy.blockAmount;
+
+    damages = damages.map((damage) => Math.max(0, damage - blockAmount));
+
     return {
       startIndex,
       isCritical,

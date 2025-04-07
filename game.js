@@ -44,8 +44,12 @@ function fillEnemyArray(currentDifficulty) {
   );
   const randomIndex = Math.floor(Math.random() * filteredEnemyArray.length);
   const selectedConstellation = filteredEnemyArray[randomIndex];
-  for (const enemy of selectedConstellation.enemies) {
-    enemies.push(new enemy());
+  for (const EnemyClass of selectedConstellation.enemies) {
+    const enemyInstance = new EnemyClass();
+    enemies.push(enemyInstance);
+
+    enemyInstance.randomizeAction();
+    enemyInstance.displayIntent();
   }
   console.log("filteredEnemyArray", filteredEnemyArray[randomIndex]);
 }
@@ -61,9 +65,13 @@ function enemyDeathEvent() {
   if (enemies.every((enemy) => enemy.isDead())) {
     // Check if the location corresponds to the boss fight (difficulty 10)
     if (globalSettings.difficulty === 10) {
-      window.location.href = "winscreen.html"; // Redirect to the win screen after defeating the boss
+      setTimeout(() => {
+        window.location.href = "winscreen.html";
+      }, 1500);
     } else {
-      triggerPostBattleScreen(); // Trigger post-battle screen for regular battles
+      setTimeout(() => {
+        triggerPostBattleScreen();
+      }, 1500);
     }
 
     disableGameInteractions(); // Disable game interactions after the battle
@@ -193,9 +201,8 @@ function executeAttack(weapon, enemyIndex) {
   let damageIndex = 0;
 
   for (let enemyDamage of damages) {
-    enemies[startIndex].displayDamage(enemyDamage, isCritical); // Call displayDamage here
-    let damageTaken = enemies[startIndex].takeDamage(enemyDamage); // Apply damage to the enemy
-
+    enemies[startIndex].displayDamage(enemyDamage, isCritical);
+    let damageTaken = enemies[startIndex].takeDamage(enemyDamage);
     damages[damageIndex] = damageTaken;
 
     overallDamageTaken += damageTaken;
@@ -263,6 +270,9 @@ function enableWeapons() {
 function endTurn() {
   console.log("End turn clicked!");
 
+  enemies.forEach((enemy) => {
+    enemy.removeBlock(enemy.activeShield);
+  });
   disableWeapons();
 
   isPlayerTurn = false;
@@ -272,17 +282,32 @@ function endTurn() {
     updateHealthBar(player);
   }
 
+  // Step 1: Perform enemy actions
   setTimeout(() => {
     enemies.forEach((enemy, index) => {
       if (index === 0 || enemy.ranged) {
         setTimeout(() => {
-          enemy.attack(player); // Call the attack function in the enemy.js file
+          console.log(`Enemy ${enemy.name} performing action`);
+
+          // Perform the enemy action
+          enemy.performAction(player);
           updateHealthBar(player);
-        }, index * 700);
+        }, index * 700); // Sequential delay between enemy actions
       }
     });
 
+    // Step 2: After all enemies have acted, randomize and display their intent
     setTimeout(() => {
+      console.log("Randomizing enemy actions for next turn");
+
+      enemies.forEach((enemy) => {
+        // Randomize action for the next turn
+        enemy.randomizeAction();
+        // Display the intent for the next turn
+        enemy.displayIntent();
+      });
+
+      // Step 3: Reset player's stats (e.g., block)
       player.blockAmount = 0;
       player.currentBlock = 0;
 
@@ -292,22 +317,25 @@ function endTurn() {
       const blockContainer = document.getElementById("block-container");
       blockContainer.classList.add("hidden");
 
+      // Show turn message for the player
       displayTurnMessage("Your Turn Again!");
 
+      // Refill the player's energy and update energy display
       refillEnergy();
-
       updateEnergyDisplay();
-    }, enemies.length * 700 + 500);
+    }, enemies.length * 700 + 500); // After all enemies have acted
 
+    // Step 4: Player's turn - enable player to act again
     setTimeout(() => {
-      isPlayerTurn = true;
+      console.log("Player's turn begins...");
 
+      // Draw the player's hand and display weapons for the player's turn
+      isPlayerTurn = true;
       player.drawHand();
       displayWeapons(player, player.hand);
-
-      enableWeapons(); // Enable the weapons after the delay
-    }, enemies.length * 700 + 500); // Enable after 2 seconds (can adjust based on animation time)
-  }, 500); // Add a 1.5-second delay before the enemy attacks (adjust the delay as needed)
+      enableWeapons(); // Enable weapons for the player
+    }, enemies.length * 700 + 500); // Adjust timing based on enemy action delays
+  }, 500); // Initial delay before enemies perform their actions
 }
 
 // Function to refill the player's energy (e.g., set to full energy)
