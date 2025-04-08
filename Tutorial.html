@@ -24,7 +24,9 @@
         alt="ForestBackground"
       />
     </div>
-    <div class="sprite-player"></div>
+    <div class="sprite-player">
+      <div id="poison-status"></div>
+    </div>
 
     <div id="health-bar-container-player">
       <div id="health-bar"></div>
@@ -32,7 +34,11 @@
 
     <div id="enemies">
       <div class="sprite-enemie" onclick="selectEnemy(this);">
-        <div class="enemy-block hidden"></div>
+        <div class="enemy-status-container">
+          <div class="enemy-block hidden"></div>
+          <div id="poison-status-enemy" class="hidden"></div>
+        </div>
+
         <div class="health-bar-container-enemy">
           <div class="health-bar-enemy"></div>
         </div>
@@ -80,7 +86,7 @@
         <div id="weapon-3" class="weapon-option"></div>
       </div>
       <button id="choose-weapon-upgrade-btn" class="orange-btn">
-        Upgrade weapon (50 Gold)
+        Upgrade weapon (30 Gold)
 
         <div
           id="upgrade-weapon-options"
@@ -91,7 +97,7 @@
       </button>
       <div id="heal-option">
         <button id="heal-btn" class="orange-btn" onclick="healPlayer(this);">
-          Heal 20 HP (50 Gold)
+          Heal 30 HP (30 Gold)
         </button>
       </div>
       <button id="close-post-battle" class="orange-btn">Next</button>

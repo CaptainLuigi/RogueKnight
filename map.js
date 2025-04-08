@@ -228,21 +228,21 @@ function markPossibleLocations() {
 
 function triggerRandomEvent() {
   const allEvents = [
-    // { type: "eliteFight", action: startEliteFight },
-    // { type: "normalFight", action: startNormalFight },
-    // { type: "chest", action: openChest },
-    // { type: "upgradeWeapon", action: showEvent },
-    // { type: "ambushGold", action: showEvent },
-    // { type: "hurtAnkle", action: showEvent },
-    // { type: "duplicateWeapon", action: showEvent },
-    // { type: "thorsHammer", action: showEvent },
-    // { type: "foundGold", action: showEvent },
-    // { type: "gambling", action: showEvent },
-    // { type: "rest", action: showEvent },
-    // { type: "lightning", action: showEvent },
-    // { type: "goldenStatue", action: showEvent },
+    { type: "eliteFight", action: startEliteFight },
+    { type: "normalFight", action: startNormalFight },
+    { type: "chest", action: openChest },
+    { type: "upgradeWeapon", action: showEvent },
+    { type: "ambushGold", action: showEvent },
+    { type: "hurtAnkle", action: showEvent },
+    { type: "duplicateWeapon", action: showEvent },
+    { type: "thorsHammer", action: showEvent },
+    { type: "foundGold", action: showEvent },
+    { type: "gambling", action: showEvent },
+    { type: "rest", action: showEvent },
+    { type: "lightning", action: showEvent },
+    { type: "goldenStatue", action: showEvent },
     { type: "succubus", action: showEvent },
-    // { type: "stoned", action: showEvent },
+    { type: "stoned", action: showEvent },
   ];
 
   if (player.deck.length > 2) {

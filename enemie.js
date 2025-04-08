@@ -19,6 +19,7 @@ class Enemy extends HealthEntity {
   #blockAmount = 0;
   #activeShield = 0;
   #poison = 0;
+  #poisonFromPlayer = 0;
   #display;
   #nextAction = "";
   #possibleActions = [];
@@ -59,12 +60,20 @@ class Enemy extends HealthEntity {
     return this.#blockAmount;
   }
 
+  get currentBlock() {
+    return this.#activeShield;
+  }
+
   get activeShield() {
     return this.#activeShield;
   }
 
   get posion() {
     return this.#poison;
+  }
+
+  get poisonFromPlayer() {
+    return this.#poisonFromPlayer;
   }
 
   get nextAction() {
@@ -173,6 +182,7 @@ class Enemy extends HealthEntity {
       default:
         console.log("No action performed");
     }
+
     this.#nextAction = "";
 
     setTimeout(() => {
@@ -184,21 +194,50 @@ class Enemy extends HealthEntity {
     return this.health <= 0;
   }
 
-  takeDamage(amount) {
-    let blocked = Math.min(this.#activeShield, amount);
-    this.#activeShield -= blocked;
-    if (this.#activeShield < 0) this.#activeShield = 0;
+  takeDamage(amount, ignoreBlock = false) {
+    if (ignoreBlock) {
+      let actualDamage = Math.min(this.#health, amount);
+      this.#health -= actualDamage;
+      if (this.#health < 0) this.#health = 0;
+      if (this.#health === 0) this.enemyDeath();
+      else {
+        this.updateDisplay();
+      }
+      return actualDamage;
+    } else {
+      let blocked = Math.min(this.#activeShield, amount);
+      this.#activeShield -= blocked;
+      if (this.#activeShield < 0) this.#activeShield = 0;
 
-    let actualDamage = amount - blocked;
-    actualDamage = Math.min(this.#health, actualDamage);
+      let actualDamage = amount - blocked;
+      actualDamage = Math.min(this.#health, actualDamage);
 
-    this.#health -= actualDamage;
-    if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
-    if (this.#health === 0) this.enemyDeath();
-    else {
+      this.#health -= actualDamage;
+      if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
+      if (this.#health === 0) this.enemyDeath();
+      else {
+        this.updateDisplay();
+      }
+      return actualDamage;
+    }
+  }
+
+  addPoisonFromPlayer(amount) {
+    this.#poisonFromPlayer += amount;
+  }
+
+  applyPoisonDamageFromPlayer() {
+    if (this.#poisonFromPlayer > 0) {
+      console.log(
+        `${this.#name} takes ${this.#poisonFromPlayer} poison damage`
+      );
+
+      this.takeDamage(this.#poisonFromPlayer, true);
+
+      this.#poisonFromPlayer--;
+      this.updatePoisonDisplay();
       this.updateDisplay();
     }
-    return actualDamage;
   }
 
   attack(player) {
@@ -266,10 +305,22 @@ class Enemy extends HealthEntity {
   removeBlock(amount) {
     this.#activeShield -= amount;
     this.#activeShield = Math.max(this.#activeShield, 0);
+    this.updateDisplay();
   }
 
   applyPoison(player, amount) {
     player.applyPoison(amount);
+  }
+
+  updatePoisonDisplay() {
+    const poisonElement = this.#display.querySelector("#poison-status-enemy");
+
+    if (this.#poisonFromPlayer > 0) {
+      poisonElement.classList.remove("hidden");
+      poisonElement.innerHTML = `☠️ ${this.#poisonFromPlayer}`;
+    } else {
+      poisonElement.classList.add("hidden");
+    }
   }
 
   updateDisplay() {
@@ -334,20 +385,6 @@ class Enemy extends HealthEntity {
     }
   }
 
-  // if (this.ranged == true) {
-  //   intentElement.textContent = `🏹 ${this.#attackPower}`;
-  // } else {
-  //   intentElement.textContent = `⚔️ ${this.#attackPower}`;
-  // }
-
-  // const blockElement = this.#display.querySelector(".enemy-block");
-  // if (this.#blockAmount > 0) {
-  //   blockElement.textContent = `🛡️ ${this.#blockAmount}`;
-  //   blockElement.style.display = "block";
-  // } else {
-  //   blockElement.style.display = "none";
-  // }
-
   enemyDeath() {
     let deathSprite = this.#display.querySelector(".enemy-icon");
 
@@ -409,7 +446,7 @@ class Shroom extends Enemy {
 
 class Snail extends Enemy {
   constructor() {
-    super("Snail", 300, 7, "Assets/Transperent/Icon5.png", true, 0, 10);
+    super("Snail", 150, 6, "Assets/Transperent/Icon5.png", true, 0, 15);
   }
 }
 
@@ -421,13 +458,22 @@ class SadShroom extends Enemy {
 
 class BiteShroom extends Enemy {
   constructor() {
-    super("Bite Shroom", 350, 10, "Assets/Transperent/Icon7.png", false);
+    super("Bite Shroom", 250, 10, "Assets/Transperent/Icon7.png", true);
   }
 }
 
 class Scorpion extends Enemy {
   constructor() {
-    super("Scorpion Shroom", 150, 10, "Assets/Transperent/Icon9.png", true);
+    super(
+      "Scorpion Shroom",
+      150,
+      0,
+      "Assets/Transperent/Icon9.png",
+      true,
+      0,
+      15,
+      2
+    );
   }
 }
 
@@ -439,64 +485,64 @@ class BitingPlant extends Enemy {
 
 class SlimeHive extends Enemy {
   constructor() {
-    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png", false);
+    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png", false, 0, 25);
     this.display.classList.add("biggerEnemy");
   }
 }
 
 class Mantis extends Enemy {
   constructor() {
-    super("Mantis", 150, 15, "Assets/Transperent/Icon39.png", false);
+    super("Mantis", 150, 8, "Assets/Transperent/Icon39.png", true, 0, 10);
   }
 }
 
 class Hornet extends Enemy {
   constructor() {
-    super("Hornet", 100, 10, "Assets/Transperent/Icon42.png", true);
+    super("Hornet", 100, 15, "Assets/Transperent/Icon42.png", true, 0, 10, 2);
   }
 }
 
 class EvilKnight extends Enemy {
   constructor() {
-    super("Evil Knight", 750, 15, "Assets/evilknight.png", true);
+    super("Evil Knight", 1000, 35, "Assets/evilknight.png", true, 0, 75);
     this.display.classList.add("biggestEnemy");
   }
 }
 
 class HermitShroom extends Enemy {
   constructor() {
-    super("Hermit Shroom", 500, 3, "Assets/Transperent/Icon10.png", false);
+    super("Hermit Shroom", 500, 3, "Assets/Transperent/Icon10.png", true);
   }
 }
 
 class Succubus extends Enemy {
   constructor() {
-    super("Succubus", 750, 15, "Assets/succubus.png", false, 15);
+    super("Succubus", 750, 15, "Assets/succubus.png", false, 15, 35);
     this.display.classList.add("biggerEnemy");
   }
 }
 
 class Gnome extends Enemy {
   constructor() {
-    super("Gnome", 250, 10, "Assets/Transperent/Icon44", false);
+    super("Gnome", 250, 10, "Assets/Transperent/Icon44", true);
   }
 }
 
 class MinonKnight extends Enemy {
   constructor() {
-    super("Minon Knight", 300, 5, "Assets/SoulKnight.png", true);
+    super("Minon Knight", 250, 5, "Assets/SoulKnight.png", true, 0, 20);
   }
 }
 
 class TreeSlime extends Enemy {
   constructor() {
-    super("Tree Slime", 200, 5, "Assets/Transperent/Icon24.png", true);
+    super("Tree Slime", 150, 5, "Assets/Transperent/Icon24.png", true, 0, 10);
   }
 }
 
 class Amalgam extends Enemy {
   constructor() {
-    super("Amalgam", 200, 20, "Assets/Transperent/Icon25.png", false);
+    super("Amalgam", 500, 20, "Assets/Transperent/Icon25.png", false, 0, 30);
     this.display.classList.add("biggerEnemy");
   }
 }

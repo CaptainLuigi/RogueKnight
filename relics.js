@@ -178,7 +178,7 @@ const relicList = [
     "Omnipotence",
     "Assets/blackHole.png",
     omnipotence,
-    "Actions don't cost energy, but set max HP to 20.",
+    "Actions don't cost energy, but -80 max HP.",
     "elite",
     175
   ),
@@ -296,7 +296,7 @@ function brambleMantle(player) {
 
 function omnipotence(player) {
   player.setWeaponEnergy(0);
-  player.setMaxHealth(20);
+  player.decreaseMaxHealth(80);
 }
 
 function souleater(player) {

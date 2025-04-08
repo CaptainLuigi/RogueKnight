@@ -16,6 +16,7 @@ class Weapons {
   #healingAmount;
   #canHeal;
   #blockAmount;
+  #poisonAmount;
   #wasUsed = false;
 
   constructor(
@@ -35,7 +36,8 @@ class Weapons {
     effectsRight = 0,
     healingAmount = 0,
     canHeal = false,
-    blockAmount = 0
+    blockAmount = 0,
+    poisonAmount = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -55,6 +57,7 @@ class Weapons {
       healingAmount,
       canHeal,
       blockAmount,
+      poisonAmount,
     });
   }
 
@@ -130,6 +133,10 @@ class Weapons {
     return this.#blockAmount;
   }
 
+  get poisonAmount() {
+    return this.#poisonAmount;
+  }
+
   get wasUsed() {
     return this.#wasUsed;
   }
@@ -160,6 +167,10 @@ class Weapons {
 
   set blockAmount(value) {
     this.#blockAmount = value;
+  }
+
+  set poisonAmount(value) {
+    this.#poisonAmount = value;
   }
 
   set wasUsed(value) {
@@ -219,10 +230,18 @@ class Weapons {
     ];
     let damages = factors.map((factor) => factor * damage);
 
-    const targetEnemy = enemies[enemyIndex];
-    const blockAmount = targetEnemy.blockAmount;
+    damages = damages.map((damage, index) => {
+      const targetEnemy = enemies[startIndex + index];
+      const previewBlock = targetEnemy.currentBlock || 0;
 
-    damages = damages.map((damage) => Math.max(0, damage - blockAmount));
+      this.applyPoisonToEnemy(targetEnemy);
+
+      let blocked = Math.min(previewBlock, damage);
+
+      targetEnemy.removeBlock(blocked);
+
+      return Math.max(0, damage - blocked);
+    });
 
     return {
       startIndex,
@@ -256,6 +275,7 @@ class Weapons {
     this.#description = info.description;
     this.#canHeal = info.canHeal;
     this.#blockAmount = info.blockAmount;
+    this.#poisonAmount = info.poisonAmount;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -310,6 +330,14 @@ class Weapons {
       );
     }
     this.#wasUsed = true;
+  }
+
+  applyPoisonToEnemy(targetEnemy) {
+    if (this.#poisonAmount > 0) {
+      console.log("POISON DEBUG", this.#poisonAmount);
+      targetEnemy.addPoisonFromPlayer(this.#poisonAmount);
+      targetEnemy.updatePoisonDisplay();
+    }
   }
 
   applyUpgrades(weaponInfo) {
@@ -405,7 +433,7 @@ class BasicAxe extends Weapons {
       1,
       "melee",
       60,
-      140,
+      100,
       35,
       2,
       "Can target the closest two enemies, click weapon first, then the enemy you want to hit.",
@@ -631,7 +659,7 @@ class Dagger extends Weapons {
       70,
       45,
       1,
-      "Can only target the first enemy, click to instanty use weapon.",
+      "Can only target the first enemy, click to instantly use weapon.",
       "Assets/dagger.png",
       false,
       0,
@@ -655,6 +683,49 @@ class Dagger extends Weapons {
         weaponInfo.damage += 10;
         weaponInfo.criticalDamage += 10;
         weaponInfo.criticalChance += 15;
+        break;
+    }
+  }
+}
+
+class PoisonDagger extends Weapons {
+  constructor() {
+    super(
+      "Poison Dagger",
+      1,
+      "melee",
+      5,
+      70,
+      45,
+      1,
+      "Can only target the first enemy and applies poison, click to instantly use weapon.",
+      "Assets/poisonDagger.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      10
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage += 5;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 10;
+        weaponInfo.poisonAmount += 5;
+        break;
+      case 3:
+        weaponInfo.damage += 10;
+        weaponInfo.criticalDamage += 10;
+        weaponInfo.criticalChance += 15;
+        weaponInfo.poisonAmount += 5;
         break;
     }
   }
@@ -1019,6 +1090,43 @@ class SurvivalPotion extends Weapons {
   }
 }
 
+class PoisonPotion extends Weapons {
+  constructor() {
+    super(
+      "Poison Potion",
+      1,
+      "Far",
+      5,
+      10,
+      35,
+      2,
+      "Damages and applies poison to all enemies, click to instantly use.",
+      "Assets/poisonPotion.png",
+      false,
+      0,
+      0,
+      0,
+      [1, 1, 1, 1, 1, 1, 1],
+      0,
+      false,
+      0,
+      20
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.poisonAmount += 10;
+        break;
+      case 3:
+        weaponInfo.poisonAmount += 10;
+        break;
+    }
+  }
+}
+
 class devWeapon extends Weapons {
   constructor() {
     super(
@@ -1061,6 +1169,8 @@ function getAvailableWeapons() {
     new SurvivalPotion(),
     new TowerShield(),
     new BasicBow(),
+    new PoisonDagger(),
+    new PoisonPotion(),
   ];
 }
 
@@ -1084,6 +1194,8 @@ const weaponClassMapping = {
   SurvivalPotion,
   TowerShield,
   BasicBow,
+  PoisonDagger,
+  PoisonPotion,
   devWeapon,
 };
 
@@ -1186,6 +1298,10 @@ function generateWeaponInfo(
         modifierDisplay = `(+${player.critChanceModifier}%)`;
       }
       tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}%  ${modifierDisplay}<br>`;
+    }
+
+    if (weapon.poisonAmount > 0) {
+      tooltipString += `<strong>Poison:</strong> ${weapon.poisonAmount} <br>`;
     }
 
     if (weapon.canHeal) {

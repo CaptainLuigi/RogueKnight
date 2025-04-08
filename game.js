@@ -270,6 +270,9 @@ function enableWeapons() {
 function endTurn() {
   console.log("End turn clicked!");
 
+  player.applyPoisonDamage();
+  updateHealthBar(player);
+
   enemies.forEach((enemy) => {
     enemy.removeBlock(enemy.activeShield);
   });
@@ -292,6 +295,10 @@ function endTurn() {
           // Perform the enemy action
           enemy.performAction(player);
           updateHealthBar(player);
+
+          setTimeout(() => {
+            enemy.applyPoisonDamageFromPlayer();
+          }, 750);
         }, index * 700); // Sequential delay between enemy actions
       }
     });
@@ -478,8 +485,8 @@ function upgradeWeapon(weapon) {
     return;
   }
 
-  if (globalSettings.playerGold >= 50) {
-    updatePlayerGold(-50);
+  if (globalSettings.playerGold >= 30) {
+    updatePlayerGold(-30);
 
     weapon.upgrade();
     player.savePlayerToStorage();
@@ -491,14 +498,14 @@ function upgradeWeapon(weapon) {
 }
 
 function healPlayer(button) {
-  const healingCost = 50;
+  const healingCost = 30;
 
   if (player.health >= player.maxHealth) {
     button.disabled = true;
     displayTurnMessage("Already full HP!");
   } else if (globalSettings.playerGold >= healingCost) {
     updatePlayerGold(-healingCost);
-    player.heal(20);
+    player.heal(30);
 
     updateHealthBar();
     player.savePlayerToStorage();

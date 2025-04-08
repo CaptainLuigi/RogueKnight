@@ -20,15 +20,12 @@ function calculate damage
 (possibly calculating with increasing/decreasing index of enemy)
 
 
-manchmal nach ersten fight direkt chest
-
-
-enemy intends sichtbar machen
+wenn elite abgebrochen, danach neustart, nach ersten fight direkt elite chest
 
 
 bei einem gegner, diesen centern
 
-
+wenn poison auf null geht -> display removen
 
 succubus soll instant angreifen
 

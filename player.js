@@ -15,6 +15,7 @@ class Player extends HealthEntity {
   #blockModifier = 0;
   #lifestealModifier = 0;
   #damageReductionModifier = 0;
+  #currentPoison = 0;
   #hand = [];
   #drawPile = [];
   #equippedRelics = [];
@@ -78,6 +79,10 @@ class Player extends HealthEntity {
     return this.#damageReductionModifier;
   }
 
+  get currentPoison() {
+    return this.#currentPoison;
+  }
+
   get deck() {
     return [...this.#deck];
   }
@@ -134,6 +139,10 @@ class Player extends HealthEntity {
   increaseMaxHealth(amount, addToCurrentHealth) {
     this.#maxHealth += amount;
     if (addToCurrentHealth) this.heal(amount);
+  }
+
+  decreaseMaxHealth(amount) {
+    this.#maxHealth -= amount;
   }
 
   increaseMaxEnergy(amount) {
@@ -225,6 +234,27 @@ class Player extends HealthEntity {
     this.savePlayerToStorage();
   }
 
+  applyPoison(amount) {
+    this.#currentPoison += amount;
+    this.updatePoisonDisplay();
+  }
+
+  applyPoisonDamage() {
+    if (this.#currentPoison > 0) {
+      const poisonDamage = this.#currentPoison;
+      this.takeDamage(poisonDamage);
+      this.#currentPoison = Math.max(this.#currentPoison - 1, 0);
+      this.updatePoisonDisplay();
+    }
+  }
+
+  updatePoisonDisplay() {
+    const poisonElement = document.getElementById("poison-status");
+    if (poisonElement) {
+      poisonElement.innerText = `☠️${this.#currentPoison}`;
+    }
+  }
+
   heal(amount) {
     if (isNaN(amount) || amount < 0) {
       console.error("Invalid heal amount:", amount);
@@ -274,12 +304,15 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSpear());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
       this.addWeapon(new BasicBow());
+      this.addWeapon(new BasicAxe());
+      this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicShield());
+      this.addWeapon(new BasicShield());
       this.addWeapon(new devWeapon());
+      this.addWeapon(new PoisonPotion());
     } else {
       this.#name = state.name;
       this.#health = state.health;
