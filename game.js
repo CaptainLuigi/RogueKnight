@@ -115,9 +115,23 @@ function useWeapon(weaponIndex) {
   console.log("Using weapon:", weapon.name);
 
   // Check if the player has enough energy to use the weapon
+  // if (player.energy >= weapon.energy) {
+  //   if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
+  //   else executeAttack(weapon, weapon.minRange);
+  // } else {
+  //   displayTurnMessage("Not enough energy!");
+  // }
+
   if (player.energy >= weapon.energy) {
-    if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
-    else executeAttack(weapon, weapon.minRange);
+    if (weapon.requiresTargeting) {
+      if (player.canTargetAnyEnemy()) {
+        executeAttack(weapon, null);
+      } else {
+        setActiveWeapon(weaponIndex, true);
+      }
+    } else {
+      executeAttack(weapon, weapon.minRange);
+    }
   } else {
     displayTurnMessage("Not enough energy!");
   }
@@ -180,7 +194,8 @@ function executeAttack(weapon, enemyIndex) {
     enemyIndex,
     player.damageModifier,
     player.critChanceModifier,
-    player.critDamageModifier
+    player.critDamageModifier,
+    player.poisonModifier
   );
   damages = damages.reverse();
   startIndex += damages.length - 1;
@@ -283,6 +298,10 @@ function endTurn() {
   if (player.equippedRelics.includes("Overcharged Core")) {
     player.takeDamage(5);
     updateHealthBar(player);
+  }
+
+  if (player.equippedRelics.includes("Stonewall Totem")) {
+    stonewallTotem();
   }
 
   // Step 1: Perform enemy actions
@@ -410,6 +429,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function triggerPostBattleScreen() {
   if (player.equippedRelics.includes("Eternal Bloom")) {
     eternalBloom(player);
+  }
+
+  if (player.equippedRelics.includes("Golden Sigil")) {
+    goldenSigil(player);
   }
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");

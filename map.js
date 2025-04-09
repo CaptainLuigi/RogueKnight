@@ -307,6 +307,9 @@ function resetAll() {
     player.equippedRelics = [];
   }
 
+  globalSettings.relicGroup = "chest";
+  globalSettings.redirectToChest = false;
+
   globalSettings.playerGold = 0;
 
   window.location.reload();

@@ -199,8 +199,9 @@ class Enemy extends HealthEntity {
       let actualDamage = Math.min(this.#health, amount);
       this.#health -= actualDamage;
       if (this.#health < 0) this.#health = 0;
-      if (this.#health === 0) this.enemyDeath();
-      else {
+      if (this.#health === 0) {
+        this.enemyDeath();
+      } else {
         this.updateDisplay();
       }
       return actualDamage;
@@ -386,6 +387,12 @@ class Enemy extends HealthEntity {
   }
 
   enemyDeath() {
+    this.#poisonFromPlayer = 0;
+    this.#activeShield = 0;
+
+    this.updatePoisonDisplay();
+    this.updateDisplay();
+
     let deathSprite = this.#display.querySelector(".enemy-icon");
 
     deathSprite.src = "Assets/smoke.png";

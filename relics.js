@@ -115,7 +115,7 @@ const relicList = [
     "Beefy Steak",
     "Assets/pixelSteak.png",
     beefySteak,
-    "Get +30 max HP.",
+    "Get +20 max HP.",
     "chest",
     100
   ),
@@ -178,7 +178,7 @@ const relicList = [
     "Omnipotence",
     "Assets/blackHole.png",
     omnipotence,
-    "Actions don't cost energy, but -80 max HP.",
+    "Actions don't cost energy, but -80 max HP and a full heal.",
     "elite",
     175
   ),
@@ -209,6 +209,51 @@ const relicList = [
     "chest",
     125
   ),
+
+  new Relics(
+    "Tincture of Suffering",
+    "Assets/tinctureOfSuffering.png",
+    tinktureOfSuffering,
+    "When applying poison, increase the amount by 10.",
+    "chest",
+    125
+  ),
+
+  new Relics(
+    "Golden Sigil",
+    "Assets/goldenSigil.png",
+    () => {},
+    "Get 25 Gold at the end of combat.",
+    "chest",
+    100
+  ),
+
+  new Relics(
+    "Back to Basics",
+    "Assets/backToBasics.png",
+    backToBasics,
+    "Max Energy is increased by 1, but you can't crit.",
+    "elite",
+    150
+  ),
+
+  new Relics(
+    "Stonewall Totem",
+    "Assets/stonewallTotem.png",
+    () => {},
+    "At the end of your turns, add 10 block.",
+    "chest",
+    125
+  ),
+
+  new Relics(
+    "AliensRock",
+    "Assets/Sword.png",
+    aliensRock,
+    "All weapons can target any enemy.",
+    "elite",
+    150
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -229,7 +274,7 @@ function sanguineBlessing(player) {
 
 function beefySteak(player) {
   console.log("Beefy Steak effect applied!");
-  player.increaseMaxHealth(30, true);
+  player.increaseMaxHealth(20, true);
 }
 
 function cursedGauntlet(player) {
@@ -268,9 +313,35 @@ function cloakOfProtection(player) {
   player.increaseDamageReduction(1);
 }
 
+function tinktureOfSuffering(player) {
+  player.increasePoisonApplied(10);
+}
+
 function eternalBloom(player) {
   player.heal(10);
   updateHealthBar(player);
+}
+
+function aliensRock(player) {
+  player.setTargetAnyEnemy(true);
+}
+
+function stonewallTotem() {
+  const blockContainer = document.getElementById("block-container");
+  const blockText = document.getElementById("block-text");
+
+  let currentBlock = parseInt(blockText.innerText) || 0;
+
+  currentBlock += 10;
+
+  player.blockAmount = currentBlock;
+  blockText.innerText = currentBlock;
+
+  blockContainer.classList.remove("hidden");
+}
+
+function goldenSigil() {
+  updatePlayerGold(25);
 }
 
 function brambleMantle(player) {
@@ -297,11 +368,18 @@ function brambleMantle(player) {
 function omnipotence(player) {
   player.setWeaponEnergy(0);
   player.decreaseMaxHealth(80);
+  player.takeDamage(80);
+  player.heal(20);
 }
 
 function souleater(player) {
   console.log("Player'S weapons:", player.hand);
   player.increaseWeaponLifesteal(5);
+}
+
+function backToBasics(player) {
+  player.increaseMaxEnergy(1);
+  player.critsDisabled = true;
 }
 
 function createRelicElement(relic) {

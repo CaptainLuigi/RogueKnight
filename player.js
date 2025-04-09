@@ -15,7 +15,10 @@ class Player extends HealthEntity {
   #blockModifier = 0;
   #lifestealModifier = 0;
   #damageReductionModifier = 0;
+  #poisonModifier = 0;
+  #critsDisabled = false;
   #currentPoison = 0;
+  #canTargetAnyEnemy = false;
   #hand = [];
   #drawPile = [];
   #equippedRelics = [];
@@ -79,8 +82,20 @@ class Player extends HealthEntity {
     return this.#damageReductionModifier;
   }
 
+  get poisonModifier() {
+    return this.#poisonModifier;
+  }
+
+  get critsDisabled() {
+    return this.#critsDisabled;
+  }
+
   get currentPoison() {
     return this.#currentPoison;
+  }
+
+  get canTargetAnyEnemy() {
+    return this.#canTargetAnyEnemy;
   }
 
   get deck() {
@@ -97,6 +112,10 @@ class Player extends HealthEntity {
 
   get foundRelics() {
     return [...this.#foundRelics];
+  }
+
+  set critsDisabled(value) {
+    this.#critsDisabled = value;
   }
 
   removeUsed() {
@@ -179,10 +198,22 @@ class Player extends HealthEntity {
     if (this.#damageReductionModifier < 0) this.#damageReductionModifier = 0;
   }
 
+  increasePoisonApplied(amount) {
+    this.#poisonModifier += amount;
+  }
+
   setWeaponEnergy(amount) {
     this.#deck.forEach((weapon) => {
       weapon.energy = amount;
     });
+  }
+
+  setTargetAnyEnemy(enabled) {
+    this.#canTargetAnyEnemy = enabled;
+  }
+
+  canTargetAnyEnemy() {
+    return this.#canTargetAnyEnemy;
   }
 
   addWeapon(weapon) {
@@ -224,6 +255,8 @@ class Player extends HealthEntity {
         triggerDeathAnimation();
 
         setTimeout(() => {
+          globalSettings.relicGroup = "chest";
+          globalSettings.redirectToChest = false;
           window.location.href = "deathscreen.html";
         }, 2500);
       }, 750);
@@ -251,7 +284,12 @@ class Player extends HealthEntity {
   updatePoisonDisplay() {
     const poisonElement = document.getElementById("poison-status");
     if (poisonElement) {
-      poisonElement.innerText = `☠️${this.#currentPoison}`;
+      if (this.#currentPoison > 0) {
+        poisonElement.innerText = `☠️${this.#currentPoison}`;
+        poisonElement.classList.remove("hidden");
+      } else {
+        poisonElement.classList.add("hidden");
+      }
     }
   }
 
@@ -300,6 +338,7 @@ class Player extends HealthEntity {
   loadPlayerFromStorage() {
     let state = loadData("playerState");
     if (state == null) {
+      globalSettings.playerGold = 50;
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
@@ -312,7 +351,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new devWeapon());
-      this.addWeapon(new PoisonPotion());
+      // this.addWeapon(new PoisonPotion());
     } else {
       this.#name = state.name;
       this.#health = state.health;
@@ -323,6 +362,9 @@ class Player extends HealthEntity {
       this.#blockModifier = state.blockModifier;
       this.#lifestealModifier = state.lifestealModifier;
       this.#damageReductionModifier = state.damageReductionModifier;
+      this.#poisonModifier = state.poisonModifier;
+      this.#critsDisabled = state.critsDisabled;
+      this.#canTargetAnyEnemy = state.canTargetAnyEnemy;
       let deck = [];
       for (let weapon of state.deck) {
         let instance = createWeaponInstanceFromInfo(weapon);
@@ -356,6 +398,9 @@ class Player extends HealthEntity {
       blockModifier: this.#blockModifier,
       lifestealModifier: this.#lifestealModifier,
       damageReductionModifier: this.#damageReductionModifier,
+      poisonModifier: this.#poisonModifier,
+      critsDisabled: this.#critsDisabled,
+      canTargetAnyEnemy: this.#canTargetAnyEnemy,
     };
     let deck = [];
     for (let weapon of this.#deck) {

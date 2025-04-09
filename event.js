@@ -136,6 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
         player.addWeapon(new Lightning());
         player.addWeapon(new Lightning());
         player.addWeapon(new Lightning());
+        player.addWeapon(new LightningShield());
+        player.addWeapon(new LightningShield());
+        player.addWeapon(new LightningShield());
 
         player.savePlayerToStorage();
 
@@ -207,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const gambleAmount = Math.floor(globalSettings.playerGold / 2);
 
       if (gambleAmount <= 1) {
-        alert("You dont have enough gold to gamble");
+        displayTurnMessage("You don't have enough gold to gamble");
         return;
       }
 

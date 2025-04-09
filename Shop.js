@@ -52,7 +52,9 @@ window.addEventListener("DOMContentLoaded", function () {
 
     button.addEventListener("mouseover", function () {
       if (speechBubble) {
-        speechBubble.innerHTML = `<strong>${randomWeapon.name}</strong><br>${randomWeapon.description}<br>`;
+        speechBubble.innerHTML = "";
+        speechBubble.innerHTML += `<strong>${randomWeapon.name}</strong><br>`;
+        speechBubble.innerHTML += `<strong>Energy Cost:</strong> ${randomWeapon.energy}<br>`;
         // Add additional information to the tooltip if applicable
         if (randomWeapon.damage > 0) {
           speechBubble.innerHTML += `<strong>Damage:</strong> ${randomWeapon.damage}<br>`;
@@ -77,6 +79,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
           speechBubble.innerHTML += `<strong>Healing:</strong> ${healingString}<br>`;
         }
+
+        speechBubble.innerHTML += `${randomWeapon.description}<br>`;
 
         speechBubble.innerHTML += `<strong>Price:</strong> 20 Gold`;
         speechBubble.style.display = "block";

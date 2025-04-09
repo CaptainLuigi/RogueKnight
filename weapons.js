@@ -191,7 +191,8 @@ class Weapons {
     enemyIndex,
     damageModifier,
     critChanceModifier,
-    critDamageModifier
+    critDamageModifier,
+    poisonModifier
   ) {
     this.#wasUsed = true;
 
@@ -203,6 +204,7 @@ class Weapons {
       };
 
     const isCritical =
+      !player.critsDisabled &&
       Math.random() * 100 < this.criticalChance + critChanceModifier; // Random chance for critical hit
     const damage = isCritical
       ? this.criticalDamage + critDamageModifier
@@ -234,7 +236,7 @@ class Weapons {
       const targetEnemy = enemies[startIndex + index];
       const previewBlock = targetEnemy.currentBlock || 0;
 
-      this.applyPoisonToEnemy(targetEnemy);
+      this.applyPoisonToEnemy(targetEnemy, poisonModifier);
 
       let blocked = Math.min(previewBlock, damage);
 
@@ -332,10 +334,15 @@ class Weapons {
     this.#wasUsed = true;
   }
 
-  applyPoisonToEnemy(targetEnemy) {
-    if (this.#poisonAmount > 0) {
-      console.log("POISON DEBUG", this.#poisonAmount);
-      targetEnemy.addPoisonFromPlayer(this.#poisonAmount);
+  applyPoisonToEnemy(targetEnemy, poisonModifier = 0) {
+    const basePoison = this.#poisonAmount ?? 0;
+    const totalPoison =
+      basePoison > 0 ? basePoison + poisonModifier : basePoison;
+
+    console.log("Applying poison to enemy: ", totalPoison);
+
+    if (totalPoison > 0) {
+      targetEnemy.addPoisonFromPlayer(totalPoison);
       targetEnemy.updatePoisonDisplay();
     }
   }
@@ -552,14 +559,14 @@ class VampiricDagger extends Weapons {
       50,
       25,
       1,
-      "Can only target the first enemy and has 10% lifesteal, click to instantly use weapon.",
+      "Can only target the first enemy and has 20% lifesteal, click to instantly use weapon.",
       "Assets/VampiricDagger.png",
       false,
       0,
       0,
       0,
       0,
-      [10],
+      [20],
       true
     );
   }
@@ -696,7 +703,7 @@ class PoisonDagger extends Weapons {
       "melee",
       5,
       70,
-      45,
+      35,
       1,
       "Can only target the first enemy and applies poison, click to instantly use weapon.",
       "Assets/poisonDagger.png",
@@ -1127,6 +1134,42 @@ class PoisonPotion extends Weapons {
   }
 }
 
+class LightningShield extends Weapons {
+  constructor() {
+    super(
+      "Lightning Shield",
+      1,
+      "Block",
+      0,
+      0,
+      0,
+      0,
+      "Block incoming damage. Block is removed at the beginning of your next turn.",
+      "Assets/lightningShield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      5
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.blockAmount += 5;
+        break;
+      case 3:
+        weaponInfo.blockAmount += 5;
+        break;
+    }
+  }
+}
+
 class devWeapon extends Weapons {
   constructor() {
     super(
@@ -1196,6 +1239,7 @@ const weaponClassMapping = {
   BasicBow,
   PoisonDagger,
   PoisonPotion,
+  LightningShield,
   devWeapon,
 };
 
@@ -1292,7 +1336,9 @@ function generateWeaponInfo(
       tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} ${modifierDisplay} <br>`;
     }
 
-    if (weapon.criticalChance > 0) {
+    if (player.critsDisabled) {
+      tooltipString += `<strong>Critical Chance:</strong> ❌ Disabled<br>`;
+    } else if (weapon.criticalChance > 0) {
       let modifierDisplay = "";
       if (player.critChanceModifier > 0) {
         modifierDisplay = `(+${player.critChanceModifier}%)`;
@@ -1301,7 +1347,11 @@ function generateWeaponInfo(
     }
 
     if (weapon.poisonAmount > 0) {
-      tooltipString += `<strong>Poison:</strong> ${weapon.poisonAmount} <br>`;
+      let modifierDisplay = "";
+      if (player.poisonModifier > 0) {
+        modifierDisplay = `(+${player.poisonModifier})`;
+      }
+      tooltipString += `<strong>Poison:</strong> ${weapon.poisonAmount} ${modifierDisplay} <br>`;
     }
 
     if (weapon.canHeal) {
