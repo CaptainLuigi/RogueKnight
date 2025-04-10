@@ -168,6 +168,10 @@ class Player extends HealthEntity {
     this.#maxEnergy += amount;
   }
 
+  increaseTemporalEnergy(amount) {
+    this.#energy += amount;
+  }
+
   setMaxHealth(amount) {
     this.#maxHealth = amount;
     this.#health = this.#maxHealth;
@@ -212,8 +216,10 @@ class Player extends HealthEntity {
     this.#canTargetAnyEnemy = enabled;
   }
 
-  canTargetAnyEnemy() {
-    return this.#canTargetAnyEnemy;
+  canTargetAnyEnemy(weapon = null) {
+    if (!this.#canTargetAnyEnemy) return false;
+    if (weapon && weapon.damage > 0) return true;
+    return false;
   }
 
   addWeapon(weapon) {
@@ -321,6 +327,10 @@ class Player extends HealthEntity {
   restoreEnergy(amount) {
     this.#energy += amount; // Restore energy
     if (this.#energy > this.#maxEnergy) this.#energy = this.#maxEnergy; // Cap at max energy
+  }
+
+  addEnergy(amount) {
+    this.#energy += amount;
   }
 
   showDeck() {

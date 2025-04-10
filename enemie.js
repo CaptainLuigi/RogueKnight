@@ -285,6 +285,14 @@ class Enemy extends HealthEntity {
       if (isBrambleEquipped) {
         enemy.takeDamage(5);
       }
+
+      if (
+        player.equippedRelics.includes("Titan's Reflection") &&
+        player.blockAmount > 0
+      ) {
+        const reflectionDamage = player.blockAmount;
+        enemy.takeDamage(reflectionDamage);
+      }
     }
   }
 

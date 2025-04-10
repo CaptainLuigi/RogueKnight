@@ -100,7 +100,7 @@ const relicList = [
     () => {},
     "Heal 10 HP at the end of combat.",
     "chest",
-    125
+    100
   ),
 
   new Relics(
@@ -248,11 +248,47 @@ const relicList = [
 
   new Relics(
     "AliensRock",
-    "Assets/Sword.png",
+    "Assets/aliensRock.png",
     aliensRock,
     "All weapons can target any enemy.",
     "elite",
     150
+  ),
+
+  new Relics(
+    "Sharp Focus",
+    "Assets/sharpFocus.png",
+    () => {},
+    "When hitting a crit, gain 1 Energy.",
+    "elite",
+    175
+  ),
+
+  new Relics(
+    "Fist of Bulwark",
+    "Assets/fistOfBulwark.png",
+    () => {},
+    "When you attack, also gain 5 block.",
+    "chest",
+    125
+  ),
+
+  new Relics(
+    "Titan's Reflection",
+    "Assets/titansReflection.png",
+    () => {},
+    "Whenever an enemy attacks you, deal damage back equal to the remaining block after the attack.",
+    "chest",
+    150
+  ),
+
+  new Relics(
+    "Adrenal Surge",
+    "Assets/adrenalSurge.png",
+    () => {},
+    "Get +1 Energy at the start of your turn if you have 30% or less health.",
+    "elite",
+    175
   ),
 ].reduce((o, r) => {
   o[r.name] = r;
@@ -326,6 +362,21 @@ function aliensRock(player) {
   player.setTargetAnyEnemy(true);
 }
 
+function sharpFocus(player) {
+  player.addEnergy(1);
+  updateEnergyDisplay(player);
+}
+
+function adrenalSurge() {
+  if (player.equippedRelics.includes("Adrenal Surge")) {
+    const hpRatio = player.health / player.maxHealth;
+    if (hpRatio <= 0.3) {
+      player.increaseTemporalEnergy(1);
+      updateEnergyDisplay();
+    }
+  }
+}
+
 function stonewallTotem() {
   const blockContainer = document.getElementById("block-container");
   const blockText = document.getElementById("block-text");
@@ -333,6 +384,19 @@ function stonewallTotem() {
   let currentBlock = parseInt(blockText.innerText) || 0;
 
   currentBlock += 10;
+
+  player.blockAmount = currentBlock;
+  blockText.innerText = currentBlock;
+
+  blockContainer.classList.remove("hidden");
+}
+
+function fistOfBulwark() {
+  const blockContainer = document.getElementById("block-container");
+  const blockText = document.getElementById("block-text");
+
+  let currentBlock = parseInt(blockText.innerText) || 0;
+  currentBlock += 5;
 
   player.blockAmount = currentBlock;
   blockText.innerText = currentBlock;

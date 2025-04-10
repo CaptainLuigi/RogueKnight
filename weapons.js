@@ -178,11 +178,23 @@ class Weapons {
   }
 
   possibleTargets() {
+    // If relic is active and weapon deals damage, allow targeting any living enemy
+    if (player.canTargetAnyEnemy(this)) {
+      return enemies
+        .map((enemy, index) => (enemy.isDead() ? null : index))
+        .filter((index) => index !== null);
+    }
+
+    // If no targeting is needed, just return default target
     if (!this.requiresTargeting) return [this.#minRange];
 
+    // Default targeting logic: within min-max range
     const displayTargets = [];
-    for (let index = this.#minRange; index <= this.#maxRange; index++)
-      displayTargets.push(index);
+    for (let index = this.#minRange; index <= this.#maxRange; index++) {
+      if (!enemies[index]?.isDead?.()) {
+        displayTargets.push(index);
+      }
+    }
 
     return displayTargets;
   }
@@ -209,6 +221,12 @@ class Weapons {
     const damage = isCritical
       ? this.criticalDamage + critDamageModifier
       : this.damage + damageModifier;
+
+    if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
+      console.log("Sharp focus activated");
+
+      sharpFocus(player);
+    }
 
     let startIndex = enemyIndex - this.#effectsLeft.length;
     let leftOffset = 0;
@@ -244,6 +262,10 @@ class Weapons {
 
       return Math.max(0, damage - blocked);
     });
+
+    if (damage > 0 && player.equippedRelics.includes("Fist of Bulwark")) {
+      fistOfBulwark();
+    }
 
     return {
       startIndex,

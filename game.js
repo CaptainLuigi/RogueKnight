@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   player.loadPlayerFromStorage();
 
+  refillEnergy();
+
   displayWeapons(player, player.hand);
 
   Enemy.initialize();
@@ -123,12 +125,11 @@ function useWeapon(weaponIndex) {
   // }
 
   if (player.energy >= weapon.energy) {
-    if (weapon.requiresTargeting) {
-      if (player.canTargetAnyEnemy()) {
-        executeAttack(weapon, null);
-      } else {
-        setActiveWeapon(weaponIndex, true);
-      }
+    const hasRelicTargeting = player.canTargetAnyEnemy(weapon);
+    const needsTargeting = weapon.requiresTargeting || hasRelicTargeting;
+
+    if (needsTargeting) {
+      setActiveWeapon(weaponIndex, true);
     } else {
       executeAttack(weapon, weapon.minRange);
     }
@@ -367,6 +368,7 @@ function endTurn() {
 // Function to refill the player's energy (e.g., set to full energy)
 function refillEnergy() {
   player.restoreEnergy(player.maxEnergy); // Set the energy back to the maximum value
+  adrenalSurge();
 }
 
 // Update the player's energy display

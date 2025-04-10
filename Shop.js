@@ -65,6 +65,9 @@ window.addEventListener("DOMContentLoaded", function () {
         if (randomWeapon.criticalChance > 0) {
           speechBubble.innerHTML += `<strong>Critical Chance:</strong> ${randomWeapon.criticalChance}%<br>`;
         }
+        if (randomWeapon.poisonAmount > 0) {
+          speechBubble.innerHTML += `<strong>Poison:</strong> ${randomWeapon.poisonAmount}<br>`;
+        }
         if (randomWeapon.blockAmount > 0) {
           speechBubble.innerHTML += `<strong>Block:</strong> ${randomWeapon.blockAmount}<br>`;
         }
