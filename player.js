@@ -244,8 +244,15 @@ class Player extends HealthEntity {
     }
   }
 
+  removeRelic(name) {
+    const index = this.#equippedRelics.indexOf(name);
+    if (index !== -1) {
+      this.#equippedRelics.splice(index, 1);
+    }
+  }
+
   takeDamage(amount) {
-    const reduceAmount = player.equippedRelics.includes("Cloak of Protection")
+    const reduceAmount = this.equippedRelics.includes("Cloak of Protection")
       ? amount - 1
       : amount;
 
@@ -254,18 +261,23 @@ class Player extends HealthEntity {
     this.#health -= finalDamage;
 
     if (this.#health <= 0) {
-      this.#health = 0; // Ensure health doesn't go negative
-      this.displayDamage(finalDamage, false, -60);
-
-      setTimeout(() => {
-        triggerDeathAnimation();
+      if (this.#equippedRelics.includes("Death's Bargain")) {
+        this.#health = Math.floor(this.#maxHealth / 2);
+        deathsBargain(this);
+      } else {
+        this.#health = 0; // Ensure health doesn't go negative
+        this.displayDamage(finalDamage, false, -60);
 
         setTimeout(() => {
-          globalSettings.relicGroup = "chest";
-          globalSettings.redirectToChest = false;
-          window.location.href = "deathscreen.html";
-        }, 2500);
-      }, 750);
+          triggerDeathAnimation();
+
+          setTimeout(() => {
+            globalSettings.relicGroup = "chest";
+            globalSettings.redirectToChest = false;
+            window.location.href = "deathscreen.html";
+          }, 2500);
+        }, 750);
+      }
     } else {
       this.displayDamage(finalDamage, false, -60);
       triggerDamageAnimation();

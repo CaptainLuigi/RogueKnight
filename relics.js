@@ -290,6 +290,24 @@ const relicList = [
     "elite",
     175
   ),
+
+  new Relics(
+    "Death's Bargain",
+    "Assets/deathsPact.png",
+    () => {},
+    "Saves you once from death and then heals you for 50%.",
+    "elite",
+    150
+  ),
+
+  new Relics(
+    "Death's Pact",
+    "Assets/deathsBargain2.png",
+    () => {},
+    "Halfes incoming damage from enemies.",
+    "unfindable",
+    0
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -365,6 +383,12 @@ function aliensRock(player) {
 function sharpFocus(player) {
   player.addEnergy(1);
   updateEnergyDisplay(player);
+}
+
+function deathsBargain(player) {
+  player.removeRelic("Death's Bargain");
+  player.foundRelic("Death's Pact", true);
+  displayEquippedRelics();
 }
 
 function adrenalSurge() {

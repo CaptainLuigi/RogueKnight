@@ -1,6 +1,7 @@
 class Enemy extends HealthEntity {
   static #templateNode;
   static #enemyDisplay;
+  static #allEnemies = [];
   static initialize() {
     //Zuweisung enemyDisplay entspricht dem Element, das alle angezeigten Gegner beeinhaltet (Node)
     this.#enemyDisplay = document.getElementById("enemies");
@@ -20,6 +21,8 @@ class Enemy extends HealthEntity {
   #activeShield = 0;
   #poison = 0;
   #poisonFromPlayer = 0;
+  #healAll = 0;
+  #buffAll = 0;
   #display;
   #nextAction = "";
   #possibleActions = [];
@@ -76,6 +79,14 @@ class Enemy extends HealthEntity {
     return this.#poisonFromPlayer;
   }
 
+  get healAll() {
+    return this.#healAll;
+  }
+
+  get buffAll() {
+    return this.#buffAll;
+  }
+
   get nextAction() {
     return this.#nextAction;
   }
@@ -92,6 +103,14 @@ class Enemy extends HealthEntity {
     return this.#poison > 0;
   }
 
+  get canHealAll() {
+    return this.#healAll > 0;
+  }
+
+  get canBuffAll() {
+    return this.#buffAll > 0;
+  }
+
   constructor(
     name,
     maxHealth,
@@ -100,7 +119,9 @@ class Enemy extends HealthEntity {
     ranged,
     lifesteal = 0,
     blockAmount = 0,
-    poison = 0
+    poison = 0,
+    healAll = 0,
+    buffAll = 0
   ) {
     super();
     this.#health = maxHealth;
@@ -116,8 +137,11 @@ class Enemy extends HealthEntity {
     this.#lifesteal = lifesteal;
     this.#blockAmount = blockAmount;
     this.#poison = poison;
+    this.#healAll = healAll;
+    this.#buffAll = buffAll;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
+    Enemy.#allEnemies.push(this);
 
     if (this.canAttack) {
       this.#possibleActions.push("attack");
@@ -128,6 +152,16 @@ class Enemy extends HealthEntity {
     if (this.canPoison) {
       this.#possibleActions.push("poison");
     }
+    if (this.canHealAll) {
+      this.#possibleActions.push("healAll");
+    }
+    if (this.canBuffAll) {
+      this.#possibleActions.push("buffAll");
+    }
+  }
+
+  static getAllEnemies() {
+    return this.#allEnemies;
   }
 
   randomizeAction() {
@@ -156,6 +190,10 @@ class Enemy extends HealthEntity {
       intentElement.textContent = `🛡️${this.#blockAmount}`;
     } else if (this.#nextAction === "poison") {
       intentElement.textContent = `☠️${this.#poison}`;
+    } else if (this.#nextAction === "healAll") {
+      intentElement.textContent = `💚${this.#healAll}`;
+    } else if (this.#nextAction === "buffAll") {
+      intentElement.textContent = `💪${this.#buffAll}`;
     }
 
     console.log(
@@ -178,6 +216,12 @@ class Enemy extends HealthEntity {
         break;
       case "poison":
         this.applyPoison(player, this.#poison);
+        break;
+      case "healAll":
+        this.healAll(this.#healAll);
+        break;
+      case "buffAll":
+        this.buffAll(this.#buffAll);
         break;
       default:
         console.log("No action performed");
@@ -261,6 +305,10 @@ class Enemy extends HealthEntity {
       }
     }
 
+    if (actualDamage > 0 && player.equippedRelics.includes("Death's Pact")) {
+      actualDamage = Math.ceil(actualDamage / 2);
+    }
+
     if (actualDamage > 0) {
       player.takeDamage(actualDamage);
     }
@@ -330,6 +378,25 @@ class Enemy extends HealthEntity {
     } else {
       poisonElement.classList.add("hidden");
     }
+  }
+
+  healAll(amount) {
+    Enemy.getAllEnemies().forEach((enemy) => {
+      if (!enemy.isDead()) {
+        enemy.heal(amount);
+      }
+    });
+  }
+
+  buffAll(amount) {
+    Enemy.getAllEnemies().forEach((enemy) => {
+      if (!enemy.isDead()) {
+        enemy.#attackPower += amount;
+        Enemy.getAllEnemies().forEach((enemy) => {
+          enemy.updateDisplay();
+        });
+      }
+    });
   }
 
   updateDisplay() {
@@ -559,5 +626,17 @@ class Amalgam extends Enemy {
   constructor() {
     super("Amalgam", 500, 20, "Assets/Transperent/Icon25.png", false, 0, 30);
     this.display.classList.add("biggerEnemy");
+  }
+}
+
+class Cleric extends Enemy {
+  constructor() {
+    super("Cleric", 200, 3, "Assets/enemyCleric.png", true, 0, 15, 0, 15);
+  }
+}
+
+class Druid extends Enemy {
+  constructor() {
+    super("Druid", 150, 2, "Assets/enemyDruid.png", true, 0, 10, 0, 0, 2);
   }
 }

@@ -285,6 +285,7 @@ function enableWeapons() {
 // Function to handle the "End Turn" button click
 function endTurn() {
   console.log("End turn clicked!");
+  document.getElementById("end-turn-btn").disabled = true;
 
   player.applyPoisonDamage();
   updateHealthBar(player);
@@ -361,6 +362,7 @@ function endTurn() {
       player.drawHand();
       displayWeapons(player, player.hand);
       enableWeapons(); // Enable weapons for the player
+      document.getElementById("end-turn-btn").disabled = false;
     }, enemies.length * 700 + 500); // Adjust timing based on enemy action delays
   }, 500); // Initial delay before enemies perform their actions
 }

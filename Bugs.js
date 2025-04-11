@@ -24,9 +24,9 @@ meta progressio, startrelic aussuchen
 
 flüche (wie relics)
 
-waffen durch event poion, lifesteal
+waffen durch event poison, lifesteal
 
-support enemy -> heilt, damage buffs? shield?
+support enemy -> damage buffs? shield?
 
 waffen nur einmal pro kampf; was used flag
 
@@ -36,7 +36,7 @@ event -> energy einer waffe reduzieren
 
 succubus soll instant angreifen
 
-relic, einmal tod verhindern
+necromancer enemy -> pusht neue gegner rein
 
 
 

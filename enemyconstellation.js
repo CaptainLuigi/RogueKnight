@@ -27,7 +27,7 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 8,
     difficultyTo: 8,
-    enemies: [Amalgam],
+    enemies: [Amalgam, Druid, Cleric],
   },
   {
     difficultyFrom: 8,
@@ -42,6 +42,6 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 10,
     difficultyTo: 10,
-    enemies: [MinonKnight, MinonKnight, MinonKnight, MinonKnight, EvilKnight],
+    enemies: [MinonKnight, MinonKnight, Cleric, EvilKnight, Druid],
   },
 ];
