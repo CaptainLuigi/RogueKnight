@@ -143,17 +143,46 @@ class Player extends HealthEntity {
   }
 
   #resetDrawPile() {
-    this.#drawPile = [...this.#deck];
-    this.#drawPile = this.#drawPile.filter((e) => !this.#hand.includes(e));
-    this.#drawPile.forEach((e) => (e.wasUsed = false));
+    // Start fresh from the full deck
+    this.#drawPile = this.#deck.filter((weapon) => {
+      // Don't include what's in hand
+      const isInHand = this.#hand.includes(weapon);
+
+      // Don't include once-per-battle weapons that have already been used
+      const usedOnce = weapon.oncePerBattle && weapon.wasUsed;
+
+      return !isInHand && !usedOnce;
+    });
+
+    // Reset wasUsed only for reusable weapons
+    this.#drawPile.forEach((weapon) => {
+      if (!weapon.oncePerBattle) {
+        weapon.wasUsed = false;
+      }
+    });
+
+    // Shuffle draw pile
     for (let i = this.#drawPile.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
+      const j = Math.floor(Math.random() * (i + 1));
       [this.#drawPile[i], this.#drawPile[j]] = [
         this.#drawPile[j],
         this.#drawPile[i],
-      ]; // Swap elements
+      ];
     }
   }
+
+  // #resetDrawPile() {
+  //   this.#drawPile = [...this.#deck];
+  //   this.#drawPile = this.#drawPile.filter((e) => !this.#hand.includes(e));
+  //   this.#drawPile.forEach((e) => (e.wasUsed = false));
+  //   for (let i = this.#drawPile.length - 1; i > 0; i--) {
+  //     let j = Math.floor(Math.random() * (i + 1));
+  //     [this.#drawPile[i], this.#drawPile[j]] = [
+  //       this.#drawPile[j],
+  //       this.#drawPile[i],
+  //     ];
+  //   }
+  // }
 
   increaseMaxHealth(amount, addToCurrentHealth) {
     this.#maxHealth += amount;
@@ -224,6 +253,9 @@ class Player extends HealthEntity {
 
   addWeapon(weapon) {
     this.#deck.push(weapon);
+    if (this.#equippedRelics.includes("Omnipotence")) {
+      weapon.energy = 0;
+    }
     this.savePlayerToStorage();
   }
 

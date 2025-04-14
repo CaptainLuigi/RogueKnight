@@ -20,6 +20,16 @@ const enemyConstellationTemplates = [
     enemies: [Scorpion, Scorpion, Scorpion, Scorpion],
   },
   {
+    difficultyFrom: 3,
+    difficultyTo: 4,
+    enemies: [Gnome, Gnome, Gnome, Gnome, Druid],
+  },
+  {
+    difficultyFrom: 3,
+    difficultyTo: 4,
+    enemies: [BitingPlant, BitingPlant, BitingPlant],
+  },
+  {
     difficultyFrom: 8,
     difficultyTo: 8,
     enemies: [Hornet, Hornet, Hornet, Hornet],
@@ -27,12 +37,17 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 8,
     difficultyTo: 8,
-    enemies: [Amalgam, Druid, Cleric],
+    enemies: [Amalgam, CrystalMage, Druid, Cleric],
   },
   {
     difficultyFrom: 8,
     difficultyTo: 8,
     enemies: [SlimeHive, TreeSlime, TreeSlime, TreeSlime, TreeSlime, TreeSlime],
+  },
+  {
+    difficultyFrom: 8,
+    difficultyTo: 8,
+    enemies: [Druid, Cleric, CrystalMage, MasterMage],
   },
   {
     difficultyFrom: 9,
@@ -43,5 +58,10 @@ const enemyConstellationTemplates = [
     difficultyFrom: 10,
     difficultyTo: 10,
     enemies: [MinonKnight, MinonKnight, Cleric, EvilKnight, Druid],
+  },
+  {
+    difficultyFrom: 1,
+    difficultyTo: 1,
+    enemies: [Necromancer],
   },
 ];

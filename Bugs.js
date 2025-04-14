@@ -20,15 +20,14 @@ function calculate damage
 (possibly calculating with increasing/decreasing index of enemy)
 
 
-meta progressio, startrelic aussuchen
+meta progression, startrelic aussuchen
 
 flüche (wie relics)
 
 waffen durch event poison, lifesteal
 
-support enemy -> damage buffs? shield?
 
-waffen nur einmal pro kampf; was used flag
+await bei buff all, shield all hinzufügen
 
 bei einem gegner, diesen centern
 
@@ -36,7 +35,8 @@ event -> energy einer waffe reduzieren
 
 succubus soll instant angreifen
 
-necromancer enemy -> pusht neue gegner rein
+
+
 
 
 

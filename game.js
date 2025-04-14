@@ -31,8 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
   updateEnergyDisplay(player);
 });
 
-const enemies = [];
-
 function fillEnemyArray(currentDifficulty) {
   console.log(enemyConstellationTemplates);
 
@@ -48,7 +46,6 @@ function fillEnemyArray(currentDifficulty) {
   const selectedConstellation = filteredEnemyArray[randomIndex];
   for (const EnemyClass of selectedConstellation.enemies) {
     const enemyInstance = new EnemyClass();
-    enemies.push(enemyInstance);
 
     enemyInstance.randomizeAction();
     enemyInstance.displayIntent();
@@ -282,8 +279,14 @@ function enableWeapons() {
   });
 }
 
+function wait(length) {
+  return new Promise((res) => {
+    window.setTimeout(res, length);
+  });
+}
+
 // Function to handle the "End Turn" button click
-function endTurn() {
+async function endTurn() {
   console.log("End turn clicked!");
   document.getElementById("end-turn-btn").disabled = true;
 
@@ -300,71 +303,63 @@ function endTurn() {
   if (player.equippedRelics.includes("Overcharged Core")) {
     player.takeDamage(5);
     updateHealthBar(player);
+    await wait(300);
   }
 
   if (player.equippedRelics.includes("Stonewall Totem")) {
     stonewallTotem();
+    await wait(300);
   }
 
-  // Step 1: Perform enemy actions
-  setTimeout(() => {
-    enemies.forEach((enemy, index) => {
-      if (index === 0 || enemy.ranged) {
-        setTimeout(() => {
-          console.log(`Enemy ${enemy.name} performing action`);
+  let index = 0;
+  let localEnemies = [...enemies];
+  for (let enemy of localEnemies) {
+    if (index === 0 || enemy.ranged) {
+      console.log(`Enemy ${enemy.name} performing action`);
 
-          // Perform the enemy action
-          enemy.performAction(player);
-          updateHealthBar(player);
+      // Perform the enemy action
+      await enemy.performAction(player);
+      updateHealthBar(player);
+    }
 
-          setTimeout(() => {
-            enemy.applyPoisonDamageFromPlayer();
-          }, 750);
-        }, index * 700); // Sequential delay between enemy actions
-      }
-    });
+    if (enemy.applyPoisonDamageFromPlayer()) await wait(500);
 
-    // Step 2: After all enemies have acted, randomize and display their intent
-    setTimeout(() => {
-      console.log("Randomizing enemy actions for next turn");
+    // Randomize action for the next turn
+    enemy.randomizeAction();
+    // Display the intent for the next turn
+    enemy.displayIntent();
 
-      enemies.forEach((enemy) => {
-        // Randomize action for the next turn
-        enemy.randomizeAction();
-        // Display the intent for the next turn
-        enemy.displayIntent();
-      });
+    index++;
+  }
 
-      // Step 3: Reset player's stats (e.g., block)
-      player.blockAmount = 0;
-      player.currentBlock = 0;
+  await wait(200);
 
-      const blockText = document.getElementById("block-text");
-      blockText.innerText = "0";
+  console.log("Player's turn begins...");
 
-      const blockContainer = document.getElementById("block-container");
-      blockContainer.classList.add("hidden");
+  // Draw the player's hand and display weapons for the player's turn
+  isPlayerTurn = true;
+  player.drawHand();
+  displayWeapons(player, player.hand);
+  enableWeapons(); // Enable weapons for the player
+  document.getElementById("end-turn-btn").disabled = false;
 
-      // Show turn message for the player
-      displayTurnMessage("Your Turn Again!");
+  // Step 3: Reset player's stats (e.g., block)
+  player.blockAmount = 0;
+  player.currentBlock = 0;
 
-      // Refill the player's energy and update energy display
-      refillEnergy();
-      updateEnergyDisplay();
-    }, enemies.length * 700 + 500); // After all enemies have acted
+  const blockText = document.getElementById("block-text");
+  blockText.innerText = "0";
 
-    // Step 4: Player's turn - enable player to act again
-    setTimeout(() => {
-      console.log("Player's turn begins...");
+  const blockContainer = document.getElementById("block-container");
+  blockContainer.classList.add("hidden");
+  setEnemyIndices();
 
-      // Draw the player's hand and display weapons for the player's turn
-      isPlayerTurn = true;
-      player.drawHand();
-      displayWeapons(player, player.hand);
-      enableWeapons(); // Enable weapons for the player
-      document.getElementById("end-turn-btn").disabled = false;
-    }, enemies.length * 700 + 500); // Adjust timing based on enemy action delays
-  }, 500); // Initial delay before enemies perform their actions
+  // Show turn message for the player
+  displayTurnMessage("Your Turn Again!");
+
+  // Refill the player's energy and update energy display
+  refillEnergy();
+  updateEnergyDisplay();
 }
 
 // Function to refill the player's energy (e.g., set to full energy)

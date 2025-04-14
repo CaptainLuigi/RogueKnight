@@ -108,6 +108,11 @@ height: 0;
     height: auto;
 }
 
+.bigEnemy img {
+    width: 150px;
+    height: auto;
+}
+
 #health-bar-container-player {
     width: 200px;
     height: 15px;

@@ -250,7 +250,7 @@ const relicList = [
     "AliensRock",
     "Assets/aliensRock.png",
     aliensRock,
-    "All weapons can target any enemy.",
+    "All weapons can target any enemy. Click weapon first, then the enemy you want to hit.",
     "elite",
     150
   ),

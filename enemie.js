@@ -1,7 +1,6 @@
 class Enemy extends HealthEntity {
   static #templateNode;
   static #enemyDisplay;
-  static #allEnemies = [];
   static initialize() {
     //Zuweisung enemyDisplay entspricht dem Element, das alle angezeigten Gegner beeinhaltet (Node)
     this.#enemyDisplay = document.getElementById("enemies");
@@ -23,6 +22,8 @@ class Enemy extends HealthEntity {
   #poisonFromPlayer = 0;
   #healAll = 0;
   #buffAll = 0;
+  #shieldAll = 0;
+  #canSummon = false;
   #display;
   #nextAction = "";
   #possibleActions = [];
@@ -87,6 +88,13 @@ class Enemy extends HealthEntity {
     return this.#buffAll;
   }
 
+  get shieldAll() {
+    return this.#shieldAll;
+  }
+  get canSummon() {
+    return this.#canSummon;
+  }
+
   get nextAction() {
     return this.#nextAction;
   }
@@ -111,6 +119,10 @@ class Enemy extends HealthEntity {
     return this.#buffAll > 0;
   }
 
+  get canShieldAll() {
+    return this.#shieldAll > 0;
+  }
+
   constructor(
     name,
     maxHealth,
@@ -121,7 +133,9 @@ class Enemy extends HealthEntity {
     blockAmount = 0,
     poison = 0,
     healAll = 0,
-    buffAll = 0
+    buffAll = 0,
+    shieldAll = 0,
+    canSummon = false
   ) {
     super();
     this.#health = maxHealth;
@@ -139,9 +153,11 @@ class Enemy extends HealthEntity {
     this.#poison = poison;
     this.#healAll = healAll;
     this.#buffAll = buffAll;
+    this.#shieldAll = shieldAll;
+    this.#canSummon = canSummon;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
-    Enemy.#allEnemies.push(this);
+    enemies.push(this);
 
     if (this.canAttack) {
       this.#possibleActions.push("attack");
@@ -158,10 +174,16 @@ class Enemy extends HealthEntity {
     if (this.canBuffAll) {
       this.#possibleActions.push("buffAll");
     }
+    if (this.canShieldAll) {
+      this.#possibleActions.push("shieldAll");
+    }
+    if (this.canSummon()) {
+      this.#possibleActions.push("canSummon");
+    }
   }
 
-  static getAllEnemies() {
-    return this.#allEnemies;
+  canSummon() {
+    return this.#canSummon;
   }
 
   randomizeAction() {
@@ -194,6 +216,10 @@ class Enemy extends HealthEntity {
       intentElement.textContent = `💚${this.#healAll}`;
     } else if (this.#nextAction === "buffAll") {
       intentElement.textContent = `💪${this.#buffAll}`;
+    } else if (this.#nextAction === "shieldAll") {
+      intentElement.textContent = `🛡️✨${this.#shieldAll}`;
+    } else if (this.#nextAction === "canSummon") {
+      intentElement.textContent = `🪦`;
     }
 
     console.log(
@@ -201,7 +227,9 @@ class Enemy extends HealthEntity {
     );
   }
 
-  performAction(player) {
+  async performAction(player) {
+    if (!this.#nextAction) return;
+
     this.#display.classList.add("grow-shrink");
     console.log(`${this.name} is performing action: ${this.#nextAction}`);
 
@@ -218,20 +246,26 @@ class Enemy extends HealthEntity {
         this.applyPoison(player, this.#poison);
         break;
       case "healAll":
-        this.healAll(this.#healAll);
+        await this.healAll(this.#healAll);
         break;
       case "buffAll":
         this.buffAll(this.#buffAll);
         break;
+      case "shieldAll":
+        this.shieldAll(this.#shieldAll);
+        break;
+      case "canSummon":
+        this.summon();
+        break;
       default:
         console.log("No action performed");
+        break;
     }
 
     this.#nextAction = "";
 
-    setTimeout(() => {
-      this.#display.classList.remove("grow-shrink");
-    }, 500);
+    await wait(500);
+    this.#display.classList.remove("grow-shrink");
   }
 
   isDead() {
@@ -282,7 +316,10 @@ class Enemy extends HealthEntity {
       this.#poisonFromPlayer--;
       this.updatePoisonDisplay();
       this.updateDisplay();
+
+      return true;
     }
+    return false;
   }
 
   attack(player) {
@@ -380,24 +417,34 @@ class Enemy extends HealthEntity {
     }
   }
 
-  healAll(amount) {
-    Enemy.getAllEnemies().forEach((enemy) => {
+  async healAll(amount) {
+    for (let enemy of enemies) {
       if (!enemy.isDead()) {
         enemy.heal(amount);
+
+        await wait(300);
+      }
+    }
+  }
+
+  shieldAll(amount) {
+    enemies.forEach((enemy) => {
+      if (!enemy.isDead()) {
+        enemy.block(amount);
       }
     });
   }
 
   buffAll(amount) {
-    Enemy.getAllEnemies().forEach((enemy) => {
+    enemies.forEach((enemy) => {
       if (!enemy.isDead()) {
         enemy.#attackPower += amount;
-        Enemy.getAllEnemies().forEach((enemy) => {
-          enemy.updateDisplay();
-        });
+        enemy.updateDisplay();
       }
     });
   }
+
+  summon() {}
 
   updateDisplay() {
     const intentElement = this.#display.querySelector(".enemy-intent");
@@ -444,11 +491,17 @@ class Enemy extends HealthEntity {
       intentElement.style.visibility = "visible"; // Ensure it's visible
 
       if (this.#nextAction === "attack") {
-        intentElement.textContent = `⚔️ ${this.#attackPower}`;
+        intentElement.textContent = `⚔️${this.#attackPower}`;
       } else if (this.#nextAction === "block") {
-        intentElement.textContent = `🛡️ ${this.#blockAmount}`;
+        intentElement.textContent = `🛡️${this.#blockAmount}`;
       } else if (this.#nextAction === "poison") {
-        intentElement.textContent = `☠️ ${this.#poison}`;
+        intentElement.textContent = `☠️${this.#poison}`;
+      } else if (this.#nextAction === "buffAll") {
+        intentElement.textContent = `💪${this.#buffAll}`;
+      } else if (this.#nextAction === "shieldAll") {
+        intentElement.textContent = `🛡️✨${this.#shieldAll}`;
+      } else if (this.#nextAction === "canSummon") {
+        intentElement.textContent = `🪦`;
       }
 
       console.log(
@@ -520,6 +573,8 @@ class Enemy extends HealthEntity {
   }
 }
 
+const enemies = [];
+
 class Shroom extends Enemy {
   constructor() {
     super("Shroom", 200, 3, "Assets/Transperent/Icon1.png", true, 0, 15);
@@ -561,7 +616,16 @@ class Scorpion extends Enemy {
 
 class BitingPlant extends Enemy {
   constructor() {
-    super("Biting Plant", 400, 10, "Assets/Transperent/Icon11.png", true);
+    super(
+      "Biting Plant",
+      400,
+      8,
+      "Assets/Transperent/Icon11.png",
+      true,
+      5,
+      15,
+      2
+    );
   }
 }
 
@@ -606,7 +670,7 @@ class Succubus extends Enemy {
 
 class Gnome extends Enemy {
   constructor() {
-    super("Gnome", 250, 10, "Assets/Transperent/Icon44", true);
+    super("Gnome", 250, 7, "Assets/Transperent/Icon44.png", true, 0, 15);
   }
 }
 
@@ -624,7 +688,7 @@ class TreeSlime extends Enemy {
 
 class Amalgam extends Enemy {
   constructor() {
-    super("Amalgam", 500, 20, "Assets/Transperent/Icon25.png", false, 0, 30);
+    super("Amalgam", 350, 15, "Assets/Transperent/Icon25.png", false, 0, 30);
     this.display.classList.add("biggerEnemy");
   }
 }
@@ -632,11 +696,95 @@ class Amalgam extends Enemy {
 class Cleric extends Enemy {
   constructor() {
     super("Cleric", 200, 3, "Assets/enemyCleric.png", true, 0, 15, 0, 15);
+    this.display.classList.add("bigEnemy");
   }
 }
 
 class Druid extends Enemy {
   constructor() {
     super("Druid", 150, 2, "Assets/enemyDruid.png", true, 0, 10, 0, 0, 2);
+    this.display.classList.add("bigEnemy");
+  }
+}
+
+class CrystalMage extends Enemy {
+  constructor() {
+    super(
+      "Crystal Mage",
+      200,
+      3,
+      "Assets/crystalMage2.png",
+      true,
+      0,
+      20,
+      0,
+      0,
+      0,
+      20
+    );
+    this.display.classList.add("bigEnemy");
+  }
+}
+
+class MasterMage extends Enemy {
+  constructor() {
+    super(
+      "Master Mage",
+      300,
+      5,
+      "Assets/masterMage.png",
+      true,
+      0,
+      20,
+      0,
+      20,
+      3,
+      20
+    );
+    this.display.classList.add("bigEnemy");
+  }
+}
+
+class Skeleton extends Enemy {
+  constructor() {
+    super("Skeleton", 50, 5, "Assets/skeleton.png", true);
+    // this.randomizeAction();
+  }
+}
+
+class Necromancer extends Enemy {
+  constructor() {
+    super(
+      "Necromancer",
+      250,
+      0,
+      "Assets/necromancer.png",
+      true,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      true
+    );
+    this.display.classList.add("bigEnemy");
+  }
+
+  summon() {
+    //constructor adds enemy at end of enemies
+    const summonedSkeleton = new Skeleton();
+    //because new enemy should not be at the end, it must be removed from there again
+    enemies.pop();
+
+    let index = enemies.findIndex((e) => e == this);
+    enemies.splice(index, 0, summonedSkeleton); // Add it to the enemies array so it's part of the game logic
+
+    this.display.parentNode.insertBefore(
+      summonedSkeleton.display,
+      this.display
+    );
+    summonedSkeleton.randomizeAction();
+    summonedSkeleton.displayIntent();
   }
 }

@@ -17,6 +17,7 @@ class Weapons {
   #canHeal;
   #blockAmount;
   #poisonAmount;
+  #oncePerBattle = false;
   #wasUsed = false;
 
   constructor(
@@ -37,7 +38,8 @@ class Weapons {
     healingAmount = 0,
     canHeal = false,
     blockAmount = 0,
-    poisonAmount = 0
+    poisonAmount = 0,
+    oncePerBattle = false
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -58,6 +60,7 @@ class Weapons {
       canHeal,
       blockAmount,
       poisonAmount,
+      oncePerBattle,
     });
   }
 
@@ -137,6 +140,10 @@ class Weapons {
     return this.#poisonAmount;
   }
 
+  get oncePerBattle() {
+    return this.#oncePerBattle;
+  }
+
   get wasUsed() {
     return this.#wasUsed;
   }
@@ -178,17 +185,14 @@ class Weapons {
   }
 
   possibleTargets() {
-    // If relic is active and weapon deals damage, allow targeting any living enemy
     if (player.canTargetAnyEnemy(this)) {
       return enemies
         .map((enemy, index) => (enemy.isDead() ? null : index))
         .filter((index) => index !== null);
     }
 
-    // If no targeting is needed, just return default target
     if (!this.requiresTargeting) return [this.#minRange];
 
-    // Default targeting logic: within min-max range
     const displayTargets = [];
     for (let index = this.#minRange; index <= this.#maxRange; index++) {
       if (!enemies[index]?.isDead?.()) {
@@ -300,6 +304,7 @@ class Weapons {
     this.#canHeal = info.canHeal;
     this.#blockAmount = info.blockAmount;
     this.#poisonAmount = info.poisonAmount;
+    this.#oncePerBattle = info.oncePerBattle || false;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -394,14 +399,17 @@ class HealthPotion extends Weapons {
       0,
       0,
       1,
-      "Click to heal the player.",
+      "Click to heal the player. Can only be used once per battle.",
       "Assets/healthPotion.png",
       false,
       0,
       0,
       0,
       0,
-      5,
+      10,
+      true,
+      0,
+      0,
       true
     );
   }
@@ -413,7 +421,7 @@ class HealthPotion extends Weapons {
         weaponInfo.healingAmount += 5;
         break;
       case 3:
-        weaponInfo.healingAmount += 5;
+        weaponInfo.healingAmount += 10;
         break;
     }
   }
@@ -849,8 +857,8 @@ class ThorsHammer extends Weapons {
       false,
       0,
       5,
-      0,
-      [1, 1, 1, 1, 1]
+      [1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1]
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1134,7 +1142,7 @@ class PoisonPotion extends Weapons {
       false,
       0,
       0,
-      0,
+      [1, 1, 1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1, 1, 1],
       0,
       false,
