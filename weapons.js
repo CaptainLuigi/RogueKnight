@@ -149,6 +149,8 @@ class Weapons {
   }
 
   set canHeal(value) {
+    console.log("Setting canHeal:", value);
+
     this.#canHeal = value;
   }
 
@@ -169,6 +171,8 @@ class Weapons {
   }
 
   set healingAmount(value) {
+    console.log("setting healingAmount:", value);
+
     this.#healingAmount = value;
   }
 
@@ -1391,14 +1395,14 @@ function generateWeaponInfo(
       if (Array.isArray(weapon.healingAmount)) {
         healingString = weapon.healingAmount.join("%, ") + "%";
 
-        if (player.lifestealModifier > 0) {
+        if (player.lifestealModifier > 0 && weapon.damage > 0) {
           modifierDisplay = `(+${player.lifestealModifier}%)`;
         }
       } else {
         healingString = weapon.healingAmount;
       }
       tooltipString += `<strong>Healing:</strong> ${healingString} ${modifierDisplay}<br>`;
-    } else if (player.lifestealModifier > 0) {
+    } else if (player.lifestealModifier > 0 && weapon.damage > 0) {
       tooltipString += `<strong>Healing:</strong> (+${player.lifestealModifier}%)<br>`;
     }
 

@@ -171,19 +171,6 @@ class Player extends HealthEntity {
     }
   }
 
-  // #resetDrawPile() {
-  //   this.#drawPile = [...this.#deck];
-  //   this.#drawPile = this.#drawPile.filter((e) => !this.#hand.includes(e));
-  //   this.#drawPile.forEach((e) => (e.wasUsed = false));
-  //   for (let i = this.#drawPile.length - 1; i > 0; i--) {
-  //     let j = Math.floor(Math.random() * (i + 1));
-  //     [this.#drawPile[i], this.#drawPile[j]] = [
-  //       this.#drawPile[j],
-  //       this.#drawPile[i],
-  //     ];
-  //   }
-  // }
-
   increaseMaxHealth(amount, addToCurrentHealth) {
     this.#maxHealth += amount;
     if (addToCurrentHealth) this.heal(amount);
@@ -191,6 +178,9 @@ class Player extends HealthEntity {
 
   decreaseMaxHealth(amount) {
     this.#maxHealth -= amount;
+    if (this.#maxHealth < this.#health) {
+      this.#health = this.#maxHealth;
+    }
   }
 
   increaseMaxEnergy(amount) {

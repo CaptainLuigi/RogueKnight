@@ -13,6 +13,7 @@ class Enemy extends HealthEntity {
   #name;
   #maxHealth;
   #attackPower;
+  #baseAttackPower;
   #icon;
   #ranged;
   #lifesteal;
@@ -141,6 +142,7 @@ class Enemy extends HealthEntity {
     this.#health = maxHealth;
     this.#name = name;
     this.#attackPower = attackPower;
+    this.#baseAttackPower = attackPower;
     this.#maxHealth = maxHealth;
     this.#icon = icon;
     this.#display = Enemy.#templateNode.cloneNode(true);
@@ -249,10 +251,10 @@ class Enemy extends HealthEntity {
         await this.healAll(this.#healAll);
         break;
       case "buffAll":
-        this.buffAll(this.#buffAll);
+        await this.buffAll(this.#buffAll);
         break;
       case "shieldAll":
-        this.shieldAll(this.#shieldAll);
+        await this.shieldAll(this.#shieldAll);
         break;
       case "canSummon":
         this.summon();
@@ -427,21 +429,25 @@ class Enemy extends HealthEntity {
     }
   }
 
-  shieldAll(amount) {
-    enemies.forEach((enemy) => {
+  async shieldAll(amount) {
+    for (let enemy of enemies) {
       if (!enemy.isDead()) {
         enemy.block(amount);
+
+        await wait(300);
       }
-    });
+    }
   }
 
-  buffAll(amount) {
-    enemies.forEach((enemy) => {
+  async buffAll(amount) {
+    for (let enemy of enemies) {
       if (!enemy.isDead()) {
         enemy.#attackPower += amount;
         enemy.updateDisplay();
+
+        await wait(300);
       }
-    });
+    }
   }
 
   summon() {}
@@ -466,6 +472,15 @@ class Enemy extends HealthEntity {
       displayedBlock.classList.remove("hidden");
     } else {
       displayedBlock.classList.add("hidden");
+    }
+
+    let displayedBuff = this.#display.querySelector(".enemy-buff");
+    const buffAmount = this.#attackPower - this.#baseAttackPower;
+    if (buffAmount > 0) {
+      displayedBuff.textContent = `💪 ${buffAmount}`;
+      displayedBuff.classList.remove("hidden");
+    } else {
+      displayedBuff.classList.add("hidden");
     }
 
     // Set the width of the health bar based on health percentage
@@ -517,6 +532,7 @@ class Enemy extends HealthEntity {
   enemyDeath() {
     this.#poisonFromPlayer = 0;
     this.#activeShield = 0;
+    this.#attackPower = this.#baseAttackPower;
 
     this.updatePoisonDisplay();
     this.updateDisplay();
@@ -650,8 +666,34 @@ class Hornet extends Enemy {
 
 class EvilKnight extends Enemy {
   constructor() {
-    super("Evil Knight", 1000, 35, "Assets/evilknight.png", true, 0, 75);
+    super(
+      "Evil Knight",
+      1000,
+      35,
+      "Assets/evilKnight2.png",
+      true,
+      0,
+      75,
+      0,
+      0,
+      0,
+      0,
+      true
+    );
     this.display.classList.add("biggestEnemy");
+  }
+  summon() {
+    //constructor adds enemy at end of enemies
+    const summonedMinion = new MinonKnight();
+    //because new enemy should not be at the end, it must be removed from there again
+    enemies.pop();
+
+    let index = enemies.findIndex((e) => e == this);
+    enemies.splice(index, 0, summonedMinion); // Add it to the enemies array so it's part of the game logic
+
+    this.display.parentNode.insertBefore(summonedMinion.display, this.display);
+    summonedMinion.randomizeAction();
+    summonedMinion.displayIntent();
   }
 }
 
@@ -670,7 +712,7 @@ class Succubus extends Enemy {
 
 class Gnome extends Enemy {
   constructor() {
-    super("Gnome", 250, 7, "Assets/Transperent/Icon44.png", true, 0, 15);
+    super("Gnome", 250, 5, "Assets/Transperent/Icon44.png", true, 0, 15);
   }
 }
 
@@ -747,7 +789,7 @@ class MasterMage extends Enemy {
 
 class Skeleton extends Enemy {
   constructor() {
-    super("Skeleton", 50, 5, "Assets/skeleton.png", true);
+    super("Skeleton", 50, 3, "Assets/skeleton.png", true, 0, 10);
     // this.randomizeAction();
   }
 }
@@ -757,11 +799,11 @@ class Necromancer extends Enemy {
     super(
       "Necromancer",
       250,
-      0,
+      5,
       "Assets/necromancer.png",
       true,
       0,
-      0,
+      15,
       0,
       0,
       0,

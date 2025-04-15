@@ -245,10 +245,17 @@ function triggerRandomEvent() {
     { type: "goldenStatue", action: showEvent },
     { type: "succubus", action: showEvent },
     { type: "stoned", action: showEvent },
+    { type: "poisonWeapon", action: showEvent },
+    { type: "lowerEnergyCost", action: showEvent },
+    { type: "weaponLifesteal", action: showEvent },
   ];
 
   if (player.deck.length > 2) {
     allEvents.push({ type: "dropWeapon", action: showEvent });
+  }
+
+  if (player.health <= (player.maxHealth / 100) * 20) {
+    allEvents.push({ type: "fullHeal", action: showEvent });
   }
 
   let triggeredEvents =

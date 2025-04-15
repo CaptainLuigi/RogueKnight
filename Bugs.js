@@ -24,18 +24,11 @@ meta progression, startrelic aussuchen
 
 flüche (wie relics)
 
-waffen durch event poison, lifesteal
-
-
-await bei buff all, shield all hinzufügen
-
 bei einem gegner, diesen centern
-
-event -> energy einer waffe reduzieren
 
 succubus soll instant angreifen
 
-
+mouse pointer wenn hover über deck bei events z.b. poison event
 
 
 

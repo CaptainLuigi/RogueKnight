@@ -382,6 +382,110 @@
       </div>
     </div>
 
+    <div class="textbox hidden" id="poisonWeapon">
+      <span>
+        The air thickens as you enter the moor, fog clinging to your boots.<br />
+        A foul-smelling pool gurgles nearby, its surface swirling with sickly
+        green hues. You watch a branch dip into it — it sizzles, hissing as rot
+        spreads along the bark.<br />
+        Your fingers tighten around your weapon.<br />
+        What if you dipped it too? Would it carry the moor’s poison… or crumble
+        under its curse?<br />
+        Do you risk corrupting your weapon for extra power, or leave it clean
+        and safe?
+      </span>
+      <div>
+        <button class="textbox-btn" id="tryPoison">Choose a weapon</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="poisonSuccess">
+      <span>
+        You lower your weapon into the bubbling pool.<br />
+        At first, nothing — then the metal hisses, dark veins crawling across
+        its surface. A faint green glow pulses from the blade, and the air
+        around it thickens.<br />
+        You lift it out, heavier now, humming with toxic energy.<br />
+        Whatever you strike next… will feel the moor’s bite.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="poisonFail">
+      <span>
+        You dip your weapon into the moor, watching it vanish beneath the
+        surface.<br />
+        A moment passes… then a violent hiss. You yank it back, but the blade is
+        already crumbling, eaten away by the poison.<br />
+        Only a warped, brittle handle remains.<br />
+        The moor doesn’t bless — it devours.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="lowerEnergyCost">
+      <span>
+        In the heart of the forest, you find an ancient forge, its blue flames
+        crackling with magic. A cloaked figure stands before it, speaking in a
+        soft, commanding voice:<br />
+        "I am the Forgekeeper. I can reduce the energy cost of your weapon, but
+        it will drain a portion of your maximum life force. Will you pay the
+        price?"<br />
+        You glance at your weapon, considering the trade.<br />
+        Do you accept the Forgekeeper’s offer and sacrifice some health for
+        reduced energy cost? Or do you leave your weapon unchanged?
+      </span>
+      <div>
+        <button class="textbox-btn" id="acceptLowerCost">
+          Choose a Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="weaponLifesteal">
+      <span>
+        Deep within a forgotten cave, you stumble upon a crimson-lit altar
+        pulsing with ancient power.<br />
+        Carvings on the stone whisper promises of strength drawn from blood. A
+        disembodied voice echoes:<br />
+        "Offer your blood and place your weapon upon the altar. Let it drink,
+        and it shall feed you in return."<br />
+        You feel a strange pull.<br />
+        Will you offer some blood so a weapon will be blessed with lifesteal?
+      </span>
+      <div>
+        <button class="textbox-btn" id="acceptLifesteal">
+          Choose a Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="fullHeal">
+      <span>
+        As you stumble through the dense forest, barely able to stand, a soft
+        glow catches your eye. The light flickers and dances around you until a
+        small, radiant fairy appears before you.<br />
+        "Ah, I see you're in quite a state, traveler," she says, her eyes filled
+        with sympathy. "I can heal you completely, return your strength to its
+        fullest."<br />
+        The fairy's wings flutter as she hovers closer, her tiny hands glowing
+        with magical energy. "In exchange for healing, your maximum health will
+        be slightly reduced.<br />
+        A small price for a second chance, don't you think?"
+      </span>
+      <div>
+        <button class="textbox-btn" id="fairyHeal">Heal full</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
     <script src="event.js"></script>
   </body>
 </html>

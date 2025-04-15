@@ -29,6 +29,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeHealthBars();
 });
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function displayTurnMessage(message) {
   const turnMessage = document.getElementById("turn-message");
 
@@ -461,6 +465,172 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "map.html";
           }, 2000);
         }
+      });
+    }
+  }
+
+  //add poison to Weapon
+
+  if (eventType === "poisonWeapon") {
+    const tryPoisonBtn = document.getElementById("tryPoison");
+
+    if (tryPoisonBtn) {
+      tryPoisonBtn.addEventListener("click", () => {
+        const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+        const weaponList = document.getElementById("weapon-list");
+
+        const validWeapons = player.deck.filter((weapon) => weapon.damage > 0);
+        weaponDeckScreen.classList.remove("hidden");
+
+        displayWeapons(player, validWeapons, false, "weapon-list");
+
+        weaponList.addEventListener("click", function selectWeapon(e) {
+          const weaponEl = e.target.closest(".weapon");
+          if (!weaponEl) return;
+
+          const displayedWeaponEls = Array.from(
+            weaponList.querySelectorAll(".weapon")
+          );
+          const displayIndex = displayedWeaponEls.indexOf(weaponEl);
+
+          const selectedWeapon = validWeapons[displayIndex];
+
+          const indexInDeck = player.deck.indexOf(selectedWeapon);
+
+          weaponList.removeEventListener("click", selectedWeapon);
+          weaponDeckScreen.classList.add("hidden");
+
+          const success = Math.random() < 0.7;
+
+          if (success) {
+            player.deck[indexInDeck].poisonAmount =
+              (player.deck[indexInDeck].poisonAmount || 0) + 15;
+            document.getElementById("poisonSuccess").classList.remove("hidden");
+          } else {
+            if (indexInDeck > -1) {
+              dropWeapon(indexInDeck);
+            }
+            document.getElementById("poisonFail").classList.remove("hidden");
+          }
+          player.savePlayerToStorage?.();
+        });
+      });
+    }
+  }
+
+  //lower Enegy Cost
+
+  if (eventType === "lowerEnergyCost") {
+    const lowerCostBtn = document.getElementById("acceptLowerCost");
+
+    if (lowerCostBtn) {
+      lowerCostBtn.addEventListener("click", () => {
+        const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+        const weaponList = document.getElementById("weapon-list");
+
+        const validWeapons = player.deck.filter((weapon) => weapon.energy > 0);
+        weaponDeckScreen.classList.remove("hidden");
+
+        displayWeapons(player, validWeapons, false, "weapon-list");
+
+        weaponList.addEventListener("click", function selectWeapon(e) {
+          const weaponEl = e.target.closest(".weapon");
+          if (!weaponEl) return;
+
+          const displayedWeaponEls = Array.from(
+            weaponList.querySelectorAll(".weapon")
+          );
+          const displayIndex = displayedWeaponEls.indexOf(weaponEl);
+
+          const selectedWeapon = validWeapons[displayIndex];
+          const indexInDeck = player.deck.findIndex(
+            (w) => w.id == selectedWeapon.id
+          );
+
+          weaponList.removeEventListener("click", selectWeapon);
+          // weaponDeckScreen.classList.add("hidden");
+
+          selectedWeapon.energy = Math.max(0, selectedWeapon.energy - 1);
+          player.decreaseMaxHealth(10);
+
+          player.savePlayerToStorage?.();
+          window.location.href = "map.html";
+        });
+      });
+    }
+  }
+
+  //weapon Lifesteal
+
+  if (eventType === "weaponLifesteal") {
+    const acceptLifestealBtn = document.getElementById("acceptLifesteal");
+
+    if (acceptLifestealBtn) {
+      acceptLifestealBtn.addEventListener("click", () => {
+        const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+        const weaponList = document.getElementById("weapon-list");
+
+        const validWeapons = player.deck.filter((weapon) => weapon.damage > 0);
+        weaponDeckScreen.classList.remove("hidden");
+
+        displayWeapons(player, validWeapons, false, "weapon-list");
+
+        weaponList.addEventListener("click", function selectWeapon(e) {
+          const weaponEl = e.target.closest(".weapon");
+          if (!weaponEl) return;
+
+          const displayedWeaponEls = Array.from(
+            weaponList.querySelectorAll(".weapon")
+          );
+          const displayIndex = displayedWeaponEls.indexOf(weaponEl);
+
+          const selectedWeapon = validWeapons[displayIndex];
+          const indexInDeck = player.deck.findIndex(
+            (w) => w.id == selectedWeapon.id
+          );
+
+          // Remove the event listener to avoid multiple triggers
+          weaponList.removeEventListener("click", selectWeapon);
+          weaponDeckScreen.classList.add("hidden");
+
+          // Apply lifesteal (set canHeal to true and modify healingAmount)
+          selectedWeapon.canHeal = true;
+          if (Array.isArray(selectedWeapon.healingAmount)) {
+            selectedWeapon.healingAmount[0] += 20; // Increase existing healing by 20%
+          } else if (typeof selectedWeapon.healingAmount === "number") {
+            selectedWeapon.healingAmount = [selectedWeapon.healingAmount + 20];
+          } else {
+            selectedWeapon.healingAmount = [20]; // Set to 20% if no healingAmount
+          }
+
+          // Update the weapon in the player’s deck
+          player.deck[indexInDeck] = selectedWeapon;
+
+          // Save player data
+          player.savePlayerToStorage?.();
+
+          // Redirect or perform any other action
+          window.location.href = "map.html";
+        });
+      });
+    }
+  }
+
+  //full Heal
+
+  if (eventType === "fullHeal") {
+    const fairyHealBtn = document.getElementById("fairyHeal");
+
+    if (fairyHealBtn) {
+      fairyHealBtn.addEventListener("click", async () => {
+        player.decreaseMaxHealth(10);
+        player.heal(player.maxHealth);
+        updateHealthBar(player);
+        player.savePlayerToStorage();
+
+        await wait(500);
+
+        window.location.href = "map.html";
       });
     }
   }

@@ -50,6 +50,11 @@ const enemyConstellationTemplates = [
     enemies: [Druid, Cleric, CrystalMage, MasterMage],
   },
   {
+    difficultyFrom: 8,
+    difficultyTo: 8,
+    enemies: [Skeleton, Necromancer, MasterMage],
+  },
+  {
     difficultyFrom: 9,
     difficultyTo: 9,
     enemies: [Succubus],
@@ -57,11 +62,6 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 10,
     difficultyTo: 10,
-    enemies: [MinonKnight, MinonKnight, Cleric, EvilKnight, Druid],
-  },
-  {
-    difficultyFrom: 1,
-    difficultyTo: 1,
-    enemies: [Necromancer],
+    enemies: [MinonKnight, MasterMage, EvilKnight],
   },
 ];

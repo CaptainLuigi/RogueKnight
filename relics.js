@@ -82,7 +82,7 @@ const relicList = [
     grindingMonstera,
     "Get +1 max HP for every enemy killed.",
     "elite",
-    150
+    100
   ),
 
   new ActiveRelics(
@@ -91,7 +91,7 @@ const relicList = [
     sanguineBlessing,
     "Heal 3 HP for every enemy killed.",
     "chest",
-    150
+    100
   ),
 
   new Relics(
@@ -100,7 +100,7 @@ const relicList = [
     () => {},
     "Heal 10 HP at the end of combat.",
     "chest",
-    100
+    75
   ),
 
   new Relics(
@@ -117,7 +117,7 @@ const relicList = [
     beefySteak,
     "Get +20 max HP.",
     "chest",
-    100
+    75
   ),
 
   new Relics(
@@ -144,7 +144,7 @@ const relicList = [
     brambleMantle,
     "Whenever an enemy attacks you, deal 5 damage back.",
     "chest",
-    100
+    75
   ),
 
   new Relics(
@@ -171,14 +171,14 @@ const relicList = [
     criticalSurge,
     "All weapons get +25 critical damage.",
     "chest",
-    125
+    100
   ),
 
   new Relics(
     "Omnipotence",
     "Assets/blackHole.png",
     omnipotence,
-    "Actions don't cost energy, but -80 max HP and a full heal.",
+    "Actions don't cost energy, but -80 max HP.",
     "elite",
     175
   ),
@@ -187,9 +187,9 @@ const relicList = [
     "Cursed Gauntlet",
     "Assets/cursedGauntlet.png",
     cursedGauntlet,
-    "Max Energy reduced by 1, but all attacks deal +50 damage, +75 critical damage and shields get +10 block.",
+    "Max Energy reduced by 1, but all attacks deal +25 damage, +50 critical damage and shields get +10 block.",
     "elite",
-    175
+    125
   ),
 
   new Relics(
@@ -198,7 +198,7 @@ const relicList = [
     overchargedCore,
     "Max Energy is increased by 1, but deals 5 unblockable damage to you at the end of your turn.",
     "elite",
-    175
+    125
   ),
 
   new Relics(
@@ -207,7 +207,7 @@ const relicList = [
     cloakOfProtection,
     "Reduces incoming damage during battle by 1.",
     "chest",
-    125
+    100
   ),
 
   new Relics(
@@ -216,7 +216,7 @@ const relicList = [
     tinktureOfSuffering,
     "When applying poison, increase the amount by 10.",
     "chest",
-    125
+    100
   ),
 
   new Relics(
@@ -225,7 +225,7 @@ const relicList = [
     () => {},
     "Get 25 Gold at the end of combat.",
     "chest",
-    100
+    75
   ),
 
   new Relics(
@@ -234,7 +234,7 @@ const relicList = [
     backToBasics,
     "Max Energy is increased by 1, but you can't crit.",
     "elite",
-    150
+    125
   ),
 
   new Relics(
@@ -243,7 +243,7 @@ const relicList = [
     () => {},
     "At the end of your turns, add 10 block.",
     "chest",
-    125
+    100
   ),
 
   new Relics(
@@ -252,7 +252,7 @@ const relicList = [
     aliensRock,
     "All weapons can target any enemy. Click weapon first, then the enemy you want to hit.",
     "elite",
-    150
+    125
   ),
 
   new Relics(
@@ -261,7 +261,7 @@ const relicList = [
     () => {},
     "When hitting a crit, gain 1 Energy.",
     "elite",
-    175
+    125
   ),
 
   new Relics(
@@ -270,7 +270,7 @@ const relicList = [
     () => {},
     "When you attack, also gain 5 block.",
     "chest",
-    125
+    100
   ),
 
   new Relics(
@@ -279,7 +279,7 @@ const relicList = [
     () => {},
     "Whenever an enemy attacks you, deal damage back equal to the remaining block after the attack.",
     "chest",
-    150
+    100
   ),
 
   new Relics(
@@ -288,7 +288,7 @@ const relicList = [
     () => {},
     "Get +1 Energy at the start of your turn if you have 30% or less health.",
     "elite",
-    175
+    125
   ),
 
   new Relics(
@@ -297,7 +297,7 @@ const relicList = [
     () => {},
     "Saves you once from death and then heals you for 50%.",
     "elite",
-    150
+    125
   ),
 
   new Relics(
@@ -332,8 +332,8 @@ function beefySteak(player) {
 }
 
 function cursedGauntlet(player) {
-  player.increaseWeaponDamage(50);
-  player.increaseWeaponCritDamage(75);
+  player.increaseWeaponDamage(25);
+  player.increaseWeaponCritDamage(50);
   player.increaseWeaponBlock(10);
   player.increaseMaxEnergy(-1);
 }
@@ -456,8 +456,6 @@ function brambleMantle(player) {
 function omnipotence(player) {
   player.setWeaponEnergy(0);
   player.decreaseMaxHealth(80);
-  player.takeDamage(80);
-  player.heal(20);
 }
 
 function souleater(player) {
