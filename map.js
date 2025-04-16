@@ -3,23 +3,23 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 const events = [
   {
     name: "questionmark",
-    propability: 10,
-  },
-  {
-    name: "skull",
-    propability: 5,
+    propability: 15,
+    fillRemaining: true,
   },
   {
     name: "shop",
-    propability: 1,
+    propability: 5,
+    fillRemaining: false,
   },
   {
     name: "elite",
-    propability: 3,
+    propability: 10,
+    fillRemaining: false,
   },
   {
     name: "chest",
     propability: 5,
+    fillRemaining: false,
   },
 ];
 
@@ -49,17 +49,45 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-function fillGlobalEventArray() {
+function fillGlobalEventArray(totalLength, skullPercentage) {
   globalEventArray.length = 0;
+  let skullTotoal = Math.ceil((skullPercentage * totalLength) / 100);
+  let eventCount = totalLength - skullTotoal;
+  let totalPropability = 0;
+  let remainingEventCount = eventCount;
   events.forEach((event) => {
-    for (let i = 0; i < event.propability; i++) {
+    totalPropability += event.propability;
+  });
+
+  let fillEvent;
+  events.forEach((event) => {
+    if (event.fillRemaining) {
+      fillEvent = event;
+      return;
+    }
+    let actualCount = Math.floor(
+      (eventCount * event.propability) / totalPropability
+    );
+    if (actualCount === 0) {
+      actualCount = 1;
+    }
+    remainingEventCount -= actualCount;
+    for (let i = 0; i < actualCount; i++) {
       globalEventArray.push(event.name);
     }
   });
+  for (let i = 0; i < remainingEventCount; i++) {
+    globalEventArray.push(fillEvent.name);
+  }
+  while (globalEventArray.length < totalLength) {
+    globalEventArray.push(DEFAULT_EVENT_TYPE);
+  }
 }
 
 function generateMap() {
-  fillGlobalEventArray();
+  globalSettings.eventResolved = true;
+  // fillGlobalEventArray erster Wert = alle Navigation Nodes (-Anfang/Ende), zweiter Wert prozentual Skull
+  fillGlobalEventArray(30, 30);
   mapState = null;
   let tempMapState = {
     locationStates: {},
@@ -73,7 +101,7 @@ function generateMap() {
     button.setAttribute("index", i);
 
     let buttonData = {
-      type: "skull",
+      type: DEFAULT_EVENT_TYPE,
       difficulty: 1,
       nextLocations: [],
       isFinalBoss: false,
@@ -176,7 +204,13 @@ function enterLocation(button) {
   }
 
   let active;
-  if (mapState.activeLocation != null) {
+
+  if (globalSettings.eventResolved === false) {
+    if (index !== mapState.activeLocation) {
+      console.error("Event not resolved");
+      return;
+    }
+  } else if (mapState.activeLocation != null) {
     active = mapState.locationStates[mapState.activeLocation];
     let activeButton = document.querySelector(
       `.navigation[index="${mapState.activeLocation}"]`
@@ -194,6 +228,8 @@ function enterLocation(button) {
       return;
     }
   }
+
+  globalSettings.eventResolved = false;
 
   mapState.activeLocation = index;
   active = mapState.locationStates[mapState.activeLocation];
@@ -217,6 +253,11 @@ function markPossibleLocations() {
   if (mapState.activeLocation == null) {
     nextLocations.push(0);
     nextRow = document.querySelector(`.map-row-start`);
+  } else if (!globalSettings.eventResolved) {
+    nextLocations.push(mapState.activeLocation);
+    nextRow = document.querySelector(
+      `div:has(> [index="${mapState.activeLocation}"])`
+    );
   } else {
     let active = mapState.locationStates[mapState.activeLocation];
     nextLocations = active.nextLocations;

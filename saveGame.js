@@ -62,6 +62,10 @@ class globalSettings {
     storeData("globalSetting_redirectToChest", value === true);
   }
 
+  static set eventResolved(value) {
+    storeData("globalSetting_eventResolved", value === true);
+  }
+
   static get playerGold() {
     return loadData("globalSetting_playerGold") ?? 0;
   }
@@ -72,5 +76,9 @@ class globalSettings {
 
   static get redirectToChest() {
     return loadData("globalSetting_redirectToChest") === true;
+  }
+
+  static get eventResolved() {
+    return loadData("globalSetting_eventResolved") === true;
   }
 }

@@ -82,7 +82,7 @@ function smashStatueAction() {
 
   if (player.health > 0) {
     setTimeout(() => {
-      window.location.href = "map.html";
+      returnToMap();
     }, 2000);
   }
 }
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
   leaveButtons.forEach((button) => {
     if (button.classList.contains("leave-btn")) {
       button.addEventListener("click", function () {
-        window.location.href = "map.html";
+        returnToMap();
       });
     }
   });
@@ -108,7 +108,7 @@ function restAction() {
   updateHealthBar(player);
   player.savePlayerToStorage();
   setTimeout(() => {
-    window.location.href = "map.html";
+    returnToMap();
   }, 500);
 }
 
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", function () {
       foundGoldButton.addEventListener("click", function () {
         updatePlayerGold(50);
 
-        window.location.href = "map.html";
+        returnToMap();
       });
     }
   }
@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       player.savePlayerToStorage();
 
-      window.location.href = "map.html";
+      returnToMap();
     });
 
     const fleeButton = document.getElementById("leaveStoned");
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (player.health > 0) {
         player.savePlayerToStorage();
         setTimeout(() => {
-          window.location.href = "map.html";
+          returnToMap();
         }, 2000);
       }
     });
@@ -331,13 +331,13 @@ document.addEventListener("DOMContentLoaded", function () {
       dropWeapon(randomWeapon1); // Drop the first weapon by index
       console.log("Equipped Relics after weapon drop:", player.equippedRelics);
 
-      window.location.href = "map.html";
+      returnToMap();
     });
 
     button2.addEventListener("click", () => {
       dropWeapon(randomWeapon2); // Drop the second weapon by index
       console.log("Equipped Relics after weapon drop:", player.equippedRelics);
-      window.location.href = "map.html";
+      returnToMap();
     });
   }
 
@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       displayTurnMessage(`Upgraded ${weapon.name}`);
 
-      window.location.href = "map.html";
+      returnToMap();
     }
   }
 
@@ -449,7 +449,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         player.savePlayerToStorage();
-        window.location.href = "map.html";
+        returnToMap();
       });
     } else {
       console.error("Ambush gold button not found!");
@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (player.health > 0) {
           player.savePlayerToStorage();
           setTimeout(() => {
-            window.location.href = "map.html";
+            returnToMap();
           }, 2000);
         }
       });
@@ -579,7 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
           player.decreaseMaxHealth(10);
 
           player.savePlayerToStorage?.();
-          window.location.href = "map.html";
+          returnToMap();
         });
       });
     }
@@ -644,7 +644,7 @@ document.addEventListener("DOMContentLoaded", function () {
           player.savePlayerToStorage?.();
 
           // Redirect or perform any other action
-          window.location.href = "map.html";
+          returnToMap();
         });
       });
     }
@@ -664,7 +664,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         await wait(500);
 
-        window.location.href = "map.html";
+        returnToMap();
       });
     }
   }
@@ -742,6 +742,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+function returnToMap() {
+  // mark event as done
+  globalSettings.eventResolved = true;
+  window.location.href = "map.html";
+}
 
 function updatePlayerGold(goldAmount) {
   globalSettings.playerGold += goldAmount;

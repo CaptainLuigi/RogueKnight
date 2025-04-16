@@ -20,6 +20,9 @@ function calculate damage
 (possibly calculating with increasing/decreasing index of enemy)
 
 
+
+resolved flag in events setzen, bei events gibts bereits eine angefangene funktion
+
 meta progression, startrelic aussuchen
 
 flüche (wie relics)
@@ -28,11 +31,8 @@ bei einem gegner, diesen centern
 
 succubus soll instant angreifen
 
-mouse pointer wenn hover über deck bei events z.b. poison event
-
 shop wird neu randomized wenn seite neu geladen wird
 
-nodes in navigation skippable durch zurück im browser
 
 
 */
