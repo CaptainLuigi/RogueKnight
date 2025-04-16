@@ -605,7 +605,7 @@ class Snail extends Enemy {
 
 class SadShroom extends Enemy {
   constructor() {
-    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png", true, 0, 5);
+    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png", true, 0, 10, 3);
   }
 }
 
@@ -670,7 +670,7 @@ class EvilKnight extends Enemy {
       "Evil Knight",
       1000,
       35,
-      "Assets/evilKnight2.png",
+      "Assets/evilknight.png",
       true,
       0,
       75,
@@ -762,7 +762,7 @@ class CrystalMage extends Enemy {
       0,
       0,
       0,
-      20
+      10
     );
     this.display.classList.add("bigEnemy");
   }

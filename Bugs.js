@@ -30,9 +30,9 @@ succubus soll instant angreifen
 
 mouse pointer wenn hover über deck bei events z.b. poison event
 
+shop wird neu randomized wenn seite neu geladen wird
 
-
-
+nodes in navigation skippable durch zurück im browser
 
 
 */

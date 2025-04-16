@@ -109,7 +109,7 @@ function restAction() {
   player.savePlayerToStorage();
   setTimeout(() => {
     window.location.href = "map.html";
-  }, 2000);
+  }, 500);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -357,6 +357,13 @@ document.addEventListener("DOMContentLoaded", function () {
       upgradeMode = true;
 
       document.body.classList.add("upgrade-mode");
+
+      setTimeout(() => {
+        const weaponElements = weaponDeckScreen.querySelectorAll(".weapon");
+        weaponElements.forEach((el) => {
+          el.style.cursor = "pointer";
+        });
+      }, 0);
     });
 
     // Listen for clicks on #weapon-deck-screen and check if it was a .weapon (not .weapon-item)
@@ -484,6 +491,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         displayWeapons(player, validWeapons, false, "weapon-list");
 
+        setTimeout(() => {
+          const weaponElements = document.querySelectorAll(
+            "#weapon-list .weapon"
+          );
+          weaponElements.forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
+
         weaponList.addEventListener("click", function selectWeapon(e) {
           const weaponEl = e.target.closest(".weapon");
           if (!weaponEl) return;
@@ -518,7 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  //lower Enegy Cost
+  //lower Energy Cost
 
   if (eventType === "lowerEnergyCost") {
     const lowerCostBtn = document.getElementById("acceptLowerCost");
@@ -532,6 +548,15 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponDeckScreen.classList.remove("hidden");
 
         displayWeapons(player, validWeapons, false, "weapon-list");
+
+        setTimeout(() => {
+          const weaponElements = document.querySelectorAll(
+            "#weapon-list .weapon"
+          );
+          weaponElements.forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
 
         weaponList.addEventListener("click", function selectWeapon(e) {
           const weaponEl = e.target.closest(".weapon");
@@ -574,6 +599,15 @@ document.addEventListener("DOMContentLoaded", function () {
         weaponDeckScreen.classList.remove("hidden");
 
         displayWeapons(player, validWeapons, false, "weapon-list");
+
+        setTimeout(() => {
+          const weaponElements = document.querySelectorAll(
+            "#weapon-list .weapon"
+          );
+          weaponElements.forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
 
         weaponList.addEventListener("click", function selectWeapon(e) {
           const weaponEl = e.target.closest(".weapon");
@@ -647,6 +681,13 @@ document.addEventListener("DOMContentLoaded", function () {
       duplicateWeaponBtn.addEventListener("click", function () {
         weaponDeckScreen?.classList.remove("hidden");
         player.showDeck("duplicate"); // Display player's weapons for selection
+
+        setTimeout(() => {
+          const weaponElements = weaponDeckScreen.querySelectorAll(".weapon");
+          weaponElements.forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
       });
     }
 

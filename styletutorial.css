@@ -241,7 +241,7 @@ height: 0;
     bottom: 110%; /* Position it above the weapon */
     left: 50%; /* Align it horizontally centered */
     transform: translateX(-50%); /* Center it relative to the weapon */
-
+    pointer-events: none;
 }
 
 #weapons-container .tooltip{

@@ -1,10 +1,5 @@
 const enemyConstellationTemplates = [
   {
-    difficultyFrom: 3,
-    difficultyTo: 3,
-    enemies: [Shroom, Shroom, Shroom, SadShroom],
-  },
-  {
     difficultyFrom: 1,
     difficultyTo: 2,
     enemies: [Snail, Snail, Snail],
@@ -21,8 +16,13 @@ const enemyConstellationTemplates = [
   },
   {
     difficultyFrom: 3,
+    difficultyTo: 3,
+    enemies: [Shroom, Shroom, Shroom, SadShroom],
+  },
+  {
+    difficultyFrom: 3,
     difficultyTo: 4,
-    enemies: [Gnome, Gnome, Gnome, Gnome, Druid],
+    enemies: [Gnome, Gnome, Gnome, Druid],
   },
   {
     difficultyFrom: 3,

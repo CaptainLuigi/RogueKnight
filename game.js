@@ -113,14 +113,6 @@ function useWeapon(weaponIndex) {
   const weapon = player.hand[weaponIndex];
   console.log("Using weapon:", weapon.name);
 
-  // Check if the player has enough energy to use the weapon
-  // if (player.energy >= weapon.energy) {
-  //   if (weapon.requiresTargeting) setActiveWeapon(weaponIndex, false);
-  //   else executeAttack(weapon, weapon.minRange);
-  // } else {
-  //   displayTurnMessage("Not enough energy!");
-  // }
-
   if (player.energy >= weapon.energy) {
     const hasRelicTargeting = player.canTargetAnyEnemy(weapon);
     const needsTargeting = weapon.requiresTargeting || hasRelicTargeting;
@@ -181,7 +173,7 @@ function setActiveWeapon(weaponIndex) {
  * @param {Weapons} weapon used weapon
  * @param {int} enemyIndex
  */
-function executeAttack(weapon, enemyIndex) {
+async function executeAttack(weapon, enemyIndex) {
   if (enemies.every((enemy) => enemy.isDead())) {
     displayTurnMessage("They are already dead!");
     return;
@@ -205,8 +197,10 @@ function executeAttack(weapon, enemyIndex) {
     (weapon.healingAmount > 0 && weapon.damage === 0)
   ) {
     triggerBlockAnimation();
+    await wait(300);
   } else {
     triggerAttackAnimation();
+    await wait(200);
   }
 
   let overallDamageTaken = 0;
@@ -290,8 +284,11 @@ async function endTurn() {
   console.log("End turn clicked!");
   document.getElementById("end-turn-btn").disabled = true;
 
-  player.applyPoisonDamage();
-  updateHealthBar(player);
+  if (player.currentPoison > 0) {
+    player.applyPoisonDamage();
+    updateHealthBar(player);
+    await wait(400);
+  }
 
   enemies.forEach((enemy) => {
     enemy.removeBlock(enemy.activeShield);
@@ -320,6 +317,7 @@ async function endTurn() {
       // Perform the enemy action
       await enemy.performAction(player);
       updateHealthBar(player);
+      await wait(300);
     }
 
     if (enemy.applyPoisonDamageFromPlayer()) await wait(500);

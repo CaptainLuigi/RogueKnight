@@ -273,7 +273,9 @@ class Player extends HealthEntity {
     }
   }
 
-  takeDamage(amount) {
+  async takeDamage(amount) {
+    if (this.isDying) return;
+
     const reduceAmount = this.equippedRelics.includes("Cloak of Protection")
       ? amount - 1
       : amount;
@@ -288,21 +290,21 @@ class Player extends HealthEntity {
         deathsBargain(this);
       } else {
         this.#health = 0; // Ensure health doesn't go negative
+        this.isDying = true;
         this.displayDamage(finalDamage, false, -60);
 
-        setTimeout(() => {
-          triggerDeathAnimation();
+        await wait(300);
+        triggerDeathAnimation();
 
-          setTimeout(() => {
-            globalSettings.relicGroup = "chest";
-            globalSettings.redirectToChest = false;
-            window.location.href = "deathscreen.html";
-          }, 2500);
-        }, 750);
+        await wait(2000);
+        globalSettings.relicGroup = "chest";
+        globalSettings.redirectToChest = false;
+        window.location.href = "deathscreen.html";
       }
     } else {
       this.displayDamage(finalDamage, false, -60);
       triggerDamageAnimation();
+      await wait(300);
     }
     this.savePlayerToStorage();
   }
@@ -456,6 +458,10 @@ class Player extends HealthEntity {
   }
 }
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 let isAttacking = false;
 
 // Define the attack animation configuration
@@ -472,7 +478,7 @@ const blockConfig = {
   totalFrames: 5,
   frameWidth: 200,
   backgroundSize: "1010px 200px",
-  frameDelay: 225,
+  frameDelay: 200,
 };
 
 // Define the idle animation configuration

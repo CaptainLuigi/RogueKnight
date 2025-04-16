@@ -74,6 +74,18 @@
           .getElementById("addToDeck")
           .addEventListener("click", addRelicToDeck);
         document.getElementById("skip").addEventListener("click", skipRelic);
+
+        const savedRelicName = localStorage.getItem("selectedRelicName");
+        if (savedRelicName) {
+          const savedRelic = relicList[savedRelicName];
+          if (savedRelic) {
+            displaySavedRelic(savedRelic);
+
+            const chestButton = document.getElementById("chest-button");
+            chestButton.disabled = true;
+            chestButton.style.cursor = "default";
+          }
+        }
       });
 
       const sprite = document.querySelector(".sprite");
@@ -84,6 +96,10 @@
        */
       function openChest() {
         console.log("Chest opened!");
+
+        const chestButton = document.getElementById("chest-button");
+        chestButton.disabled = true;
+        chestButton.style.cursor = "default";
 
         const relicContainer = document.getElementById("relic-container");
 
@@ -114,6 +130,8 @@
           availableRelics[Math.floor(Math.random() * availableRelics.length)];
         const randomRelic = relicList[randomRelicName];
 
+        localStorage.setItem("selectedRelicName", randomRelicName);
+
         // Clear previous relics and display new one
         relicContainer.innerHTML = "";
 
@@ -123,6 +141,20 @@
 
         // Store selected relic name
         relicContainer.setAttribute("data-selected-relic", randomRelicName);
+      }
+
+      function displaySavedRelic(savedRelic) {
+        const relicContainer = document.getElementById("relic-container");
+
+        relicContainer.innerHTML = "";
+
+        const relicElement = createRelicElement(savedRelic);
+        relicContainer.appendChild(relicElement);
+
+        relicContainer.setAttribute("data-selected-relic", savedRelic.name);
+
+        document.getElementById("addToDeck").style.display = "block";
+        document.getElementById("skip").style.display = "block";
       }
 
       /**
@@ -158,6 +190,8 @@
 
         player.savePlayerToStorage();
 
+        localStorage.removeItem("selectedRelicName");
+
         // Redirect to map.html
         window.location.href = "map.html";
       }
@@ -174,6 +208,7 @@
 
         console.log("Relic skipped!");
         player.foundRelic(selectedRelicName, false);
+        localStorage.removeItem("selectedRelicName");
 
         // Redirect to map.html
         window.location.href = "map.html";
