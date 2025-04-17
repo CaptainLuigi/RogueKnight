@@ -81,12 +81,7 @@ height: 0;
     z-index: 10;
 }
 
-.biggestEnemy {
-    --base-scale: 2;
-    transform: scale(2.0);
-    padding-bottom: 55px;
-    padding-top: 10px;
-}
+
 
 .biggestEnemy.tempTargets {
     border-top: 10px solid #ff08;

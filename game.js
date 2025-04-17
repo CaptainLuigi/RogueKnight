@@ -445,7 +445,7 @@ function triggerPostBattleScreen() {
         globalSettings.redirectToChest = false;
         window.location.href = "chest.html";
       } else {
-        window.location.href = "map.html";
+        returnToMap();
       }
     });
 }
@@ -550,6 +550,12 @@ function weaponSelectedUpgrade(event) {
   upgradeWeapon(weapon);
 
   console.log(weapon);
+}
+
+function returnToMap() {
+  // mark event as done
+  globalSettings.eventResolved = true;
+  window.location.href = "map.html";
 }
 
 window.onload = function () {

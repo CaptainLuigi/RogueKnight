@@ -218,3 +218,6 @@ img.weapon-image {
     width: 250px; /* Set width for the tooltip */
 }
 
+.sold {
+    pointer-events: none;
+}

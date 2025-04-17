@@ -21,7 +21,7 @@ function calculate damage
 
 
 
-resolved flag in events setzen, bei events gibts bereits eine angefangene funktion
+
 
 meta progression, startrelic aussuchen
 
@@ -31,8 +31,9 @@ bei einem gegner, diesen centern
 
 succubus soll instant angreifen
 
-shop wird neu randomized wenn seite neu geladen wird
+fight neu randomized durch neu laden
 
+manchmal kein lifesteal von waffen, noch kein pattern erkannt (wenn gegner durch angriff stirbt?)
 
-
+bei shop removal hover effect einfügen (mouse pointer)
 */

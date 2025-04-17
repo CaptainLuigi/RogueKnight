@@ -670,7 +670,7 @@ class EvilKnight extends Enemy {
       "Evil Knight",
       1000,
       35,
-      "Assets/evilknight.png",
+      "Assets/evilKnight2.png",
       true,
       0,
       75,
@@ -718,7 +718,7 @@ class Gnome extends Enemy {
 
 class MinonKnight extends Enemy {
   constructor() {
-    super("Minon Knight", 250, 5, "Assets/SoulKnight.png", true, 0, 20);
+    super("Minon Knight", 250, 5, "Assets/minionKnight.png", true, 0, 20);
   }
 }
 

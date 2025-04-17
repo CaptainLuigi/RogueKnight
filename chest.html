@@ -193,7 +193,7 @@
         localStorage.removeItem("selectedRelicName");
 
         // Redirect to map.html
-        window.location.href = "map.html";
+        returnToMap();
       }
 
       /**
@@ -211,6 +211,12 @@
         localStorage.removeItem("selectedRelicName");
 
         // Redirect to map.html
+        returnToMap();
+      }
+
+      function returnToMap() {
+        // mark event as done
+        globalSettings.eventResolved = true;
         window.location.href = "map.html";
       }
     </script>

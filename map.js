@@ -254,10 +254,15 @@ function markPossibleLocations() {
     nextLocations.push(0);
     nextRow = document.querySelector(`.map-row-start`);
   } else if (!globalSettings.eventResolved) {
-    nextLocations.push(mapState.activeLocation);
     nextRow = document.querySelector(
       `div:has(> [index="${mapState.activeLocation}"])`
     );
+
+    let currentLocation = document.querySelector(
+      `[index="${mapState.activeLocation}"]`
+    );
+    let index = [...nextRow.children].findIndex((e) => e == currentLocation);
+    nextLocations.push(index);
   } else {
     let active = mapState.locationStates[mapState.activeLocation];
     nextLocations = active.nextLocations;
@@ -348,6 +353,12 @@ function resetAll() {
   localStorage.removeItem("playerState");
   localStorage.removeItem("MapState");
   localStorage.removeItem("triggeredEvents");
+
+  localStorage.removeItem("shopWeapons");
+  localStorage.removeItem("shopRelics");
+
+  localStorage.removeItem("boughtShopWeapons");
+  localStorage.removeItem("boughtShopRelics");
 
   relicNames.forEach((relicName) => {
     localStorage.removeItem("relic_" + relicName);
