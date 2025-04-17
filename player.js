@@ -286,7 +286,7 @@ class Player extends HealthEntity {
 
     if (this.#health <= 0) {
       if (this.#equippedRelics.includes("Death's Bargain")) {
-        this.#health = Math.floor(this.#maxHealth / 2);
+        this.#health = Math.floor((this.#maxHealth / 100) * 10);
         deathsBargain(this);
       } else {
         this.#health = 0; // Ensure health doesn't go negative
@@ -384,7 +384,7 @@ class Player extends HealthEntity {
   loadPlayerFromStorage() {
     let state = loadData("playerState");
     if (state == null) {
-      globalSettings.playerGold = 500;
+      globalSettings.playerGold = 50;
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());

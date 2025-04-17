@@ -32,8 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fillEnemyArray(currentDifficulty) {
-  console.log(enemyConstellationTemplates);
-
   const filteredEnemyArray = enemyConstellationTemplates.filter(
     (constellation) => {
       return (
@@ -42,15 +40,26 @@ function fillEnemyArray(currentDifficulty) {
       );
     }
   );
-  const randomIndex = Math.floor(Math.random() * filteredEnemyArray.length);
-  const selectedConstellation = filteredEnemyArray[randomIndex];
+
+  let selectedIndex = localStorage.getItem("selectedFightIndex");
+
+  if (selectedIndex === null) {
+    // No fight selected yet — randomize and save
+    selectedIndex = Math.floor(Math.random() * filteredEnemyArray.length);
+    localStorage.setItem("selectedFightIndex", selectedIndex);
+  } else {
+    selectedIndex = parseInt(selectedIndex);
+  }
+
+  const selectedConstellation = filteredEnemyArray[selectedIndex];
+
   for (const EnemyClass of selectedConstellation.enemies) {
     const enemyInstance = new EnemyClass();
-
     enemyInstance.randomizeAction();
     enemyInstance.displayIntent();
   }
-  console.log("filteredEnemyArray", filteredEnemyArray[randomIndex]);
+
+  console.log("Loaded fight constellation:", selectedConstellation);
 }
 
 let isPlayerTurn = true; // Flag to track if it's the player's turn
@@ -120,7 +129,7 @@ function useWeapon(weaponIndex) {
     if (needsTargeting) {
       setActiveWeapon(weaponIndex, true);
     } else {
-      executeAttack(weapon, weapon.minRange);
+      executeAttack(weapon, weapon.minRange).then(() => {});
     }
   } else {
     displayTurnMessage("Not enough energy!");
@@ -445,6 +454,7 @@ function triggerPostBattleScreen() {
         globalSettings.redirectToChest = false;
         window.location.href = "chest.html";
       } else {
+        localStorage.removeItem("selectedFightIndex");
         returnToMap();
       }
     });

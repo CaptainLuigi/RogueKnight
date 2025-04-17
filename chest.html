@@ -215,6 +215,7 @@
       }
 
       function returnToMap() {
+        localStorage.removeItem("selectedFightIndex");
         // mark event as done
         globalSettings.eventResolved = true;
         window.location.href = "map.html";

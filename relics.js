@@ -295,7 +295,7 @@ const relicList = [
     "Death's Bargain",
     "Assets/deathsPact.png",
     () => {},
-    "Saves you once from death and then heals you for 50%.",
+    "Saves you once from death and then heals you for 10%.",
     "elite",
     125
   ),

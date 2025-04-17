@@ -21,7 +21,7 @@ function calculate damage
 
 
 
-
+relics können nochmal auftauchen, obwohl in chest schon mal gesehen
 
 meta progression, startrelic aussuchen
 
@@ -33,7 +33,7 @@ succubus soll instant angreifen
 
 fight neu randomized durch neu laden
 
-manchmal kein lifesteal von waffen, noch kein pattern erkannt (wenn gegner durch angriff stirbt?)
-
 bei shop removal hover effect einfügen (mouse pointer)
+
+wenn schnell zwei mal auf gleiche waffe im kampf drücken, waffe wird zwei mal genutzt
 */

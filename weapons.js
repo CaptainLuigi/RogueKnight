@@ -537,7 +537,7 @@ class BasicSpear extends Weapons {
         weaponInfo.criticalChance += 10;
 
         weaponInfo.canHeal = true;
-        weaponInfo.healingAmount = [20, 10, 5];
+        // weaponInfo.healingAmount = [20, 10, 5];
         break;
     }
   }
