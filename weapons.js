@@ -856,7 +856,7 @@ class ThorsHammer extends Weapons {
       80,
       30,
       3,
-      "Damages all enemies, click to instanty use weapon.",
+      "Damages all enemies, click to instantly use weapon.",
       "Assets/ThorsHammer.png",
       false,
       0,
@@ -1141,7 +1141,7 @@ class PoisonPotion extends Weapons {
       10,
       35,
       2,
-      "Damages and applies poison to all enemies, click to instantly use.",
+      "Damages and applies poison to all enemies, click to instantly use weapon.",
       "Assets/poisonPotion.png",
       false,
       0,
@@ -1204,6 +1204,39 @@ class LightningShield extends Weapons {
   }
 }
 
+class GoldSword extends Weapons {
+  constructor() {
+    super(
+      "Golden Sword",
+      1,
+      "melee",
+      globalSettings.playerGold,
+      globalSettings.playerGold * 1.5,
+      20,
+      1,
+      "Deals more damage depending on the amount of gold you have. Can target only the first enemy, click to instantly use weapon.",
+      "Assets/goldSword.png",
+      false
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = globalSettings.playerGold * 1.25;
+        weaponInfo.criticalDamage = globalSettings.playerGold * 1.75;
+        weaponInfo.criticalChance += 5;
+        break;
+      case 3:
+        weaponInfo.damage = globalSettings.playerGold * 1.5;
+        weaponInfo.criticalDamage = globalSettings.playerGold * 2;
+        weaponInfo.criticalChance += 5;
+        break;
+    }
+  }
+}
+
 class devWeapon extends Weapons {
   constructor() {
     super(
@@ -1248,6 +1281,7 @@ function getAvailableWeapons() {
     new BasicBow(),
     new PoisonDagger(),
     new PoisonPotion(),
+    new GoldSword(),
   ];
 }
 
@@ -1274,6 +1308,7 @@ const weaponClassMapping = {
   PoisonDagger,
   PoisonPotion,
   LightningShield,
+  GoldSword,
   devWeapon,
 };
 

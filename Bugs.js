@@ -36,4 +36,6 @@ fight neu randomized durch neu laden
 bei shop removal hover effect einfügen (mouse pointer)
 
 wenn schnell zwei mal auf gleiche waffe im kampf drücken, waffe wird zwei mal genutzt
+
+goldenes schwert wird damage nicht updated
 */
