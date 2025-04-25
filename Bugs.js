@@ -31,5 +31,5 @@ bei einem gegner, diesen centern
 
 succubus soll instant angreifen
 
-enemy intents mit bildern darstellen, weil emojis evtl nicht von browser unterstützt
+upgrades von waffen anzeigen (wie verändern sich stats)
 */

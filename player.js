@@ -142,6 +142,31 @@ class Player extends HealthEntity {
     }
   }
 
+  drawExtraCards(amount) {
+    for (let i = 0; i < amount; i++) {
+      if (this.#drawPile.length === 0) {
+        this.#resetDrawPile();
+      }
+
+      const availableWeapons = this.#drawPile.filter(
+        (w) => !this.#hand.includes(w)
+      );
+
+      if (availableWeapons.length === 0) {
+        break;
+      }
+
+      const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+      const weaponToDraw = availableWeapons[randomIndex];
+
+      const drawPileIndex = this.#drawPile.indexOf(weaponToDraw);
+      if (drawPileIndex !== -1) {
+        this.#drawPile.splice(drawPileIndex, 1);
+        this.#hand.push(weaponToDraw);
+      }
+    }
+  }
+
   #resetDrawPile() {
     // Start fresh from the full deck
     this.#drawPile = this.#deck.filter((weapon) => {
@@ -324,7 +349,9 @@ class Player extends HealthEntity {
     const poisonElement = document.getElementById("poison-status");
     if (poisonElement) {
       if (this.#currentPoison > 0) {
-        poisonElement.innerText = `☠️${this.#currentPoison}`;
+        poisonElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
+          this.#currentPoison
+        }`;
         poisonElement.classList.remove("hidden");
 
         poisonElement.addEventListener("mouseenter", () => {
@@ -412,7 +439,9 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new GoldSword());
+      this.addWeapon(new Restock());
       this.addWeapon(new devWeapon());
+      this.addWeapon(new SwiftSword());
     } else {
       this.#name = state.name;
       this.#health = state.health;

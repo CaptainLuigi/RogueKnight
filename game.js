@@ -132,6 +132,10 @@ function useWeapon(weaponIndex) {
     const hasRelicTargeting = player.canTargetAnyEnemy(weapon);
     const needsTargeting = weapon.requiresTargeting || hasRelicTargeting;
 
+    if (weapon.drawAmountOnUse > 0) {
+      player.drawExtraCards(weapon.drawAmountOnUse);
+    }
+
     if (needsTargeting) {
       setActiveWeapon(weaponIndex, true);
     } else {
@@ -210,16 +214,12 @@ async function executeAttack(weapon, enemyIndex) {
 
   applyBlock(weapon, player.blockModifier);
 
-  if (
-    weapon.blockAmount > 0 ||
-    (weapon.healingAmount > 0 && weapon.damage === 0) ||
-    (weapon.energyGainOnUse > 0 && weapon.damage === 0)
-  ) {
-    triggerBlockAnimation();
-    await wait(300);
-  } else {
+  if (weapon.damage > 0 && weapon.blockAmount === 0) {
     triggerAttackAnimation();
     await wait(200);
+  } else {
+    triggerBlockAnimation();
+    await wait(300);
   }
 
   let overallDamageTaken = 0;
@@ -401,6 +401,22 @@ function updateEnergyDisplay() {
   } else {
     energyCircle.style.backgroundColor = "#f44336"; // Red if energy is low
   }
+
+  energyCircle.addEventListener("mouseenter", () => {
+    if (!energyCircle.querySelector(".energy-tooltip")) {
+      const energyTooltip = document.createElement("div");
+      energyTooltip.classList.add("energy-tooltip");
+
+      energyTooltip.innerText = `You have ${player.energy} energy. Performing actions costs energy. Energy is refilled each turn.`;
+      energyCircle.appendChild(energyTooltip);
+    }
+  });
+  energyCircle.addEventListener("mouseleave", () => {
+    const energyTooltip = energyCircle.querySelector(".energy-tooltip");
+    if (energyTooltip) {
+      energyTooltip.remove();
+    }
+  });
 }
 
 // Function to display the "Your Turn Again" message

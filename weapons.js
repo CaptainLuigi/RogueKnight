@@ -19,6 +19,7 @@ class Weapons {
   #poisonAmount;
   #oncePerBattle = false;
   #energyGainOnUse = 0;
+  #drawAmountOnUse = 0;
   #wasUsed = false;
 
   constructor(
@@ -41,7 +42,8 @@ class Weapons {
     blockAmount = 0,
     poisonAmount = 0,
     oncePerBattle = false,
-    energyGainOnUse = 0
+    energyGainOnUse = 0,
+    drawAmountOnUse = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -64,6 +66,7 @@ class Weapons {
       poisonAmount,
       oncePerBattle,
       energyGainOnUse,
+      drawAmountOnUse,
     });
   }
 
@@ -145,6 +148,10 @@ class Weapons {
 
   get energyGainOnUse() {
     return this.#energyGainOnUse;
+  }
+
+  get drawAmountOnUse() {
+    return this.#drawAmountOnUse;
   }
 
   get oncePerBattle() {
@@ -317,6 +324,7 @@ class Weapons {
     this.#poisonAmount = info.poisonAmount;
     this.#oncePerBattle = info.oncePerBattle || false;
     this.#energyGainOnUse = info.energyGainOnUse;
+    this.#drawAmountOnUse = info.drawAmountOnUse || 0;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -1328,6 +1336,89 @@ class ChannelEnergy extends Weapons {
   }
 }
 
+class Restock extends Weapons {
+  constructor() {
+    super(
+      "Restock",
+      1,
+      "Utility",
+      0,
+      0,
+      0,
+      1,
+      "Click to draw new weapons.",
+      "Assets/restock.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      2
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.drawAmountOnUse = 3;
+        break;
+      case 3:
+        weaponInfo.drawAmountOnUse = 4;
+        break;
+    }
+  }
+}
+
+class SwiftSword extends Weapons {
+  constructor() {
+    super(
+      "Swift Sword",
+      1,
+      "melee",
+      25,
+      50,
+      30,
+      1,
+      "Can only target the first enemy, click to instantly use weapon and draw.",
+      "Assets/swiftSword.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      1
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 35;
+        break;
+      case 3:
+        weaponInfo.damage = 35;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.drawAmountOnUse = 2;
+    }
+  }
+}
+
 class devWeapon extends Weapons {
   constructor() {
     super(
@@ -1374,6 +1465,8 @@ function getAvailableWeapons() {
     new PoisonPotion(),
     new GoldSword(),
     new ChannelEnergy(),
+    new Restock(),
+    new SwiftSword(),
   ];
 }
 
@@ -1402,6 +1495,8 @@ const weaponClassMapping = {
   LightningShield,
   GoldSword,
   ChannelEnergy,
+  Restock,
+  SwiftSword,
   devWeapon,
 };
 
@@ -1544,6 +1639,10 @@ function generateWeaponInfo(
 
     if (weapon.energyGainOnUse > 0) {
       tooltipString += `<strong>Energy Gain:</strong> ${weapon.energyGainOnUse}<br>`;
+    }
+
+    if (weapon.drawAmountOnUse > 0) {
+      tooltipString += `<strong>Draw:</strong> ${weapon.drawAmountOnUse}<br>`;
     }
 
     tooltipString += `${weapon.description} <br>`;

@@ -209,19 +209,31 @@ class Enemy extends HealthEntity {
     console.log("Intent element:", intentElement);
 
     if (this.#nextAction === "attack") {
-      intentElement.textContent = `⚔️${this.#attackPower}`;
+      intentElement.innerHTML = `<img src="Assets/swordsEmoji.png"/> ${
+        this.#attackPower
+      }`;
     } else if (this.#nextAction === "block") {
-      intentElement.textContent = `🛡️${this.#blockAmount}`;
+      intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/> ${
+        this.#blockAmount
+      }`;
     } else if (this.#nextAction === "poison") {
-      intentElement.textContent = `☠️${this.#poison}`;
+      intentElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
+        this.#poison
+      }`;
     } else if (this.#nextAction === "healAll") {
-      intentElement.textContent = `💚${this.#healAll}`;
+      intentElement.innerHTML = `<img src="Assets/greenHeartEmoji.png"/> ${
+        this.#healAll
+      }`;
     } else if (this.#nextAction === "buffAll") {
-      intentElement.textContent = `💪${this.#buffAll}`;
+      intentElement.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${
+        this.#buffAll
+      }`;
     } else if (this.#nextAction === "shieldAll") {
-      intentElement.textContent = `🛡️✨${this.#shieldAll}`;
+      intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/><img src="Assets/sparklesEmoji.png"/> ${
+        this.#shieldAll
+      }`;
     } else if (this.#nextAction === "canSummon") {
-      intentElement.textContent = `🪦`;
+      intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
     }
 
     console.log(
@@ -456,7 +468,11 @@ class Enemy extends HealthEntity {
 
     if (this.#poisonFromPlayer > 0) {
       poisonElement.classList.remove("hidden");
-      poisonElement.innerHTML = `☠️ ${this.#poisonFromPlayer}`;
+      poisonElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
+        this.#poisonFromPlayer
+      }`;
+
+      this.addPoisonTooltip(poisonElement);
     } else {
       poisonElement.classList.add("hidden");
     }
@@ -521,7 +537,7 @@ class Enemy extends HealthEntity {
     let displayedBuff = this.#display.querySelector(".enemy-buff");
     const buffAmount = this.#attackPower - this.#baseAttackPower;
     if (buffAmount > 0) {
-      displayedBuff.textContent = `💪 ${buffAmount}`;
+      displayedBuff.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${buffAmount}`;
       displayedBuff.classList.remove("hidden");
       this.addBuffTooltip(displayedBuff);
     } else {
@@ -551,17 +567,31 @@ class Enemy extends HealthEntity {
       intentElement.style.visibility = "visible"; // Ensure it's visible
 
       if (this.#nextAction === "attack") {
-        intentElement.textContent = `⚔️${this.#attackPower}`;
+        intentElement.innerHTML = `<img src="Assets/swordsEmoji.png"/> ${
+          this.#attackPower
+        }`;
       } else if (this.#nextAction === "block") {
-        intentElement.textContent = `🛡️${this.#blockAmount}`;
+        intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/> ${
+          this.#blockAmount
+        }`;
       } else if (this.#nextAction === "poison") {
-        intentElement.textContent = `☠️${this.#poison}`;
+        intentElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
+          this.#poison
+        }`;
+      } else if (this.#nextAction === "healAll") {
+        intentElement.innerHTML = `<img src="Assets/greenHeartEmoji.png"/> ${
+          this.#healAll
+        }`;
       } else if (this.#nextAction === "buffAll") {
-        intentElement.textContent = `💪${this.#buffAll}`;
+        intentElement.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${
+          this.#buffAll
+        }`;
       } else if (this.#nextAction === "shieldAll") {
-        intentElement.textContent = `🛡️✨${this.#shieldAll}`;
+        intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/><img src="Assets/sparklesEmoji.png"/> ${
+          this.#shieldAll
+        }`;
       } else if (this.#nextAction === "canSummon") {
-        intentElement.textContent = `🪦`;
+        intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
       }
 
       console.log(
@@ -608,6 +638,27 @@ class Enemy extends HealthEntity {
       const buffTooltip = buffElement.querySelector(".buff-tooltip");
       if (buffTooltip) {
         buffTooltip.remove();
+      }
+    });
+  }
+
+  addPoisonTooltip(poisonElement) {
+    poisonElement.addEventListener("mouseenter", () => {
+      if (!poisonElement.querySelector(".enemy-poison-tooltip")) {
+        const poisonTooltip = document.createElement("div");
+        poisonTooltip.classList.add("enemy-poison-tooltip");
+        poisonTooltip.innerText = `Enemy takes ${
+          this.#poisonFromPlayer
+        } unblockable damage after its turn, then poison is reduced by one.`;
+        poisonElement.appendChild(poisonTooltip);
+      }
+    });
+    poisonElement.addEventListener("mouseleave", () => {
+      const poisonTooltip = poisonElement.querySelector(
+        ".enemy-poison-tooltip"
+      );
+      if (poisonTooltip) {
+        poisonTooltip.remove();
       }
     });
   }

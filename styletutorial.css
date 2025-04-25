@@ -276,6 +276,25 @@ height: 0;
     transform: translateX(-50%);
 }
 
+.enemy-poison-tooltip {
+    position: absolute;
+    font-weight: normal;
+    width: 200px;
+    text-align: center;
+    bottom: 140%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.energy-tooltip {
+    position: absolute;
+    font-weight: normal;
+    text-align: center;
+    font-size: 24px;
+    width: 300px;
+    bottom: 150%;
+}
+
 #weapons-container .tooltip{
     bottom: 500%;
 }
@@ -518,6 +537,12 @@ button:disabled {
     z-index: 100;
 }
 
+.enemy-intent img {
+    max-width: 24px;
+    max-height: 24px;
+    image-rendering: pixelated;
+}
+
 .enemy-block {
     width: 40px;  /* Small circle diameter */
     height: 40px; /* Small circle diameter */
@@ -542,6 +567,12 @@ button:disabled {
     color: white;
 }
 
+.enemy-buff img {
+    max-width: 24px;
+    max-height: 24px;
+    image-rendering: pixelated;
+}
+
 #poison-status {
     position: absolute;
     bottom: -30%;
@@ -555,6 +586,12 @@ button:disabled {
 #poison-status-enemy {
     font-size: 24px;
     color: white;
+}
+
+#poison-status-enemy img {
+    max-width: 24px;
+    max-height: 24px;
+    image-rendering: pixelated;
 }
 
 .enemy-status-container {
