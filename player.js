@@ -187,10 +187,6 @@ class Player extends HealthEntity {
     this.#maxEnergy += amount;
   }
 
-  increaseTemporalEnergy(amount) {
-    this.#energy += amount;
-  }
-
   setMaxHealth(amount) {
     this.#maxHealth = amount;
     this.#health = this.#maxHealth;
@@ -299,6 +295,7 @@ class Player extends HealthEntity {
         await wait(2000);
         globalSettings.relicGroup = "chest";
         globalSettings.redirectToChest = false;
+        localStorage.removeItem("selectedFightIndex");
         window.location.href = "deathscreen.html";
       }
     } else {
@@ -329,6 +326,24 @@ class Player extends HealthEntity {
       if (this.#currentPoison > 0) {
         poisonElement.innerText = `☠️${this.#currentPoison}`;
         poisonElement.classList.remove("hidden");
+
+        poisonElement.addEventListener("mouseenter", () => {
+          if (!poisonElement.querySelector(".poison-tooltip")) {
+            const poisonTooltip = document.createElement("div");
+            poisonTooltip.classList.add("poison-tooltip");
+
+            poisonTooltip.innerText = `Poison deals ${
+              this.#currentPoison
+            } unblockable damage at the end of your turn and is then reduced by one`;
+            poisonElement.appendChild(poisonTooltip);
+          }
+        });
+        poisonElement.addEventListener("mouseleave", function () {
+          const poisonTooltip = poisonElement.querySelector(".poison-tooltip");
+          if (poisonTooltip) {
+            poisonTooltip.remove();
+          }
+        });
       } else {
         poisonElement.classList.add("hidden");
       }

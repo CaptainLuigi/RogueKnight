@@ -165,6 +165,13 @@ document.getElementById("Shop-removal").addEventListener("click", () => {
 
   // Add class for remove mode
   document.body.classList.add("remove-mode");
+
+  setTimeout(() => {
+    const weaponElements = weaponDeckScreen.querySelectorAll(".weapon");
+    weaponElements.forEach((el) => {
+      el.style.cursor = "pointer"; // Change cursor to pointer
+    });
+  }, 0);
 });
 
 // 2. Listen for clicks on the #weapon-deck-screen to select and remove a weapon

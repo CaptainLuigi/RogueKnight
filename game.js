@@ -74,6 +74,7 @@ function enemyDeathEvent() {
     // Check if the location corresponds to the boss fight (difficulty 10)
     if (globalSettings.difficulty === 10) {
       setTimeout(() => {
+        localStorage.removeItem("selectedFightIndex");
         window.location.href = "winscreen.html";
       }, 1500);
     } else {
@@ -120,6 +121,11 @@ function useWeapon(weaponIndex) {
   }
 
   const weapon = player.hand[weaponIndex];
+  if (weapon.wasUsed) {
+    displayTurnMessage("Not so fast!");
+    return;
+  }
+
   console.log("Using weapon:", weapon.name);
 
   if (player.energy >= weapon.energy) {
@@ -130,6 +136,9 @@ function useWeapon(weaponIndex) {
       setActiveWeapon(weaponIndex, true);
     } else {
       executeAttack(weapon, weapon.minRange).then(() => {});
+      if (weapon.energyGainOnUse > 0) {
+        player.addEnergy(weapon.energyGainOnUse);
+      }
     }
   } else {
     displayTurnMessage("Not enough energy!");
@@ -203,7 +212,8 @@ async function executeAttack(weapon, enemyIndex) {
 
   if (
     weapon.blockAmount > 0 ||
-    (weapon.healingAmount > 0 && weapon.damage === 0)
+    (weapon.healingAmount > 0 && weapon.damage === 0) ||
+    (weapon.energyGainOnUse > 0 && weapon.damage === 0)
   ) {
     triggerBlockAnimation();
     await wait(300);

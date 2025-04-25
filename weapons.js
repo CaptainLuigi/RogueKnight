@@ -18,6 +18,7 @@ class Weapons {
   #blockAmount;
   #poisonAmount;
   #oncePerBattle = false;
+  #energyGainOnUse = 0;
   #wasUsed = false;
 
   constructor(
@@ -39,7 +40,8 @@ class Weapons {
     canHeal = false,
     blockAmount = 0,
     poisonAmount = 0,
-    oncePerBattle = false
+    oncePerBattle = false,
+    energyGainOnUse = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -61,6 +63,7 @@ class Weapons {
       blockAmount,
       poisonAmount,
       oncePerBattle,
+      energyGainOnUse,
     });
   }
 
@@ -140,6 +143,10 @@ class Weapons {
     return this.#poisonAmount;
   }
 
+  get energyGainOnUse() {
+    return this.#energyGainOnUse;
+  }
+
   get oncePerBattle() {
     return this.#oncePerBattle;
   }
@@ -216,7 +223,7 @@ class Weapons {
   ) {
     this.#wasUsed = true;
 
-    if (this.#damage == 0 && this.#criticalDamage == 0)
+    if (this.damage == 0 && this.criticalDamage == 0)
       return {
         startIndex: 0,
         isCritical: false,
@@ -309,6 +316,7 @@ class Weapons {
     this.#blockAmount = info.blockAmount;
     this.#poisonAmount = info.poisonAmount;
     this.#oncePerBattle = info.oncePerBattle || false;
+    this.#energyGainOnUse = info.energyGainOnUse;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -1204,19 +1212,106 @@ class LightningShield extends Weapons {
   }
 }
 
+// class WrappedWeapon extends Weapons {
+//   #wrappedWeapon;
+
+//   get damage() {
+//     return this.#wrappedWeapon.damage;
+//   }
+//   constructor(wrappedWeapon) {
+//     this.#wrappedWeapon = wrappedWeapon;
+//   }
+
+//   calculateDamage() {
+//     return this.#wrappedWeapon.calculateDamage(...arguments);
+//   }
+
+//   applyPoisonToEnemy() {
+//     return this.#wrappedWeapon.applyPoisonToEnemy(...arguments);
+//   }
+// }
+
+// class SlimyWeapon extends WrappedWeapon {
+//   constructor(wrappedWeapon) {
+//     super(wrappedWeapon);
+//   }
+
+//   calculateDamage() {
+//     if (Math.random() < 0.3) return 0;
+//     return super.calculateDamage();
+//   }
+// }
+
+// new SlimyWeapon(new BasicSword());
+
 class GoldSword extends Weapons {
+  #damageModifier = 1;
+  #critDamageModifier = 1.5;
+  get damage() {
+    return Math.floor(globalSettings.playerGold * this.#damageModifier);
+  }
+  get criticalDamage() {
+    return Math.floor(globalSettings.playerGold * this.#critDamageModifier);
+  }
   constructor() {
     super(
       "Golden Sword",
       1,
       "melee",
-      globalSettings.playerGold,
-      globalSettings.playerGold * 1.5,
+      0,
+      0,
       20,
-      1,
+      2,
       "Deals more damage depending on the amount of gold you have. Can target only the first enemy, click to instantly use weapon.",
       "Assets/goldSword.png",
       false
+    );
+  }
+  loadFromWeaponInfo(info) {
+    this.applyUpgrades(info);
+    super.loadFromWeaponInfo(...arguments);
+  }
+  applyUpgrades(weaponInfo) {
+    switch (weaponInfo.level) {
+      case 1:
+        break;
+      case 2:
+        this.#damageModifier = 1.25;
+        this.#critDamageModifier = 1.75;
+        weaponInfo.criticalChance = 25;
+        break;
+      case 3:
+        this.#damageModifier = 1.5;
+        this.#critDamageModifier = 2;
+        weaponInfo.criticalChance = 30;
+        break;
+    }
+  }
+}
+
+class ChannelEnergy extends Weapons {
+  constructor() {
+    super(
+      "Channel Energy",
+      1,
+      "Utility",
+      0,
+      0,
+      0,
+      1,
+      "Click to get energy. Can only be used once per battle.",
+      "Assets/channelEnergy.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      true,
+      1
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1224,14 +1319,10 @@ class GoldSword extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage = globalSettings.playerGold * 1.25;
-        weaponInfo.criticalDamage = globalSettings.playerGold * 1.75;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.energyGainOnUse += 1;
         break;
       case 3:
-        weaponInfo.damage = globalSettings.playerGold * 1.5;
-        weaponInfo.criticalDamage = globalSettings.playerGold * 2;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.energyGainOnUse += 1;
         break;
     }
   }
@@ -1282,6 +1373,7 @@ function getAvailableWeapons() {
     new PoisonDagger(),
     new PoisonPotion(),
     new GoldSword(),
+    new ChannelEnergy(),
   ];
 }
 
@@ -1309,6 +1401,7 @@ const weaponClassMapping = {
   PoisonPotion,
   LightningShield,
   GoldSword,
+  ChannelEnergy,
   devWeapon,
 };
 
@@ -1447,6 +1540,10 @@ function generateWeaponInfo(
         modifierDisplay = `(+${player.blockModifier})`;
       }
       tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} ${modifierDisplay}<br>`;
+    }
+
+    if (weapon.energyGainOnUse > 0) {
+      tooltipString += `<strong>Energy Gain:</strong> ${weapon.energyGainOnUse}<br>`;
     }
 
     tooltipString += `${weapon.description} <br>`;

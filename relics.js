@@ -395,7 +395,7 @@ function adrenalSurge() {
   if (player.equippedRelics.includes("Adrenal Surge")) {
     const hpRatio = player.health / player.maxHealth;
     if (hpRatio <= 0.3) {
-      player.increaseTemporalEnergy(1);
+      player.addEnergy(1);
       updateEnergyDisplay();
     }
   }

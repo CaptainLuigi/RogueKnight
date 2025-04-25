@@ -31,11 +31,5 @@ bei einem gegner, diesen centern
 
 succubus soll instant angreifen
 
-fight neu randomized durch neu laden
-
-bei shop removal hover effect einfügen (mouse pointer)
-
-wenn schnell zwei mal auf gleiche waffe im kampf drücken, waffe wird zwei mal genutzt
-
-goldenes schwert wird damage nicht updated
+enemy intents mit bildern darstellen, weil emojis evtl nicht von browser unterstützt
 */

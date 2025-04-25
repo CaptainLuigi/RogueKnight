@@ -227,6 +227,49 @@ class Enemy extends HealthEntity {
     console.log(
       `Enemy ${this.name} intent: ${this.nextAction} - ${intentElement.textContent}`
     );
+
+    intentElement.addEventListener("mouseenter", () => {
+      const intentTooltip = document.createElement("div");
+      intentTooltip.classList.add("enemy-intent-tooltip");
+
+      let tooltipText = `Enemy intends to `;
+      if (this.#nextAction === "attack") {
+        tooltipText += `attack for ${this.#attackPower} damage`;
+      } else if (this.#nextAction === "block") {
+        tooltipText += `block for ${this.#blockAmount}`;
+      } else if (this.#nextAction === "poison") {
+        tooltipText += `poison you for ${this.#poison}`;
+      } else if (this.#nextAction === "healAll") {
+        tooltipText += `heal all for ${this.#healAll} HP`;
+      } else if (this.#nextAction === "buffAll") {
+        tooltipText += `buff all by ${this.#buffAll}`;
+      } else if (this.#nextAction === "shieldAll") {
+        tooltipText += `block all for ${this.#shieldAll}`;
+      } else if (this.#nextAction === "canSummon") {
+        tooltipText += `summon an enemy`;
+      }
+
+      intentTooltip.innerText = tooltipText;
+      intentElement.appendChild(intentTooltip);
+
+      const intentElementTop = intentElement.offsetTop;
+      const intentElementHeight = intentElement.offsetHeight;
+
+      // Set the tooltip's position just below the intent element
+      intentTooltip.style.top = `${
+        intentElementTop + intentElementHeight + 5
+      }px`;
+      intentTooltip.style.left = `${intentElement.offsetLeft + 20}px`;
+    });
+
+    intentElement.addEventListener("mouseleave", function () {
+      const intentTooltip = intentElement.querySelector(
+        ".enemy-intent-tooltip"
+      );
+      if (intentTooltip) {
+        intentTooltip.remove();
+      }
+    });
   }
 
   async performAction(player) {
@@ -470,6 +513,7 @@ class Enemy extends HealthEntity {
     displayedBlock.textContent = this.#activeShield;
     if (this.#activeShield > 0) {
       displayedBlock.classList.remove("hidden");
+      this.addBlockTooltip(displayedBlock);
     } else {
       displayedBlock.classList.add("hidden");
     }
@@ -479,6 +523,7 @@ class Enemy extends HealthEntity {
     if (buffAmount > 0) {
       displayedBuff.textContent = `💪 ${buffAmount}`;
       displayedBuff.classList.remove("hidden");
+      this.addBuffTooltip(displayedBuff);
     } else {
       displayedBuff.classList.add("hidden");
     }
@@ -527,6 +572,44 @@ class Enemy extends HealthEntity {
     } else {
       console.error("Intent element not found!");
     }
+  }
+
+  addBlockTooltip(blockElement) {
+    blockElement.addEventListener("mouseenter", () => {
+      if (!blockElement.querySelector(".block-tooltip")) {
+        const blockTooltip = document.createElement("div");
+        blockTooltip.classList.add("block-tooltip");
+        blockTooltip.innerText = `Enemy blocks, which reduces incoming damage by ${
+          this.#activeShield
+        } for this turn`;
+        blockElement.appendChild(blockTooltip);
+      }
+    });
+    blockElement.addEventListener("mouseleave", () => {
+      const blockTooltip = blockElement.querySelector(".block-tooltip");
+      if (blockTooltip) {
+        blockTooltip.remove();
+      }
+    });
+  }
+
+  addBuffTooltip(buffElement) {
+    const buffAmount = this.#attackPower - this.#baseAttackPower;
+
+    buffElement.addEventListener("mouseenter", () => {
+      if (!buffElement.querySelector(".buff-tooltip")) {
+        const buffTooltip = document.createElement("div");
+        buffTooltip.classList.add("buff-tooltip");
+        buffTooltip.innerText = `Enemy was buffed, which increased the attack power by ${buffAmount}`;
+        buffElement.appendChild(buffTooltip);
+      }
+    });
+    buffElement.addEventListener("mouseleave", () => {
+      const buffTooltip = buffElement.querySelector(".buff-tooltip");
+      if (buffTooltip) {
+        buffTooltip.remove();
+      }
+    });
   }
 
   enemyDeath() {
