@@ -33,4 +33,9 @@ succubus soll instant angreifen
 
 upgrades von waffen anzeigen (wie verändern sich stats)
 
+enemy poison tooltip ist immer über dem ersten gegner
+
+wenn waffen schon level 3 dann ist index in upgrade post battle screen messed up
+
+border für level 2 waffen anpassen (mit hintergrund von uprgrade screen schlecht zu sehen)
 */

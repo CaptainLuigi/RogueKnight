@@ -533,13 +533,7 @@ function purchaseWeapon(weapon, button) {
 
 function populateWeaponUpgradeOptions() {
   const upgradebleWeapons = player.deck.filter((weapon) => weapon.level < 3);
-  displayWeapons(
-    player,
-    upgradebleWeapons,
-    false,
-    "upgrade-weapon-options",
-    true
-  );
+  displayWeapons(player, upgradebleWeapons, false, "upgrade-weapon-options");
 }
 
 function upgradeWeapon(weapon) {
