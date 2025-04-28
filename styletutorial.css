@@ -229,7 +229,6 @@ height: 0;
     image-rendering: pixelated;
 }
 
-
 /* Tooltip styling */
 .tooltip {
     transition: opacity 0.3s ease;
@@ -474,9 +473,9 @@ height: 0;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 350%;
-    height: 390%;
-    gap: 25px;
+    width: 400%;
+    height: auto;
+    gap: 15px;
     position: absolute;
     top: 110%;
     background-color: peru;
@@ -520,6 +519,8 @@ button {
     background-color: #f0e68c;
     height: 90px;
     width: 90px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 button:disabled {

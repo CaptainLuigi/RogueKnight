@@ -86,6 +86,24 @@ const relicList = [
   ),
 
   new ActiveRelics(
+    "Executioner's Mark",
+    "Assets/executionersMark.png",
+    executionersMark,
+    "Whenever an enemy is killed, draw one.",
+    "chest",
+    100
+  ),
+
+  new ActiveRelics(
+    "Spirit Totem",
+    "Assets/spiritTotem.png",
+    spiritTotem,
+    "Whenever an enemy dies, get one energy.",
+    "chest",
+    125
+  ),
+
+  new ActiveRelics(
     "Sanguine Blessing",
     "Assets/sanguineBlessing.png",
     sanguineBlessing,
@@ -160,7 +178,7 @@ const relicList = [
     "Defender's Seal",
     "Assets/defendersSeal.png",
     defendersSeal,
-    "All shields get +5 block.",
+    "When blocking, increase the block by 5.",
     "chest",
     100
   ),
@@ -277,7 +295,7 @@ const relicList = [
     "Titan's Reflection",
     "Assets/titansReflection.png",
     () => {},
-    "Whenever an enemy attacks you, deal damage back equal to the remaining block after the attack.",
+    "Whenever an enemy attacks you, deal damage back equal to 3 times the remaining block after the attack.",
     "chest",
     100
   ),
@@ -301,6 +319,15 @@ const relicList = [
   ),
 
   new Relics(
+    "Bloodforge",
+    "Assets/anvil.png",
+    () => {},
+    "Whenever you add something to your deck, upgrade it and lose 5 HP.",
+    "event",
+    0
+  ),
+
+  new Relics(
     "Death's Pact",
     "Assets/deathsBargain2.png",
     () => {},
@@ -317,6 +344,18 @@ const relicNames = [...Object.keys(relicList)].sort();
 function grindingMonstera(player) {
   window.addEventListener("EnemyDeath", () => {
     player.increaseMaxHealth(1, true);
+  });
+}
+
+function executionersMark(player) {
+  window.addEventListener("EnemyDeath", () => {
+    player.drawExtraCards(1);
+  });
+}
+
+function spiritTotem(player) {
+  window.addEventListener("EnemyDeath", () => {
+    player.addEnergy(1);
   });
 }
 

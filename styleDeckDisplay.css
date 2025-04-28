@@ -27,6 +27,19 @@
     box-sizing: border-box;
 }
 
+.weapon-image.level-1 {
+    border: 3px solid black;
+}
+
+.weapon-image.level-2 {
+    border: 3px solid #CE8946;
+}
+
+.weapon-image.level-3 {
+    border: 3px solid gold;
+}
+
+
 #weapon-deck-container {
     position: absolute;
     top: 10%;

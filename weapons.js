@@ -409,18 +409,60 @@ class Weapons {
   }
 }
 
-class HealthPotion extends Weapons {
+class SmallHealthPotion extends Weapons {
   constructor() {
     super(
-      "Health Potion",
+      "Small Health Potion",
       1,
-      "item",
+      "Healing",
       0,
       0,
       0,
       1,
       "Click to heal the player. Can only be used once per battle.",
       "Assets/healthPotion.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      5,
+      true,
+      0,
+      0,
+      true
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.healingAmount = 10;
+        break;
+      case 3:
+        weaponInfo.healingAmount = 15;
+        break;
+    }
+  }
+
+  applyEffects(target) {
+    this.applyHealing(target);
+  }
+}
+
+class BigHealthPotion extends Weapons {
+  constructor() {
+    super(
+      "Big Health Potion",
+      1,
+      "Healing",
+      0,
+      0,
+      0,
+      2,
+      "Click to heal the player. Can only be used once per battle.",
+      "Assets/bigHealthPotion.png",
       false,
       0,
       0,
@@ -438,14 +480,13 @@ class HealthPotion extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.healingAmount += 5;
+        weaponInfo.healingAmount = 20;
         break;
       case 3:
-        weaponInfo.healingAmount += 10;
+        weaponInfo.healingAmount = 30;
         break;
     }
   }
-
   applyEffects(target) {
     this.applyHealing(target);
   }
@@ -456,7 +497,7 @@ class BasicSword extends Weapons {
     super(
       "Basic Sword",
       1,
-      "melee",
+      "Melee",
       25,
       50,
       25,
@@ -470,14 +511,14 @@ class BasicSword extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 30;
         break;
       case 3:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 35;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 35;
         break;
     }
   }
@@ -488,7 +529,7 @@ class BasicAxe extends Weapons {
     super(
       "Basic Axe",
       1,
-      "melee",
+      "Melee",
       60,
       100,
       35,
@@ -505,14 +546,14 @@ class BasicAxe extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 15;
-        weaponInfo.criticalDamage += 30;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 75;
+        weaponInfo.criticalDamage = 130;
+        weaponInfo.criticalChance = 40;
         break;
       case 3:
-        weaponInfo.damage += 15;
-        weaponInfo.criticalDamage += 30;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 90;
+        weaponInfo.criticalDamage = 160;
+        weaponInfo.criticalChance = 45;
         break;
     }
   }
@@ -523,7 +564,7 @@ class BasicSpear extends Weapons {
     super(
       "Basic Spear",
       1,
-      "medium",
+      "Medium",
       20,
       50,
       15,
@@ -542,17 +583,17 @@ class BasicSpear extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 25;
+        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalChance = 20;
 
         break;
       case 3:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 65;
+        weaponInfo.criticalChance = 30;
 
-        weaponInfo.canHeal = true;
+        // weaponInfo.canHeal = true;
         // weaponInfo.healingAmount = [20, 10, 5];
         break;
     }
@@ -564,7 +605,7 @@ class BasicBow extends Weapons {
     super(
       "Basic Bow",
       1,
-      "far",
+      "Far",
       20,
       55,
       25,
@@ -586,14 +627,14 @@ class BasicBow extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 5;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 25;
+        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 35;
         break;
       case 3:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 45;
         break;
     }
   }
@@ -604,8 +645,8 @@ class VampiricDagger extends Weapons {
     super(
       "Vampiric Dagger",
       1,
-      "melee",
-      20,
+      "Melee",
+      10,
       50,
       25,
       1,
@@ -625,13 +666,13 @@ class VampiricDagger extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 60;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 35;
         break;
     }
   }
@@ -642,10 +683,10 @@ class Bomb extends Weapons {
     super(
       "Bomb",
       1,
-      "far",
-      500,
-      500,
-      0,
+      "Far",
+      30,
+      45,
+      20,
       2,
       "Can't target the first enemy and hits also the enemy to the left and to the right, click weapon first, then the enemy you want to hit.",
       "Assets/bomb.png",
@@ -661,14 +702,14 @@ class Bomb extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 40;
+        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalChance = 25;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 50;
+        weaponInfo.criticalDamage = 65;
+        weaponInfo.criticalChance = 35;
         break;
     }
   }
@@ -679,7 +720,7 @@ class Herosword extends Weapons {
     super(
       "Hero Sword",
       1,
-      "melee",
+      "Melee",
       15,
       65,
       60,
@@ -693,14 +734,14 @@ class Herosword extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 5;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 65;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalChance = 70;
         break;
     }
   }
@@ -711,10 +752,10 @@ class Dagger extends Weapons {
     super(
       "Dagger",
       1,
-      "melee",
+      "Melee",
       5,
       70,
-      45,
+      40,
       1,
       "Can only target the first enemy, click to instantly use weapon.",
       "Assets/dagger.png",
@@ -723,8 +764,8 @@ class Dagger extends Weapons {
       0,
       0,
       0,
-      [10],
-      true
+      0,
+      false
     );
   }
   applyUpgrades(weaponInfo) {
@@ -732,14 +773,14 @@ class Dagger extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 10;
+        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalChance = 50;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 15;
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 90;
+        weaponInfo.criticalChance = 65;
         break;
     }
   }
@@ -750,7 +791,7 @@ class PoisonDagger extends Weapons {
     super(
       "Poison Dagger",
       1,
-      "melee",
+      "Melee",
       5,
       70,
       35,
@@ -773,16 +814,16 @@ class PoisonDagger extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
-        weaponInfo.poisonAmount += 5;
+        weaponInfo.damage = 10;
+        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalChance = 45;
+        weaponInfo.poisonAmount = 15;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 15;
-        weaponInfo.poisonAmount += 5;
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 90;
+        weaponInfo.criticalChance = 60;
+        weaponInfo.poisonAmount = 20;
         break;
     }
   }
@@ -793,9 +834,9 @@ class Spearblade extends Weapons {
     super(
       "Spearblade",
       1,
-      "melee",
+      "Melee",
       55,
-      80,
+      70,
       30,
       2,
       "Damages the first two enemies, click to instantly use weapon.",
@@ -812,14 +853,14 @@ class Spearblade extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 60;
+        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalChance = 40;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 70;
+        weaponInfo.criticalDamage = 90;
+        weaponInfo.criticalChance = 50;
         break;
     }
   }
@@ -830,7 +871,7 @@ class Crossbow extends Weapons {
     super(
       "Crossbow",
       1,
-      "far",
+      "Far",
       20,
       40,
       35,
@@ -849,14 +890,14 @@ class Crossbow extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 5;
-        weaponInfo.criticalDamage += 5;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 25;
+        weaponInfo.criticalDamage = 45;
+        weaponInfo.criticalChance = 40;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 15;
+        weaponInfo.damage = 35;
+        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalChance = 55;
         break;
     }
   }
@@ -867,7 +908,7 @@ class ThorsHammer extends Weapons {
     super(
       "Thor's Hammer",
       1,
-      "far",
+      "Far",
       50,
       80,
       30,
@@ -886,14 +927,14 @@ class ThorsHammer extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
+        weaponInfo.damage = 60;
+        weaponInfo.criticalDamage = 90;
+        weaponInfo.criticalChance = 35;
         break;
       case 3:
-        weaponInfo.damage += 15;
-        weaponInfo.criticalDamage += 15;
-        weaponInfo.criticalChance += 10;
+        weaponInfo.damage = 75;
+        weaponInfo.criticalDamage = 100;
+        weaponInfo.criticalChance = 45;
         break;
     }
   }
@@ -904,7 +945,7 @@ class Lightning extends Weapons {
     super(
       "Lightning Strike",
       1,
-      "far",
+      "Far",
       20,
       150,
       3,
@@ -923,14 +964,14 @@ class Lightning extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 50;
-        weaponInfo.criticalChance += 1;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 200;
+        weaponInfo.criticalChance = 4;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 50;
-        weaponInfo.criticalChance += 1;
+        weaponInfo.damage = 40;
+        weaponInfo.criticalDamage = 250;
+        weaponInfo.criticalChance = 5;
         break;
     }
   }
@@ -941,8 +982,8 @@ class Stone extends Weapons {
     super(
       "Stone",
       3,
-      "far",
-      15,
+      "Far",
+      10,
       20,
       30,
       1,
@@ -986,10 +1027,10 @@ class BasicShield extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.blockAmount += 5;
+        weaponInfo.blockAmount = 10;
         break;
       case 3:
-        weaponInfo.blockAmount += 5;
+        weaponInfo.blockAmount = 15;
         break;
     }
   }
@@ -1014,7 +1055,7 @@ class MasterShield extends Weapons {
       0,
       0,
       false,
-      40
+      15
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1022,10 +1063,10 @@ class MasterShield extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.blockAmount += 10;
+        weaponInfo.blockAmount = 25;
         break;
       case 3:
-        weaponInfo.blockAmount += 10;
+        weaponInfo.blockAmount = 35;
         break;
     }
   }
@@ -1037,8 +1078,8 @@ class SpikedShield extends Weapons {
       "Spiked Shield",
       1,
       "Melee",
+      15,
       20,
-      30,
       30,
       2,
       "Deals damage to the first enemy and blocks incoming damage. Block is removed at the beginning of your next turn.",
@@ -1050,7 +1091,7 @@ class SpikedShield extends Weapons {
       0,
       0,
       false,
-      20
+      10
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1058,16 +1099,16 @@ class SpikedShield extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
-        weaponInfo.blockAmount += 10;
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 30;
+        weaponInfo.criticalChance = 35;
+        weaponInfo.blockAmount = 15;
         break;
       case 3:
-        weaponInfo.damage += 10;
-        weaponInfo.criticalDamage += 10;
-        weaponInfo.criticalChance += 5;
-        weaponInfo.blockAmount += 10;
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 40;
+        weaponInfo.criticalChance = 40;
+        weaponInfo.blockAmount = 25;
         break;
     }
   }
@@ -1100,10 +1141,10 @@ class TowerShield extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.blockAmount += 7;
+        weaponInfo.blockAmount = 15;
         break;
       case 3:
-        weaponInfo.blockAmount += 8;
+        weaponInfo.blockAmount = 20;
         break;
     }
   }
@@ -1114,7 +1155,7 @@ class SurvivalPotion extends Weapons {
     super(
       "Survival Potion",
       1,
-      "Item",
+      "Healing & Block",
       0,
       0,
       0,
@@ -1136,12 +1177,12 @@ class SurvivalPotion extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.healingAmount += 5;
-        weaponInfo.blockAmount += 5;
+        weaponInfo.healingAmount = 15;
+        weaponInfo.blockAmount = 20;
         break;
       case 3:
-        weaponInfo.healingAmount += 5;
-        weaponInfo.blockAmount += 10;
+        weaponInfo.healingAmount = 20;
+        weaponInfo.blockAmount = 25;
         break;
     }
   }
@@ -1167,7 +1208,7 @@ class PoisonPotion extends Weapons {
       0,
       false,
       0,
-      20
+      10
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1175,10 +1216,10 @@ class PoisonPotion extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.poisonAmount += 10;
+        weaponInfo.poisonAmount = 15;
         break;
       case 3:
-        weaponInfo.poisonAmount += 10;
+        weaponInfo.poisonAmount = 25;
         break;
     }
   }
@@ -1211,46 +1252,14 @@ class LightningShield extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.blockAmount += 5;
+        weaponInfo.blockAmount = 10;
         break;
       case 3:
-        weaponInfo.blockAmount += 5;
+        weaponInfo.blockAmount = 15;
         break;
     }
   }
 }
-
-// class WrappedWeapon extends Weapons {
-//   #wrappedWeapon;
-
-//   get damage() {
-//     return this.#wrappedWeapon.damage;
-//   }
-//   constructor(wrappedWeapon) {
-//     this.#wrappedWeapon = wrappedWeapon;
-//   }
-
-//   calculateDamage() {
-//     return this.#wrappedWeapon.calculateDamage(...arguments);
-//   }
-
-//   applyPoisonToEnemy() {
-//     return this.#wrappedWeapon.applyPoisonToEnemy(...arguments);
-//   }
-// }
-
-// class SlimyWeapon extends WrappedWeapon {
-//   constructor(wrappedWeapon) {
-//     super(wrappedWeapon);
-//   }
-
-//   calculateDamage() {
-//     if (Math.random() < 0.3) return 0;
-//     return super.calculateDamage();
-//   }
-// }
-
-// new SlimyWeapon(new BasicSword());
 
 class GoldSword extends Weapons {
   #damageModifier = 1;
@@ -1265,7 +1274,7 @@ class GoldSword extends Weapons {
     super(
       "Golden Sword",
       1,
-      "melee",
+      "Melee",
       0,
       0,
       20,
@@ -1292,6 +1301,45 @@ class GoldSword extends Weapons {
         this.#damageModifier = 1.5;
         this.#critDamageModifier = 2;
         weaponInfo.criticalChance = 30;
+        break;
+    }
+  }
+}
+
+class GoldShield extends Weapons {
+  #blockModifier = 0.2;
+
+  get blockAmount() {
+    return Math.floor(globalSettings.playerGold * this.#blockModifier);
+  }
+
+  constructor() {
+    super(
+      "Golden Shield",
+      1,
+      "Block",
+      0,
+      0,
+      0,
+      2,
+      "Blocks more depending on the amount of gold you have. Block is removed at the beginning of you next turn.",
+      "Assets/goldShield.png",
+      false
+    );
+  }
+  loadFromWeaponInfo(info) {
+    this.applyUpgrades(info);
+    super.loadFromWeaponInfo(...arguments);
+  }
+  applyUpgrades(weaponInfo) {
+    switch (weaponInfo.level) {
+      case 1:
+        break;
+      case 2:
+        this.#blockModifier = 0.3;
+        break;
+      case 3:
+        this.#blockModifier = 0.4;
         break;
     }
   }
@@ -1327,10 +1375,10 @@ class ChannelEnergy extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.energyGainOnUse += 1;
+        weaponInfo.energyGainOnUse = 2;
         break;
       case 3:
-        weaponInfo.energyGainOnUse += 1;
+        weaponInfo.energyGainOnUse = 3;
         break;
     }
   }
@@ -1381,12 +1429,12 @@ class SwiftSword extends Weapons {
     super(
       "Swift Sword",
       1,
-      "melee",
+      "Melee",
       25,
       50,
       30,
       1,
-      "Can only target the first enemy, click to instantly use weapon and draw.",
+      "Can only target the first enemy, click to instantly use weapon and draw one.",
       "Assets/swiftSword.png",
       false,
       0,
@@ -1415,6 +1463,92 @@ class SwiftSword extends Weapons {
         weaponInfo.damage = 35;
         weaponInfo.criticalDamage = 70;
         weaponInfo.drawAmountOnUse = 2;
+        weaponInfo.description =
+          "Can only target the first enemy, click to instantly use weapon and draw two.";
+    }
+  }
+}
+
+class SwiftShield extends Weapons {
+  constructor() {
+    super(
+      "Swift Shield",
+      1,
+      "Block",
+      0,
+      0,
+      0,
+      1,
+      "Block incoming damage and draw one. Block is removed at the beginning of you next turn.",
+      "Assets/swiftShield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      5,
+      0,
+      false,
+      0,
+      1
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.blockAmount = 10;
+        break;
+      case 3:
+        weaponInfo.blockAmount = 15;
+        weaponInfo.drawAmountOnUse = 2;
+        weaponInfo.description =
+          "Block incoming damage and draw one. Block is removed at the beginning of you next turn.";
+    }
+  }
+}
+
+class BattleFocus extends Weapons {
+  constructor() {
+    super(
+      "Battle Focus",
+      1,
+      "Utility",
+      0,
+      0,
+      0,
+      2,
+      "Click to get energy and draw one. Can only be used once per battle.",
+      "Assets/battleFocus.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      true,
+      3,
+      1
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.drawAmountOnUse = 2;
+        weaponInfo.description =
+          "Click to get energy and draw 2. Can only be used once per battle.";
+        break;
+      case 3:
+        weaponInfo.energyGainOnUse = 4;
+        break;
     }
   }
 }
@@ -1424,7 +1558,7 @@ class devWeapon extends Weapons {
     super(
       "Dev Weapon",
       1,
-      "melee",
+      "Melee",
       1000,
       1000,
       0,
@@ -1443,6 +1577,38 @@ class devWeapon extends Weapons {
   }
 }
 
+// class WrappedWeapon extends Weapons {
+//   #wrappedWeapon;
+
+//   get damage() {
+//     return this.#wrappedWeapon.damage;
+//   }
+//   constructor(wrappedWeapon) {
+//     this.#wrappedWeapon = wrappedWeapon;
+//   }
+
+//   calculateDamage() {
+//     return this.#wrappedWeapon.calculateDamage(...arguments);
+//   }
+
+//   applyPoisonToEnemy() {
+//     return this.#wrappedWeapon.applyPoisonToEnemy(...arguments);
+//   }
+// }
+
+// class SlimyWeapon extends WrappedWeapon {
+//   constructor(wrappedWeapon) {
+//     super(wrappedWeapon);
+//   }
+
+//   calculateDamage() {
+//     if (Math.random() < 0.3) return 0;
+//     return super.calculateDamage();
+//   }
+// }
+
+// new SlimyWeapon(new BasicSword());
+
 function getAvailableWeapons() {
   return [
     new BasicSword(),
@@ -1453,7 +1619,7 @@ function getAvailableWeapons() {
     new Dagger(),
     new Spearblade(),
     new Crossbow(),
-    new HealthPotion(),
+    new SmallHealthPotion(),
     new VampiricDagger(),
     new BasicShield(),
     new MasterShield(),
@@ -1467,6 +1633,10 @@ function getAvailableWeapons() {
     new ChannelEnergy(),
     new Restock(),
     new SwiftSword(),
+    new GoldShield(),
+    new SwiftShield(),
+    new BigHealthPotion(),
+    new BattleFocus(),
   ];
 }
 
@@ -1479,7 +1649,7 @@ const weaponClassMapping = {
   Dagger,
   Spearblade,
   Crossbow,
-  HealthPotion,
+  SmallHealthPotion,
   ThorsHammer,
   VampiricDagger,
   Lightning,
@@ -1497,6 +1667,10 @@ const weaponClassMapping = {
   ChannelEnergy,
   Restock,
   SwiftSword,
+  GoldShield,
+  SwiftShield,
+  BigHealthPotion,
+  BattleFocus,
   devWeapon,
 };
 
@@ -1567,7 +1741,7 @@ function generateWeaponInfo(
   const weaponImage = document.createElement("img");
   weaponImage.src = weapon.sprite;
   weaponImage.alt = weapon.name;
-  weaponImage.classList.add("weapon-image");
+  weaponImage.classList.add("weapon-image", `level-${weapon.level}`);
   display.appendChild(weaponImage);
 
   var getTooltip = () => {

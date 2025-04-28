@@ -267,6 +267,11 @@ class Player extends HealthEntity {
     if (this.#equippedRelics.includes("Omnipotence")) {
       weapon.energy = 0;
     }
+    if (this.#equippedRelics.includes("Bloodforge")) {
+      weapon.upgrade();
+      this.takeDamage(5);
+      updateHealthBar(player);
+    }
     this.savePlayerToStorage();
   }
 
@@ -438,10 +443,18 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
-      this.addWeapon(new GoldSword());
-      this.addWeapon(new Restock());
       this.addWeapon(new devWeapon());
-      this.addWeapon(new SwiftSword());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
+      this.addWeapon(new Stone());
     } else {
       this.#name = state.name;
       this.#health = state.health;

@@ -432,7 +432,7 @@ class Enemy extends HealthEntity {
         player.equippedRelics.includes("Titan's Reflection") &&
         player.blockAmount > 0
       ) {
-        const reflectionDamage = player.blockAmount;
+        const reflectionDamage = player.blockAmount * 3;
         enemy.takeDamage(reflectionDamage);
       }
     }

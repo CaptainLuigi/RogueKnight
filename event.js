@@ -180,13 +180,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (thorsHammerBtn) {
       thorsHammerBtn.addEventListener("click", function () {
-        player.takeDamage(15);
+        player.takeDamage(5);
         updateHealthBar(player);
+        player.savePlayerToStorage();
         if (player.health > 0) {
-          thorsHammerBox.classList.add("hidden");
-          thorsHammerTakenBox.classList.remove("hidden");
-          player.addWeapon(new ThorsHammer());
-          player.savePlayerToStorage();
+          const successChance = Math.random();
+
+          if (successChance < 0.3) {
+            thorsHammerBox.classList.add("hidden");
+            thorsHammerTakenBox.classList.remove("hidden");
+            player.addWeapon(new ThorsHammer());
+            player.savePlayerToStorage();
+          }
         }
       });
     }
@@ -581,6 +586,20 @@ document.addEventListener("DOMContentLoaded", function () {
           player.savePlayerToStorage?.();
           returnToMap();
         });
+      });
+    }
+  }
+
+  //bloodforge
+
+  if (eventType === "bloodforge") {
+    const takeBloodforgeBtn = document.getElementById("takeBloodforge");
+
+    if (takeBloodforgeBtn) {
+      takeBloodforgeBtn.addEventListener("click", () => {
+        player.foundRelic("Bloodforge", true);
+        player.savePlayerToStorage?.();
+        returnToMap();
       });
     }
   }

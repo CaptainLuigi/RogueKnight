@@ -294,6 +294,7 @@ function triggerRandomEvent() {
     { type: "poisonWeapon", action: showEvent },
     { type: "lowerEnergyCost", action: showEvent },
     { type: "weaponLifesteal", action: showEvent },
+    { type: "bloodforge", action: showEvent },
   ];
 
   if (player.deck.length > 2) {

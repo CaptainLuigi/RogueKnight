@@ -32,4 +32,5 @@ bei einem gegner, diesen centern
 succubus soll instant angreifen
 
 upgrades von waffen anzeigen (wie verändern sich stats)
+
 */
