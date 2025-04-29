@@ -488,41 +488,69 @@ function triggerPostBattleScreen() {
 
 function displayRandomWeapons() {
   const availableWeapons = getAvailableWeapons();
-
   const randomWeapons = [];
-
   const weaponButtons = document.querySelectorAll(".weapon-option");
+
   weaponButtons.forEach((button) => {
-    let randomWeapon;
+    let baseWeapon;
     let newRandomIndex;
 
     do {
       newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
-      randomWeapon = availableWeapons[newRandomIndex];
-    } while (randomWeapons.includes(randomWeapon));
+      baseWeapon = availableWeapons[newRandomIndex];
+    } while (
+      randomWeapons.some(
+        (w) => w.getName && w.getName() == baseWeapon.getName()
+      )
+    );
 
-    randomWeapons.push(randomWeapon);
+    const weaponInfo = baseWeapon.getWeaponInfo();
+
+    const levelRoll = Math.random();
+    if (levelRoll < 0.1) {
+      weaponInfo.level = 3;
+    } else if (levelRoll < 0.3) {
+      weaponInfo.level = 2;
+    } else {
+      weaponInfo.level = 1;
+    }
+
+    const WeaponClass = Object.getPrototypeOf(baseWeapon).constructor;
+    const newWeapon = new WeaponClass();
+
+    newWeapon.loadFromWeaponInfo(weaponInfo);
+    newWeapon.applyUpgrades(weaponInfo);
+    newWeapon.loadFromWeaponInfo(weaponInfo);
+
+    randomWeapons.push(newWeapon);
+
+    let weaponPrice = 30;
+    if (newWeapon.level === 2) {
+      weaponPrice = 50;
+    } else if (newWeapon.level === 3) {
+      weaponPrice = 70;
+    }
 
     generateWeaponInfo(
       player,
-      randomWeapon,
+      newWeapon,
       newRandomIndex,
       null,
       button,
       null,
-      30
+      weaponPrice
     );
 
     button.addEventListener("click", function () {
-      purchaseWeapon(randomWeapon, button);
+      purchaseWeapon(newWeapon, weaponPrice, button);
     });
   });
 }
 
-function purchaseWeapon(weapon, button) {
-  if (globalSettings.playerGold >= 30) {
+function purchaseWeapon(weapon, weaponPrice, button) {
+  if (globalSettings.playerGold >= weaponPrice) {
     player.addWeapon(weapon);
-    updatePlayerGold(-30);
+    updatePlayerGold(-weaponPrice);
     populateWeaponUpgradeOptions();
     displayTurnMessage(`You purchased ${weapon.name}!`);
     button.remove();
@@ -533,7 +561,20 @@ function purchaseWeapon(weapon, button) {
 
 function populateWeaponUpgradeOptions() {
   const upgradebleWeapons = player.deck.filter((weapon) => weapon.level < 3);
+
+  window.currentUpgradebleWeapons = upgradebleWeapons;
+
   displayWeapons(player, upgradebleWeapons, false, "upgrade-weapon-options");
+
+  const weaponElements = document.getElementById(
+    "upgrade-weapon-options"
+  ).children;
+
+  Array.from(weaponElements).forEach((weaponElement, index) => {
+    weaponElement.addEventListener("click", function () {
+      upgradeWeapon(window.currentUpgradebleWeapons[index]);
+    });
+  });
 }
 
 function upgradeWeapon(weapon) {
@@ -572,21 +613,6 @@ function healPlayer(button) {
   } else {
     displayTurnMessage("Not enough gold to heal!");
   }
-}
-
-function weaponSelectedUpgrade(event) {
-  let target = event.target;
-  while (target && target.classList && !target.classList.contains("weapon"))
-    target = target.parentNode;
-  if (!target?.classList?.contains("weapon")) return;
-
-  let index = target.getAttribute("index");
-  index = parseInt(index);
-  let weapon = player.deck[index];
-
-  upgradeWeapon(weapon);
-
-  console.log(weapon);
 }
 
 function returnToMap() {

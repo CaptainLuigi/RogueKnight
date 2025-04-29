@@ -114,15 +114,18 @@
         document.getElementById("skip").style.display = "block";
 
         let availableRelics = [];
-
         let chestRelic = globalSettings.relicGroup;
 
         for (let currentRelicName of relicNames) {
-          if (!player.foundRelics.includes(currentRelicName)) {
-            let currentRelic = relicList[currentRelicName];
-            if (currentRelic.relicGroup === chestRelic)
-              availableRelics.push(currentRelicName);
-          }
+          const currentRelic = relicList[currentRelicName];
+
+          // Skip relics that are not from the current chest group
+          if (currentRelic.relicGroup !== chestRelic) continue;
+
+          // Skip relics the player has already seen (skipped or equipped)
+          if (player.foundRelics.includes(currentRelicName)) continue;
+
+          availableRelics.push(currentRelicName);
         }
 
         // Select a random relic
@@ -208,6 +211,9 @@
 
         console.log("Relic skipped!");
         player.foundRelic(selectedRelicName, false);
+        console.log("Current foundRelics:", player.foundRelics);
+        player.savePlayerToStorage();
+
         localStorage.removeItem("selectedRelicName");
 
         // Redirect to map.html

@@ -30,9 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   let shopWeaponData = localStorage.getItem("shopWeapons");
+  console.log(shopWeaponData);
 
   if (shopWeaponData) {
     shopWeapons = JSON.parse(shopWeaponData);
+    console.log("Loaded shopWeapons from localStorage:", shopWeapons);
   } else {
     const availableWeapons = getAvailableWeapons();
     shopWeapons = [];
@@ -42,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const randomWeapon = availableWeapons[randomIndex];
       shopWeapons.push(randomWeapon.name);
     });
+    console.log("Generated new shopWeapons:", shopWeapons);
+
     localStorage.setItem("shopWeapons", JSON.stringify(shopWeapons));
   }
 });
@@ -86,6 +90,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
   weaponButtons.forEach((button, index) => {
     const weapon = savedWeapons[index];
+    console.log(`Weapon at index ${index}:`, weapon);
 
     if (boughtWeaponFlags[index]) {
       button.innerHTML = "<div class='sold-label'>SOLD</div>";
@@ -94,12 +99,14 @@ window.addEventListener("DOMContentLoaded", function () {
     if (!weapon) return;
 
     generateWeaponInfo(player, weapon, index, button, null, weaponInfo, 20);
+
     weaponInfo.classList.remove("tooltip");
 
     button.addEventListener("mouseover", () => {
       if (!weapon) return;
       if (speechBubble) {
         speechBubble.innerHTML = `<strong>${weapon.name}</strong><br>`;
+        speechBubble.innerHTML += `<strong>Level:</strong> ${weapon.level}<br>`;
         if (weapon.energy !== undefined)
           speechBubble.innerHTML += `<strong>Energy:</strong> ${weapon.energy}<br>`;
         if (weapon.damage > 0)
@@ -110,14 +117,21 @@ window.addEventListener("DOMContentLoaded", function () {
           speechBubble.innerHTML += `<strong>Crit Chance:</strong> ${weapon.criticalChance}%<br>`;
         if (weapon.poisonAmount > 0)
           speechBubble.innerHTML += `<strong>Poison:</strong> ${weapon.poisonAmount}<br>`;
-        if (weapon.blockAmount > 0)
-          speechBubble.innerHTML += `<strong>Block:</strong> ${weapon.blockAmount}<br>`;
         if (weapon.canHeal) {
           const healingString = Array.isArray(weapon.healingAmount)
             ? weapon.healingAmount.join("%, ") + "%"
             : weapon.healingAmount;
           speechBubble.innerHTML += `<strong>Healing:</strong> ${healingString}<br>`;
         }
+        if (weapon.blockAmount > 0)
+          speechBubble.innerHTML += `<strong>Block:</strong> ${weapon.blockAmount}<br>`;
+        if (weapon.energyGainOnUse > 0) {
+          speechBubble.innerHTML += `<strong>Energy Gain:</strong> ${weapon.energyGainOnUse}<br>`;
+        }
+        if (weapon.drawAmountOnUse > 0) {
+          speechBubble.innerHTML += `<strong>Draw:</strong> ${weapon.drawAmountOnUse}<br>`;
+        }
+
         speechBubble.innerHTML += `${weapon.description}<br>`;
         speechBubble.innerHTML += `<strong>Price:</strong> 20 Gold`;
         speechBubble.style.display = "block";

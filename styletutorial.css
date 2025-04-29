@@ -40,7 +40,7 @@ html, body {
     display: flex;
     flex-flow: column;
     align-items: center;
-    gap: 20px;
+    /* gap: 20px; */
     padding-bottom: 10px;
     /* position: relative; */
     
@@ -79,6 +79,7 @@ height: 0;
     object-fit: contain;
     image-rendering: pixelated;
     z-index: 10;
+    margin-top: 10px;
 }
 
 
@@ -131,6 +132,7 @@ height: 0;
     justify-content: center;
     align-items: center;
     position: relative;
+    margin-top: 10px;
 }
 
 
@@ -536,6 +538,7 @@ button:disabled {
     min-height: 40px;
     color: white;
     z-index: 100;
+    margin-top: 10px;
 }
 
 .enemy-intent img {
@@ -584,19 +587,21 @@ button:disabled {
     z-index: 1000;
 }
 
-#poison-status-enemy {
+.poison-status-enemy {
     font-size: 24px;
     color: white;
 }
 
-#poison-status-enemy img {
+.poison-status-enemy img {
     max-width: 24px;
     max-height: 24px;
     image-rendering: pixelated;
 }
 
 .enemy-status-container {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }

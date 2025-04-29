@@ -21,8 +21,6 @@ function calculate damage
 
 
 
-relics können nochmal auftauchen, obwohl in chest schon mal gesehen
-
 meta progression, startrelic aussuchen
 
 flüche (wie relics)
@@ -33,9 +31,7 @@ succubus soll instant angreifen
 
 upgrades von waffen anzeigen (wie verändern sich stats)
 
-enemy poison tooltip ist immer über dem ersten gegner
+gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
-wenn waffen schon level 3 dann ist index in upgrade post battle screen messed up
-
-border für level 2 waffen anpassen (mit hintergrund von uprgrade screen schlecht zu sehen)
+waffen border im shop anpassen + aufgelevelte waffen möglich
 */

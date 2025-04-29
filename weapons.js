@@ -518,7 +518,7 @@ class BasicSword extends Weapons {
       case 3:
         weaponInfo.damage = 35;
         weaponInfo.criticalDamage = 70;
-        weaponInfo.criticalChance = 35;
+        weaponInfo.criticalChance = 40;
         break;
     }
   }
@@ -628,13 +628,13 @@ class BasicBow extends Weapons {
         break;
       case 2:
         weaponInfo.damage = 25;
-        weaponInfo.criticalDamage = 60;
-        weaponInfo.criticalChance = 35;
+        weaponInfo.criticalDamage = 65;
+        weaponInfo.criticalChance = 30;
         break;
       case 3:
         weaponInfo.damage = 30;
-        weaponInfo.criticalDamage = 70;
-        weaponInfo.criticalChance = 45;
+        weaponInfo.criticalDamage = 75;
+        weaponInfo.criticalChance = 35;
         break;
     }
   }
@@ -1367,7 +1367,7 @@ class ChannelEnergy extends Weapons {
       0,
       0,
       true,
-      1
+      2
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1375,10 +1375,11 @@ class ChannelEnergy extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.energyGainOnUse = 2;
+        weaponInfo.energyGainOnUse = 3;
         break;
       case 3:
-        weaponInfo.energyGainOnUse = 3;
+        weaponInfo.oncePerBattle = false;
+        weaponInfo.description = "Click to get energy.";
         break;
     }
   }

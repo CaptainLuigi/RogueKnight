@@ -463,21 +463,6 @@ class Enemy extends HealthEntity {
     player.applyPoison(amount);
   }
 
-  updatePoisonDisplay() {
-    const poisonElement = this.#display.querySelector("#poison-status-enemy");
-
-    if (this.#poisonFromPlayer > 0) {
-      poisonElement.classList.remove("hidden");
-      poisonElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
-        this.#poisonFromPlayer
-      }`;
-
-      this.addPoisonTooltip(poisonElement);
-    } else {
-      poisonElement.classList.add("hidden");
-    }
-  }
-
   async healAll(amount) {
     for (let enemy of enemies) {
       if (!enemy.isDead()) {
@@ -510,6 +495,21 @@ class Enemy extends HealthEntity {
   }
 
   summon() {}
+
+  updatePoisonDisplay() {
+    let poisonElement = this.#display.querySelector(".poison-status-enemy");
+
+    if (this.#poisonFromPlayer > 0) {
+      poisonElement.classList.remove("hidden");
+      poisonElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
+        this.#poisonFromPlayer
+      }`;
+
+      this.addPoisonTooltip(poisonElement);
+    } else {
+      poisonElement.classList.add("hidden");
+    }
+  }
 
   updateDisplay() {
     const intentElement = this.#display.querySelector(".enemy-intent");
