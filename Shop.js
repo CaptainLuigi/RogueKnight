@@ -29,58 +29,38 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("weapon-deck-screen").classList.add("hidden");
   });
 
-  let shopWeaponData = localStorage.getItem("shopWeapons");
-  console.log(shopWeaponData);
+  displayShopWeapons();
 
-  if (shopWeaponData) {
-    shopWeapons = JSON.parse(shopWeaponData);
-    console.log("Loaded shopWeapons from localStorage:", shopWeapons);
-  } else {
-    const availableWeapons = getAvailableWeapons();
-    shopWeapons = [];
-
-    document.querySelectorAll(".Shop-weapon").forEach(() => {
-      const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-      const randomWeapon = availableWeapons[randomIndex];
-      shopWeapons.push(randomWeapon.name);
-    });
-    console.log("Generated new shopWeapons:", shopWeapons);
-
-    localStorage.setItem("shopWeapons", JSON.stringify(shopWeapons));
-  }
-});
-
-window.addEventListener("DOMContentLoaded", function () {
-  const weaponButtons = document.querySelectorAll(".Shop-weapon");
-  const speechBubble = document.getElementById("speech-bubble");
-  const weaponInfo = document.getElementById("weapon-info");
-  let boughtWeaponFlags =
-    JSON.parse(localStorage.getItem("boughtShopWeapons")) || [];
+  // const weaponButtons = document.querySelectorAll(".Shop-weapon");
+  // const speechBubble = document.getElementById("speech-bubble");
+  // const weaponInfo = document.getElementById("weapon-info");
+  // let boughtWeaponFlags =
+  //   JSON.parse(localStorage.getItem("boughtShopWeapons")) || [];
 
   // Try to load saved weapons from localStorage
-  let savedWeaponNames = JSON.parse(localStorage.getItem("shopWeapons")) || [];
-  let availableWeapons = getAvailableWeapons();
+  // let savedWeaponNames = JSON.parse(localStorage.getItem("shopWeapons")) || [];
+  // let availableWeapons = getAvailableWeapons();
 
-  if (boughtWeaponFlags.length !== savedWeaponNames.length) {
-    boughtWeaponFlags = Array(savedWeaponNames.length).fill(false);
-    localStorage.setItem(
-      "boughtShopWeapons",
-      JSON.stringify(boughtWeaponFlags)
-    );
-  }
+  // if (boughtWeaponFlags.length !== savedWeaponNames.length) {
+  //   boughtWeaponFlags = Array(savedWeaponNames.length).fill(false);
+  //   localStorage.setItem(
+  //     "boughtShopWeapons",
+  //     JSON.stringify(boughtWeaponFlags)
+  //   );
+  // }
 
-  if (!savedWeaponNames || savedWeaponNames.length !== weaponButtons.length) {
-    // Randomize and store the selection
-    savedWeaponNames = [];
+  // if (!savedWeaponNames || savedWeaponNames.length !== weaponButtons.length) {
+  //   // Randomize and store the selection
+  //   savedWeaponNames = [];
 
-    weaponButtons.forEach(() => {
-      const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-      const weapon = availableWeapons.splice(randomIndex, 1)[0];
-      savedWeaponNames.push(weapon.name);
-    });
+  //   weaponButtons.forEach(() => {
+  //     const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+  //     const weapon = availableWeapons.splice(randomIndex, 1)[0];
+  //     savedWeaponNames.push(weapon.name);
+  //   });
 
-    localStorage.setItem("shopWeapons", JSON.stringify(savedWeaponNames));
-  }
+  //   localStorage.setItem("shopWeapons", JSON.stringify(savedWeaponNames));
+  // }
 
   const weaponList = getAvailableWeapons();
 
@@ -88,8 +68,18 @@ window.addEventListener("DOMContentLoaded", function () {
     weaponList.find((weapon) => weapon.name === name)
   );
 
+  displayWeaponSpeechbubble();
+});
+
+function displayWeaponSpeechbubble() {
+  const weaponButtons = document.querySelectorAll(".Shop-weapon");
+  const speechBubble = document.getElementById("speech-bubble");
+  const weaponInfo = document.getElementById("weapon-info");
+  let boughtWeaponFlags =
+    JSON.parse(localStorage.getItem("boughtShopWeapons")) || [];
+
   weaponButtons.forEach((button, index) => {
-    const weapon = savedWeapons[index];
+    const weapon = shopWeapons[index];
     console.log(`Weapon at index ${index}:`, weapon);
 
     if (boughtWeaponFlags[index]) {
@@ -160,7 +150,28 @@ window.addEventListener("DOMContentLoaded", function () {
 
     button.setAttribute("data-weapon-id", weapon.name);
   });
-});
+}
+
+function displayShopWeapons() {
+  let shopWeaponData = loadData("shopWeapons");
+  console.log(shopWeaponData);
+
+  if (shopWeaponData) {
+    console.log("Loaded shopWeapons from localStorage:", shopWeapons);
+  } else {
+    const availableWeapons = getAvailableWeapons();
+    shopWeapons = [];
+
+    document.querySelectorAll(".Shop-weapon").forEach(() => {
+      const randomIndex = Math.floor(Math.random() * availableWeapons.length);
+      const randomWeapon = availableWeapons[randomIndex];
+      shopWeapons.push(randomWeapon.name);
+    });
+    console.log("Generated new shopWeapons:", shopWeapons);
+
+    storeData("shopWeapons", shopWeapons);
+  }
+}
 
 function purchaseWeapon(weapon) {
   if (globalSettings.playerGold >= 20) {

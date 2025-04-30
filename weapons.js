@@ -1862,3 +1862,35 @@ function applyBlock(weapon, blockModifier) {
     blockContainer.classList.remove("hidden");
   }
 }
+
+function getRandomWeapons(randomWeapons, lvl2Prop, lvl3Prop) {
+  let baseWeapon;
+  let newRandomIndex;
+
+  const availableWeapons = getAvailableWeapons();
+
+  do {
+    newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
+    baseWeapon = availableWeapons[newRandomIndex];
+  } while (randomWeapons.some((w) => w.name == baseWeapon.name));
+
+  const weaponInfo = baseWeapon.getWeaponInfo();
+
+  const levelRoll = Math.random();
+  if (levelRoll < lvl3Prop) {
+    weaponInfo.level = 3;
+  } else if (levelRoll < lvl2Prop + lvl3Prop) {
+    weaponInfo.level = 2;
+  } else {
+    weaponInfo.level = 1;
+  }
+
+  const WeaponClass = Object.getPrototypeOf(baseWeapon).constructor;
+  const newWeapon = new WeaponClass();
+
+  newWeapon.loadFromWeaponInfo(weaponInfo);
+  newWeapon.applyUpgrades(weaponInfo);
+  newWeapon.loadFromWeaponInfo(weaponInfo);
+
+  return newWeapon;
+}

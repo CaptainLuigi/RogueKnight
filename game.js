@@ -487,41 +487,11 @@ function triggerPostBattleScreen() {
 }
 
 function displayRandomWeapons() {
-  const availableWeapons = getAvailableWeapons();
   const randomWeapons = [];
   const weaponButtons = document.querySelectorAll(".weapon-option");
 
-  weaponButtons.forEach((button) => {
-    let baseWeapon;
-    let newRandomIndex;
-
-    do {
-      newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
-      baseWeapon = availableWeapons[newRandomIndex];
-    } while (
-      randomWeapons.some(
-        (w) => w.getName && w.getName() == baseWeapon.getName()
-      )
-    );
-
-    const weaponInfo = baseWeapon.getWeaponInfo();
-
-    const levelRoll = Math.random();
-    if (levelRoll < 0.1) {
-      weaponInfo.level = 3;
-    } else if (levelRoll < 0.3) {
-      weaponInfo.level = 2;
-    } else {
-      weaponInfo.level = 1;
-    }
-
-    const WeaponClass = Object.getPrototypeOf(baseWeapon).constructor;
-    const newWeapon = new WeaponClass();
-
-    newWeapon.loadFromWeaponInfo(weaponInfo);
-    newWeapon.applyUpgrades(weaponInfo);
-    newWeapon.loadFromWeaponInfo(weaponInfo);
-
+  weaponButtons.forEach((button, buttonIndex) => {
+    let newWeapon = getRandomWeapons(randomWeapons, 0.2, 0.1);
     randomWeapons.push(newWeapon);
 
     let weaponPrice = 30;
@@ -534,7 +504,7 @@ function displayRandomWeapons() {
     generateWeaponInfo(
       player,
       newWeapon,
-      newRandomIndex,
+      buttonIndex,
       null,
       button,
       null,

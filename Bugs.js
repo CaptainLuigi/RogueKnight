@@ -34,4 +34,6 @@ upgrades von waffen anzeigen (wie verändern sich stats)
 gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
 waffen border im shop anpassen + aufgelevelte waffen möglich
+
+enemy action summon nur möglich wenn nicht zu viele gegner bereits da
 */
