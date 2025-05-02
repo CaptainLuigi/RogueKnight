@@ -35,5 +35,5 @@ gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abst
 
 waffen border im shop anpassen + aufgelevelte waffen möglich
 
-enemy action summon nur möglich wenn nicht zu viele gegner bereits da
+enemy buff tooltip aktualisieren, weil tooltip nicht aktueller wert
 */

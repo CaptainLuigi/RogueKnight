@@ -1578,6 +1578,30 @@ class devWeapon extends Weapons {
   }
 }
 
+class devShield extends Weapons {
+  constructor() {
+    super(
+      "Dev Shield",
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      "Block",
+      "Assets/lightningShield.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      1000
+    );
+  }
+}
+
 // class WrappedWeapon extends Weapons {
 //   #wrappedWeapon;
 
@@ -1673,6 +1697,7 @@ const weaponClassMapping = {
   BigHealthPotion,
   BattleFocus,
   devWeapon,
+  devShield,
 };
 
 function createWeaponInstanceFromInfo(info) {

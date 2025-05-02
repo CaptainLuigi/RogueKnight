@@ -189,8 +189,26 @@ class Enemy extends HealthEntity {
   }
 
   randomizeAction() {
-    let actionIndex = Math.floor(Math.random() * this.#possibleActions.length);
-    this.#nextAction = this.#possibleActions[actionIndex];
+    let availableActions = [...this.#possibleActions];
+    const maxEnemies = 5;
+
+    if (enemies.length >= maxEnemies) {
+      availableActions = availableActions.filter(
+        (action) => action !== "canSummon"
+      );
+    }
+
+    const canHeal = enemies.some(
+      (enemy) => enemy.health / enemy.maxHealth < 0.75
+    );
+    if (!canHeal) {
+      availableActions = availableActions.filter(
+        (action) => action !== "healAll"
+      );
+    }
+
+    let actionIndex = Math.floor(Math.random() * availableActions.length);
+    this.#nextAction = availableActions[actionIndex];
     this.updateDisplay();
   }
 
@@ -817,6 +835,10 @@ class EvilKnight extends Enemy {
     this.display.classList.add("biggestEnemy");
   }
   summon() {
+    const maxEnemies = 5;
+    if (enemies.length >= maxEnemies) {
+      return;
+    }
     //constructor adds enemy at end of enemies
     const summonedMinion = new MinonKnight();
     //because new enemy should not be at the end, it must be removed from there again
@@ -948,6 +970,10 @@ class Necromancer extends Enemy {
   }
 
   summon() {
+    const maxEnemies = 5;
+    if (enemies.length >= maxEnemies) {
+      return;
+    }
     //constructor adds enemy at end of enemies
     const summonedSkeleton = new Skeleton();
     //because new enemy should not be at the end, it must be removed from there again
