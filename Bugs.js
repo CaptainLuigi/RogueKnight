@@ -33,9 +33,7 @@ upgrades von waffen anzeigen (wie verändern sich stats)
 
 gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
-enemy buff tooltip aktualisieren, weil tooltip nicht aktueller wert
-
-deck im shop anzeigen -> waffen sind kleiner + border nicht in level farbe
-
 flag für shop removal, dass nicht nochmal removed werden kann
+
+
 */

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Music</title>
+    <link rel="stylesheet" href="styleMusic.css" />
+  </head>
+  <body>
+    <audio
+      id="startMusic"
+      src="Assets/Sound/Woodland Fantasy.mp3"
+      autoplay
+      loop
+      controls
+    ></audio>
+
+    <script>
+      const music = document.getElementById("startMusic");
+      music.volume = 0.5;
+      music.play().catch((err) => {
+        console.error("Playback failed:", err);
+      });
+    </script>
+  </body>
+</html>

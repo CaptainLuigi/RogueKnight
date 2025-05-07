@@ -642,9 +642,8 @@ class Enemy extends HealthEntity {
   }
 
   addBuffTooltip(buffElement) {
-    const buffAmount = this.#attackPower - this.#baseAttackPower;
-
     buffElement.addEventListener("mouseenter", () => {
+      const buffAmount = this.#attackPower - this.#baseAttackPower;
       if (!buffElement.querySelector(".buff-tooltip")) {
         const buffTooltip = document.createElement("div");
         buffTooltip.classList.add("buff-tooltip");

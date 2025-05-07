@@ -431,7 +431,7 @@ class Player extends HealthEntity {
   loadPlayerFromStorage() {
     let state = loadData("playerState");
     if (state == null) {
-      globalSettings.playerGold = 50;
+      globalSettings.playerGold = 150;
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSword());

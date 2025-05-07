@@ -43,6 +43,10 @@
       </button>
     </div>
 
+    <div id="overlay" class="overlay">
+      <p>Click anywhere to open the game!</p>
+    </div>
+
     <div class="sprite"></div>
     <script>
       globalSettings.clearTutorial();
@@ -97,6 +101,18 @@
       // Apply the initial running animation config and start the animation
       setSpriteConfig(runningConfig);
       animateSprite();
+
+      const overlay = document.getElementById("overlay");
+      let musicWindow = null;
+
+      overlay.addEventListener("click", () => {
+        if (!musicWindow || musicWindow.closed) {
+          musicWindow = window.open("music.html", "musicWindow");
+        }
+        overlay.style.display = "none";
+      });
     </script>
+
+    <audio id="startMusic" src="Assets/Sound/Woodland Fantasy.mp3" loop></audio>
   </body>
 </html>

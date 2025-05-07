@@ -196,15 +196,13 @@ img.weapon-image {
 }
 
 #weapon-list .weapon .weapon-image {
-    width: 75px;
-    height: 75px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
     padding: 5px;
-    border: 3px solid black;
     border-radius: 5px;
     image-rendering: pixelated;
 }
-
 
 .tooltip {
     position: absolute;
