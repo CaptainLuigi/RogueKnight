@@ -183,6 +183,11 @@ div {
 img.weapon-image {
     width: 150px;
     height: 150px;
+    box-sizing: border-box;
+}
+
+.Shop-weapon img.weapon-image {
+    padding: 10px;
 }
 
 .Shop-relic img {
@@ -216,6 +221,19 @@ img.weapon-image {
     z-index: 10; /* Ensure the tooltip appears above other elements */
     font-size: 24px;
     width: 250px; /* Set width for the tooltip */
+}
+
+#weapon-info.tooltip.visible {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    color: black;
+    background-color: transparent;
+    position: relative;
+    position: initial;
+    transform: unset;
+    box-shadow: none;
+    width: unset;
 }
 
 .sold {

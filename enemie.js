@@ -629,7 +629,7 @@ class Enemy extends HealthEntity {
         blockTooltip.classList.add("block-tooltip");
         blockTooltip.innerText = `Enemy blocks, which reduces incoming damage by ${
           this.#activeShield
-        } for this turn`;
+        }`;
         blockElement.appendChild(blockTooltip);
       }
     });

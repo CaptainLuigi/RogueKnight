@@ -1848,7 +1848,7 @@ function generateWeaponInfo(
     tooltipString += `${weapon.description} <br>`;
     weaponPrice = parseInt(weaponPrice);
     if (!isNaN(weaponPrice) && weaponPrice > 0) {
-      tooltipString += `<strong>${weaponPrice} Gold</strong>`;
+      tooltipString += `<strong>Price:</strong> ${weaponPrice} Gold`;
     }
     return tooltipString;
   };

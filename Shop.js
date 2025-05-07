@@ -31,44 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   displayShopWeapons();
 
-  // const weaponButtons = document.querySelectorAll(".Shop-weapon");
-  // const speechBubble = document.getElementById("speech-bubble");
-  // const weaponInfo = document.getElementById("weapon-info");
-  // let boughtWeaponFlags =
-  //   JSON.parse(localStorage.getItem("boughtShopWeapons")) || [];
-
-  // Try to load saved weapons from localStorage
-  // let savedWeaponNames = JSON.parse(localStorage.getItem("shopWeapons")) || [];
-  // let availableWeapons = getAvailableWeapons();
-
-  // if (boughtWeaponFlags.length !== savedWeaponNames.length) {
-  //   boughtWeaponFlags = Array(savedWeaponNames.length).fill(false);
-  //   localStorage.setItem(
-  //     "boughtShopWeapons",
-  //     JSON.stringify(boughtWeaponFlags)
-  //   );
-  // }
-
-  // if (!savedWeaponNames || savedWeaponNames.length !== weaponButtons.length) {
-  //   // Randomize and store the selection
-  //   savedWeaponNames = [];
-
-  //   weaponButtons.forEach(() => {
-  //     const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-  //     const weapon = availableWeapons.splice(randomIndex, 1)[0];
-  //     savedWeaponNames.push(weapon.name);
-  //   });
-
-  //   localStorage.setItem("shopWeapons", JSON.stringify(savedWeaponNames));
-  // }
-
   const weaponList = getAvailableWeapons();
 
-  const savedWeapons = savedWeaponNames.map((name) =>
-    weaponList.find((weapon) => weapon.name === name)
-  );
-
   displayWeaponSpeechbubble();
+
+  displayShopRelics();
 });
 
 function displayWeaponSpeechbubble() {
@@ -88,54 +55,30 @@ function displayWeaponSpeechbubble() {
     }
     if (!weapon) return;
 
-    generateWeaponInfo(player, weapon, index, button, null, weaponInfo, 20);
+    let weaponPrice = 20;
+    if (weapon.level === 2) {
+      weaponPrice = 40;
+    } else if (weapon.level === 3) {
+      weaponPrice = 60;
+    }
+    let weaponDisplay = generateWeaponInfo(
+      player,
+      weapon,
+      index,
+      button,
+      null,
+      weaponInfo,
+      weaponPrice
+    );
 
-    weaponInfo.classList.remove("tooltip");
-
-    button.addEventListener("mouseover", () => {
-      if (!weapon) return;
-      if (speechBubble) {
-        speechBubble.innerHTML = `<strong>${weapon.name}</strong><br>`;
-        speechBubble.innerHTML += `<strong>Level:</strong> ${weapon.level}<br>`;
-        if (weapon.energy !== undefined)
-          speechBubble.innerHTML += `<strong>Energy:</strong> ${weapon.energy}<br>`;
-        if (weapon.damage > 0)
-          speechBubble.innerHTML += `<strong>Damage:</strong> ${weapon.damage}<br>`;
-        if (weapon.criticalDamage > 0)
-          speechBubble.innerHTML += `<strong>Crit Damage:</strong> ${weapon.criticalDamage}<br>`;
-        if (weapon.criticalChance > 0)
-          speechBubble.innerHTML += `<strong>Crit Chance:</strong> ${weapon.criticalChance}%<br>`;
-        if (weapon.poisonAmount > 0)
-          speechBubble.innerHTML += `<strong>Poison:</strong> ${weapon.poisonAmount}<br>`;
-        if (weapon.canHeal) {
-          const healingString = Array.isArray(weapon.healingAmount)
-            ? weapon.healingAmount.join("%, ") + "%"
-            : weapon.healingAmount;
-          speechBubble.innerHTML += `<strong>Healing:</strong> ${healingString}<br>`;
-        }
-        if (weapon.blockAmount > 0)
-          speechBubble.innerHTML += `<strong>Block:</strong> ${weapon.blockAmount}<br>`;
-        if (weapon.energyGainOnUse > 0) {
-          speechBubble.innerHTML += `<strong>Energy Gain:</strong> ${weapon.energyGainOnUse}<br>`;
-        }
-        if (weapon.drawAmountOnUse > 0) {
-          speechBubble.innerHTML += `<strong>Draw:</strong> ${weapon.drawAmountOnUse}<br>`;
-        }
-
-        speechBubble.innerHTML += `${weapon.description}<br>`;
-        speechBubble.innerHTML += `<strong>Price:</strong> 20 Gold`;
-        speechBubble.style.display = "block";
-      }
-    });
-
-    button.addEventListener("mouseout", () => {
-      if (speechBubble) {
-        speechBubble.style.display = "none";
+    weaponDisplay.firstElementChild?.addEventListener("mouseout", () => {
+      if (weaponInfo) {
+        weaponInfo.classList.remove("visible");
       }
     });
 
     button.firstElementChild?.addEventListener("click", () => {
-      if (globalSettings.playerGold >= 20) {
+      if (globalSettings.playerGold >= weaponPrice) {
         purchaseWeapon(weapon);
         button.firstElementChild.remove();
         boughtWeaponFlags[index] = true;
@@ -156,27 +99,40 @@ function displayShopWeapons() {
   let shopWeaponData = loadData("shopWeapons");
   console.log(shopWeaponData);
 
+  shopWeapons = [];
+
   if (shopWeaponData) {
+    for (let savedShopWeapon of shopWeaponData) {
+      let loadedWeapon = createWeaponInstanceFromInfo(savedShopWeapon);
+      shopWeapons.push(loadedWeapon);
+    }
+
     console.log("Loaded shopWeapons from localStorage:", shopWeapons);
   } else {
-    const availableWeapons = getAvailableWeapons();
-    shopWeapons = [];
-
-    document.querySelectorAll(".Shop-weapon").forEach(() => {
-      const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-      const randomWeapon = availableWeapons[randomIndex];
-      shopWeapons.push(randomWeapon.name);
-    });
-    console.log("Generated new shopWeapons:", shopWeapons);
-
-    storeData("shopWeapons", shopWeapons);
+    shopWeaponData = [];
   }
+
+  let WeaponBtnCount = document.querySelectorAll(".Shop-weapon").length;
+  while (WeaponBtnCount > shopWeapons.length) {
+    const randomWeapon = getRandomWeapons(shopWeapons, 0.25, 0.15);
+    shopWeaponData.push(randomWeapon.getWeaponInfo());
+    shopWeapons.push(randomWeapon);
+  }
+
+  storeData("shopWeapons", shopWeaponData);
 }
 
 function purchaseWeapon(weapon) {
-  if (globalSettings.playerGold >= 20) {
+  let weaponPrice = 20;
+  if (weapon.level === 2) {
+    weaponPrice = 40;
+  } else if (weapon.level === 3) {
+    weaponPrice = 60;
+  }
+
+  if (globalSettings.playerGold >= weaponPrice) {
     player.addWeapon(weapon);
-    updatePlayerGold(-20);
+    updatePlayerGold(-weaponPrice);
   }
 }
 
@@ -283,7 +239,7 @@ function displayTurnMessage(message) {
   }, 2000);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function displayShopRelics() {
   const relicButtons = document.querySelectorAll(".Shop-relic");
   const speechBubble = document.getElementById("speech-bubble");
   const relicInfo = document.getElementById("weapon-info");
@@ -320,18 +276,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const relic = savedRelics[index];
 
     generateRelicInfo(player, relic, index, button, relicInfo);
-    relicInfo.classList.remove("tooltip");
+    // relicInfo.classList.remove("tooltip");
 
     button.addEventListener("mouseover", () => {
-      if (speechBubble) {
-        speechBubble.innerHTML = `<strong>${relic.name}</strong><br>${relic.relicDescription}<br><strong>Price:</strong> ${relic.relicPrice} Gold`;
-        speechBubble.style.display = "block";
+      if (relicInfo) {
+        relicInfo.innerHTML = `<strong>${relic.name}</strong><br>${relic.relicDescription}<br><strong>Price:</strong> ${relic.relicPrice} Gold`;
+        relicInfo.classList.add("visible");
       }
     });
 
     button.addEventListener("mouseout", () => {
-      if (speechBubble) {
-        speechBubble.style.display = "none";
+      if (relicInfo) {
+        relicInfo.classList.remove("visible");
       }
     });
 
@@ -352,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     button.setAttribute("data-relic-id", relic.name);
   });
-});
+}
 
 // Function to filter available relics (chest or elite group, not already found)
 function getAvailableRelics() {
