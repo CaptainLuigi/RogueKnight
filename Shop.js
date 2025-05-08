@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
   displayWeaponSpeechbubble();
 
   displayShopRelics();
+
+  const shopRemovalButton = document.getElementById("Shop-removal");
+  if (localStorage.getItem("weaponRemoved") === "true") {
+    shopRemovalButton.disabled = true;
+  }
 });
 
 function displayWeaponSpeechbubble() {
@@ -184,6 +189,8 @@ document
 
           // Subtract 50 gold from the player
           updatePlayerGold(-50);
+
+          localStorage.setItem("weaponRemoved", "true");
 
           // Close the deck screen and disable the Shop-removal button
           document.getElementById("weapon-deck-screen").classList.add("hidden");
@@ -401,5 +408,6 @@ document
     localStorage.removeItem("shopRelics");
     localStorage.removeItem("boughtShopWeapons");
     localStorage.removeItem("boughtShopRelics");
+    localStorage.setItem("weaponRemoved", "false");
     window.location.href = "map.html";
   });

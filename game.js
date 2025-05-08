@@ -64,8 +64,10 @@ function fillEnemyArray(currentDifficulty) {
 
 let isPlayerTurn = true; // Flag to track if it's the player's turn
 
-function enemyDeathEvent() {
-  let event = new CustomEvent("EnemyDeath");
+function enemyDeathEvent(deadEnemy) {
+  const event = new CustomEvent("EnemyDeath", {
+    detail: { enemy: deadEnemy },
+  });
   window.dispatchEvent(event);
 
   setEnemyIndices();

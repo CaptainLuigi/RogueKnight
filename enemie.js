@@ -704,35 +704,37 @@ class Enemy extends HealthEntity {
       enemies.splice(index, 1);
     }
 
-    const goldDropped = Math.floor(Math.random() * 6) + 10;
-    console.log(`${this.name} dropped ${goldDropped} gold!`);
+    if (!this.isSummoned) {
+      const goldDropped = Math.floor(Math.random() * 6) + 10;
+      console.log(`${this.name} dropped ${goldDropped} gold!`);
 
-    enemyDeathEvent();
+      enemyDeathEvent(this);
 
-    const goldDisplay = document.createElement("div");
-    goldDisplay.textContent = `+${goldDropped} Gold`;
-    goldDisplay.style.position = "absolute";
-    goldDisplay.style.color = "gold";
-    goldDisplay.style.fontSize = "20px";
-    goldDisplay.style.fontWeight = "bold";
-    goldDisplay.style.zIndex = "1000";
-    goldDisplay.style.transition = "opacity 1s ease-out";
+      const goldDisplay = document.createElement("div");
+      goldDisplay.textContent = `+${goldDropped} Gold`;
+      goldDisplay.style.position = "absolute";
+      goldDisplay.style.color = "gold";
+      goldDisplay.style.fontSize = "20px";
+      goldDisplay.style.fontWeight = "bold";
+      goldDisplay.style.zIndex = "1000";
+      goldDisplay.style.transition = "opacity 1s ease-out";
 
-    const enemyRect = this.#display.getBoundingClientRect();
-    goldDisplay.style.left = `${enemyRect.left + enemyRect.width / 2 - 20}px`;
-    goldDisplay.style.top = `${enemyRect.top - 30}px`;
+      const enemyRect = this.#display.getBoundingClientRect();
+      goldDisplay.style.left = `${enemyRect.left + enemyRect.width / 2 - 20}px`;
+      goldDisplay.style.top = `${enemyRect.top - 30}px`;
 
-    document.body.appendChild(goldDisplay);
+      document.body.appendChild(goldDisplay);
 
-    updatePlayerGold(goldDropped);
+      updatePlayerGold(goldDropped);
 
-    setTimeout(() => {
-      goldDisplay.style.opacity = "0";
-    }, 750);
+      setTimeout(() => {
+        goldDisplay.style.opacity = "0";
+      }, 750);
 
-    setTimeout(() => {
-      goldDisplay.remove();
-    }, 1200);
+      setTimeout(() => {
+        goldDisplay.remove();
+      }, 1200);
+    }
 
     setTimeout(() => {
       this.#display.remove();
@@ -839,7 +841,7 @@ class EvilKnight extends Enemy {
       return;
     }
     //constructor adds enemy at end of enemies
-    const summonedMinion = new MinonKnight();
+    const summonedMinion = new MinonKnightSummon();
     //because new enemy should not be at the end, it must be removed from there again
     enemies.pop();
 
@@ -868,6 +870,13 @@ class Succubus extends Enemy {
 class Gnome extends Enemy {
   constructor() {
     super("Gnome", 250, 5, "Assets/Transperent/Icon44.png", true, 0, 15);
+  }
+}
+
+class MinonKnightSummon extends Enemy {
+  constructor() {
+    super("Minon Knight", 250, 5, "Assets/minionKnight.png", true, 0, 20);
+    this.isSummoned = true;
   }
 }
 
@@ -942,10 +951,16 @@ class MasterMage extends Enemy {
   }
 }
 
+class SkeletonSummon extends Enemy {
+  constructor() {
+    super("Skeleton", 50, 3, "Assets/skeleton.png", true, 0, 10);
+    this.isSummoned = true;
+  }
+}
+
 class Skeleton extends Enemy {
   constructor() {
     super("Skeleton", 50, 3, "Assets/skeleton.png", true, 0, 10);
-    // this.randomizeAction();
   }
 }
 
@@ -974,7 +989,7 @@ class Necromancer extends Enemy {
       return;
     }
     //constructor adds enemy at end of enemies
-    const summonedSkeleton = new Skeleton();
+    const summonedSkeleton = new SkeletonSummon();
     //because new enemy should not be at the end, it must be removed from there again
     enemies.pop();
 

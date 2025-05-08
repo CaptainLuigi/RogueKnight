@@ -80,7 +80,7 @@ const relicList = [
     "Grinding Monstera",
     "Assets/monsteraLeaf.png",
     grindingMonstera,
-    "Get +1 max HP for every enemy killed.",
+    "Get +2 max HP for every non-summon enemy killed.",
     "elite",
     100
   ),
@@ -342,8 +342,12 @@ const relicList = [
 const relicNames = [...Object.keys(relicList)].sort();
 
 function grindingMonstera(player) {
-  window.addEventListener("EnemyDeath", () => {
-    player.increaseMaxHealth(1, true);
+  window.addEventListener("EnemyDeath", (event) => {
+    const enemy = event.detail.enemy;
+
+    if (enemy && !enemy.isSummoned) {
+      player.increaseMaxHealth(2, true);
+    }
   });
 }
 

@@ -363,6 +363,8 @@ function resetAll() {
 
   localStorage.removeItem("selectedFightIndex");
 
+  localStorage.setItem("weaponRemoved", "false");
+
   relicNames.forEach((relicName) => {
     localStorage.removeItem("relic_" + relicName);
   });

@@ -33,7 +33,5 @@ upgrades von waffen anzeigen (wie verändern sich stats)
 
 gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
-flag für shop removal, dass nicht nochmal removed werden kann
-
 
 */
