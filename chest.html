@@ -12,6 +12,7 @@
     <script src="saveGame.js"></script>
     <script src="player.js"></script>
     <script src="relics.js"></script>
+    <script src="music.js"></script>
   </head>
   <body>
     <div>
@@ -88,6 +89,10 @@
         }
       });
 
+      function wait(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
       const sprite = document.querySelector(".sprite");
       resetToIdleAnimation();
 
@@ -95,6 +100,8 @@
        * Function to open the chest and reveal a random relic.
        */
       function openChest() {
+        SoundManager.play("OpenChest");
+
         console.log("Chest opened!");
 
         const chestButton = document.getElementById("chest-button");
@@ -163,7 +170,11 @@
       /**
        * Function to add the selected relic to the player's inventory and update equippedRelics.
        */
-      function addRelicToDeck() {
+      async function addRelicToDeck() {
+        SoundManager.play("EquipRelic");
+
+        await wait(850);
+
         const relicContainer = document.getElementById("relic-container");
 
         if (!relicContainer) {

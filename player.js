@@ -443,7 +443,9 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
+      this.addWeapon(new SmallHealthPotion());
       this.addWeapon(new devWeapon());
+      this.addWeapon(new PoisonPotion());
       // this.addWeapon(new devShield());
     } else {
       this.#name = state.name;

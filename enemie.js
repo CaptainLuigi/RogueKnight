@@ -405,6 +405,7 @@ class Enemy extends HealthEntity {
 
     if (player.blockAmount > 0) {
       if (player.blockAmount >= this.#attackPower) {
+        SoundManager.play("ShieldSound");
         player.blockAmount -= this.#attackPower;
         triggerBlockAnimation();
         setIdleTimeout();
@@ -482,6 +483,7 @@ class Enemy extends HealthEntity {
   }
 
   async healAll(amount) {
+    SoundManager.play("EnemyHeal");
     for (let enemy of enemies) {
       if (!enemy.isDead()) {
         enemy.heal(amount);
@@ -502,6 +504,7 @@ class Enemy extends HealthEntity {
   }
 
   async buffAll(amount) {
+    SoundManager.play("EnemyBuff");
     for (let enemy of enemies) {
       if (!enemy.isDead()) {
         enemy.#attackPower += amount;
@@ -680,7 +683,9 @@ class Enemy extends HealthEntity {
     });
   }
 
-  enemyDeath() {
+  async enemyDeath() {
+    SoundManager.play("enemyDeathSound");
+
     this.#poisonFromPlayer = 0;
     this.#activeShield = 0;
     this.#attackPower = this.#baseAttackPower;
@@ -704,11 +709,11 @@ class Enemy extends HealthEntity {
       enemies.splice(index, 1);
     }
 
+    enemyDeathEvent(this);
+
     if (!this.isSummoned) {
       const goldDropped = Math.floor(Math.random() * 6) + 10;
       console.log(`${this.name} dropped ${goldDropped} gold!`);
-
-      enemyDeathEvent(this);
 
       const goldDisplay = document.createElement("div");
       goldDisplay.textContent = `+${goldDropped} Gold`;

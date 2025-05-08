@@ -21,6 +21,7 @@ class Weapons {
   #energyGainOnUse = 0;
   #drawAmountOnUse = 0;
   #wasUsed = false;
+  #soundCategory;
 
   constructor(
     name,
@@ -43,7 +44,8 @@ class Weapons {
     poisonAmount = 0,
     oncePerBattle = false,
     energyGainOnUse = 0,
-    drawAmountOnUse = 0
+    drawAmountOnUse = 0,
+    soundCategory = null
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -67,6 +69,7 @@ class Weapons {
       oncePerBattle,
       energyGainOnUse,
       drawAmountOnUse,
+      soundCategory,
     });
   }
 
@@ -160,6 +163,12 @@ class Weapons {
 
   get wasUsed() {
     return this.#wasUsed;
+  }
+
+  get soundCategory() {
+    console.log(`soundCategory for weapon: ${this.#soundCategory}`);
+
+    return this.#soundCategory;
   }
 
   set canHeal(value) {
@@ -325,6 +334,7 @@ class Weapons {
     this.#oncePerBattle = info.oncePerBattle || false;
     this.#energyGainOnUse = info.energyGainOnUse;
     this.#drawAmountOnUse = info.drawAmountOnUse || 0;
+    this.#soundCategory = info.soundCategory;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -430,7 +440,10 @@ class SmallHealthPotion extends Weapons {
       true,
       0,
       0,
-      true
+      true,
+      0,
+      0,
+      "HealSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -472,7 +485,10 @@ class BigHealthPotion extends Weapons {
       true,
       0,
       0,
-      true
+      true,
+      0,
+      0,
+      "HealSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -503,7 +519,20 @@ class BasicSword extends Weapons {
       25,
       1,
       "Can only target the first enemy, click to instanty use weapon.",
-      "Assets/sword.png"
+      "Assets/sword.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -538,7 +567,17 @@ class BasicAxe extends Weapons {
       "Assets/waraxe.png",
       true,
       0,
-      1
+      1,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -575,7 +614,15 @@ class BasicSpear extends Weapons {
       0,
       0,
       0,
-      [1, 1]
+      [1, 1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -619,7 +666,12 @@ class BasicBow extends Weapons {
       0,
       0,
       false,
-      0
+      0,
+      0,
+      false,
+      0,
+      0,
+      "BowSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -658,7 +710,13 @@ class VampiricDagger extends Weapons {
       0,
       0,
       [20],
-      true
+      true,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -694,7 +752,15 @@ class Bomb extends Weapons {
       1,
       4,
       [1],
-      [1]
+      [1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "BombSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -726,7 +792,20 @@ class Herosword extends Weapons {
       60,
       1,
       "Can only target the first enemy, click to instanty use weapon.",
-      "Assets/herosword.png"
+      "Assets/herosword.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -765,7 +844,13 @@ class Dagger extends Weapons {
       0,
       0,
       0,
-      false
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -806,7 +891,11 @@ class PoisonDagger extends Weapons {
       0,
       false,
       0,
-      10
+      10,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -845,7 +934,15 @@ class Spearblade extends Weapons {
       0,
       0,
       0,
-      [1]
+      [1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -882,7 +979,15 @@ class Crossbow extends Weapons {
       0,
       4,
       0,
-      [1]
+      [1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "BowSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1019,7 +1124,12 @@ class BasicShield extends Weapons {
       0,
       0,
       false,
-      5
+      5,
+      0,
+      false,
+      0,
+      0,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1055,7 +1165,12 @@ class MasterShield extends Weapons {
       0,
       0,
       false,
-      15
+      15,
+      0,
+      false,
+      0,
+      0,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1091,7 +1206,12 @@ class SpikedShield extends Weapons {
       0,
       0,
       false,
-      10
+      10,
+      0,
+      false,
+      0,
+      0,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1133,7 +1253,12 @@ class TowerShield extends Weapons {
       0,
       0,
       false,
-      10
+      10,
+      0,
+      false,
+      0,
+      0,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1169,7 +1294,12 @@ class SurvivalPotion extends Weapons {
       0,
       10,
       true,
-      15
+      15,
+      0,
+      false,
+      0,
+      0,
+      "HealSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1208,7 +1338,11 @@ class PoisonPotion extends Weapons {
       0,
       false,
       0,
-      10
+      10,
+      false,
+      0,
+      0,
+      "PotionSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1244,7 +1378,12 @@ class LightningShield extends Weapons {
       0,
       0,
       0,
-      5
+      5,
+      0,
+      false,
+      0,
+      0,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1281,7 +1420,19 @@ class GoldSword extends Weapons {
       2,
       "Deals more damage depending on the amount of gold you have. Can target only the first enemy, click to instantly use weapon.",
       "Assets/goldSword.png",
-      false
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   loadFromWeaponInfo(info) {
@@ -1324,7 +1475,19 @@ class GoldShield extends Weapons {
       2,
       "Blocks more depending on the amount of gold you have. Block is removed at the beginning of you next turn.",
       "Assets/goldShield.png",
-      false
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "ShieldSound"
     );
   }
   loadFromWeaponInfo(info) {
@@ -1367,7 +1530,9 @@ class ChannelEnergy extends Weapons {
       0,
       0,
       true,
-      2
+      2,
+      0,
+      "ChargeSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1448,7 +1613,8 @@ class SwiftSword extends Weapons {
       0,
       false,
       0,
-      1
+      1,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1493,7 +1659,8 @@ class SwiftShield extends Weapons {
       0,
       false,
       0,
-      1
+      1,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1535,7 +1702,8 @@ class BattleFocus extends Weapons {
       0,
       true,
       3,
-      1
+      1,
+      "ChargeSound"
     );
   }
   applyUpgrades(weaponInfo) {

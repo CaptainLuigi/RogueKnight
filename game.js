@@ -29,6 +29,29 @@ document.addEventListener("DOMContentLoaded", function () {
   updatePlayerGold(0);
   updateHealthBar(player);
   updateEnergyDisplay(player);
+
+  SoundManager.preloadAll();
+
+  document.getElementById("start-fight-btn").addEventListener("click", () => {
+    // Unlock all sounds by playing silently once
+    for (const key in SoundManager.sounds) {
+      const audio = SoundManager.sounds[key];
+      audio.volume = 0;
+      audio
+        .play()
+        .then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.volume = 1; // Restore original volume
+        })
+        .catch((e) => {
+          console.warn(`Failed to unlock ${key}`, e);
+        });
+    }
+
+    document.getElementById("battle-overlay").style.display = "none";
+    SoundManager.playBattleMusic();
+  });
 });
 
 function fillEnemyArray(currentDifficulty) {
@@ -215,6 +238,15 @@ async function executeAttack(weapon, enemyIndex) {
   startIndex += damages.length - 1;
 
   applyBlock(weapon, player.blockModifier);
+
+  const soundCategory = weapon.soundCategory;
+  console.log(`Sound category: ${soundCategory}`);
+
+  if (soundCategory) {
+    console.log(`Attempting to play sound: ${soundCategory}`);
+
+    SoundManager.play(soundCategory);
+  }
 
   if (weapon.damage > 0 && weapon.blockAmount === 0) {
     triggerAttackAnimation();
