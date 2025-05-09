@@ -1,5 +1,10 @@
 const enemyConstellationTemplates = [
   {
+    difficultyFrom: 0,
+    difficultyTo: 0,
+    enemies: [TrainingDummy, TrainingDummy],
+  },
+  {
     difficultyFrom: 1,
     difficultyTo: 2,
     enemies: [Snail, Snail, Snail],

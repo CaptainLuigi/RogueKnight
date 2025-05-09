@@ -128,6 +128,7 @@ function displayShopWeapons() {
 }
 
 function purchaseWeapon(weapon) {
+  SoundManager.play("Purchase");
   let weaponPrice = 20;
   if (weapon.level === 2) {
     weaponPrice = 40;
@@ -345,6 +346,7 @@ function getAvailableRelics() {
 }
 
 function purchaseRelic(relic) {
+  SoundManager.play("Purchase");
   // Equip the relic
   player.foundRelic(relic.name, true);
   displayEquippedRelics();

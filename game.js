@@ -51,6 +51,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("battle-overlay").style.display = "none";
     SoundManager.playBattleMusic();
+
+    if (globalSettings.isTutorial) {
+      document.getElementById("tutorial-intro-overlay").style.display = "block";
+
+      document
+        .getElementById("continue-fight")
+        .addEventListener("click", () => {
+          document.getElementById("tutorial-intro-overlay").style.display =
+            "none";
+        });
+    }
   });
 });
 
@@ -87,7 +98,7 @@ function fillEnemyArray(currentDifficulty) {
 
 let isPlayerTurn = true; // Flag to track if it's the player's turn
 
-function enemyDeathEvent(deadEnemy) {
+async function enemyDeathEvent(deadEnemy) {
   const event = new CustomEvent("EnemyDeath", {
     detail: { enemy: deadEnemy },
   });
@@ -96,19 +107,18 @@ function enemyDeathEvent(deadEnemy) {
   setEnemyIndices();
 
   if (enemies.every((enemy) => enemy.isDead())) {
-    // Check if the location corresponds to the boss fight (difficulty 10)
-    if (globalSettings.difficulty === 10) {
-      setTimeout(() => {
-        localStorage.removeItem("selectedFightIndex");
-        window.location.href = "winscreen.html";
-      }, 1500);
-    } else {
-      setTimeout(() => {
-        triggerPostBattleScreen();
-      }, 1500);
-    }
-
     disableGameInteractions(); // Disable game interactions after the battle
+
+    // await wait(1000);
+
+    if (globalSettings.difficulty === 10 || globalSettings.difficulty === 0) {
+      SoundManager.fadeOutBattleMusic();
+      await wait(1500);
+      localStorage.removeItem("selectedFightIndex");
+      window.location.href = "winscreen.html";
+    } else {
+      triggerPostBattleScreen();
+    }
   }
 }
 
@@ -492,7 +502,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-function triggerPostBattleScreen() {
+async function triggerPostBattleScreen() {
+  SoundManager.fadeOutBattleMusic();
+  await wait(1000);
+  SoundManager.play("LevelVictory");
+
   if (player.equippedRelics.includes("Eternal Bloom")) {
     eternalBloom(player);
   }
@@ -553,6 +567,7 @@ function displayRandomWeapons() {
 
 function purchaseWeapon(weapon, weaponPrice, button) {
   if (globalSettings.playerGold >= weaponPrice) {
+    SoundManager.play("Purchase");
     player.addWeapon(weapon);
     updatePlayerGold(-weaponPrice);
     populateWeaponUpgradeOptions();
@@ -588,6 +603,7 @@ function upgradeWeapon(weapon) {
   }
 
   if (globalSettings.playerGold >= 30) {
+    SoundManager.play("Upgrade");
     updatePlayerGold(-30);
 
     weapon.upgrade();
@@ -606,6 +622,7 @@ function healPlayer(button) {
     button.disabled = true;
     displayTurnMessage("Already full HP!");
   } else if (globalSettings.playerGold >= healingCost) {
+    SoundManager.play("HealSound");
     updatePlayerGold(-healingCost);
     player.heal(30);
 

@@ -318,9 +318,10 @@ class Player extends HealthEntity {
         this.#health = 0; // Ensure health doesn't go negative
         this.isDying = true;
         this.displayDamage(finalDamage, false, -60);
-
+        SoundManager.play("Hurt");
         await wait(300);
         triggerDeathAnimation();
+        SoundManager.fadeOutBattleMusic();
 
         await wait(2000);
         globalSettings.relicGroup = "chest";
@@ -331,6 +332,7 @@ class Player extends HealthEntity {
     } else {
       this.displayDamage(finalDamage, false, -60);
       triggerDamageAnimation();
+      SoundManager.play("Hurt");
       await wait(300);
     }
     this.savePlayerToStorage();
@@ -443,9 +445,8 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
-      this.addWeapon(new SmallHealthPotion());
       this.addWeapon(new devWeapon());
-      this.addWeapon(new PoisonPotion());
+
       // this.addWeapon(new devShield());
     } else {
       this.#name = state.name;

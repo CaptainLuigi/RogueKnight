@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document
       .getElementById("takeLightning")
       .addEventListener("click", function () {
+        SoundManager.play("Thunder");
         document.getElementById("lightning").classList.add("hidden");
         document.getElementById("takeLightning2").classList.remove("hidden");
 
@@ -156,6 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show succubus event dialogue
     document.getElementById("succubus").classList.remove("hidden");
     document.getElementById("succubus1").addEventListener("click", function () {
+      SoundManager.play("Succubus");
       console.log("Clicked on succubus1, advancing dialogue...");
       document.getElementById("succubus").classList.add("hidden");
       document.getElementById("succubus2").classList.remove("hidden");
@@ -187,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const successChance = Math.random();
 
           if (successChance < 0.3) {
+            SoundManager.play("Thunder");
             thorsHammerBox.classList.add("hidden");
             thorsHammerTakenBox.classList.remove("hidden");
             player.addWeapon(new ThorsHammer());
@@ -223,6 +226,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      SoundManager.play("CoinFlip");
+
       updatePlayerGold(-gambleAmount);
 
       const outcome = Math.random() < 0.5 ? "lost" : "won";
@@ -246,7 +251,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("stoned").classList.remove("hidden");
 
     const catchButton = document.getElementById("getStoned");
-    catchButton.addEventListener("click", function () {
+    catchButton.addEventListener("click", async function () {
+      SoundManager.play("Gremlin");
+      await wait(1500);
       player.addWeapon(new Stone());
       player.addWeapon(new Stone());
 
@@ -413,14 +420,15 @@ document.addEventListener("DOMContentLoaded", function () {
       upgradeMode = false;
     });
 
-    function upgradeWeapon(weapon) {
+    async function upgradeWeapon(weapon) {
       console.log(`Upgrading weapon: ${weapon.name}`);
 
       if (weapon.level >= 3) {
         displayTurnMessage(`${weapon.name} is already max level.`);
         return;
       }
-
+      SoundManager.play("Upgrade");
+      await wait(700);
       weapon.upgrade();
       player.savePlayerToStorage();
 
@@ -505,7 +513,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }, 0);
 
-        weaponList.addEventListener("click", function selectWeapon(e) {
+        weaponList.addEventListener("click", async function selectWeapon(e) {
           const weaponEl = e.target.closest(".weapon");
           if (!weaponEl) return;
 
@@ -524,11 +532,13 @@ document.addEventListener("DOMContentLoaded", function () {
           const success = Math.random() < 0.7;
 
           if (success) {
+            SoundManager.play("Acid");
             player.deck[indexInDeck].poisonAmount =
               (player.deck[indexInDeck].poisonAmount || 0) + 15;
             document.getElementById("poisonSuccess").classList.remove("hidden");
           } else {
             if (indexInDeck > -1) {
+              SoundManager.play("Dissolve");
               dropWeapon(indexInDeck);
             }
             document.getElementById("poisonFail").classList.remove("hidden");

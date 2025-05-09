@@ -416,7 +416,7 @@ height: 0;
     top: 20px;
     left: 90%;
     color: gold;
-    z-index: 1100;
+    z-index: 900;
     font-size: 36px;
 }
 
@@ -641,4 +641,29 @@ button:disabled {
 
 #start-fight-btn:hover {
     background-color: #e64a19;
+}
+
+#tutorial-intro-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 35%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+#tutorial-intro-overlay h2 {
+    font-size: 48px;
+}
+
+#tutorial-intro-overlay p,
+#tutorial-intro-overlay ul {
+    font-size: 32px;
 }

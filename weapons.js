@@ -212,6 +212,8 @@ class Weapons {
   }
 
   possibleTargets() {
+    if (this.damage <= 0) return [];
+
     if (player.canTargetAnyEnemy(this)) {
       return enemies
         .map((enemy, index) => (enemy.isDead() ? null : index))
@@ -1024,7 +1026,15 @@ class ThorsHammer extends Weapons {
       0,
       5,
       [1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1]
+      [1, 1, 1, 1, 1, 1, 1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "Thunder"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1061,7 +1071,15 @@ class Lightning extends Weapons {
       0,
       5,
       [1],
-      [1]
+      [1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "Lightning"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1100,7 +1118,13 @@ class Stone extends Weapons {
       0,
       0,
       0,
-      false
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "Stone"
     );
   }
 }
@@ -1573,7 +1597,8 @@ class Restock extends Weapons {
       0,
       false,
       0,
-      2
+      2,
+      "ShieldSound"
     );
   }
   applyUpgrades(weaponInfo) {

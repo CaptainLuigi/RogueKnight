@@ -792,7 +792,7 @@ class BitingPlant extends Enemy {
   constructor() {
     super(
       "Biting Plant",
-      400,
+      350,
       8,
       "Assets/Transperent/Icon11.png",
       true,
@@ -966,6 +966,24 @@ class SkeletonSummon extends Enemy {
 class Skeleton extends Enemy {
   constructor() {
     super("Skeleton", 50, 3, "Assets/skeleton.png", true, 0, 10);
+  }
+}
+
+class TrainingDummy extends Enemy {
+  constructor() {
+    super(
+      "Training Dummy",
+      250,
+      3,
+      "Assets/Training_dummy.png",
+      true,
+      0,
+      5,
+      1,
+      5,
+      1
+    );
+    this.display.classList.add("bigEnemy");
   }
 }
 

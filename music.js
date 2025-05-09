@@ -59,7 +59,69 @@ const SoundManager = {
       audio.volume = 0.025;
       return audio;
     })(),
+    LevelVictory: (() => {
+      const audio = new Audio("Assets/Sound/levelVictoryUniversfield.mp3");
+      audio.volume = 0.01;
+      return audio;
+    })(),
+    Hurt: (() => {
+      const audio = new Audio("Assets/Sound/hurtJofae.mp3");
+      audio.volume = 0.075;
+      return audio;
+    })(),
+    Lightning: (() => {
+      const audio = new Audio("Assets/Sound/lightningegomassive.ogg");
+      audio.volume = 0.075;
+      return audio;
+    })(),
+    Thunder: (() => {
+      const audio = new Audio("Assets/Sound/thunderLittlebrojay.wav");
+      audio.volume = 0.075;
+      return audio;
+    })(),
+    Stone: (() => {
+      const audio = new Audio("Assets/Sound/stoneGlennM.wav");
+      audio.volume = 1;
+      return audio;
+    })(),
+    Purchase: (() => {
+      const audio = new Audio("Assets/Sound/purchaserhodesmas.wav");
+      audio.volume = 0.5;
+      return audio;
+    })(),
+    Upgrade: (() => {
+      const audio = new Audio("Assets/Sound/upgradejhyland.wav");
+      audio.volume = 0.075;
+      return audio;
+    })(),
+    Succubus: (() => {
+      const audio = new Audio("Assets/Sound/succubusshadoWisp.wav");
+      audio.volume = 1;
+      return audio;
+    })(),
+    CoinFlip: (() => {
+      const audio = new Audio("Assets/Sound/coinflipTheKnave.wav");
+      audio.volume = 0.25;
+      return audio;
+    })(),
+    Gremlin: (() => {
+      const audio = new Audio("Assets/Sound/gremlinel_boss.wav");
+      audio.volume = 0.25;
+      return audio;
+    })(),
+    Acid: (() => {
+      const audio = new Audio("Assets/Sound/acidspookymodern.wav");
+      audio.volume = 0.075;
+      return audio;
+    })(),
+    Dissolve: (() => {
+      const audio = new Audio("Assets/Sound/dissolveplasterbrain.wav");
+      audio.volume = 0.075;
+      return audio;
+    })(),
   },
+
+  currentBattleMusic: null,
 
   preloadAll() {
     for (const key in this.sounds) {
@@ -102,11 +164,36 @@ const SoundManager = {
     clone.volume = 0.075;
     clone.loop = true;
 
+    this.currentBattleMusic = clone;
+
     clone.addEventListener("canplaythrough", () => {
       clone.play().catch((e) => {
         console.warn(`BattleMusic failed to play:`, e);
       });
     });
+  },
+
+  fadeOutBattleMusic(duration = 1000) {
+    const music = this.currentBattleMusic;
+    if (!music) return;
+
+    const step = 50;
+    const fadeSteps = duration / step;
+    const initialVolume = music.volume;
+    let currentStep = 0;
+
+    const fadeInterval = setInterval(() => {
+      currentStep++;
+      const newVolume = initialVolume * (1 - currentStep / fadeSteps);
+      music.volume = Math.max(newVolume, 0);
+
+      if (currentStep >= fadeSteps) {
+        clearInterval(fadeInterval);
+        music.pause();
+        music.currentTime = 0;
+        this.currentBattleMusic = null;
+      }
+    }, step);
   },
 };
 window.SoundManager = SoundManager;
