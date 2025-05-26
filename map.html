@@ -6,6 +6,7 @@
     <title>Map</title>
     <link rel="stylesheet" href="stylemap.css" />
     <link rel="stylesheet" href="styleDeckDisplay.css" />
+    
   </head>
   <body>
     <div>
@@ -17,7 +18,7 @@
     </div>
     <div>
       <img id="Map" src="Assets/scroll.png" alt="Map" />
-      <button
+      <!-- <button
         class="reload-map"
         onclick="generateMap(); markPossibleLocations()"
       >
@@ -27,6 +28,15 @@
 
     <div>
       <button id="reset-save-btn" onclick="resetAll(this);">reset save</button>
+    </div> -->
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.5" />
+      <button onclick="closePauseMenu()">Cancel</button>
     </div>
 
     <div id="playerGold">Gold:</div>

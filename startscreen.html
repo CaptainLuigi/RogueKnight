@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Startscreen</title>
     <link rel="stylesheet" href="stylestartscreen.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
     <script src="saveGame.js"></script>
     <script src="baseClasses.js"></script>
+    <script src="utility.js"></script>
     <script src="player.js"></script>
     <script src="music.js"></script>
   </head>
@@ -17,6 +19,21 @@
         src="Assets/background_forest.png"
         alt="ForestBackground"
       />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button onclick="closePauseMenu()">Cancel</button>
     </div>
 
     <div class="flex-container">
@@ -50,26 +67,40 @@
       let frame = 0;
       const sprite = document.querySelector(".sprite");
 
-      const runningConfig = {
-        image: "Assets/Knight_1/Run.png",
-        totalFrames: 7,
-        frameWidth: 200, // Width of each frame for running
-        backgroundSize: "1400px 200px", // Full sprite sheet size for running
-        frameDelay: 100,
-      };
+      function getResponsiveConfig() {
+        const screenWidth = window.innerWidth;
 
-      /* const idleConfig = {
-        image: "Assets/Knight_1/Idlenew.png",
-        totalFrames: 4,
-        frameWidth: 200, // Width of each frame for idle
-        backgroundSize: "800px 200px", // Full sprite sheet size for idle
-        frameDelay: 350,
-      };*/
+        if (screenWidth >= 1280) {
+          return {
+            image: "Assets/Knight_1/Run.png",
+            totalFrames: 7,
+            frameWidth: 200, // Width of each frame for running
+            backgroundSize: "1400px 200px", // Full sprite sheet size for running
+            frameDelay: 100,
+          };
+        } else if (screenWidth >= 1024) {
+          return {
+            image: "Assets/Knight_1/Run.png",
+            totalFrames: 7,
+            frameWidth: 150, // Width of each frame for running
+            backgroundSize: "1050px 150px", // Full sprite sheet size for running
+            frameDelay: 100,
+          };
+        } else {
+          return {
+            image: "Assets/Knight_1/Run.png",
+            totalFrames: 7,
+            frameWidth: 100, // Width of each frame for running
+            backgroundSize: "700px 100px", // Full sprite sheet size for running
+            frameDelay: 100,
+          };
+        }
+      }
 
-      let currentConfig = runningConfig; // Start with the running animation
+      let currentConfig = getResponsiveConfig(); // Start with the running animation
       let spritePositionX = 0; // Initial position of the sprite
       const spriteSpeed = 2; // Speed of the sprite movement
-      const switchPoint2 = 45; // Distance in percentage to switch to idle animation
+      const switchPoint2 = 45;
 
       function setSpriteConfig(config) {
         sprite.style.backgroundImage = `url(${config.image})`;
@@ -96,7 +127,7 @@
       }
 
       // Apply the initial running animation config and start the animation
-      setSpriteConfig(runningConfig);
+      setSpriteConfig(currentConfig);
       animateSprite();
     </script>
   </body>

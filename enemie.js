@@ -778,7 +778,7 @@ class Scorpion extends Enemy {
     super(
       "Scorpion Shroom",
       150,
-      0,
+      3,
       "Assets/Transperent/Icon9.png",
       true,
       0,

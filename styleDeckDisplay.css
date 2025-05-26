@@ -9,6 +9,7 @@
 #current-deck {
     position: absolute;
     height: 50px;
+    width: 150px;
     top: 90%;
     left: 20%;
     z-index: 1000; 
@@ -161,7 +162,6 @@
 
 #equipped-relic-container {
     position: absolute;
-    left: 2%;
     top: 70px;
     width: 100px;
     display: flex;
@@ -180,4 +180,92 @@
     border: 3px solid black;
     border-radius: 5px;
     image-rendering: pixelated;
+}
+
+#pause-menu-button {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 24px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 999;
+    overflow: visible;
+}
+
+#pause-menu {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+    align-items: stretch;
+    width: 250px;
+}
+
+#pause-menu button {
+    background-color: #ff5722;
+    color: black;
+    padding: 10px 15px;
+    font-size: 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+    box-sizing: border-box;
+    text-align: center;
+    white-space: normal;
+    border: 2px solid black;
+    position: static;
+    width: 100%;
+    height: 50px;
+    /* margin-left: 115px; */
+}
+
+.volume-slider {
+    width: 100%;
+    appearance: none;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #ff5722;
+    border-radius: 50%;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ff5722;
+  border-radius: 50%;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.volume-slider::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ff5722;
+  border-radius: 50%;
+  border: 2px solid black;
+  cursor: pointer;
 }

@@ -23,3 +23,28 @@ function getAllGetters(instance) {
   delete getters["__proto__"];
   return getters;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const pauseBtn = document.getElementById("pause-menu-button");
+  const menu = document.getElementById("pause-menu");
+
+  if (pauseBtn && menu) {
+    pauseBtn.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  }
+});
+
+function closePauseMenu() {
+  document.getElementById("pause-menu").classList.add("hidden");
+}
+
+function saveAndExit() {
+  player.savePlayerToStorage();
+  window.location.href = "startscreen.html";
+}
+
+function deleteProgressAndExit() {
+  localStorage.clear();
+  window.location.href = "startscreen.html";
+}

@@ -10,11 +10,11 @@ body {
 }
 
 #StartscreenBackground {
-    width: 95%;
+    width: 100%;
     height: auto;
     display: block;
     object-fit: cover;
-    margin-left: 2.5%;
+    /* margin-left: 2.5%; */
     position: absolute;
 }
 
@@ -26,10 +26,11 @@ body {
     position: absolute;
     justify-content: center;
     text-align: center;
+    align-items: center;
 }
 
 #Title {
-    font-size: 64px;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
     text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
 }
 
@@ -37,14 +38,13 @@ body {
 .start-button {
     color: black;
     background-color: #1D9208;
-    width: 300px;
-    height: 50px;
+    width: 15vw;
+    height: 3vw;
     font-family: 'Pirata_One';
     cursor: pointer;
     text-align: center;
-    font-size: 32px;
-    margin: 10px;
-    margin-left: 42%;
+    font-size: 1.5vw;
+    margin: 1vh 0;
     border-radius: 10px;
     border: 3px solid black;
 }
@@ -54,13 +54,35 @@ body {
 }
 
 .sprite {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     background-image: url(Assets/Knight_1/Idlenew.png);
     background-repeat: no-repeat;
     position: absolute;
-    background-size: 1400px 200px;
-    top: 450px;
-    left: 350px;
+    background-size: 700px 100px;
+    top: 250px;
+    left: 150px;
     image-rendering: pixelated;
 }
+
+@media (min-width: 1024px) {
+    .sprite {
+        width: 150px;
+        height: 150px;
+        background-size: 1050px 150px;
+        top: 350px;
+        left: 250px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .sprite {
+        width: 200px;
+        height: 200px;
+        background-size: 1400px 200px;
+        top: 450px;
+        left: 350px;
+    }
+}
+
+
