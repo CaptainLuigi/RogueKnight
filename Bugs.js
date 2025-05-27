@@ -37,5 +37,7 @@ angefangen startseite responsive zu machen
 
 navigation icons werden teilweise abgeschnitten, wenn hover drüber
 
-gegner die durch poison sterben geben kein monstera value
+battle song ist immer gleiche lautstärke am anfang vom fight, egal wie volume einstellung (battle song generell vielleicht leiser)
+
+wenn waffe upgraded, dann aus dem feld raus und vielleicht display neu laden (um waffen level anzuzeigen)
 */
