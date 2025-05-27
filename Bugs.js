@@ -34,5 +34,8 @@ upgrades von waffen anzeigen (wie verändern sich stats)
 gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
 angefangen startseite responsive zu machen
-block animation funktioniert nicht perfekt
+
+navigation icons werden teilweise abgeschnitten, wenn hover drüber
+
+gegner die durch poison sterben geben kein monstera value
 */

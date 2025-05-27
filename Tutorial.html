@@ -31,7 +31,15 @@
     <div id="pause-menu" class="hidden">
       <button onclick="saveAndExit()">Save & Return to Start</button>
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
-      <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="0.5" />
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
       <button onclick="closePauseMenu()">Cancel</button>
     </div>
 
@@ -79,21 +87,29 @@
     <div id="turn-message" style="display: none"></div>
     <div id="playerGold">Gold:</div>
 
-    <button id="current-deck" class="orange-btn absolute-button">Your Deck</button>
+    <button id="current-deck" class="orange-btn absolute-button">
+      Your Deck
+    </button>
 
-    <button id="end-turn-btn" class="orange-btn absolute-button">End Turn</button>
+    <button id="end-turn-btn" class="orange-btn absolute-button">
+      End Turn
+    </button>
 
     <div id="weapon-deck-screen" class="hidden">
       <div id="weapon-deck-container">
         <div id="weapon-list"></div>
-        <button id="close-deck-btn" class="orange-btn absolute-button">Close</button>
+        <button id="close-deck-btn" class="orange-btn absolute-button">
+          Close
+        </button>
       </div>
     </div>
 
     <div id="battle-overlay">
       <div class="overlay-content">
         <h1>Click to start fight</h1>
-        <button id="start-fight-btn" class="absolute-button">Start Fight</button>
+        <button id="start-fight-btn" class="absolute-button">
+          Start Fight
+        </button>
       </div>
     </div>
 
@@ -105,23 +121,34 @@
         <div id="weapon-3" class="weapon-option"></div>
       </div>
       <div>
+        <div id="upgrade-weapon-container">
+          <button
+            id="choose-weapon-upgrade-btn"
+            class="orange-btn absolute-button"
+          >
+            Upgrade weapon (30 Gold)
+          </button>
 
-      
-      <div id="upgrade-weapon-container">
-  <button id="choose-weapon-upgrade-btn" class="orange-btn absolute-button">
-    Upgrade weapon (30 Gold)
-  </button>
-
-  <div id="upgrade-weapon-options" onclick="weaponSelectedUpgrade(event);">
-    <select id="weapon-to-upgrade"></select>
-  </div>
-</div>
-      <div id="heal-option">
-        <button id="heal-btn" class="orange-btn absolute-button" onclick="healPlayer(this);">
-          Heal 30 HP (30 Gold)
+          <div
+            id="upgrade-weapon-options"
+            onclick="weaponSelectedUpgrade(event);"
+          >
+            <select id="weapon-to-upgrade"></select>
+          </div>
+        </div>
+        <div id="heal-option">
+          <button
+            id="heal-btn"
+            class="orange-btn absolute-button"
+            onclick="healPlayer(this);"
+          >
+            Heal 30 HP (30 Gold)
+          </button>
+        </div>
+        <button id="close-post-battle" class="orange-btn absolute-button">
+          Next
         </button>
       </div>
-      <button id="close-post-battle" class="orange-btn absolute-button">Next</button>
     </div>
 
     <div
@@ -157,7 +184,9 @@
         </li>
         <li>Defeat all enemies to win the fight.</li>
       </ul>
-      <button id="continue-fight" class="orange-btn">Got it!</button>
+      <button id="continue-fight" class="orange-btn absolute-button">
+        Got it!
+      </button>
     </div>
 
     <script>

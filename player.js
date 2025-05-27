@@ -514,52 +514,54 @@ function wait(ms) {
 
 let isAttacking = false;
 
-// const attackConfig = {
-//   image: "Assets/Knight_1/Attack2.png",
-//   totalFrames: 4,
-//   frameWidth: 200,
-//   backgroundSize: "800px 200px",
-//   frameDelay: 150,
-// };
+// Define the attack animation configuration
+const attackConfig = {
+  image: "Assets/Knight_1/Attack2.png", // Change to your attack sprite sheet
+  totalFrames: 4, // Number of frames in the attack animation
+  frameWidth: 200, // Width of each frame for attack
+  backgroundSize: "800px 200px", // Full sprite sheet size for attack animation
+  frameDelay: 150, // Delay between frames (milliseconds)
+};
 
-// const blockConfig = {
-//   image: "Assets/Knight_1/Defendnew4.png",
-//   totalFrames: 5,
-//   frameWidth: 200,
-//   backgroundSize: "1000px 200px",
-//   frameDelay: 200,
-// };
+const blockConfig = {
+  image: "Assets/Knight_1/Defendnew4.png",
+  totalFrames: 5,
+  frameWidth: 200,
+  backgroundSize: "1010px 200px",
+  frameDelay: 200,
+};
 
-// const idleConfig = {
-//   image: "Assets/Knight_1/Idlenew.png",
-//   totalFrames: 4,
-//   frameWidth: 200,
-//   backgroundSize: "800px 200px",
-//   frameDelay: 350,
-// };
+// Define the idle animation configuration
+const idleConfig = {
+  image: "Assets/Knight_1/Idlenew.png",
+  totalFrames: 4,
+  frameWidth: 200, // Width of each frame for idle
+  backgroundSize: "800px 200px", // Full sprite sheet size for idle
+  frameDelay: 350, // Delay between idle frames
+};
 
-// const hurtConfig = {
-//   image: "Assets/Knight_1/Hurtnew.png",
-//   totalFrames: 2,
-//   frameWidth: 200,
-//   backgroundSize: "400px 200px",
-//   frameDelay: 150,
-// };
+const hurtConfig = {
+  image: "Assets/Knight_1/Hurtnew.png",
+  totalFrames: 2,
+  frameWidth: 200,
+  backgroundSize: "400px 200px",
+  frameDelay: 150,
+};
 
-// const deathConfig = {
-//   image: "Assets/Knight_1/Deadnew.png",
-//   totalFrames: 6,
-//   frameWidth: 200,
-//   backgroundSize: "1200px 200px",
-//   frameDelay: 300,
-// };
+const deathConfig = {
+  image: "Assets/Knight_1/Deadnew.png",
+  totalFrames: 6,
+  frameWidth: 200,
+  backgroundSize: "1200px 200px",
+  frameDelay: 300,
+};
 
 let damageFrame = 0;
 let damageInterval;
 
-function animateDamage(config) {
-  damageFrame = (damageFrame + 1) % config.frames;
-  const frameX = damageFrame * config.width;
+function animateDamage() {
+  damageFrame = (damageFrame + 1) % hurtConfig.totalFrames;
+  const frameX = damageFrame * hurtConfig.frameWidth;
   sprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   if (damageFrame === 0) {
@@ -572,33 +574,31 @@ function triggerDamageAnimation() {
   clearInterval(idleInterval);
   clearInterval(attackInterval);
 
-  const config = getResponsivePlayerConfig("hurt");
-  sprite.style.backgroundImage = `url(${config.image})`;
-  sprite.style.backgroundSize = `${config.frames * config.width}px ${
-    config.height
-  }px`;
+  sprite.style.backgroundImage = `url(${hurtConfig.image})`;
+  sprite.style.backgroundSize = hurtConfig.backgroundSize;
 
   damageFrame = 0;
-  const frameX = damageFrame * config.width;
+  const frameX = damageFrame * hurtConfig.frameWidth;
   sprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   clearInterval(damageInterval);
-  damageInterval = setInterval(() => animateDamage(config), config.delay);
+  damageInterval = setInterval(animateDamage, hurtConfig.frameDelay);
 }
 
 let deathFrame = 0;
 let deathInterval;
 
-function animateDeath(config) {
-  deathFrame = deathFrame + 1;
+function animateDeath() {
+  deathFrame = (deathFrame + 1) % deathConfig.totalFrames;
+  const frameX = deathFrame * deathConfig.frameWidth;
+  sprite.style.backgroundPosition = `-${frameX}px 0px`;
 
-  if (deathFrame >= config.frames) {
+  if (deathFrame === 0) {
     clearInterval(deathInterval);
-    const lastFrameX = (config.frames - 1) * config.width;
-    sprite.style.backgroundPosition = `-${lastFrameX}px 0px`;
-  } else {
-    const frameX = deathFrame * config.width;
-    sprite.style.backgroundPosition = `-${frameX}px 0px`;
+
+    sprite.style.backgroundPosition = `-${
+      (deathConfig.totalFrames - 1) * deathConfig.frameWidth
+    }px 0px`;
   }
 }
 
@@ -607,18 +607,15 @@ function triggerDeathAnimation() {
   clearInterval(attackInterval);
   clearInterval(damageInterval);
 
-  const config = getResponsivePlayerConfig("death");
-  sprite.style.backgroundImage = `url(${config.image})`;
-  sprite.style.backgroundSize = `${config.frames * config.width}px ${
-    config.height
-  }px`;
+  sprite.style.backgroundImage = `url(${deathConfig.image})`;
+  sprite.style.backgroundSize = deathConfig.backgroundSize;
 
   deathFrame = 0;
-  const frameX = deathFrame * config.width;
+  const frameX = deathFrame * deathConfig.frameWidth;
   sprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   clearInterval(deathInterval);
-  deathInterval = setInterval(() => animateDeath(config), config.delay);
+  deathInterval = setInterval(animateDeath, deathConfig.frameDelay);
 }
 
 // Use this to store the interval IDs for the animations
@@ -650,225 +647,68 @@ function triggerAttackAnimation() {
   clearInterval(attackInterval);
   clearInterval(idleInterval);
 
-  const config = getResponsivePlayerConfig("attack");
   // Ensure sprite is properly set for the attack animation
-  sprite.style.backgroundImage = `url(${config.image})`;
-  sprite.style.backgroundSize = `${config.frames * config.width}px ${
-    config.height
-  }px`;
+  sprite.style.backgroundImage = `url(${attackConfig.image})`;
+  sprite.style.backgroundSize = attackConfig.backgroundSize;
 
   attackFrame = 0; // Reset to the first frame
-  attackInterval = setInterval(() => {
-    attackFrame = (attackFrame + 1) % config.frames;
-    const frameX = attackFrame * config.width;
-    sprite.style.backgroundPosition = `-${frameX}px 0px`;
-
-    if (attackFrame === 0) {
-      clearInterval(attackInterval);
-      resetToIdleAnimation();
-      isAttacking = false;
-    }
-  }, config.delay);
+  attackInterval = setInterval(animateAttack, attackConfig.frameDelay); // Start the attack animation
 }
-
-let blockInterval;
 
 function triggerBlockAnimation() {
   if (isAttacking) return;
   isAttacking = true;
 
-  // Clear other animations
   clearInterval(attackInterval);
   clearInterval(idleInterval);
-  clearInterval(blockInterval); // Stop any ongoing block animation
 
-  const config = getResponsivePlayerConfig("block");
-  sprite.style.backgroundImage = `url(${config.image})`;
-  sprite.style.backgroundSize = config.backgroundSize;
+  sprite.style.backgroundImage = `url(${blockConfig.image})`;
+  sprite.style.backgroundSize = blockConfig.backgroundSize;
 
-  let frame = 0; // Local frame counter
-
-  blockInterval = setInterval(() => {
-    const frameX = frame * config.width;
-    sprite.style.backgroundPosition = `-${frameX}px 0px`;
-
-    frame++;
-
-    if (frame === config.frames) {
-      clearInterval(blockInterval);
-      isAttacking = false;
-      resetToIdleAnimation();
-    }
-  }, config.delay);
-}
-
-// function animateBlock(config) {
-//   const frameX = attackFrame * config.width;
-//   sprite.style.backgroundPosition = `-${frameX}px 0px`;
-
-//   attackFrame++;
-//   if (attackFrame >= config.frames) {
-//     clearInterval(attackInterval);
-//     isAttacking = false;
-//     resetToIdleAnimation();
-//   }
-// }
-
-function setIdleTimeout() {
-  const config = getResponsivePlayerConfig("attack");
+  attackFrame = 0;
+  attackInterval = setInterval(animateBlock, blockConfig.frameDelay);
 
   setTimeout(() => {
+    clearInterval(attackInterval);
+    isAttacking = false;
+  }, blockConfig.totalFrames * blockConfig.frameDelay);
+}
+
+function animateBlock() {
+  attackFrame++;
+  if (attackFrame >= blockConfig.totalFrames) {
+    clearInterval(attackInterval);
+    isAttacking = false;
+  }
+}
+
+function setIdleTimeout() {
+  // Optional: Reset the player's animation after the attack
+  setTimeout(() => {
+    // If using idle animation, you can do this after the attack animation is complete
+    // Call the function to reset the player's animation back to idle
+
     resetToIdleAnimation();
-  }, config.frames * config.delay);
+  }, attackConfig.totalFrames * attackConfig.frameDelay); // Reset after the animation duration
 }
 
 // Reset to idle animation
 function resetToIdleAnimation() {
-  const config = getResponsivePlayerConfig("idle");
-
-  clearInterval(idleInterval);
   // Set the sprite for idle animation
-  sprite.style.backgroundImage = `url(${config.image})`;
-  sprite.style.backgroundSize = `${config.frames * config.width}px ${
-    config.height
-  }px`;
+  sprite.style.backgroundImage = `url(${idleConfig.image})`;
+  sprite.style.backgroundSize = idleConfig.backgroundSize;
 
   let frame = 0;
 
   // Animate idle animation
   function animateSprite() {
-    frame = (frame + 1) % config.frames;
-    const frameX = frame * config.width;
+    frame = (frame + 1) % idleConfig.totalFrames;
+    const frameX = frame * idleConfig.frameWidth;
     sprite.style.backgroundPosition = `-${frameX}px 0px`;
   }
 
   clearInterval(idleInterval); // Clear any previous idle intervals
-  idleInterval = setInterval(animateSprite, config.delay); // Start idle animation
-}
-
-function getResponsivePlayerConfig(type) {
-  const screenWidth = window.innerWidth;
-
-  const sizes = {
-    large: {
-      idle: {
-        image: "Assets/Knight_1/Idlenew.png",
-        frames: 4,
-        width: 200,
-        height: 200,
-        delay: 350,
-      },
-      attack: {
-        image: "Assets/Knight_1/Attack2.png",
-        frames: 4,
-        width: 200,
-        height: 200,
-        delay: 150,
-      },
-      block: {
-        image: "Assets/Knight_1/Defendnew4.png",
-        frames: 5,
-        width: 200,
-        height: 200,
-        delay: 200,
-        backgroundSize: "1000px 200px",
-      },
-      hurt: {
-        image: "Assets/Knight_1/Hurtnew.png",
-        frames: 2,
-        width: 200,
-        height: 200,
-        delay: 150,
-      },
-      death: {
-        image: "Assets/Knight_1/Deadnew.png",
-        frames: 6,
-        width: 200,
-        height: 200,
-        delay: 300,
-      },
-    },
-    medium: {
-      idle: {
-        image: "Assets/Knight_1/Idlenew.png",
-        frames: 4,
-        width: 150,
-        height: 150,
-        delay: 350,
-      },
-      attack: {
-        image: "Assets/Knight_1/Attack2.png",
-        frames: 4,
-        width: 150,
-        height: 150,
-        delay: 150,
-      },
-      block: {
-        image: "Assets/Knight_1/Defendnew4.png",
-        frames: 5,
-        width: 150,
-        height: 150,
-        delay: 200,
-        backgroundSize: "1000px 200px",
-      },
-      hurt: {
-        image: "Assets/Knight_1/Hurtnew.png",
-        frames: 2,
-        width: 150,
-        height: 150,
-        delay: 150,
-      },
-      death: {
-        image: "Assets/Knight_1/Deadnew.png",
-        frames: 6,
-        width: 150,
-        height: 150,
-        delay: 300,
-      },
-    },
-    small: {
-      idle: {
-        image: "Assets/Knight_1/Idlenew.png",
-        frames: 4,
-        width: 100,
-        height: 100,
-        delay: 350,
-      },
-      attack: {
-        image: "Assets/Knight_1/Attack2.png",
-        frames: 4,
-        width: 100,
-        height: 100,
-        delay: 150,
-      },
-      block: {
-        image: "Assets/Knight_1/Defendnew4.png",
-        frames: 5,
-        width: 100,
-        height: 100,
-        delay: 200,
-        backgroundSize: "1000px 200px",
-      },
-      hurt: {
-        image: "Assets/Knight_1/Hurtnew.png",
-        frames: 2,
-        width: 100,
-        height: 100,
-        delay: 150,
-      },
-      death: {
-        image: "Assets/Knight_1/Deadnew.png",
-        frames: 6,
-        width: 100,
-        height: 100,
-        delay: 300,
-      },
-    },
-  };
-
-  if (screenWidth >= 1280) return sizes.large[type];
-  else if (screenWidth >= 1024) return sizes.medium[type];
-  else return sizes.small[type];
+  idleInterval = setInterval(animateSprite, idleConfig.frameDelay); // Start idle animation
 }
 
 // Function to initialize the health bars on page load
