@@ -151,7 +151,7 @@ const SoundManager = {
   },
 
   globalVolume: 0.5,
-
+  battleMusicVolume: 0.5,
   currentBattleMusic: null,
 
   preloadAll() {
@@ -193,18 +193,30 @@ const SoundManager = {
   },
 
   playBattleMusic() {
-    const battleMusic = this.sounds.BattleMusic;
-    const clone = battleMusic.cloneNode();
-    clone.volume = 0.05;
+    const original = this.sounds.BattleMusic;
+    const baseVolume = original.dataset?.baseVolume || 1;
+
+    const clone = original.cloneNode();
     clone.loop = true;
+    clone.volume = baseVolume * this.battleMusicVolume;
+
+    // ✅ Copy the dataset manually (cloneNode doesn't keep it)
+    clone.dataset = { baseVolume };
 
     this.currentBattleMusic = clone;
 
     clone.addEventListener("canplaythrough", () => {
-      clone.play().catch((e) => {
-        console.warn(`BattleMusic failed to play:`, e);
-      });
+      clone
+        .play()
+        .then(() => {
+          console.log("🎵 Battle music started.");
+        })
+        .catch((e) => {
+          console.warn("⚠️ BattleMusic failed to play:", e);
+        });
     });
+
+    clone.load(); // Ensure it starts loading immediately
   },
 
   fadeOutBattleMusic(duration = 1000) {
@@ -237,32 +249,65 @@ const SoundManager = {
     for (const key in this.sounds) {
       const audio = this.sounds[key];
 
-      const baseVolume = audio.dataset?.baseVolume || audio.volume || 0.5;
-      audio.volume = baseVolume * volume;
+      if (key !== "BattleMusic") {
+        const baseVolume = parseFloat(audio.dataset?.baseVolume) || 1;
+        audio.volume = baseVolume * volume;
+      }
     }
 
     if (this.currentBattleMusic) {
-      this.currentBattleMusic.volume = volume;
+      this.currentBattleMusic.volume = this.battleMusicVolume;
     }
   },
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  const savedVolume = parseFloat(localStorage.getItem("globalVolume"));
-  const slider = document.getElementById("volume-slider");
+  const savedSfxVolume = parseFloat(localStorage.getItem("globalVolume"));
+  const savedMusicVolume = parseFloat(
+    localStorage.getItem("battleMusicVolume")
+  );
 
-  if (!isNaN(savedVolume)) {
-    SoundManager.setGlobalVolume(savedVolume);
-    if (slider) {
-      slider.value = savedVolume;
+  const sfxSlider = document.getElementById("volume-slider");
+  const musicSlider = document.getElementById("music-volume-slider");
+
+  if (!isNaN(savedSfxVolume)) {
+    SoundManager.setGlobalVolume(savedSfxVolume);
+    if (sfxSlider) {
+      sfxSlider.value = Math.sqrt(savedSfxVolume / 0.3);
     }
   }
 
-  if (slider) {
-    slider.addEventListener("input", (event) => {
+  if (!isNaN(savedMusicVolume)) {
+    SoundManager.battleMusicVolume = savedMusicVolume;
+    if (SoundManager.currentBattleMusic) {
+      const baseVolume =
+        parseFloat(SoundManager.currentBattleMusic.dataset?.baseVolume) || 1;
+      SoundManager.currentBattleMusic.volume = baseVolume * savedMusicVolume;
+    }
+    if (musicSlider) {
+      const raw = Math.sqrt(savedMusicVolume / 0.3);
+      musicSlider.value = Math.min(Math.max(raw, 0), 1);
+    }
+  }
+
+  if (sfxSlider) {
+    sfxSlider.addEventListener("input", (event) => {
       const rawValue = parseFloat(event.target.value);
       const scaledVolume = rawValue * rawValue * 0.3;
       SoundManager.setGlobalVolume(scaledVolume);
+      localStorage.setItem("globalVolume", scaledVolume);
+    });
+  }
+
+  if (musicSlider) {
+    musicSlider.addEventListener("input", (event) => {
+      const rawValue = parseFloat(event.target.value);
+      const scaledVolume = rawValue * rawValue * 0.3;
+      SoundManager.battleMusicVolume = scaledVolume;
+      localStorage.setItem("battleMusicVolume", scaledVolume);
+      if (SoundManager.currentBattleMusic) {
+        SoundManager.currentBattleMusic.volume = scaledVolume;
+      }
     });
   }
 });

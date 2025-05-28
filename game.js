@@ -583,7 +583,13 @@ function populateWeaponUpgradeOptions() {
 
   window.currentUpgradebleWeapons = upgradebleWeapons;
 
-  displayWeapons(player, upgradebleWeapons, false, "upgrade-weapon-options");
+  displayWeapons(
+    player,
+    upgradebleWeapons,
+    false,
+    "upgrade-weapon-options",
+    true
+  );
 
   const weaponElements = document.getElementById(
     "upgrade-weapon-options"
@@ -610,6 +616,11 @@ function upgradeWeapon(weapon) {
     player.savePlayerToStorage();
 
     displayTurnMessage(`Upgraded ${weapon.name}!`);
+
+    populateWeaponUpgradeOptions();
+
+    const upgradeOptions = document.getElementById("upgrade-weapon-options");
+    upgradeOptions.style.display = "none";
   } else {
     displayTurnMessage("Not enough gold to upgrade!");
   }

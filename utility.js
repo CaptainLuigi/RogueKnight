@@ -45,6 +45,22 @@ function saveAndExit() {
 }
 
 function deleteProgressAndExit() {
-  localStorage.clear();
+  localStorage.removeItem("playerState");
+  localStorage.removeItem("MapState");
+  localStorage.removeItem("triggeredEvents");
+
+  localStorage.removeItem("shopWeapons");
+  localStorage.removeItem("shopRelics");
+
+  localStorage.removeItem("boughtShopWeapons");
+  localStorage.removeItem("boughtShopRelics");
+
+  localStorage.removeItem("selectedFightIndex");
+
+  localStorage.setItem("weaponRemoved", "false");
+
+  globalSettings.relicGroup = "chest";
+  globalSettings.redirectToChest = false;
+
   window.location.href = "startscreen.html";
 }

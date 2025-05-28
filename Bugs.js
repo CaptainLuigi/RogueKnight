@@ -29,15 +29,14 @@ bei einem gegner, diesen centern
 
 succubus soll instant angreifen
 
-upgrades von waffen anzeigen (wie verändern sich stats)
-
 gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
 angefangen startseite responsive zu machen
 
 navigation icons werden teilweise abgeschnitten, wenn hover drüber
 
-battle song ist immer gleiche lautstärke am anfang vom fight, egal wie volume einstellung (battle song generell vielleicht leiser)
+bei map sind inhalte von map row nicht horizontal centered
 
-wenn waffe upgraded, dann aus dem feld raus und vielleicht display neu laden (um waffen level anzuzeigen)
+tooltip im fight inhalt centern
+
 */

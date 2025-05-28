@@ -418,11 +418,17 @@ class Player extends HealthEntity {
     this.#energy += amount;
   }
 
-  showDeck() {
+  showDeck(filter = () => true) {
     const deckScreen = document.getElementById("weapon-deck-screen");
     deckScreen.classList.remove("hidden");
 
-    displayWeapons(this, this.deck, false, "weapon-list");
+    displayWeapons(
+      this,
+      this.deck.filter(filter),
+      false,
+      "weapon-list",
+      deckScreen.hasAttribute("isupgrademode")
+    );
   }
 
   clearDeck() {
@@ -446,7 +452,6 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new devWeapon());
-      this.addWeapon(new PoisonPotion());
 
       // this.addWeapon(new devShield());
     } else {

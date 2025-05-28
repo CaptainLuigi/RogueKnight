@@ -10,8 +10,8 @@
     position: absolute;
     height: 50px;
     width: 150px;
-    bottom: 10%;
-    left: 20%;
+    bottom: 5%;
+    left: 15%;
     z-index: 1000; 
 }
 
@@ -268,4 +268,30 @@
   border-radius: 50%;
   border: 2px solid black;
   cursor: pointer;
+}
+
+.volume-info {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+}
+
+.upgrade-preview-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 8px;
+}
+
+.tooltip-block {
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 8px;
+    border-radius: 4px;
+    min-width: 160px;
+}
+
+.arrow {
+    font-size: 24px;
+    line-height: 1;
+    margin-top: 20px;
 }

@@ -24,6 +24,18 @@
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
       <input
         type="range"
         id="volume-slider"
@@ -33,7 +45,7 @@
         step="0.01"
         value="0.5"
       />
-      <button onclick="closePauseMenu()">Cancel</button>
+      <button onclick="closePauseMenu()">Close</button>
     </div>
 
     <div class="flex-container">

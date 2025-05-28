@@ -364,8 +364,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     upgradeButton?.addEventListener("click", () => {
       console.log("Upgrade button clicked");
+      weaponDeckScreen.setAttribute("isupgrademode", "");
       weaponDeckScreen?.classList.remove("hidden");
-      player.showDeck("upgrade"); // This should generate .weapon elements
+      player.showDeck((weapon) => weapon.level < 3); // This should generate .weapon elements
       upgradeMode = true;
 
       document.body.classList.add("upgrade-mode");
@@ -418,6 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Closing deck");
       weaponDeckScreen?.classList.add("hidden");
       upgradeMode = false;
+      weaponDeckScreen.removeAttribute("isupgrademode");
     });
 
     async function upgradeWeapon(weapon) {
