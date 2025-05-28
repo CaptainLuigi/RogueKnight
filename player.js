@@ -418,13 +418,13 @@ class Player extends HealthEntity {
     this.#energy += amount;
   }
 
-  showDeck(filter = () => true) {
+  showDeck(filterFunction = () => true) {
     const deckScreen = document.getElementById("weapon-deck-screen");
     deckScreen.classList.remove("hidden");
 
     displayWeapons(
       this,
-      this.deck.filter(filter),
+      this.deck.filter(filterFunction),
       false,
       "weapon-list",
       deckScreen.hasAttribute("isupgrademode")
