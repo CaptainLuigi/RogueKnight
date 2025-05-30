@@ -610,13 +610,13 @@ class BasicSpear extends Weapons {
       50,
       15,
       1,
-      "Can only target the first enemy and pierces two enemies, click to instantly use weapon.",
+      "Can only target the first enemy and pierces one enemy, click to instantly use weapon.",
       "Assets/spear.png",
       false,
       0,
       0,
       0,
-      [1, 1],
+      [1],
       0,
       false,
       0,
@@ -635,12 +635,18 @@ class BasicSpear extends Weapons {
         weaponInfo.damage = 25;
         weaponInfo.criticalDamage = 55;
         weaponInfo.criticalChance = 20;
+        weaponInfo.effectsRight = [1, 1];
+        weaponInfo.description =
+          "Can only target the first enemy and pierces two enemies, click to instantly use weapon.";
 
         break;
       case 3:
         weaponInfo.damage = 30;
         weaponInfo.criticalDamage = 65;
         weaponInfo.criticalChance = 30;
+        weaponInfo.effectsRight = [1, 1, 1];
+        weaponInfo.description =
+          "Can only target the first enemy and pierces three enemies, click to instantly use weapon.";
 
         // weaponInfo.canHeal = true;
         // weaponInfo.healingAmount = [20, 10, 5];

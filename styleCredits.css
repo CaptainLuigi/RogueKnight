@@ -10,7 +10,7 @@ body {
 }
 #StartscreenBackground {
     width: 100%;
-    height: auto;
+    height: 100vh;
     object-fit: cover;
     /* margin-left: 2.5%; */
     position: absolute;

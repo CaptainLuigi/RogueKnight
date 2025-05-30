@@ -33,10 +33,5 @@ gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abst
 
 angefangen startseite responsive zu machen
 
-navigation icons werden teilweise abgeschnitten, wenn hover drüber
-
-bei map sind inhalte von map row nicht horizontal centered
-
 tooltip im fight inhalt centern
-
 */

@@ -404,6 +404,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (weapon) {
           console.log("Upgrading weapon:", weapon.name); // Confirm weapon to be upgraded
           if (typeof upgradeWeapon === "function") {
+            SoundManager.play("Upgrade");
             upgradeWeapon(weapon); // Upgrade weapon
           } else {
             console.error("upgradeWeapon is not defined or is not a function.");
