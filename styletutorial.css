@@ -12,7 +12,7 @@ html, body {
 }
 #StartscreenBackground {
     width: 100%;
-    height: auto;
+    height: 100vh;
     display: block;
     object-fit: cover;
     /* margin-left: 2.5%; */
@@ -660,7 +660,7 @@ button:disabled {
     position: fixed;
     top: 0;
     right: 0;
-    width: 35%;
+    width: 50%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
@@ -674,6 +674,11 @@ button:disabled {
 
 #tutorial-intro-overlay h2 {
     font-size: 48px;
+    text-align: center;
+}
+
+#tutorial-intro-overlay p {
+    text-align: center;
 }
 
 #tutorial-intro-overlay p,

@@ -6,6 +6,9 @@ body {
     font-family: 'Pirata_One';
     position: relative;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 
 }
 
@@ -83,4 +86,12 @@ body {
     }
 }
 
+#version {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    font-size: 18px;
+    color: white;
+    z-index: 1000;
+}
 

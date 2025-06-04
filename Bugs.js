@@ -31,7 +31,8 @@ succubus soll instant angreifen
 
 gegner glitchen leicht hoch/runter, wahrscheinlich durch neues styling für abstände bei intent + display
 
-angefangen startseite responsive zu machen
-
 tooltip im fight inhalt centern
+
+waffen machen prozentual schaden evtl implementieren
+
 */

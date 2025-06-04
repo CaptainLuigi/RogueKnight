@@ -200,6 +200,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  //Die Gambling
+
+  if (eventType === "dieGambling") {
+    const dieGamblingBox = document.getElementById("dieGambling");
+    const rollTheDieLostBox = document.getElementById("rollTheDieLost");
+    const rolltheDieWonBox = document.getElementById("rollTheDieWon");
+
+    dieGamblingBox.classList.remove("hidden");
+
+    const rollButtons = document.querySelectorAll(".rollTheDie");
+    const winButton = document.getElementById("gamblingDieWon");
+
+    rollButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        if (globalSettings.playerGold < 10) {
+          displayTurnMessage("Not enough gold!");
+          return;
+        }
+
+        updatePlayerGold(-10);
+        player.savePlayerToStorage();
+
+        const dieRoll = Math.floor(Math.random() * 6) + 1;
+
+        dieGamblingBox.classList.add("hidden");
+        rollTheDieLostBox.classList.add("hidden");
+        rolltheDieWonBox.classList.add("hidden");
+
+        if (dieRoll === 6) {
+          rolltheDieWonBox.classList.remove("hidden");
+        } else {
+          rollTheDieLostBox.classList.remove("hidden");
+        }
+      });
+    });
+
+    if (winButton) {
+      winButton.addEventListener("click", function () {
+        player.foundRelic("Gambler's Die", true);
+        player.savePlayerToStorage();
+        returnToMap();
+      });
+    }
+  }
+
   //Found Gold Code
 
   if (eventType === "foundGold") {

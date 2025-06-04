@@ -11,7 +11,7 @@ html, body {
 }
 #StartscreenBackground {
     width: 100%;
-    height: auto;
+    height: 100vh;
     display: block;
     object-fit: cover;
     /* margin-left: 2.5%; */
@@ -115,7 +115,7 @@ html, body {
     position: absolute;
     background-size: 1400px 200px;
     top: 450px;
-    left: 650px;
+    left: 35vw;
     z-index: 1100;
     image-rendering: pixelated;
 }

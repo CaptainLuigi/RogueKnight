@@ -358,7 +358,11 @@ async function endTurn() {
   });
   disableWeapons();
 
+  console.log("Energy before ending turn:", player.energy);
+
   isPlayerTurn = false;
+
+  console.log("Energy directly after isplayerturn false", player.energy);
 
   if (player.equippedRelics.includes("Overcharged Core")) {
     player.takeDamage(5);
@@ -415,6 +419,16 @@ async function endTurn() {
   blockContainer.classList.add("hidden");
   setEnemyIndices();
 
+  if (player.equippedRelics.includes("Curse of Continuity")) {
+    const energyToStore = Math.max(player.energy, 3);
+    if (energyToStore > 0) {
+      player.takeDamage(energyToStore * 3);
+      updateHealthBar(player);
+      await wait(300);
+    }
+    player.storedEnergy = energyToStore;
+  }
+
   // Show turn message for the player
   displayTurnMessage("Your Turn Again!");
 
@@ -425,8 +439,25 @@ async function endTurn() {
 
 // Function to refill the player's energy (e.g., set to full energy)
 function refillEnergy() {
-  player.restoreEnergy(player.maxEnergy); // Set the energy back to the maximum value
+  console.log("Storged energy at start of turn:", player.storedEnergy);
+
+  let baseEnergy = player.maxEnergy;
+
+  if (player.equippedRelics.includes("Curse of Continuity")) {
+    baseEnergy += Math.min(3, player.storedEnergy);
+  }
+
+  player.restoreEnergy(baseEnergy); // Set the energy back to the maximum value
+
   adrenalSurge();
+  if (player.equippedRelics.includes("Gambler's Die")) {
+    if (Math.random() < 0.5) {
+      player.addEnergy(2);
+    } else {
+      player.loseEnergy(1);
+    }
+  }
+  player.storedEnergy = 0;
 }
 
 // Update the player's energy display

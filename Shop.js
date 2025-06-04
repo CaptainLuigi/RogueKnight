@@ -138,6 +138,7 @@ function purchaseWeapon(weapon) {
 
   if (globalSettings.playerGold >= weaponPrice) {
     player.addWeapon(weapon);
+    SoundManager.play("Purchase");
     updatePlayerGold(-weaponPrice);
   }
 }
@@ -148,7 +149,7 @@ document.getElementById("Shop-removal").addEventListener("click", () => {
   const weaponDeckScreen = document.getElementById("weapon-deck-screen");
   weaponDeckScreen.classList.remove("hidden");
 
-  player.showDeck("remove"); // Use the same method as upgrading to show the deck
+  player.showDeck(); // Use the same method as upgrading to show the deck
 
   // Add class for remove mode
   document.body.classList.add("remove-mode");
@@ -165,6 +166,9 @@ document.getElementById("Shop-removal").addEventListener("click", () => {
 document
   .getElementById("weapon-deck-screen")
   .addEventListener("click", (event) => {
+    if (!document.body.classList.contains("remove-mode")) {
+      return;
+    }
     // Check if the click target is a weapon item
     const weaponElement = event.target.closest(".weapon");
 
@@ -196,6 +200,7 @@ document
           // Close the deck screen and disable the Shop-removal button
           document.getElementById("weapon-deck-screen").classList.add("hidden");
           document.getElementById("Shop-removal").disabled = true;
+          document.body.classList.remove("remove-mode");
 
           displayTurnMessage(`You removed the weapon and lost 50 gold.`); // Show a message to the player
         } else {
@@ -224,7 +229,7 @@ function dropWeapon(indexToDrop) {
 
   // Remove the weapon from the deck
   player.dropWeapon(indexToDrop);
-  player.showDeck("remove"); // Re-render the deck after removal
+  player.showDeck(); // Re-render the deck after removal
 
   console.log("Weapon removed.");
 }

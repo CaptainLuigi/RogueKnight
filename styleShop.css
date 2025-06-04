@@ -7,6 +7,7 @@ html, body {
     height: 100%;
     margin: 0;
     overflow: hidden;
+    position: relative;
 }
 
 body, button {
@@ -21,26 +22,34 @@ div {
 
 #ShopBackground {
     width: 100%;
-    height: 100%;  
+    height: 100vh;  
     object-fit: cover;
     position: absolute;    
     margin-left: 0;
+    image-rendering: pixelated;
 }
 
 #WoodBackground {
-    width: 1300px;
-    height: 500px;
+    width: 67vw;
+    height: 56vh;
     z-index: 1;
     position: absolute;
-    top: 105px;
+    top: 12vh;
     left: 10%;
     border: 2px solid black;
     border-radius: 10px;
+    image-rendering: pixelated;
+}
+
+@media (max-width: 1440px) {
+    #WoodBackground {
+        width: 63vw;
+    }
 }
 
 #WoodFloor {
     width: 100%;
-    height: 18px;
+    height: 2vh;
     z-index: 1;
     position: absolute;
     top: 98%;
@@ -63,6 +72,13 @@ div {
     padding: 10px;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+@media (max-width: 1440px) {
+   .Shop-weapon {
+    width: 155px;
+    height: 155px;
+   }
 }
 
 .weapon {
@@ -90,6 +106,13 @@ div {
     text-align: center;
     z-index: 3;
     margin-top: 80px;
+}
+
+@media (max-width: 1440px) {
+    .Shop-relic {
+        width: 155px;
+        height: 155px;
+    }
 }
 
  .Shop-relic-container {
@@ -130,6 +153,13 @@ div {
     cursor: pointer;
 }
 
+@media (max-width: 1440px) {
+    #close-post-battle {
+        width: 200px;
+        height: 75px;
+    }
+}
+
 #speech-bubble {
     position: fixed;
     top: 25%;
@@ -145,7 +175,13 @@ div {
     z-index: 1200;
     text-align: center;
     border: 2px solid black;
-   
+}
+
+@media (max-width: 1440px) {
+    #speech-bubble {
+        top: 22%;
+        left: 87%;
+    }
 }
 
 #speech-bubble:has(> .visible) {
@@ -160,7 +196,7 @@ div {
 #playerGold {
     position: absolute;
     top: 20px;
-    left: 90%;
+    left: 90vw;
     color: gold;
     z-index: 1100;
     font-size: 36px;
@@ -190,9 +226,23 @@ img.weapon-image {
     padding: 10px;
 }
 
+@media (max-width: 1440px) {
+    .Shop-weapon img.weapon-image {
+        width: 130px;
+        height: 130px;
+    }
+}
+
 .Shop-relic img {
     width: 150px;
     height: 150px;
+}
+
+@media (max-width: 1440px) {
+    .Shop-relic img {
+        width: 130px;
+        height: 130px;
+    }
 }
 
 #weapon-list .weapon .weapon-image {

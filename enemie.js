@@ -444,7 +444,7 @@ class Enemy extends HealthEntity {
       const enemy = player.attackingEnemy;
       const isBrambleEquipped = loadData("relic_Bramble Mantle");
       if (isBrambleEquipped) {
-        enemy.takeDamage(5);
+        enemy.takeDamage(15);
       }
 
       if (

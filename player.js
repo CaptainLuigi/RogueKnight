@@ -24,6 +24,7 @@ class Player extends HealthEntity {
   #equippedRelics = [];
   #foundRelics = [];
   maxHandSize = 5;
+  storedEnergy = 0;
 
   constructor(name, health, maxHealth, deck, energy, maxEnergy) {
     super();
@@ -311,12 +312,14 @@ class Player extends HealthEntity {
     this.#health -= finalDamage;
 
     if (this.#health <= 0) {
+      this.isDying = true;
       if (this.#equippedRelics.includes("Death's Bargain")) {
         this.#health = Math.floor((this.#maxHealth / 100) * 10);
         deathsBargain(this);
+        this.isDying = false;
       } else {
         this.#health = 0; // Ensure health doesn't go negative
-        this.isDying = true;
+
         this.displayDamage(finalDamage, false, -60);
         SoundManager.play("Hurt");
         await wait(300);
@@ -328,12 +331,15 @@ class Player extends HealthEntity {
         globalSettings.redirectToChest = false;
         localStorage.removeItem("selectedFightIndex");
         window.location.href = "deathscreen.html";
+        return;
       }
     } else {
-      this.displayDamage(finalDamage, false, -60);
-      triggerDamageAnimation();
-      SoundManager.play("Hurt");
-      await wait(300);
+      if (!this.isDying) {
+        this.displayDamage(finalDamage, false, -60);
+        triggerDamageAnimation();
+        SoundManager.play("Hurt");
+        await wait(300);
+      }
     }
     this.savePlayerToStorage();
   }
@@ -418,6 +424,10 @@ class Player extends HealthEntity {
     this.#energy += amount;
   }
 
+  loseEnergy(amount) {
+    this.#energy -= amount;
+  }
+
   showDeck(filterFunction = () => true) {
     const deckScreen = document.getElementById("weapon-deck-screen");
     deckScreen.classList.remove("hidden");
@@ -451,7 +461,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
-      // this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
 
       // this.addWeapon(new devShield());
     } else {
