@@ -24,7 +24,6 @@ class Player extends HealthEntity {
   #equippedRelics = [];
   #foundRelics = [];
   maxHandSize = 5;
-  storedEnergy = 0;
 
   constructor(name, health, maxHealth, deck, energy, maxEnergy) {
     super();
@@ -56,7 +55,15 @@ class Player extends HealthEntity {
   }
 
   get maxEnergy() {
-    return this.#maxEnergy;
+    return this.#maxEnergy + this.bonusEnergy;
+  }
+
+  get bonusEnergy() {
+    let bonusEnergy = 0;
+    if (this.equippedRelics.includes("Curse of Continuity")) {
+      bonusEnergy += relicList["Curse of Continuity"].bonusEnergy ?? 0;
+    }
+    return bonusEnergy;
   }
 
   get damageModifier() {
@@ -417,7 +424,7 @@ class Player extends HealthEntity {
   }
   restoreEnergy(amount) {
     this.#energy += amount; // Restore energy
-    if (this.#energy > this.#maxEnergy) this.#energy = this.#maxEnergy; // Cap at max energy
+    if (this.#energy > this.maxEnergy) this.#energy = this.maxEnergy; // Cap at max energy
   }
 
   addEnergy(amount) {
@@ -461,7 +468,8 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
-      this.addWeapon(new devWeapon());
+      this.addWeapon(new throwingKnife());
+      // this.addWeapon(new devWeapon());
 
       // this.addWeapon(new devShield());
     } else {

@@ -7,14 +7,29 @@ function updatePlayerGold(goldAmount) {
 }
 
 let sprite;
+let isDuplicateMode = false;
+let isLifestealMode = false;
+let isLowerCostMode = false;
+let isApplyPoisonMode = false;
+let isUpgradeMode = false;
 document.addEventListener("DOMContentLoaded", () => {
   displayEquippedRelics();
 
   document.getElementById("current-deck").addEventListener("click", () => {
+    isDuplicateMode = false;
+    isLifestealMode = false;
+    isLowerCostMode = false;
+    isApplyPoisonMode = false;
+    isUpgradeMode = false;
     player.showDeck();
   });
   document.getElementById("close-deck-btn").addEventListener("click", () => {
     document.getElementById("weapon-deck-screen").classList.add("hidden");
+    isDuplicateMode = false;
+    isLifestealMode = false;
+    isLowerCostMode = false;
+    isApplyPoisonMode = false;
+    isUpgradeMode = false;
   });
   let eventType = loadData("RandomEvent");
 
@@ -401,13 +416,12 @@ document.addEventListener("DOMContentLoaded", function () {
   //upgrade Weapon
 
   if (eventType === "upgradeWeapon") {
-    let upgradeMode = false; // Track upgrade mode
-
     const upgradeButton = document.getElementById("current-deck-upgrade");
     const weaponDeckScreen = document.getElementById("weapon-deck-screen");
     const closeDeckButton = document.getElementById("close-deck-btn");
 
     upgradeButton?.addEventListener("click", () => {
+      isUpgradeMode = true;
       console.log("Upgrade button clicked");
       weaponDeckScreen.setAttribute("isupgrademode", "");
       weaponDeckScreen?.classList.remove("hidden");
@@ -426,6 +440,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Listen for clicks on #weapon-deck-screen and check if it was a .weapon (not .weapon-item)
     weaponDeckScreen?.addEventListener("click", (event) => {
+      if (!isUpgradeMode) return;
+
       // Check if the click target is a .weapon (using index class for selection)
       const weaponElement = event.target.closest(".weapon");
 
@@ -454,7 +470,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             console.error("upgradeWeapon is not defined or is not a function.");
           }
-          upgradeMode = false;
+          isUpgradeMode = false;
         } else {
           console.error("Weapon not found in player's deck");
         }
@@ -464,7 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
     closeDeckButton?.addEventListener("click", () => {
       console.log("Closing deck");
       weaponDeckScreen?.classList.add("hidden");
-      upgradeMode = false;
+      isUpgradeMode = false;
       weaponDeckScreen.removeAttribute("isupgrademode");
     });
 
@@ -544,6 +560,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (tryPoisonBtn) {
       tryPoisonBtn.addEventListener("click", () => {
+        isApplyPoisonMode = true;
+
         const weaponDeckScreen = document.getElementById("weapon-deck-screen");
         const weaponList = document.getElementById("weapon-list");
 
@@ -562,6 +580,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
 
         weaponList.addEventListener("click", async function selectWeapon(e) {
+          if (!isApplyPoisonMode) return;
+
           const weaponEl = e.target.closest(".weapon");
           if (!weaponEl) return;
 
@@ -584,10 +604,12 @@ document.addEventListener("DOMContentLoaded", function () {
             player.deck[indexInDeck].poisonAmount =
               (player.deck[indexInDeck].poisonAmount || 0) + 15;
             document.getElementById("poisonSuccess").classList.remove("hidden");
+            isApplyPoisonMode = false;
           } else {
             if (indexInDeck > -1) {
               SoundManager.play("Dissolve");
               dropWeapon(indexInDeck);
+              isApplyPoisonMode = false;
             }
             document.getElementById("poisonFail").classList.remove("hidden");
           }
@@ -604,6 +626,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (lowerCostBtn) {
       lowerCostBtn.addEventListener("click", () => {
+        isLowerCostMode = true;
+
         const weaponDeckScreen = document.getElementById("weapon-deck-screen");
         const weaponList = document.getElementById("weapon-list");
 
@@ -622,6 +646,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
 
         weaponList.addEventListener("click", function selectWeapon(e) {
+          if (!isLowerCostMode) return;
+
           const weaponEl = e.target.closest(".weapon");
           if (!weaponEl) return;
 
@@ -669,6 +695,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (acceptLifestealBtn) {
       acceptLifestealBtn.addEventListener("click", () => {
+        isLifestealMode = true;
+
         const weaponDeckScreen = document.getElementById("weapon-deck-screen");
         const weaponList = document.getElementById("weapon-list");
 
@@ -687,6 +715,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
 
         weaponList.addEventListener("click", function selectWeapon(e) {
+          if (!isLifestealMode) return;
+
           const weaponEl = e.target.closest(".weapon");
           if (!weaponEl) return;
 
@@ -756,8 +786,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (duplicateWeaponBtn) {
       duplicateWeaponBtn.addEventListener("click", function () {
+        isDuplicateMode = true;
         weaponDeckScreen?.classList.remove("hidden");
-        player.showDeck("duplicate"); // Display player's weapons for selection
+        player.showDeck(); // Display player's weapons for selection
 
         setTimeout(() => {
           const weaponElements = weaponDeckScreen.querySelectorAll(".weapon");
@@ -770,6 +801,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Listen for clicks on weapons in the deck
     weaponDeckScreen?.addEventListener("click", (event) => {
+      if (!isDuplicateMode) return;
+
       const weaponElement = event.target.closest(".weapon"); // Get the clicked weapon element
 
       if (weaponElement) {
@@ -812,6 +845,8 @@ document.addEventListener("DOMContentLoaded", function () {
           weaponDeckScreen.classList.add("hidden");
           duplicateWeaponBox.classList.add("hidden");
           duplicateWeaponBox2.classList.remove("hidden");
+
+          isDuplicateMode = false;
         } else {
           console.error("Selected weapon not found in player's deck");
         }

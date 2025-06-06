@@ -1753,6 +1753,50 @@ class BattleFocus extends Weapons {
   }
 }
 
+class throwingKnife extends Weapons {
+  constructor() {
+    super(
+      "Throwing Knife",
+      1,
+      "Far",
+      10,
+      30,
+      15,
+      0,
+      "Can hit any enemy, click weapon first, then the enemy you want to hit.",
+      "Assets/throwingKnife.png",
+      true,
+      0,
+      5,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 15;
+        weaponInfo.criticalDamage = 40;
+        break;
+      case 3:
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 45;
+        weaponInfo.criticalChance = 20;
+        break;
+    }
+  }
+}
+
 class devWeapon extends Weapons {
   constructor() {
     super(
@@ -1861,6 +1905,7 @@ function getAvailableWeapons() {
     new SwiftShield(),
     new BigHealthPotion(),
     new BattleFocus(),
+    new throwingKnife(),
   ];
 }
 
@@ -1895,6 +1940,7 @@ const weaponClassMapping = {
   SwiftShield,
   BigHealthPotion,
   BattleFocus,
+  throwingKnife,
   devWeapon,
   devShield,
 };
@@ -2120,7 +2166,7 @@ function generateWeaponInfo(
         if (w.criticalDamage > 0)
           html += `<strong>Crit Dmg:</strong> ${w.criticalDamage}<br>`;
         if (w.criticalChance > 0)
-          html += `<strong>Crit %:</strong> ${w.criticalChance}%<br>`;
+          html += `<strong>Crit Chance:</strong> ${w.criticalChance}%<br>`;
         if (w.poisonAmount > 0)
           html += `<strong>Poison:</strong> ${w.poisonAmount}<br>`;
         if (w.canHeal) {

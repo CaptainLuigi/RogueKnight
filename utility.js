@@ -44,7 +44,7 @@ function saveAndExit() {
   window.location.href = "startscreen.html";
 }
 
-function deleteProgressAndExit() {
+function deleteProgressAndExit(exit = true) {
   localStorage.removeItem("playerState");
   localStorage.removeItem("MapState");
   localStorage.removeItem("triggeredEvents");
@@ -59,8 +59,16 @@ function deleteProgressAndExit() {
 
   localStorage.setItem("weaponRemoved", "false");
 
+  for (let key of [...Object.keys(localStorage)]) {
+    if (key.startsWith("relic_")) {
+      localStorage.removeItem(key);
+    }
+  }
+
   globalSettings.relicGroup = "chest";
   globalSettings.redirectToChest = false;
 
-  window.location.href = "startscreen.html";
+  if (exit === true) {
+    window.location.href = "startscreen.html";
+  }
 }

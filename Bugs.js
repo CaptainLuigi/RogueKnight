@@ -35,4 +35,7 @@ tooltip im fight inhalt centern
 
 waffen machen prozentual schaden evtl implementieren
 
+more players with different starting weapons
+
+player glitched wenn leathal damage aber gegner noch actions haben bzw, schaden durch relics gemacht wird
 */
