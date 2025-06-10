@@ -84,7 +84,6 @@ const relicList = [
     "elite",
     100
   ),
-
   new ActiveRelics(
     "Executioner's Mark",
     "Assets/executionersMark.png",
@@ -93,7 +92,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new ActiveRelics(
     "Spirit Totem",
     "Assets/spiritTotem.png",
@@ -102,7 +100,6 @@ const relicList = [
     "chest",
     125
   ),
-
   new ActiveRelics(
     "Sanguine Blessing",
     "Assets/sanguineBlessing.png",
@@ -111,7 +108,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Eternal Bloom",
     "Assets/eternalBloom.png",
@@ -120,7 +116,6 @@ const relicList = [
     "chest",
     75
   ),
-
   new Relics(
     "Souleater",
     "Assets/souleater.png",
@@ -128,7 +123,6 @@ const relicList = [
     "All weapons get +5% lifesteal",
     "succubus"
   ),
-
   new Relics(
     "Beefy Steak",
     "Assets/pixelSteak.png",
@@ -137,7 +131,6 @@ const relicList = [
     "chest",
     75
   ),
-
   new Relics(
     "Whetstone",
     "Assets/whetstone.png",
@@ -146,7 +139,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Scroll of Knowledge",
     "Assets/scrollRelic.png",
@@ -155,7 +147,6 @@ const relicList = [
     "chest",
     75
   ),
-
   new Relics(
     "Bramble Mantle",
     "Assets/brambleMantle.png",
@@ -164,7 +155,6 @@ const relicList = [
     "chest",
     75
   ),
-
   new Relics(
     "Relic of Vigor",
     "Assets/relicOfVigor.png",
@@ -173,7 +163,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Defender's Seal",
     "Assets/defendersSeal.png",
@@ -182,7 +171,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Critical Surge",
     "Assets/criticalSurge.png",
@@ -191,7 +179,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Omnipotence",
     "Assets/blackHole.png",
@@ -200,7 +187,6 @@ const relicList = [
     "elite",
     175
   ),
-
   new Relics(
     "Cursed Gauntlet",
     "Assets/cursedGauntlet.png",
@@ -209,7 +195,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new Relics(
     "Overcharged Core",
     "Assets/overchargedCore.png",
@@ -218,7 +203,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new Relics(
     "Cloak of Protection",
     "Assets/cloakOfProtection.png",
@@ -227,7 +211,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Tincture of Suffering",
     "Assets/tinctureOfSuffering.png",
@@ -236,7 +219,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Golden Sigil",
     "Assets/goldenSigil.png",
@@ -245,7 +227,6 @@ const relicList = [
     "chest",
     75
   ),
-
   new Relics(
     "Back to Basics",
     "Assets/backToBasics.png",
@@ -254,7 +235,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new Relics(
     "Stonewall Totem",
     "Assets/stonewallTotem.png",
@@ -263,7 +243,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "AliensRock",
     "Assets/aliensRock.png",
@@ -272,7 +251,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new Relics(
     "Sharp Focus",
     "Assets/sharpFocus.png",
@@ -281,7 +259,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new Relics(
     "Fist of Bulwark",
     "Assets/fistOfBulwark.png",
@@ -290,7 +267,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Titan's Reflection",
     "Assets/titansReflection.png",
@@ -299,7 +275,6 @@ const relicList = [
     "chest",
     100
   ),
-
   new Relics(
     "Adrenal Surge",
     "Assets/adrenalSurge.png",
@@ -308,7 +283,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new Relics(
     "Death's Bargain",
     "Assets/deathsPact.png",
@@ -317,7 +291,6 @@ const relicList = [
     "elite",
     125
   ),
-
   new ActiveRelics(
     "Curse of Continuity",
     "Assets/CurseOfContinuity.png",
@@ -326,7 +299,6 @@ const relicList = [
     "elite",
     150
   ),
-
   new Relics(
     "Bloodforge",
     "Assets/anvil.png",
@@ -335,7 +307,6 @@ const relicList = [
     "event",
     0
   ),
-
   new Relics(
     "Death's Pact",
     "Assets/deathsBargain2.png",
@@ -344,7 +315,6 @@ const relicList = [
     "unfindable",
     0
   ),
-
   new Relics(
     "Gambler's Die",
     "Assets/dice.png",

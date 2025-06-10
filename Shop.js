@@ -354,6 +354,7 @@ function purchaseRelic(relic) {
   SoundManager.play("Purchase");
   // Equip the relic
   player.foundRelic(relic.name, true);
+  relic.equipRelic(player);
   displayEquippedRelics();
   player.savePlayerToStorage();
 

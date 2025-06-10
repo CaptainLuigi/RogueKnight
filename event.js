@@ -734,6 +734,10 @@ document.addEventListener("DOMContentLoaded", function () {
           weaponList.removeEventListener("click", selectWeapon);
           weaponDeckScreen.classList.add("hidden");
 
+          player.takeDamage(15);
+
+          updateHealthBar(player);
+
           // Apply lifesteal (set canHeal to true and modify healingAmount)
           selectedWeapon.canHeal = true;
           if (Array.isArray(selectedWeapon.healingAmount)) {
@@ -744,6 +748,8 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedWeapon.healingAmount = [20]; // Set to 20% if no healingAmount
           }
 
+          acceptLifestealBtn.disabled = true;
+
           // Update the weapon in the player’s deck
           player.deck[indexInDeck] = selectedWeapon;
 
@@ -751,7 +757,9 @@ document.addEventListener("DOMContentLoaded", function () {
           player.savePlayerToStorage?.();
 
           // Redirect or perform any other action
-          returnToMap();
+          setTimeout(() => {
+            returnToMap();
+          }, 2000);
         });
       });
     }

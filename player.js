@@ -226,6 +226,8 @@ class Player extends HealthEntity {
   }
 
   increaseWeaponCritChance(amount) {
+    console.log("Applying crit chance modifier:", amount);
+
     this.#critChanceModifier += amount;
   }
 
@@ -468,7 +470,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
-      this.addWeapon(new throwingKnife());
+
       // this.addWeapon(new devWeapon());
 
       // this.addWeapon(new devShield());
@@ -535,7 +537,7 @@ class Player extends HealthEntity {
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
-
+let isDying = false;
 let isAttacking = false;
 
 // Define the attack animation configuration
@@ -665,6 +667,7 @@ function animateAttack() {
 
 // Function to trigger attack animation and reset to idle after attack
 function triggerAttackAnimation() {
+  if (isDying) return;
   if (isAttacking) return;
   isAttacking = true;
   // Stop the idle animation if it's running
@@ -680,6 +683,7 @@ function triggerAttackAnimation() {
 }
 
 function triggerBlockAnimation() {
+  if (isDying) return;
   if (isAttacking) return;
   isAttacking = true;
 
@@ -718,6 +722,7 @@ function setIdleTimeout() {
 
 // Reset to idle animation
 function resetToIdleAnimation() {
+  if (isDying) return;
   // Set the sprite for idle animation
   sprite.style.backgroundImage = `url(${idleConfig.image})`;
   sprite.style.backgroundSize = idleConfig.backgroundSize;

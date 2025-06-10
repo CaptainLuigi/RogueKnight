@@ -886,7 +886,7 @@ class PoisonDagger extends Weapons {
       1,
       "Melee",
       5,
-      70,
+      55,
       35,
       1,
       "Can only target the first enemy and applies poison, click to instantly use weapon.",
@@ -911,14 +911,12 @@ class PoisonDagger extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage = 10;
-        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalDamage = 65;
         weaponInfo.criticalChance = 45;
         weaponInfo.poisonAmount = 15;
         break;
       case 3:
-        weaponInfo.damage = 20;
-        weaponInfo.criticalDamage = 90;
+        weaponInfo.criticalDamage = 80;
         weaponInfo.criticalChance = 60;
         weaponInfo.poisonAmount = 20;
         break;

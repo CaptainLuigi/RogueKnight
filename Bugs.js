@@ -37,5 +37,15 @@ waffen machen prozentual schaden evtl implementieren
 
 more players with different starting weapons
 
+wenn zu viele relics -> relics unterhalb des bildschirms
+
 player glitched wenn leathal damage aber gegner noch actions haben bzw, schaden durch relics gemacht wird
+
+bloodforge nur wenn waffe nicht als lvl 3 gekauft wurde
+
+cloak of protection wann damage reduction überarbeiten
+
+stone event sound einfügen
+
+clear block interval in death animation -> sprite flickert nach tod manchmal
 */
