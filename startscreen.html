@@ -79,7 +79,7 @@
     <script>
       globalSettings.clearTutorial();
       let frame = 0;
-      const sprite = document.querySelector(".sprite");
+      const playerSprite = document.querySelector(".sprite");
 
       function getResponsiveConfig() {
         const screenWidth = window.innerWidth;
@@ -117,17 +117,17 @@
       const switchPoint2 = 45;
 
       function setSpriteConfig(config) {
-        sprite.style.backgroundImage = `url(${config.image})`;
-        sprite.style.backgroundSize = config.backgroundSize;
+        playerSprite.style.backgroundImage = `url(${config.image})`;
+        playerSprite.style.backgroundSize = config.backgroundSize;
       }
 
       function animateSprite() {
         // Calculate the x-offset for the current frame
         const xOffset = -(frame * currentConfig.frameWidth);
-        sprite.style.backgroundPosition = `${xOffset}px 0`;
+        playerSprite.style.backgroundPosition = `${xOffset}px 0`;
 
         spritePositionX += spriteSpeed;
-        sprite.style.left = `${spritePositionX}%`;
+        playerSprite.style.left = `${spritePositionX}%`;
 
         // Switch to the idle animation if the sprite has reached the switch point
         if (spritePositionX >= switchPoint2) {

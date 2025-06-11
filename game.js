@@ -1,13 +1,13 @@
 let player = new Player("Knight", 100, 100, [], 3, 3);
 
-let sprite;
+let playerSprite;
 
 document.addEventListener("DOMContentLoaded", function () {
   initializeHealthBars(player);
   updateEnergyDisplay();
 
   console.log("DOM fully loaded, difficulty: " + globalSettings.difficulty);
-  sprite = document.querySelector(".sprite-player");
+  playerSprite = document.querySelector(".sprite-player");
   // Start the idle animation immediately when the page loads
   resetToIdleAnimation(); // This will start the idle animation
   // Call the function to display the weapons

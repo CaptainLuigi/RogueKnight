@@ -6,7 +6,7 @@ function updatePlayerGold(goldAmount) {
   globalSettings.playerGold += goldAmount;
 }
 
-let sprite;
+let playerSprite;
 let isDuplicateMode = false;
 let isLifestealMode = false;
 let isLowerCostMode = false;
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const goldDisplay = document.getElementById("playerGold");
   goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
-  sprite = document.querySelector(".sprite");
+  playerSprite = document.querySelector(".sprite");
 
   resetToIdleAnimation();
 

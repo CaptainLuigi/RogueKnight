@@ -456,7 +456,9 @@ class SmallHealthPotion extends Weapons {
         weaponInfo.healingAmount = 10;
         break;
       case 3:
-        weaponInfo.healingAmount = 15;
+        weaponInfo.healingAmount = 10;
+        weaponInfo.oncePerBattle = false;
+        weaponInfo.description = "Click to heal the player.";
         break;
     }
   }
@@ -501,7 +503,9 @@ class BigHealthPotion extends Weapons {
         weaponInfo.healingAmount = 20;
         break;
       case 3:
-        weaponInfo.healingAmount = 30;
+        weaponInfo.healingAmount = 25;
+        weaponInfo.oncePerBattle = false;
+        weaponInfo.description = "Click to heal the player.";
         break;
     }
   }
@@ -517,7 +521,7 @@ class BasicSword extends Weapons {
       1,
       "Melee",
       25,
-      50,
+      40,
       25,
       1,
       "Can only target the first enemy, click to instanty use weapon.",
@@ -543,12 +547,12 @@ class BasicSword extends Weapons {
         break;
       case 2:
         weaponInfo.damage = 30;
-        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalDamage = 50;
         weaponInfo.criticalChance = 30;
         break;
       case 3:
         weaponInfo.damage = 35;
-        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalDamage = 60;
         weaponInfo.criticalChance = 40;
         break;
     }
@@ -562,7 +566,7 @@ class BasicAxe extends Weapons {
       1,
       "Melee",
       60,
-      100,
+      90,
       35,
       2,
       "Can target the closest two enemies, click weapon first, then the enemy you want to hit.",
@@ -588,12 +592,12 @@ class BasicAxe extends Weapons {
         break;
       case 2:
         weaponInfo.damage = 75;
-        weaponInfo.criticalDamage = 130;
+        weaponInfo.criticalDamage = 115;
         weaponInfo.criticalChance = 40;
         break;
       case 3:
         weaponInfo.damage = 90;
-        weaponInfo.criticalDamage = 160;
+        weaponInfo.criticalDamage = 140;
         weaponInfo.criticalChance = 45;
         break;
     }
@@ -607,7 +611,7 @@ class BasicSpear extends Weapons {
       1,
       "Medium",
       20,
-      50,
+      35,
       15,
       1,
       "Can only target the first enemy and pierces one enemy, click to instantly use weapon.",
@@ -633,7 +637,7 @@ class BasicSpear extends Weapons {
         break;
       case 2:
         weaponInfo.damage = 25;
-        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalDamage = 50;
         weaponInfo.criticalChance = 20;
         weaponInfo.effectsRight = [1, 1];
         weaponInfo.description =
@@ -642,7 +646,7 @@ class BasicSpear extends Weapons {
         break;
       case 3:
         weaponInfo.damage = 30;
-        weaponInfo.criticalDamage = 65;
+        weaponInfo.criticalDamage = 60;
         weaponInfo.criticalChance = 30;
         weaponInfo.effectsRight = [1, 1, 1];
         weaponInfo.description =
@@ -662,8 +666,8 @@ class BasicBow extends Weapons {
       1,
       "Far",
       20,
-      55,
-      25,
+      50,
+      15,
       1,
       "Can target any enemy, click weapon first, then the enemy you want to hit.",
       "Assets/bow.png",
@@ -688,13 +692,13 @@ class BasicBow extends Weapons {
         break;
       case 2:
         weaponInfo.damage = 25;
-        weaponInfo.criticalDamage = 65;
-        weaponInfo.criticalChance = 30;
+        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 20;
         break;
       case 3:
         weaponInfo.damage = 30;
         weaponInfo.criticalDamage = 75;
-        weaponInfo.criticalChance = 35;
+        weaponInfo.criticalChance = 25;
         break;
     }
   }
@@ -930,8 +934,8 @@ class Spearblade extends Weapons {
       "Spearblade",
       1,
       "Melee",
-      55,
-      70,
+      45,
+      65,
       30,
       2,
       "Damages the first two enemies, click to instantly use weapon.",
@@ -956,12 +960,12 @@ class Spearblade extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.damage = 60;
-        weaponInfo.criticalDamage = 80;
+        weaponInfo.damage = 55;
+        weaponInfo.criticalDamage = 75;
         weaponInfo.criticalChance = 40;
         break;
       case 3:
-        weaponInfo.damage = 70;
+        weaponInfo.damage = 65;
         weaponInfo.criticalDamage = 90;
         weaponInfo.criticalChance = 50;
         break;
@@ -1023,7 +1027,7 @@ class ThorsHammer extends Weapons {
       50,
       80,
       30,
-      3,
+      2,
       "Damages all enemies, click to instantly use weapon.",
       "Assets/ThorsHammer.png",
       false,
@@ -1312,8 +1316,8 @@ class SurvivalPotion extends Weapons {
       0,
       0,
       0,
-      3,
-      "Heals you and blocks incoming damage. Block is removed at the beginning of your next turn.",
+      2,
+      "Heals you and blocks incoming damage. Block is removed at the beginning of your next turn. Can only be used once per battle",
       "Assets/purplePotion.png",
       false,
       0,
@@ -1324,7 +1328,7 @@ class SurvivalPotion extends Weapons {
       true,
       15,
       0,
-      false,
+      true,
       0,
       0,
       "HealSound"
@@ -1341,6 +1345,9 @@ class SurvivalPotion extends Weapons {
       case 3:
         weaponInfo.healingAmount = 20;
         weaponInfo.blockAmount = 25;
+        weaponInfo.oncePerBattle = false;
+        weaponInfo.description =
+          "Heals you and blocks incoming damage. Block is removed at the beginning of your next turn.";
         break;
     }
   }
@@ -1746,6 +1753,8 @@ class BattleFocus extends Weapons {
         break;
       case 3:
         weaponInfo.energyGainOnUse = 4;
+        weaponInfo.oncePerBattle = false;
+        weaponInfo.description = "Click to get energy and draw 2.";
         break;
     }
   }

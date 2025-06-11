@@ -278,9 +278,11 @@ class Player extends HealthEntity {
       weapon.energy = 0;
     }
     if (this.#equippedRelics.includes("Bloodforge")) {
-      weapon.upgrade();
-      this.takeDamage(5);
-      updateHealthBar(player);
+      if (weapon.level < 3) {
+        weapon.upgrade();
+        this.takeDamage(5);
+        updateHealthBar(player);
+      }
     }
     this.savePlayerToStorage();
   }
@@ -471,7 +473,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      // this.addWeapon(new devWeapon());
+      this.addWeapon(new devWeapon());
 
       // this.addWeapon(new devShield());
     } else {
@@ -586,9 +588,10 @@ let damageFrame = 0;
 let damageInterval;
 
 function animateDamage() {
+  if (typeof playerSprite === "undefined") return;
   damageFrame = (damageFrame + 1) % hurtConfig.totalFrames;
   const frameX = damageFrame * hurtConfig.frameWidth;
-  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   if (damageFrame === 0) {
     clearInterval(damageInterval);
@@ -597,15 +600,16 @@ function animateDamage() {
 }
 
 function triggerDamageAnimation() {
+  if (typeof playerSprite === "undefined") return;
   clearInterval(idleInterval);
   clearInterval(attackInterval);
 
-  sprite.style.backgroundImage = `url(${hurtConfig.image})`;
-  sprite.style.backgroundSize = hurtConfig.backgroundSize;
+  playerSprite.style.backgroundImage = `url(${hurtConfig.image})`;
+  playerSprite.style.backgroundSize = hurtConfig.backgroundSize;
 
   damageFrame = 0;
   const frameX = damageFrame * hurtConfig.frameWidth;
-  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   clearInterval(damageInterval);
   damageInterval = setInterval(animateDamage, hurtConfig.frameDelay);
@@ -615,14 +619,15 @@ let deathFrame = 0;
 let deathInterval;
 
 function animateDeath() {
+  if (typeof playerSprite === "undefined") return;
   deathFrame = (deathFrame + 1) % deathConfig.totalFrames;
   const frameX = deathFrame * deathConfig.frameWidth;
-  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   if (deathFrame === 0) {
     clearInterval(deathInterval);
 
-    sprite.style.backgroundPosition = `-${
+    playerSprite.style.backgroundPosition = `-${
       (deathConfig.totalFrames - 1) * deathConfig.frameWidth
     }px 0px`;
   }
@@ -633,12 +638,12 @@ function triggerDeathAnimation() {
   clearInterval(attackInterval);
   clearInterval(damageInterval);
 
-  sprite.style.backgroundImage = `url(${deathConfig.image})`;
-  sprite.style.backgroundSize = deathConfig.backgroundSize;
+  playerSprite.style.backgroundImage = `url(${deathConfig.image})`;
+  playerSprite.style.backgroundSize = deathConfig.backgroundSize;
 
   deathFrame = 0;
   const frameX = deathFrame * deathConfig.frameWidth;
-  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   clearInterval(deathInterval);
   deathInterval = setInterval(animateDeath, deathConfig.frameDelay);
@@ -652,9 +657,10 @@ let idleInterval;
 let attackFrame = 0;
 
 function animateAttack() {
+  if (typeof playerSprite === "undefined") return;
   attackFrame = (attackFrame + 1) % attackConfig.totalFrames;
   const frameX = attackFrame * attackConfig.frameWidth;
-  sprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
 
   // If the attack animation reaches the last frame, stop it and reset to idle
   if (attackFrame === 0) {
@@ -675,8 +681,8 @@ function triggerAttackAnimation() {
   clearInterval(idleInterval);
 
   // Ensure sprite is properly set for the attack animation
-  sprite.style.backgroundImage = `url(${attackConfig.image})`;
-  sprite.style.backgroundSize = attackConfig.backgroundSize;
+  playerSprite.style.backgroundImage = `url(${attackConfig.image})`;
+  playerSprite.style.backgroundSize = attackConfig.backgroundSize;
 
   attackFrame = 0; // Reset to the first frame
   attackInterval = setInterval(animateAttack, attackConfig.frameDelay); // Start the attack animation
@@ -690,8 +696,8 @@ function triggerBlockAnimation() {
   clearInterval(attackInterval);
   clearInterval(idleInterval);
 
-  sprite.style.backgroundImage = `url(${blockConfig.image})`;
-  sprite.style.backgroundSize = blockConfig.backgroundSize;
+  playerSprite.style.backgroundImage = `url(${blockConfig.image})`;
+  playerSprite.style.backgroundSize = blockConfig.backgroundSize;
 
   attackFrame = 0;
   attackInterval = setInterval(animateBlock, blockConfig.frameDelay);
@@ -703,6 +709,9 @@ function triggerBlockAnimation() {
 }
 
 function animateBlock() {
+  if (isDying) return;
+  if (isAttacking) return;
+  if (typeof playerSprite === "undefined") return;
   attackFrame++;
   if (attackFrame >= blockConfig.totalFrames) {
     clearInterval(attackInterval);
@@ -722,10 +731,11 @@ function setIdleTimeout() {
 
 // Reset to idle animation
 function resetToIdleAnimation() {
+  if (typeof playerSprite === "undefined") return;
   if (isDying) return;
   // Set the sprite for idle animation
-  sprite.style.backgroundImage = `url(${idleConfig.image})`;
-  sprite.style.backgroundSize = idleConfig.backgroundSize;
+  playerSprite.style.backgroundImage = `url(${idleConfig.image})`;
+  playerSprite.style.backgroundSize = idleConfig.backgroundSize;
 
   let frame = 0;
 
@@ -733,7 +743,7 @@ function resetToIdleAnimation() {
   function animateSprite() {
     frame = (frame + 1) % idleConfig.totalFrames;
     const frameX = frame * idleConfig.frameWidth;
-    sprite.style.backgroundPosition = `-${frameX}px 0px`;
+    playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
   }
 
   clearInterval(idleInterval); // Clear any previous idle intervals

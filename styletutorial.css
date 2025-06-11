@@ -33,6 +33,12 @@ html, body {
     image-rendering: pixelated;
 }
 
+@media (max-width: 1440px) {
+    .sprite-player {
+        top: 400px;
+    }
+}
+
 .sprite-enemie {
     --base-scale: 1;
     height: fit-content;
@@ -119,6 +125,12 @@ height: 0;
     top: 450px;
     left: 18%;
     z-index: 4;
+}
+
+@media (max-width: 1440px) {
+    #health-bar-container-player {
+        top: 400px;
+    }
 }
 
 .health-bar-container-enemy {
@@ -321,6 +333,13 @@ height: 0;
     z-index: 6;
 }
 
+@media (max-width: 1440px) {
+    #energy-container {
+        top: 350px;
+        left: 23.5%;
+    }
+}
+
 #energy-circle {
     width: 40px;  /* Small circle diameter */
     height: 40px; /* Small circle diameter */
@@ -353,6 +372,13 @@ height: 0;
     justify-content: center;
     align-items: center;
     z-index: 6;
+}
+
+@media (max-width: 1440px) {
+    #block-container {
+        top: 350px;
+        left: 27%;
+    }
 }
 
 #block-circle {
@@ -461,6 +487,13 @@ height: 0;
     justify-content: center;
     gap: 50px;
     margin-bottom: 20px;
+    min-height: 215px;
+}
+
+@media (max-width: 1440px) {
+    #weapon-purchase-options {
+      max-height: 180px;
+    }
 }
 
 .weapon-option img {
@@ -523,6 +556,12 @@ height: 0;
 #heal-btn {
     top: 65%;
     width: 270px;
+}
+
+@media (max-width: 1440px) {
+    #heal-btn {
+      top: 67%;
+    }
 }
 
 #close-post-battle {

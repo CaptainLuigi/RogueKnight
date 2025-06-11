@@ -207,7 +207,7 @@ const relicList = [
     "Cloak of Protection",
     "Assets/cloakOfProtection.png",
     cloakOfProtection,
-    "Reduces incoming damage during battle by 1.",
+    "Reduces all incomming damage by 1.",
     "chest",
     100
   ),
@@ -294,7 +294,7 @@ const relicList = [
   new ActiveRelics(
     "Curse of Continuity",
     "Assets/CurseOfContinuity.png",
-    CurseOfContinuity,
+    curseOfContinuity,
     "Carry over up to 3 unused energy to the next turn. Each carried over energy does 1 damage to you.",
     "elite",
     150
@@ -307,6 +307,7 @@ const relicList = [
     "event",
     0
   ),
+
   new Relics(
     "Death's Pact",
     "Assets/deathsBargain2.png",
@@ -338,7 +339,7 @@ function grindingMonstera(player) {
   });
 }
 
-function CurseOfContinuity(player, relicObject) {
+function curseOfContinuity(player, relicObject) {
   window.addEventListener("EndTurn", (event) => {
     console.log("EndTurn event registered");
 
