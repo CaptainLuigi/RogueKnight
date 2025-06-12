@@ -96,7 +96,7 @@ const relicList = [
     "Spirit Totem",
     "Assets/spiritTotem.png",
     spiritTotem,
-    "Whenever an enemy dies, get one energy.",
+    "Whenever an enemy dies during your turn, get 1 energy.",
     "chest",
     125
   ),

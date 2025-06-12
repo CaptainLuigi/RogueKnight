@@ -473,7 +473,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      this.addWeapon(new devWeapon());
+      // this.addWeapon(new devWeapon());
 
       // this.addWeapon(new devShield());
     } else {
@@ -588,30 +588,33 @@ let damageFrame = 0;
 let damageInterval;
 
 function animateDamage() {
-  if (typeof playerSprite === "undefined") return;
-  damageFrame = (damageFrame + 1) % hurtConfig.totalFrames;
-  const frameX = damageFrame * hurtConfig.frameWidth;
-  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+  if (typeof playerSprite === "undefined" || isDying) return;
 
-  if (damageFrame === 0) {
+  damageFrame++;
+
+  if (damageFrame >= hurtConfig.totalFrames) {
     clearInterval(damageInterval);
     resetToIdleAnimation();
+    return;
   }
+
+  const frameX = damageFrame * hurtConfig.frameWidth;
+  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
 }
 
 function triggerDamageAnimation() {
-  if (typeof playerSprite === "undefined") return;
+  if (typeof playerSprite === "undefined" || isDying) return;
+
   clearInterval(idleInterval);
   clearInterval(attackInterval);
+  clearInterval(damageInterval);
 
   playerSprite.style.backgroundImage = `url(${hurtConfig.image})`;
   playerSprite.style.backgroundSize = hurtConfig.backgroundSize;
 
   damageFrame = 0;
-  const frameX = damageFrame * hurtConfig.frameWidth;
-  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPosition = `0px 0px`;
 
-  clearInterval(damageInterval);
   damageInterval = setInterval(animateDamage, hurtConfig.frameDelay);
 }
 

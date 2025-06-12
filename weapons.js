@@ -704,6 +704,53 @@ class BasicBow extends Weapons {
   }
 }
 
+class PoisonArrow extends Weapons {
+  constructor() {
+    super(
+      "Poison Arrow",
+      1,
+      "Far",
+      10,
+      35,
+      20,
+      1,
+      "Can target any enemy, click weapon first, then the enemy you want to hit.",
+      "Assets/poisonArrow.png",
+      true,
+      0,
+      6,
+      0,
+      0,
+      0,
+      false,
+      0,
+      10,
+      false,
+      0,
+      0,
+      "BowSound"
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 15;
+        weaponInfo.criticalDamage = 45;
+        weaponInfo.criticalChance = 25;
+        weaponInfo.poisonAmount = 15;
+        break;
+      case 3:
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalChance = 30;
+        weaponInfo.poisonAmount = 20;
+        break;
+    }
+  }
+}
+
 class VampiricDagger extends Weapons {
   constructor() {
     super(
@@ -1760,7 +1807,7 @@ class BattleFocus extends Weapons {
   }
 }
 
-class throwingKnife extends Weapons {
+class ThrowingKnife extends Weapons {
   constructor() {
     super(
       "Throwing Knife",
@@ -1912,7 +1959,8 @@ function getAvailableWeapons() {
     new SwiftShield(),
     new BigHealthPotion(),
     new BattleFocus(),
-    new throwingKnife(),
+    new ThrowingKnife(),
+    new PoisonArrow(),
   ];
 }
 
@@ -1947,7 +1995,8 @@ const weaponClassMapping = {
   SwiftShield,
   BigHealthPotion,
   BattleFocus,
-  throwingKnife,
+  ThrowingKnife,
+  PoisonArrow,
   devWeapon,
   devShield,
 };

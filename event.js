@@ -784,6 +784,146 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // shop scouting
+
+  if (eventType === "shopScouting") {
+    const upgradeBtn = document.getElementById("sampleUpgrade");
+    const removeBtn = document.getElementById("sampleRemove");
+    const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+    const closeDeckButton = document.getElementById("close-deck-btn");
+
+    if (upgradeBtn) {
+      upgradeBtn.addEventListener("click", () => {
+        isUpgradeMode = true;
+        weaponDeckScreen.setAttribute("isupgrademode", "");
+        weaponDeckScreen.classList.remove("hidden");
+        player.showDeck((weapon) => weapon.level < 3);
+        document.body.classList.add("upgrade-mode");
+
+        setTimeout(() => {
+          weaponDeckScreen.querySelectorAll(".weapon").forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
+      });
+    }
+
+    // Attach the same click handler as upgradeWeapon
+    weaponDeckScreen?.addEventListener("click", async (event) => {
+      if (!isUpgradeMode) return;
+
+      const weaponElement = event.target.closest(".weapon");
+
+      if (weaponElement) {
+        console.log("Weapon clicked");
+
+        const weaponIndex = Array.from(
+          weaponDeckScreen.querySelectorAll(".weapon")
+        ).indexOf(weaponElement);
+        console.log("Weapon clicked, index:", weaponIndex);
+
+        if (weaponIndex === -1) {
+          console.error("Weapon index not found!");
+          return;
+        }
+
+        const weapon = player.deck[weaponIndex];
+        console.log("Weapon found:", weapon);
+
+        if (weapon) {
+          console.log("Upgrading weapon:", weapon.name);
+          if (typeof upgradeWeapon === "function") {
+            SoundManager.play("Upgrade");
+            await upgradeWeapon(weapon);
+          } else {
+            console.error("upgradeWeapon is not defined or is not a function.");
+          }
+          isUpgradeMode = false;
+        } else {
+          console.error("Weapon not found in player's deck");
+        }
+      }
+    });
+
+    if (closeDeckButton) {
+      closeDeckButton.addEventListener("click", () => {
+        console.log("Closing deck");
+        weaponDeckScreen.classList.add("hidden");
+        isUpgradeMode = false;
+        weaponDeckScreen.removeAttribute("isupgrademode");
+      });
+    }
+
+    async function upgradeWeapon(weapon) {
+      console.log(`Upgrading weapon: ${weapon.name}`);
+
+      if (weapon.level >= 3) {
+        displayTurnMessage(`${weapon.name} is already max level.`);
+        return;
+      }
+
+      SoundManager.play("Upgrade");
+      await wait(700);
+      weapon.upgrade();
+      player.savePlayerToStorage();
+
+      displayTurnMessage(`Upgraded ${weapon.name}`);
+      returnToMap();
+    }
+
+    if (removeBtn) {
+      removeBtn.addEventListener("click", () => {
+        const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+        weaponDeckScreen.classList.remove("hidden");
+
+        player.showDeck(); // Show full deck
+        document.body.classList.add("remove-mode");
+
+        setTimeout(() => {
+          weaponDeckScreen.querySelectorAll(".weapon").forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
+      });
+
+      const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+
+      weaponDeckScreen?.addEventListener("click", (event) => {
+        if (!document.body.classList.contains("remove-mode")) return;
+
+        const weaponElement = event.target.closest(".weapon");
+
+        if (weaponElement) {
+          const weaponIndex = Array.from(
+            weaponDeckScreen.querySelectorAll(".weapon")
+          ).indexOf(weaponElement);
+
+          if (weaponIndex === -1) {
+            console.error("Weapon index not found!");
+            return;
+          }
+
+          const weapon = player.deck[weaponIndex];
+          if (weapon) {
+            console.log(`Removing weapon: ${weapon.name}`);
+
+            dropWeapon(weaponIndex); // Remove the weapon
+
+            document
+              .getElementById("weapon-deck-screen")
+              .classList.add("hidden");
+            document.body.classList.remove("remove-mode");
+
+            displayTurnMessage(`You removed ${weapon.name} from your deck.`);
+            returnToMap(); // Or whatever ends the event and resumes the game
+          } else {
+            console.error("Weapon not found in player's deck");
+          }
+        }
+      });
+    }
+  }
+
   //duplicate Weapon
 
   if (eventType === "duplicateWeapon") {

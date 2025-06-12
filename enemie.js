@@ -401,31 +401,43 @@ class Enemy extends HealthEntity {
     player.attackingEnemy = this;
     console.log("Player is being attacked by:", player.attackingEnemy);
 
-    let actualDamage = this.#attackPower; // Start with base attack power
+    let actualDamage = this.#attackPower;
 
+    let blockedSomeDamage = false;
+
+    // Handle blocking logic
     if (player.blockAmount > 0) {
       if (player.blockAmount >= this.#attackPower) {
         SoundManager.play("ShieldSound");
         player.blockAmount -= this.#attackPower;
-        triggerBlockAnimation();
-        setIdleTimeout();
         actualDamage = 0; // Fully blocked
+        blockedSomeDamage = true;
       } else {
         actualDamage = this.#attackPower - player.blockAmount;
         player.blockAmount = 0;
-        triggerBlockAnimation();
-        setIdleTimeout();
+        blockedSomeDamage = true;
       }
     }
 
+    // Apply relics that reduce damage
     if (actualDamage > 0 && player.equippedRelics.includes("Death's Pact")) {
       actualDamage = Math.ceil(actualDamage / 2);
+    }
+
+    // Apply damage
+    let playerWillSurvive = player.health - actualDamage > 0;
+
+    // Only trigger block animation if it's not lethal
+    if (blockedSomeDamage && playerWillSurvive) {
+      triggerBlockAnimation();
+      setIdleTimeout();
     }
 
     if (actualDamage > 0) {
       player.takeDamage(actualDamage);
     }
 
+    // UI updates
     const blockText = document.getElementById("block-text");
     const blockContainer = document.getElementById("block-container");
 
@@ -434,15 +446,17 @@ class Enemy extends HealthEntity {
       blockContainer.classList.add("hidden");
     }
 
-    // ✅ Apply Lifesteal Only on Unblocked Damage
+    // Lifesteal
     if (this.#lifesteal > 0 && actualDamage > 0) {
-      let lifestealHeal = Math.min(this.#lifesteal, actualDamage);
+      const lifestealHeal = Math.min(this.#lifesteal, actualDamage);
       this.heal(lifestealHeal);
     }
 
+    // Bramble Mantle / Reflection
     if (player.attackingEnemy) {
       const enemy = player.attackingEnemy;
       const isBrambleEquipped = loadData("relic_Bramble Mantle");
+
       if (isBrambleEquipped) {
         enemy.takeDamage(15);
       }

@@ -296,6 +296,7 @@ function triggerRandomEvent() {
     { type: "weaponLifesteal", action: showEvent },
     { type: "bloodforge", action: showEvent },
     { type: "dieGambling", action: showEvent },
+    { type: "shopScouting", action: showEvent },
   ];
 
   if (player.deck.length > 2) {
