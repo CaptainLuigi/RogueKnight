@@ -698,6 +698,8 @@ class Enemy extends HealthEntity {
   }
 
   async enemyDeath() {
+    player.actionLocked = true;
+
     SoundManager.play("enemyDeathSound");
 
     this.#poisonFromPlayer = 0;
@@ -746,18 +748,16 @@ class Enemy extends HealthEntity {
 
       updatePlayerGold(goldDropped);
 
-      setTimeout(() => {
-        goldDisplay.style.opacity = "0";
-      }, 750);
+      await wait(750);
+      goldDisplay.style.opacity = "0";
 
-      setTimeout(() => {
-        goldDisplay.remove();
-      }, 1200);
+      await wait(450);
+      goldDisplay.remove();
     }
 
-    setTimeout(() => {
-      this.#display.remove();
-    }, 2500);
+    await wait(1000);
+    this.#display.remove();
+    player.actionLocked = false;
   }
 }
 

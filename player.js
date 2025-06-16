@@ -24,6 +24,7 @@ class Player extends HealthEntity {
   #equippedRelics = [];
   #foundRelics = [];
   maxHandSize = 5;
+  actionLocked = false;
 
   constructor(name, health, maxHealth, deck, energy, maxEnergy) {
     super();
@@ -473,9 +474,11 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      // this.addWeapon(new devWeapon());
+      // this.addWeapon(new DevWeapon());
 
-      // this.addWeapon(new devShield());
+      // this.addWeapon(new DevBow());
+
+      // this.addWeapon(new DevShield());
     } else {
       this.#name = state.name;
       this.#health = state.health;

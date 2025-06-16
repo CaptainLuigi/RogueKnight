@@ -155,6 +155,11 @@ function useWeapon(weaponIndex) {
     return;
   }
 
+  if (player.actionLocked) {
+    displayTurnMessage("Wait until the enemy died!");
+    return;
+  }
+
   const weapon = player.hand[weaponIndex];
   if (weapon.wasUsed) {
     displayTurnMessage("Not so fast!");

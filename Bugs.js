@@ -45,7 +45,5 @@ clear block interval in death animation -> sprite flickert nach tod manchmal
 
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 
-nach enemy death kleiner delay bevor actions, weil targeting sonst falsch sein kann
 
-gold waffen zu op
 */

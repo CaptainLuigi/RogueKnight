@@ -1483,8 +1483,8 @@ class LightningShield extends Weapons {
 }
 
 class GoldSword extends Weapons {
-  #damageModifier = 1;
-  #critDamageModifier = 1.5;
+  #damageModifier = 0.5;
+  #critDamageModifier = 1;
   get damage() {
     return Math.floor(globalSettings.playerGold * this.#damageModifier);
   }
@@ -1526,13 +1526,13 @@ class GoldSword extends Weapons {
       case 1:
         break;
       case 2:
-        this.#damageModifier = 1.25;
-        this.#critDamageModifier = 1.75;
+        this.#damageModifier = 0.75;
+        this.#critDamageModifier = 1.25;
         weaponInfo.criticalChance = 25;
         break;
       case 3:
-        this.#damageModifier = 1.5;
-        this.#critDamageModifier = 2;
+        this.#damageModifier = 1;
+        this.#critDamageModifier = 1.5;
         weaponInfo.criticalChance = 30;
         break;
     }
@@ -1540,7 +1540,7 @@ class GoldSword extends Weapons {
 }
 
 class GoldShield extends Weapons {
-  #blockModifier = 0.2;
+  #blockModifier = 0.1;
 
   get blockAmount() {
     return Math.floor(globalSettings.playerGold * this.#blockModifier);
@@ -1581,10 +1581,10 @@ class GoldShield extends Weapons {
       case 1:
         break;
       case 2:
-        this.#blockModifier = 0.3;
+        this.#blockModifier = 0.15;
         break;
       case 3:
-        this.#blockModifier = 0.4;
+        this.#blockModifier = 0.2;
         break;
     }
   }
@@ -1851,7 +1851,7 @@ class ThrowingKnife extends Weapons {
   }
 }
 
-class devWeapon extends Weapons {
+class DevWeapon extends Weapons {
   constructor() {
     super(
       "Dev Weapon",
@@ -1875,7 +1875,7 @@ class devWeapon extends Weapons {
   }
 }
 
-class devShield extends Weapons {
+class DevShield extends Weapons {
   constructor() {
     super(
       "Dev Shield",
@@ -1895,6 +1895,25 @@ class devShield extends Weapons {
       0,
       false,
       1000
+    );
+  }
+}
+
+class DevBow extends Weapons {
+  constructor() {
+    super(
+      "Dev Bow",
+      1,
+      "Far",
+      1000,
+      0,
+      0,
+      0,
+      "Instakill",
+      "Assets/bow.png",
+      true,
+      0,
+      6
     );
   }
 }
@@ -1997,8 +2016,9 @@ const weaponClassMapping = {
   BattleFocus,
   ThrowingKnife,
   PoisonArrow,
-  devWeapon,
-  devShield,
+  DevWeapon,
+  DevShield,
+  DevBow,
 };
 
 function createWeaponInstanceFromInfo(info) {
@@ -2074,136 +2094,6 @@ function generateWeaponInfo(
   weaponImage.alt = weapon.name;
   weaponImage.classList.add("weapon-image", `level-${weapon.level}`);
   display.appendChild(weaponImage);
-
-  // var getTooltip = () => {
-  //   let tooltipString = `
-  //       <strong> ${weapon.name} </strong> <br>
-  //       <strong>Level:</strong> ${weapon.level} <br>
-  //       <strong>Energy Cost:</strong> ${weapon.energy} <br>
-  //       <strong>Range:</strong> ${weapon.range} <br>`;
-
-  //   if (weapon.damage > 0) {
-  //     let modifierDisplay = "";
-  //     if (player.damageModifier > 0) {
-  //       modifierDisplay = `(+${player.damageModifier})`;
-  //     }
-  //     tooltipString += `<strong>Damage:</strong> ${weapon.damage} ${modifierDisplay} <br>`;
-  //   }
-
-  //   if (weapon.criticalDamage > 0) {
-  //     let modifierDisplay = "";
-  //     if (player.critDamageModifier > 0) {
-  //       modifierDisplay = `(+${player.critDamageModifier})`;
-  //     }
-  //     tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} ${modifierDisplay} <br>`;
-  //   }
-
-  //   if (player.critsDisabled) {
-  //     tooltipString += `<strong>Critical Chance:</strong> ❌ Disabled<br>`;
-  //   } else if (weapon.criticalChance > 0) {
-  //     let modifierDisplay = "";
-  //     if (player.critChanceModifier > 0) {
-  //       modifierDisplay = `(+${player.critChanceModifier}%)`;
-  //     }
-  //     tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}%  ${modifierDisplay}<br>`;
-  //   }
-
-  //   if (weapon.poisonAmount > 0) {
-  //     let modifierDisplay = "";
-  //     if (player.poisonModifier > 0) {
-  //       modifierDisplay = `(+${player.poisonModifier})`;
-  //     }
-  //     tooltipString += `<strong>Poison:</strong> ${weapon.poisonAmount} ${modifierDisplay} <br>`;
-  //   }
-
-  //   if (weapon.canHeal) {
-  //     let healingString = "";
-  //     let modifierDisplay = "";
-
-  //     if (Array.isArray(weapon.healingAmount)) {
-  //       healingString = weapon.healingAmount.join("%, ") + "%";
-
-  //       if (player.lifestealModifier > 0 && weapon.damage > 0) {
-  //         modifierDisplay = `(+${player.lifestealModifier}%)`;
-  //       }
-  //     } else {
-  //       healingString = weapon.healingAmount;
-  //     }
-  //     tooltipString += `<strong>Healing:</strong> ${healingString} ${modifierDisplay}<br>`;
-  //   } else if (player.lifestealModifier > 0 && weapon.damage > 0) {
-  //     tooltipString += `<strong>Healing:</strong> (+${player.lifestealModifier}%)<br>`;
-  //   }
-
-  //   if (weapon.blockAmount > 0) {
-  //     let modifierDisplay = "";
-  //     if (player.blockModifier > 0) {
-  //       modifierDisplay = `(+${player.blockModifier})`;
-  //     }
-  //     tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} ${modifierDisplay}<br>`;
-  //   }
-
-  //   if (weapon.energyGainOnUse > 0) {
-  //     tooltipString += `<strong>Energy Gain:</strong> ${weapon.energyGainOnUse}<br>`;
-  //   }
-
-  //   if (weapon.drawAmountOnUse > 0) {
-  //     tooltipString += `<strong>Draw:</strong> ${weapon.drawAmountOnUse}<br>`;
-  //   }
-
-  //   tooltipString += `${weapon.description} <br>`;
-  //   weaponPrice = parseInt(weaponPrice);
-  //   if (!isNaN(weaponPrice) && weaponPrice > 0) {
-  //     tooltipString += `<strong>Price:</strong> ${weaponPrice} Gold`;
-  //   }
-
-  //   if (showUpgradePreview && weapon.level < 3) {
-  //     const upgradedInfo = weapon.getWeaponInfo();
-  //     upgradedInfo.level += 1;
-
-  //     const upgradedWeapon = new weapon.__proto__.constructor();
-  //     upgradedWeapon.loadFromWeaponInfo(upgradedInfo);
-
-  //     const statBlock = (w) => {
-  //       let html = `<div class="tooltip-block">`;
-  //       html += `<strong>Level:</strong> ${w.level}<br>`;
-  //       html += `<strong>Energy Cost:</strong> ${w.energy}<br>`;
-  //       html += `<strong>Range:</strong> ${w.range}<br>`;
-  //       if (w.damage > 0) html += `<strong>Damage:</strong> ${w.damage}<br>`;
-  //       if (w.criticalDamage > 0)
-  //         html += `<strong>Crit Dmg:</strong> ${w.criticalDamage}<br>`;
-  //       if (w.criticalChance > 0)
-  //         html += `<strong>Crit %:</strong> ${w.criticalChance}%<br>`;
-  //       if (w.poisonAmount > 0)
-  //         html += `<strong>Poison:</strong> ${w.poisonAmount}<br>`;
-  //       if (w.canHeal) {
-  //         const healing = Array.isArray(w.healingAmount)
-  //           ? w.healingAmount.join("%, ") + "%"
-  //           : w.healingAmount;
-  //         html += `<strong>Healing:</strong> ${healing}<br>`;
-  //       }
-  //       if (w.blockAmount > 0)
-  //         html += `<strong>Block:</strong> ${w.blockAmount}<br>`;
-  //       if (w.energyGainOnUse > 0)
-  //         html += `<strong>Energy Gain:</strong> ${w.energyGainOnUse}<br>`;
-  //       if (w.drawAmountOnUse > 0)
-  //         html += `<strong>Draw:</strong> ${w.drawAmountOnUse}<br>`;
-  //       html += `${w.description}<br>`;
-  //       html += `</div>`;
-  //       return html;
-  //     };
-
-  //     tooltipString += `
-  //   <hr>
-  //   <div class="upgrade-preview-wrapper">
-  //     ${statBlock(weapon)}
-  //     <div class="arrow">→</div>
-  //     ${statBlock(upgradedWeapon)}
-  //   </div>
-  // `;
-  //   }
-
-  //   return tooltipString;
-  // };
 
   var getTooltip = () => {
     if (showUpgradePreview && weapon.level < 3) {
