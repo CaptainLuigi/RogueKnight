@@ -755,7 +755,7 @@ class Enemy extends HealthEntity {
       goldDisplay.remove();
     }
 
-    await wait(1000);
+    await wait(500);
     this.#display.remove();
     player.actionLocked = false;
   }

@@ -1851,6 +1851,41 @@ class ThrowingKnife extends Weapons {
   }
 }
 
+class BigBlade extends Weapons {
+  constructor() {
+    super(
+      "Big Blade",
+      1,
+      "Melee",
+      70,
+      50,
+      30,
+      2,
+      "Can only target the first enemy, click to instantly use weapon.",
+      "Assets/blade.png",
+      false,
+      0,
+      0
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 80;
+        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalChance = 25;
+        break;
+      case 3:
+        weaponInfo.damage = 90;
+        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 20;
+        break;
+    }
+  }
+}
+
 class DevWeapon extends Weapons {
   constructor() {
     super(
@@ -1980,6 +2015,7 @@ function getAvailableWeapons() {
     new BattleFocus(),
     new ThrowingKnife(),
     new PoisonArrow(),
+    new BigBlade(),
   ];
 }
 
@@ -2016,6 +2052,7 @@ const weaponClassMapping = {
   BattleFocus,
   ThrowingKnife,
   PoisonArrow,
+  BigBlade,
   DevWeapon,
   DevShield,
   DevBow,

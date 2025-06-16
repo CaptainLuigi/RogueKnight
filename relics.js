@@ -199,7 +199,7 @@ const relicList = [
     "Overcharged Core",
     "Assets/overchargedCore.png",
     overchargedCore,
-    "Max Energy is increased by 1, but deals 5 unblockable damage to you at the end of your turn.",
+    "Max Energy is increased by 1, but deals 3 unblockable damage to you at the end of your turn.",
     "elite",
     125
   ),

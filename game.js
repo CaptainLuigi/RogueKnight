@@ -366,7 +366,7 @@ async function endTurn() {
   isPlayerTurn = false;
 
   if (player.equippedRelics.includes("Overcharged Core")) {
-    player.takeDamage(5);
+    player.takeDamage(3);
     updateHealthBar(player);
     await wait(300);
   }
