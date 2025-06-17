@@ -186,14 +186,14 @@ document
       const weapon = player.deck[weaponIndex]; // Get the selected weapon
       if (weapon) {
         // Check if player has 50 or more gold
-        if (globalSettings.playerGold >= 50) {
+        if (globalSettings.playerGold >= 20) {
           console.log(`Removing weapon: ${weapon.name}`);
 
           // Call dropWeapon to remove the weapon
           dropWeapon(weaponIndex);
 
           // Subtract 50 gold from the player
-          updatePlayerGold(-50);
+          updatePlayerGold(-20);
 
           localStorage.setItem("weaponRemoved", "true");
 

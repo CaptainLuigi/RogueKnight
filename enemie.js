@@ -806,7 +806,7 @@ class BitingPlant extends Enemy {
   constructor() {
     super(
       "Biting Plant",
-      350,
+      250,
       8,
       "Assets/Transperent/Icon11.png",
       true,

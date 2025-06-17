@@ -54,8 +54,8 @@ const SoundManager = {
     })(),
     EquipRelic: (() => {
       const audio = new Audio("Assets/Sound/equipRelicplasterbrain.flac");
-      audio.volume = 0.075;
-      audio.dataset = { baseVolume: 0.075 };
+      audio.volume = 0.05;
+      audio.dataset = { baseVolume: 0.05 };
       return audio;
     })(),
     OpenChest: (() => {
@@ -144,6 +144,12 @@ const SoundManager = {
     })(),
     Dissolve: (() => {
       const audio = new Audio("Assets/Sound/dissolveplasterbrain.wav");
+      audio.volume = 0.075;
+      audio.dataset = { baseVolume: 0.075 };
+      return audio;
+    })(),
+    HammerSound: (() => {
+      const audio = new Audio("Assets/Sound/hammerTriqyStudio.wav");
       audio.volume = 0.075;
       audio.dataset = { baseVolume: 0.075 };
       return audio;

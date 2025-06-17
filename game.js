@@ -363,9 +363,6 @@ async function endTurn() {
     await wait(400);
   }
 
-  enemies.forEach((enemy) => {
-    enemy.removeBlock(enemy.activeShield);
-  });
   disableWeapons();
 
   isPlayerTurn = false;
@@ -390,11 +387,15 @@ async function endTurn() {
 
   if (player.equippedRelics.includes("Curse of the plague")) {
     enemies.forEach((enemy) => {
-      enemy.addPoisonFromPlayer(3 + player.poisonModifier);
+      enemy.addPoisonFromPlayer(5 + player.poisonModifier);
       enemy.updatePoisonDisplay();
     });
     await wait(300);
   }
+
+  enemies.forEach((enemy) => {
+    enemy.removeBlock(enemy.activeShield);
+  });
 
   let index = 0;
   let localEnemies = [...enemies];

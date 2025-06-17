@@ -1874,7 +1874,17 @@ class BigBlade extends Weapons {
       "Assets/blade.png",
       false,
       0,
-      0
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1889,6 +1899,51 @@ class BigBlade extends Weapons {
       case 3:
         weaponInfo.damage = 90;
         weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 20;
+        break;
+    }
+  }
+}
+
+class Hammer extends Weapons {
+  constructor() {
+    super(
+      "Hammer",
+      1,
+      "Melee",
+      75,
+      15,
+      10,
+      2,
+      "Can only target the first enemy, click to instantly use weapon.",
+      "Assets/hammer.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "HammerSound"
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 90;
+        weaponInfo.criticalDamage = 10;
+        weaponInfo.criticalChance = 15;
+        break;
+      case 3:
+        weaponInfo.damage = 110;
+        weaponInfo.criticalDamage = 5;
         weaponInfo.criticalChance = 20;
         break;
     }
@@ -2025,6 +2080,7 @@ function getAvailableWeapons() {
     new ThrowingKnife(),
     new PoisonArrow(),
     new BigBlade(),
+    new Hammer(),
   ];
 }
 
@@ -2062,6 +2118,7 @@ const weaponClassMapping = {
   ThrowingKnife,
   PoisonArrow,
   BigBlade,
+  Hammer,
   DevWeapon,
   DevShield,
   DevBow,
