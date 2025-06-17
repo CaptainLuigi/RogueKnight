@@ -231,6 +231,11 @@
           console.warn("No relic selected.");
         }
 
+        if (player.maxHealth <= 0 || player.health <= 0) {
+          window.location.href = "deathscreen.html";
+          await wait(500);
+        }
+
         player.savePlayerToStorage();
 
         localStorage.removeItem("selectedRelicName");

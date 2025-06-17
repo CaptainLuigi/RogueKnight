@@ -63,6 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
   });
+
+  if (player.equippedRelics.includes("Blood Pact")) {
+    const healButton = document.getElementById("heal-btn");
+    healButton.disabled = true;
+  }
 });
 
 function fillEnemyArray(currentDifficulty) {
@@ -373,6 +378,21 @@ async function endTurn() {
 
   if (player.equippedRelics.includes("Stonewall Totem")) {
     stonewallTotem();
+    await wait(300);
+  }
+
+  if (player.equippedRelics.includes("Vengeful Echo")) {
+    enemies.forEach((enemy) => {
+      enemy.takeDamage(10, false);
+    });
+    await wait(300);
+  }
+
+  if (player.equippedRelics.includes("Curse of the plague")) {
+    enemies.forEach((enemy) => {
+      enemy.addPoisonFromPlayer(3 + player.poisonModifier);
+      enemy.updatePoisonDisplay();
+    });
     await wait(300);
   }
 

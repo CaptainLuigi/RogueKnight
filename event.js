@@ -215,6 +215,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  //infernal Ingot
+
+  if (eventType === "infernalIngot") {
+    const infernalIngotBtn = document.getElementById("takeInfernalIngot");
+
+    if (infernalIngotBtn) {
+      infernalIngotBtn.addEventListener("click", function () {
+        player.foundRelic("Infernal Ingot", true);
+        player.savePlayerToStorage();
+        returnToMap();
+      });
+    }
+  }
+
   //Die Gambling
 
   if (eventType === "dieGambling") {

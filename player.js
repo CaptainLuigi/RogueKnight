@@ -10,8 +10,10 @@ class Player extends HealthEntity {
   #energy;
   #maxEnergy;
   #damageModifier = 0;
+  #damagePercentModifier = 0;
   #critChanceModifier = 0;
   #critDamageModifier = 0;
+  #critDamagePercentModifier = 0;
   #blockModifier = 0;
   #lifestealModifier = 0;
   #damageReductionModifier = 0;
@@ -71,12 +73,20 @@ class Player extends HealthEntity {
     return this.#damageModifier;
   }
 
+  get damagePercentModifier() {
+    return this.#damagePercentModifier;
+  }
+
   get critChanceModifier() {
     return this.#critChanceModifier;
   }
 
   get critDamageModifier() {
     return this.#critDamageModifier;
+  }
+
+  get critDamagePercentModifier() {
+    return this.#critDamagePercentModifier;
   }
 
   get blockModifier() {
@@ -236,8 +246,16 @@ class Player extends HealthEntity {
     this.#critDamageModifier += amount;
   }
 
+  increaseWeaponCritDamagePercent(percent) {
+    this.#critDamagePercentModifier += percent;
+  }
+
   increaseWeaponDamage(amount) {
     this.#damageModifier += amount;
+  }
+
+  increaseWeaponDamagePercent(percent) {
+    this.#damagePercentModifier += percent;
   }
 
   increaseWeaponLifesteal(amount) {
@@ -474,7 +492,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      // this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());
 
@@ -484,8 +502,10 @@ class Player extends HealthEntity {
       this.#health = state.health;
       this.#maxHealth = state.maxHealth;
       this.#damageModifier = state.damageModifier;
+      this.#damagePercentModifier = state.damagePercentModifier;
       this.#critChanceModifier = state.critChanceModifier;
       this.#critDamageModifier = state.critDamageModifier;
+      this.#critDamagePercentModifier = state.critDamagePercentModifier;
       this.#blockModifier = state.blockModifier;
       this.#lifestealModifier = state.lifestealModifier;
       this.#damageReductionModifier = state.damageReductionModifier;
@@ -520,8 +540,10 @@ class Player extends HealthEntity {
       foundRelics: this.#foundRelics,
       equippedRelics: this.#equippedRelics,
       damageModifier: this.#damageModifier,
+      damagePercentModifier: this.#damagePercentModifier,
       critChanceModifier: this.#critChanceModifier,
       critDamageModifier: this.#critDamageModifier,
+      critDamagePercentModifier: this.#critDamagePercentModifier,
       blockModifier: this.#blockModifier,
       lifestealModifier: this.#lifestealModifier,
       damageReductionModifier: this.#damageReductionModifier,

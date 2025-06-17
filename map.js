@@ -297,6 +297,7 @@ function triggerRandomEvent() {
     { type: "bloodforge", action: showEvent },
     { type: "dieGambling", action: showEvent },
     { type: "shopScouting", action: showEvent },
+    { type: "infernalIngot", action: showEvent },
   ];
 
   if (player.deck.length > 2) {

@@ -76,141 +76,149 @@ class ActiveRelics extends Relics {
 }
 
 const relicList = [
-  new ActiveRelics(
-    "Grinding Monstera",
-    "Assets/monsteraLeaf.png",
-    grindingMonstera,
-    "Get +2 max HP for every non-summon enemy killed.",
-    "elite",
-    100
-  ),
-  new ActiveRelics(
-    "Executioner's Mark",
-    "Assets/executionersMark.png",
-    executionersMark,
-    "Whenever an enemy is killed, draw one.",
-    "chest",
-    100
-  ),
-  new ActiveRelics(
-    "Spirit Totem",
-    "Assets/spiritTotem.png",
-    spiritTotem,
-    "Whenever an enemy dies during your turn, get 1 energy.",
-    "chest",
-    125
-  ),
-  new ActiveRelics(
-    "Sanguine Blessing",
-    "Assets/sanguineBlessing.png",
-    sanguineBlessing,
-    "Heal 3 HP for every enemy killed.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Eternal Bloom",
-    "Assets/eternalBloom.png",
-    () => {},
-    "Heal 10 HP at the end of combat.",
-    "chest",
-    75
-  ),
-  new Relics(
-    "Souleater",
-    "Assets/souleater.png",
-    souleater,
-    "All weapons get +5% lifesteal",
-    "succubus"
-  ),
-  new Relics(
-    "Beefy Steak",
-    "Assets/pixelSteak.png",
-    beefySteak,
-    "Get +20 max HP.",
-    "chest",
-    75
-  ),
-  new Relics(
-    "Whetstone",
-    "Assets/whetstone.png",
-    whetstone,
-    "All weapons get +15 critical chance.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Scroll of Knowledge",
-    "Assets/scrollRelic.png",
-    scrollOfKnowledge,
-    "Hand size increased by 1.",
-    "chest",
-    75
-  ),
-  new Relics(
-    "Bramble Mantle",
-    "Assets/brambleMantle.png",
-    brambleMantle,
-    "Whenever an enemy attacks you, deal 15 damage back.",
-    "chest",
-    75
-  ),
-  new Relics(
-    "Relic of Vigor",
-    "Assets/relicOfVigor.png",
-    relicOfVigor,
-    "All weapons get +15 damage.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Defender's Seal",
-    "Assets/defendersSeal.png",
-    defendersSeal,
-    "When blocking, increase the block by 5.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Critical Surge",
-    "Assets/criticalSurge.png",
-    criticalSurge,
-    "All weapons get +25 critical damage.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Omnipotence",
-    "Assets/blackHole.png",
-    omnipotence,
-    "Actions don't cost energy, but -80 max HP.",
-    "elite",
-    175
-  ),
-  new Relics(
-    "Cursed Gauntlet",
-    "Assets/cursedGauntlet.png",
-    cursedGauntlet,
-    "Max Energy reduced by 1, but all attacks deal +25 damage, +50 critical damage and shields get +10 block.",
-    "elite",
-    125
-  ),
-  new Relics(
-    "Overcharged Core",
-    "Assets/overchargedCore.png",
-    overchargedCore,
-    "Max Energy is increased by 1, but deals 3 unblockable damage to you at the end of your turn.",
-    "elite",
-    125
-  ),
-  new Relics(
-    "Cloak of Protection",
-    "Assets/cloakOfProtection.png",
-    cloakOfProtection,
-    "Reduces all incomming damage by 1.",
-    "chest",
-    100
-  ),
+  // new ActiveRelics(
+  //   "Grinding Monstera",
+  //   "Assets/monsteraLeaf.png",
+  //   grindingMonstera,
+  //   "Get +2 max HP for every non-summon enemy killed.",
+  //   "elite",
+  //   100
+  // ),
+  // new ActiveRelics(
+  //   "Executioner's Mark",
+  //   "Assets/executionersMark.png",
+  //   executionersMark,
+  //   "Whenever an enemy is killed, draw one.",
+  //   "chest",
+  //   100
+  // ),
+  // new ActiveRelics(
+  //   "Spirit Totem",
+  //   "Assets/spiritTotem.png",
+  //   spiritTotem,
+  //   "Whenever an enemy dies during your turn, get 1 energy.",
+  //   "chest",
+  //   125
+  // ),
+  // new ActiveRelics(
+  //   "Sanguine Blessing",
+  //   "Assets/sanguineBlessing.png",
+  //   sanguineBlessing,
+  //   "Heal 3 HP for every enemy killed.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Eternal Bloom",
+  //   "Assets/eternalBloom.png",
+  //   () => {},
+  //   "Heal 10 HP at the end of combat.",
+  //   "chest",
+  //   75
+  // ),
+  // new Relics(
+  //   "Souleater",
+  //   "Assets/souleater.png",
+  //   souleater,
+  //   "All weapons get +5% lifesteal.",
+  //   "succubus"
+  // ),
+  // new Relics(
+  //   "Beefy Steak",
+  //   "Assets/pixelSteak.png",
+  //   beefySteak,
+  //   "Get +20 max HP.",
+  //   "chest",
+  //   75
+  // ),
+  // new Relics(
+  //   "Whetstone",
+  //   "Assets/whetstone.png",
+  //   whetstone,
+  //   "All weapons get +15 critical chance.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Scroll of Knowledge",
+  //   "Assets/scrollRelic.png",
+  //   scrollOfKnowledge,
+  //   "Hand size increased by 1.",
+  //   "chest",
+  //   75
+  // ),
+  // new Relics(
+  //   "Bramble Mantle",
+  //   "Assets/brambleMantle.png",
+  //   brambleMantle,
+  //   "Whenever an enemy attacks you, deal 15 damage back.",
+  //   "chest",
+  //   75
+  // ),
+  // new Relics(
+  //   "Relic of Vigor",
+  //   "Assets/relicOfVigor.png",
+  //   relicOfVigor,
+  //   "All weapons get +15 damage.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Defender's Seal",
+  //   "Assets/defendersSeal.png",
+  //   defendersSeal,
+  //   "When blocking, increase the block by 5.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Critical Surge",
+  //   "Assets/criticalSurge.png",
+  //   criticalSurge,
+  //   "All weapons get +25 critical damage.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Omnipotence",
+  //   "Assets/blackHole.png",
+  //   omnipotence,
+  //   "Actions don't cost energy, but -80 max HP.",
+  //   "elite",
+  //   175
+  // ),
+  // new Relics(
+  //   "Cursed Gauntlet",
+  //   "Assets/cursedGauntlet.png",
+  //   cursedGauntlet,
+  //   "Max Energy reduced by 1, but all attacks deal +25 damage, +50 critical damage and shields get +10 block.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Pacifist Amulett",
+  //   "Assets/pacifistAmulet.png",
+  //   pacifistAmulet,
+  //   "Max Energy is increased by 1, but weapons deal -10 damage and -20 critical damage.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Overcharged Core",
+  //   "Assets/overchargedCore.png",
+  //   overchargedCore,
+  //   "Max Energy is increased by 1, but deals 3 unblockable damage to you at the end of your turn.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Cloak of Protection",
+  //   "Assets/cloakOfProtection.png",
+  //   cloakOfProtection,
+  //   "Reduces all incomming damage by 1.",
+  //   "chest",
+  //   100
+  // ),
   new Relics(
     "Tincture of Suffering",
     "Assets/tinctureOfSuffering.png",
@@ -219,109 +227,140 @@ const relicList = [
     "chest",
     100
   ),
-  new Relics(
-    "Golden Sigil",
-    "Assets/goldenSigil.png",
-    () => {},
-    "Get 25 Gold at the end of combat.",
-    "chest",
-    75
-  ),
-  new Relics(
-    "Back to Basics",
-    "Assets/backToBasics.png",
-    backToBasics,
-    "Max Energy is increased by 1, but you can't crit.",
-    "elite",
-    125
-  ),
-  new Relics(
-    "Stonewall Totem",
-    "Assets/stonewallTotem.png",
-    () => {},
-    "At the end of your turns, add 10 block.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "AliensRock",
-    "Assets/aliensRock.png",
-    aliensRock,
-    "All weapons can target any enemy. Click weapon first, then the enemy you want to hit.",
-    "elite",
-    125
-  ),
-  new Relics(
-    "Sharp Focus",
-    "Assets/sharpFocus.png",
-    () => {},
-    "When hitting a crit, gain 1 Energy.",
-    "elite",
-    125
-  ),
-  new Relics(
-    "Fist of Bulwark",
-    "Assets/fistOfBulwark.png",
-    () => {},
-    "When you attack, also gain 5 block.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Titan's Reflection",
-    "Assets/titansReflection.png",
-    () => {},
-    "Whenever an enemy attacks you, deal damage back equal to 3 times the remaining block after the attack.",
-    "chest",
-    100
-  ),
-  new Relics(
-    "Adrenal Surge",
-    "Assets/adrenalSurge.png",
-    () => {},
-    "Get +1 Energy at the start of your turn if you have 30% or less health.",
-    "elite",
-    125
-  ),
-  new Relics(
-    "Death's Bargain",
-    "Assets/deathsPact.png",
-    () => {},
-    "Saves you once from death and then heals you for 10%.",
-    "elite",
-    125
-  ),
-  new ActiveRelics(
-    "Curse of Continuity",
-    "Assets/CurseOfContinuity.png",
-    curseOfContinuity,
-    "Carry over up to 3 unused energy to the next turn. Each carried over energy does 1 damage to you.",
-    "elite",
-    150
-  ),
-  new Relics(
-    "Bloodforge",
-    "Assets/anvil.png",
-    () => {},
-    "Whenever you add something to your deck, upgrade it and lose 5 HP.",
-    "event",
-    0
-  ),
+  // new Relics(
+  //   "Golden Sigil",
+  //   "Assets/goldenSigil.png",
+  //   () => {},
+  //   "Get 25 Gold at the end of combat.",
+  //   "chest",
+  //   75
+  // ),
+  // new Relics(
+  //   "Back to Basics",
+  //   "Assets/backToBasics.png",
+  //   backToBasics,
+  //   "Max Energy is increased by 1, but you can't crit.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Stonewall Totem",
+  //   "Assets/stonewallTotem.png",
+  //   () => {},
+  //   "At the end of your turns, add 10 block.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "AliensRock",
+  //   "Assets/aliensRock.png",
+  //   aliensRock,
+  //   "All weapons can target any enemy. Click weapon first, then the enemy you want to hit.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Sharp Focus",
+  //   "Assets/sharpFocus.png",
+  //   () => {},
+  //   "When hitting a crit, gain 1 Energy.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Fist of Bulwark",
+  //   "Assets/fistOfBulwark.png",
+  //   () => {},
+  //   "When you attack, also gain 5 block.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Titan's Reflection",
+  //   "Assets/titansReflection.png",
+  //   () => {},
+  //   "Whenever an enemy attacks you, deal damage back equal to 3 times the remaining block after the attack.",
+  //   "chest",
+  //   100
+  // ),
+  // new Relics(
+  //   "Adrenal Surge",
+  //   "Assets/adrenalSurge.png",
+  //   () => {},
+  //   "Get +1 Energy at the start of your turn if you have 30% or less health.",
+  //   "elite",
+  //   125
+  // ),
+  // new Relics(
+  //   "Death's Bargain",
+  //   "Assets/deathsPact.png",
+  //   () => {},
+  //   "Saves you once from death and then heals you for 10%.",
+  //   "elite",
+  //   125
+  // ),
+  // new ActiveRelics(
+  //   "Curse of Continuity",
+  //   "Assets/CurseOfContinuity.png",
+  //   curseOfContinuity,
+  //   "Carry over up to 3 unused energy to the next turn. Each carried over energy does 1 damage to you.",
+  //   "elite",
+  //   150
+  // ),
+  // new Relics(
+  //   "Bloodforge",
+  //   "Assets/anvil.png",
+  //   () => {},
+  //   "Whenever you add something to your deck, upgrade it and lose 5 HP.",
+  //   "event",
+  //   0
+  // ),
 
+  // new Relics(
+  //   "Death's Pact",
+  //   "Assets/deathsBargain2.png",
+  //   () => {},
+  //   "Halfes incoming damage from enemies.",
+  //   "unfindable",
+  //   0
+  // ),
+  // new Relics(
+  //   "Gambler's Die",
+  //   "Assets/dice.png",
+  //   () => {},
+  //   "50% chance each turn to gain 2 energy or lose 1.",
+  //   "event"
+  // ),
+  // new Relics(
+  //   "Infernal Ingot",
+  //   "Assets/infernalIngot.png",
+  //   infernalIngot,
+  //   "All weapons get +10% lifesteal but lose half your max HP.",
+  //   "event"
+  // ),
+  // new Relics(
+  //   "Blood Pact",
+  //   "Assets/bloodPact.png",
+  //   bloodPact,
+  //   "Weapons deal +25% damage and critical damage, but you can't heal after battle.",
+  //   "elite",
+  //   150
+  // ),
+  // new Relics(
+  //   "Vengeful Echo",
+  //   "Assets/vengefulEcho.png",
+  //   () => {},
+  //   "Deal 10 damage to all enemies at the end of your turn.",
+  //   "chest",
+  //   75
+  // ),
   new Relics(
-    "Death's Pact",
-    "Assets/deathsBargain2.png",
+    "Curse of the plague",
+    "Assets/curseOfThePlague.png",
     () => {},
-    "Halfes incoming damage from enemies.",
-    "unfindable",
-    0
-  ),
-  new Relics(
-    "Gambler's Die",
-    "Assets/dice.png",
-    () => {},
-    "50% chance eache turn to gain 2 energy or lose 1.",
-    "event"
+    "Apply 3 poison to all enemies at the end of your turn.",
+    "chest",
+    100
   ),
 ].reduce((o, r) => {
   o[r.name] = r;
@@ -383,6 +422,12 @@ function cursedGauntlet(player) {
   player.increaseWeaponCritDamage(50);
   player.increaseWeaponBlock(10);
   player.increaseMaxEnergy(-1);
+}
+
+function pacifistAmulet(player) {
+  player.increaseWeaponDamage(-10);
+  player.increaseWeaponCritDamage(-20);
+  player.increaseMaxEnergy(1);
 }
 
 function overchargedCore(player) {
@@ -510,9 +555,23 @@ function souleater(player) {
   player.increaseWeaponLifesteal(5);
 }
 
+function infernalIngot(player) {
+  console.log("Infernal Ingot function triggered");
+
+  player.increaseWeaponLifesteal(10);
+  player.decreaseMaxHealth(Math.floor(player.maxHealth / 2));
+  player.savePlayerToStorage();
+}
+
 function backToBasics(player) {
   player.increaseMaxEnergy(1);
   player.critsDisabled = true;
+}
+
+function bloodPact(player) {
+  player.increaseWeaponDamagePercent(25);
+  player.increaseWeaponCritDamagePercent(25);
+  player.savePlayerToStorage();
 }
 
 function createRelicElement(relic) {

@@ -251,9 +251,18 @@ class Weapons {
     const isCritical =
       !player.critsDisabled &&
       Math.random() * 100 < this.criticalChance + critChanceModifier; // Random chance for critical hit
-    const damage = isCritical
-      ? this.criticalDamage + critDamageModifier
-      : this.damage + damageModifier;
+
+    const baseDamage = isCritical ? this.criticalDamage : this.damage;
+
+    const flatModifier = isCritical ? critDamageModifier : damageModifier;
+
+    const percentModifier = isCritical
+      ? player.critDamagePercentModifier || 0
+      : player.damagePercentModifier || 0;
+
+    const damage = Math.floor(
+      (baseDamage + flatModifier) * (1 + percentModifier / 100)
+    );
 
     if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
       console.log("Sharp focus activated");
@@ -2190,6 +2199,9 @@ function generateWeaponInfo(
       if (player.damageModifier > 0) {
         modifierDisplay = `(+${player.damageModifier})`;
       }
+      if (player.damageModifier < 0) {
+        modifierDisplay = `(${player.damageModifier})`;
+      }
       tooltipString += `<strong>Damage:</strong> ${weapon.damage} ${modifierDisplay} <br>`;
     }
 
@@ -2197,6 +2209,9 @@ function generateWeaponInfo(
       let modifierDisplay = "";
       if (player.critDamageModifier > 0) {
         modifierDisplay = `(+${player.critDamageModifier})`;
+      }
+      if (player.critDamageModifier < 0) {
+        modifierDisplay = `(${player.critDamageModifier})`;
       }
       tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} ${modifierDisplay} <br>`;
     }
@@ -2240,6 +2255,9 @@ function generateWeaponInfo(
       let modifierDisplay = "";
       if (player.blockModifier > 0) {
         modifierDisplay = `(+${player.blockModifier})`;
+      }
+      if (player.blockModifier < 0) {
+        modifierDisplay = `(${player.blockModifier})`;
       }
       tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} ${modifierDisplay}<br>`;
     }
