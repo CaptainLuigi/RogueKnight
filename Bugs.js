@@ -45,7 +45,7 @@ clear block interval in death animation -> sprite flickert nach tod manchmal
 
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 
-bei summon enemy tod kein smoothes vorrücken der hinteren gegner
+prozentualer buff bei waffen anzeigen (wegen blood pact)
 
-bei upgrade event sind noch waffen hinterlegt, die schon max level sind, diese werden aber nicht angezeigt -> index ist falsch um upzugraden
+wenn gegner mittendrin stirbt, ist targeting verzerrt (trifft den gegner hinter dem man eigentlich anvisiert), vllt problem von aliensrock
 */

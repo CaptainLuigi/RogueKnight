@@ -315,7 +315,6 @@ const relicList = [
     "event",
     0
   ),
-
   new Relics(
     "Death's Pact",
     "Assets/deathsBargain2.png",
@@ -359,6 +358,14 @@ const relicList = [
     "Assets/curseOfThePlague.png",
     () => {},
     "Apply 5 poison to all enemies at the end of your turn.",
+    "chest",
+    100
+  ),
+  new Relics(
+    "Alchemist’s Needle",
+    "Assets/alchemistsNeedle.png",
+    () => {},
+    "Whenever an enemy takes damage from a weapon, apply 5 poison to that enemy.",
     "chest",
     100
   ),

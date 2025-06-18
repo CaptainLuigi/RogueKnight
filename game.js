@@ -160,11 +160,6 @@ function useWeapon(weaponIndex) {
     return;
   }
 
-  if (player.actionLocked) {
-    displayTurnMessage("Wait until the enemy died!");
-    return;
-  }
-
   const weapon = player.hand[weaponIndex];
   if (weapon.wasUsed) {
     displayTurnMessage("Not so fast!");
@@ -260,11 +255,7 @@ async function executeAttack(weapon, enemyIndex) {
   applyBlock(weapon, player.blockModifier);
 
   const soundCategory = weapon.soundCategory;
-  console.log(`Sound category: ${soundCategory}`);
-
   if (soundCategory) {
-    console.log(`Attempting to play sound: ${soundCategory}`);
-
     SoundManager.play(soundCategory);
   }
 
@@ -278,35 +269,40 @@ async function executeAttack(weapon, enemyIndex) {
 
   let overallDamageTaken = 0;
 
-  let damageIndex = 0;
+  for (let i = 0; i < damages.length; i++) {
+    const targetIndex = startIndex - i;
+    const enemy = enemies[targetIndex];
+    const enemyDamage = damages[i];
 
-  for (let enemyDamage of damages) {
-    enemies[startIndex].displayDamage(enemyDamage, isCritical);
-    let damageTaken = enemies[startIndex].takeDamage(enemyDamage);
-    damages[damageIndex] = damageTaken;
+    enemy.displayDamage(enemyDamage, isCritical);
 
+    const damageTaken = enemy.takeDamage(enemyDamage);
+    damages[i] = damageTaken;
     overallDamageTaken += damageTaken;
-    startIndex--;
 
-    damageIndex++;
+    // === Alchemist’s Needle poison application ===
+    if (
+      damageTaken > 0 &&
+      !enemy.isDead() &&
+      player.equippedRelics.includes("Alchemist’s Needle")
+    ) {
+      enemy.addPoisonFromPlayer(5 + player.poisonModifier);
+      enemy.updatePoisonDisplay();
+    }
   }
+
   damages = damages.reverse();
 
   setIdleTimeout();
 
-  // Apply lifesteal if the Souleater relic is equipped
+  // Lifesteal from total damage
   let healing = 0;
-
   healing += (overallDamageTaken * player.lifestealModifier) / 100;
-
-  // Calculate additional healing from the weapon
   healing += weapon.calculateHealing(damages);
 
   player.heal(healing);
-
   player.useEnergy(weapon.energy);
   updateHealthBar(player);
-
   updateEnergyDisplay();
   setActiveWeapon(-1);
   player.removeUsed();

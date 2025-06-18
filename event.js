@@ -806,11 +806,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const weaponDeckScreen = document.getElementById("weapon-deck-screen");
     const closeDeckButton = document.getElementById("close-deck-btn");
 
+    let upgradeableWeapons = [];
+
     if (upgradeBtn) {
       upgradeBtn.addEventListener("click", () => {
         isUpgradeMode = true;
         weaponDeckScreen.setAttribute("isupgrademode", "");
         weaponDeckScreen.classList.remove("hidden");
+
+        // Store filtered weapons and show them
+        upgradeableWeapons = player.deck.filter((weapon) => weapon.level < 3);
         player.showDeck((weapon) => weapon.level < 3);
         document.body.classList.add("upgrade-mode");
 
@@ -822,7 +827,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // Attach the same click handler as upgradeWeapon
     weaponDeckScreen?.addEventListener("click", async (event) => {
       if (!isUpgradeMode) return;
 
@@ -841,7 +845,7 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
 
-        const weapon = player.deck[weaponIndex];
+        const weapon = upgradeableWeapons[weaponIndex]; // ✅ Use filtered list
         console.log("Weapon found:", weapon);
 
         if (weapon) {
@@ -854,7 +858,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           isUpgradeMode = false;
         } else {
-          console.error("Weapon not found in player's deck");
+          console.error("Weapon not found in upgradeableWeapons");
         }
       }
     });
@@ -887,7 +891,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (removeBtn) {
       removeBtn.addEventListener("click", () => {
-        const weaponDeckScreen = document.getElementById("weapon-deck-screen");
         weaponDeckScreen.classList.remove("hidden");
 
         player.showDeck(); // Show full deck
@@ -899,8 +902,6 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }, 0);
       });
-
-      const weaponDeckScreen = document.getElementById("weapon-deck-screen");
 
       weaponDeckScreen?.addEventListener("click", (event) => {
         if (!document.body.classList.contains("remove-mode")) return;
@@ -921,15 +922,13 @@ document.addEventListener("DOMContentLoaded", function () {
           if (weapon) {
             console.log(`Removing weapon: ${weapon.name}`);
 
-            dropWeapon(weaponIndex); // Remove the weapon
+            dropWeapon(weaponIndex);
 
-            document
-              .getElementById("weapon-deck-screen")
-              .classList.add("hidden");
+            weaponDeckScreen.classList.add("hidden");
             document.body.classList.remove("remove-mode");
 
             displayTurnMessage(`You removed ${weapon.name} from your deck.`);
-            returnToMap(); // Or whatever ends the event and resumes the game
+            returnToMap();
           } else {
             console.error("Weapon not found in player's deck");
           }

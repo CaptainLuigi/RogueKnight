@@ -1869,8 +1869,8 @@ class BigBlade extends Weapons {
       70,
       50,
       30,
-      2,
-      "Can only target the first enemy, click to instantly use weapon.",
+      3,
+      "Can only target the first enemy, click to instantly use weapon and gain 1 energy.",
       "Assets/blade.png",
       false,
       0,
@@ -1882,7 +1882,7 @@ class BigBlade extends Weapons {
       0,
       0,
       false,
-      0,
+      1,
       0,
       "SwordSlash"
     );
@@ -1945,6 +1945,95 @@ class Hammer extends Weapons {
         weaponInfo.damage = 110;
         weaponInfo.criticalDamage = 5;
         weaponInfo.criticalChance = 20;
+        break;
+    }
+  }
+}
+
+class Macuahuitl extends Weapons {
+  constructor() {
+    super(
+      "Macuahuitl",
+      1,
+      "Melee",
+      15,
+      30,
+      10,
+      1,
+      "Can only target the first enemy, click to instantly use weapon and gain 1 energy.",
+      "Assets/mayan.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      1,
+      0,
+      "SwordSlash"
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 20;
+        weaponInfo.criticalDamage = 40;
+        break;
+      case 3:
+        weaponInfo.damage = 25;
+        weaponInfo.criticalDamage = 35;
+        weaponInfo.criticalChance = 50;
+    }
+  }
+}
+
+class BrokenBlade extends Weapons {
+  constructor() {
+    super(
+      "Broken Blade",
+      1,
+      "Melee",
+      35,
+      60,
+      20,
+      1,
+      "Can only target the first enemy, click to instantly use weapon. Can only be used once per battle.",
+      "Assets/brokenBlade.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      true,
+      0,
+      0,
+      "SwordSlash"
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 40;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 25;
+        break;
+      case 3:
+        weaponInfo.damage = 45;
+        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalChance = 30;
+        weaponInfo.poisonAmount = 5;
         break;
     }
   }
@@ -2017,6 +2106,28 @@ class DevBow extends Weapons {
   }
 }
 
+class DevSword extends Weapons {
+  constructor() {
+    super(
+      "Dev Sword",
+      1,
+      "Melee",
+      1000,
+      0,
+      0,
+      0,
+      0,
+      "Assets/Sword.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0
+    );
+  }
+}
+
 // class WrappedWeapon extends Weapons {
 //   #wrappedWeapon;
 
@@ -2081,6 +2192,8 @@ function getAvailableWeapons() {
     new PoisonArrow(),
     new BigBlade(),
     new Hammer(),
+    new Macuahuitl(),
+    new BrokenBlade(),
   ];
 }
 
@@ -2119,9 +2232,12 @@ const weaponClassMapping = {
   PoisonArrow,
   BigBlade,
   Hammer,
+  Macuahuitl,
+  BrokenBlade,
   DevWeapon,
   DevShield,
   DevBow,
+  DevSword,
 };
 
 function createWeaponInstanceFromInfo(info) {
