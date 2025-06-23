@@ -18,6 +18,7 @@ class Player extends HealthEntity {
   #lifestealModifier = 0;
   #damageReductionModifier = 0;
   #poisonModifier = 0;
+  #strength = 0;
   #critsDisabled = false;
   #currentPoison = 0;
   #canTargetAnyEnemy = false;
@@ -104,6 +105,10 @@ class Player extends HealthEntity {
     return this.#poisonModifier;
   }
 
+  get strength() {
+    return this.#strength;
+  }
+
   get critsDisabled() {
     return this.#critsDisabled;
   }
@@ -134,6 +139,10 @@ class Player extends HealthEntity {
 
   set critsDisabled(value) {
     this.#critsDisabled = value;
+  }
+
+  set strength(value) {
+    this.#strength = value;
   }
 
   removeUsed() {
@@ -272,6 +281,10 @@ class Player extends HealthEntity {
 
   increasePoisonApplied(amount) {
     this.#poisonModifier += amount;
+  }
+
+  increaseStrength(amount) {
+    this.#strength += amount;
   }
 
   setWeaponEnergy(amount) {
@@ -415,6 +428,39 @@ class Player extends HealthEntity {
         });
       } else {
         poisonElement.classList.add("hidden");
+      }
+    }
+  }
+
+  updateStrengthDisplay() {
+    const strengthElement = document.getElementById("strength-status");
+    if (strengthElement) {
+      if (this.#strength > 0) {
+        strengthElement.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${
+          this.#strength
+        }`;
+        strengthElement.classList.remove("hidden");
+
+        strengthElement.addEventListener("mouseenter", () => {
+          if (!strengthElement.querySelector(".strength-tooltip")) {
+            const strengthTooltip = document.createElement("div");
+            strengthTooltip.classList.add("strength-tooltip");
+
+            strengthTooltip.innerText = `You were strengthened, which increases your damage and critical damage by ${
+              this.#strength
+            }`;
+            strengthElement.appendChild(strengthTooltip);
+          }
+        });
+        strengthElement.addEventListener("mouseleave", function () {
+          const strengthTooltip =
+            strengthElement.querySelector(".strength-tooltip");
+          if (strengthTooltip) {
+            strengthTooltip.remove();
+          }
+        });
+      } else {
+        strengthElement.classList.add("hidden");
       }
     }
   }

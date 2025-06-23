@@ -22,6 +22,7 @@ class Weapons {
   #drawAmountOnUse = 0;
   #wasUsed = false;
   #soundCategory;
+  #strength = 0;
 
   constructor(
     name,
@@ -45,7 +46,8 @@ class Weapons {
     oncePerBattle = false,
     energyGainOnUse = 0,
     drawAmountOnUse = 0,
-    soundCategory = null
+    soundCategory = null,
+    strength = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -70,6 +72,7 @@ class Weapons {
       energyGainOnUse,
       drawAmountOnUse,
       soundCategory,
+      strength,
     });
   }
 
@@ -171,6 +174,10 @@ class Weapons {
     return this.#soundCategory;
   }
 
+  get strength() {
+    return this.#strength;
+  }
+
   set canHeal(value) {
     console.log("Setting canHeal:", value);
 
@@ -241,6 +248,11 @@ class Weapons {
   ) {
     this.#wasUsed = true;
 
+    if (this.#strength > 0) {
+      player.increaseStrength(this.#strength);
+      player.updateStrengthDisplay();
+    }
+
     if (this.damage == 0 && this.criticalDamage == 0)
       return {
         startIndex: 0,
@@ -254,7 +266,8 @@ class Weapons {
 
     const baseDamage = isCritical ? this.criticalDamage : this.damage;
 
-    const flatModifier = isCritical ? critDamageModifier : damageModifier;
+    const flatModifier =
+      (isCritical ? critDamageModifier : damageModifier) + player.strength;
 
     const percentModifier = isCritical
       ? player.critDamagePercentModifier || 0
@@ -346,6 +359,7 @@ class Weapons {
     this.#energyGainOnUse = info.energyGainOnUse;
     this.#drawAmountOnUse = info.drawAmountOnUse || 0;
     this.#soundCategory = info.soundCategory;
+    this.#strength = info.strength;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -2039,6 +2053,138 @@ class BrokenBlade extends Weapons {
   }
 }
 
+class RageAxe extends Weapons {
+  constructor() {
+    super(
+      "Rage Axe",
+      1,
+      "Melee",
+      20,
+      35,
+      30,
+      1,
+      "Can only target the first enemy, click to gain strength and instantly use weapon.",
+      "Assets/rageAxe.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      5
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 25;
+        weaponInfo.criticalDamage = 45;
+        weaponInfo.criticalChance = 35;
+        weaponInfo.strength = 10;
+        break;
+      case 3:
+        weaponInfo.damage = 30;
+        weaponInfo.criticalDamage = 55;
+        weaponInfo.criticalChance = 40;
+        weaponInfo.strength = 15;
+        break;
+    }
+  }
+}
+
+class BerserkersBrew extends Weapons {
+  constructor() {
+    super(
+      "Berserkers Brew",
+      1,
+      "Utility",
+      0,
+      0,
+      0,
+      1,
+      "Use to gain strength. Can only be used once per battle.",
+      "Assets/berserkersBrew.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      true,
+      0,
+      0,
+      "ChargeSound",
+      10
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.strength = 15;
+        break;
+      case 3:
+        weaponInfo.strength = 20;
+    }
+  }
+}
+
+class RagingDagger extends Weapons {
+  constructor() {
+    super(
+      "Raging Dagger",
+      1,
+      "Melee",
+      3,
+      15,
+      60,
+      0,
+      "Can only target the first enemy, click to gain strength and instantly use weapon.",
+      "Assets/Sword.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      5
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.criticalDamage = 25;
+        weaponInfo.strength = 10;
+        break;
+      case 3:
+        weaponInfo.criticalDamage = 40;
+        weaponInfo.criticalChance = 70;
+    }
+  }
+}
+
 class DevWeapon extends Weapons {
   constructor() {
     super(
@@ -2194,6 +2340,9 @@ function getAvailableWeapons() {
     new Hammer(),
     new Macuahuitl(),
     new BrokenBlade(),
+    new RageAxe(),
+    new BerserkersBrew(),
+    new RagingDagger(),
   ];
 }
 
@@ -2234,7 +2383,10 @@ const weaponClassMapping = {
   Hammer,
   Macuahuitl,
   BrokenBlade,
+  RageAxe,
   DevWeapon,
+  BerserkersBrew,
+  RagingDagger,
   DevShield,
   DevBow,
   DevSword,
@@ -2346,6 +2498,8 @@ function generateWeaponInfo(
           html += `<strong>Energy Gain:</strong> ${w.energyGainOnUse}<br>`;
         if (w.drawAmountOnUse > 0)
           html += `<strong>Draw:</strong> ${w.drawAmountOnUse}<br>`;
+        if (w.strength > 0)
+          html += `<strong>Strength:</strong> ${w.strength}<br>`;
         html += `${w.description}<br>`;
         html += `</div>`;
         return html;
@@ -2369,22 +2523,26 @@ function generateWeaponInfo(
 
     if (weapon.damage > 0) {
       let modifierDisplay = "";
-      if (player.damageModifier > 0) {
-        modifierDisplay = `(+${player.damageModifier})`;
+      const totalDamageBuff = player.damageModifier + player.strength;
+
+      if (totalDamageBuff > 0) {
+        modifierDisplay = `(+${totalDamageBuff})`;
       }
-      if (player.damageModifier < 0) {
-        modifierDisplay = `(${player.damageModifier})`;
+      if (totalDamageBuff < 0) {
+        modifierDisplay = `(${totalDamageBuff})`;
       }
       tooltipString += `<strong>Damage:</strong> ${weapon.damage} ${modifierDisplay} <br>`;
     }
 
     if (weapon.criticalDamage > 0) {
       let modifierDisplay = "";
-      if (player.critDamageModifier > 0) {
-        modifierDisplay = `(+${player.critDamageModifier})`;
+      const totalCritDamageBuff = player.critDamageModifier + player.strength;
+
+      if (totalCritDamageBuff > 0) {
+        modifierDisplay = `(+${totalCritDamageBuff})`;
       }
-      if (player.critDamageModifier < 0) {
-        modifierDisplay = `(${player.critDamageModifier})`;
+      if (totalCritDamageBuff < 0) {
+        modifierDisplay = `(${totalCritDamageBuff})`;
       }
       tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} ${modifierDisplay} <br>`;
     }
@@ -2441,6 +2599,10 @@ function generateWeaponInfo(
 
     if (weapon.drawAmountOnUse > 0) {
       tooltipString += `<strong>Draw:</strong> ${weapon.drawAmountOnUse}<br>`;
+    }
+
+    if (weapon.strength > 0) {
+      tooltipString += `<strong>Strength:</strong> ${weapon.strength}<br>`;
     }
 
     tooltipString += `${weapon.description} <br>`;

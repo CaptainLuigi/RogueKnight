@@ -68,6 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const healButton = document.getElementById("heal-btn");
     healButton.disabled = true;
   }
+
+  if (player.equippedRelics.includes("Enthusiastic Start")) {
+    player.increaseStrength(10);
+    player.updateStrengthDisplay();
+  }
 });
 
 function fillEnemyArray(currentDifficulty) {
@@ -353,6 +358,14 @@ async function endTurn() {
   console.log("End turn clicked!");
   document.getElementById("end-turn-btn").disabled = true;
 
+  if (
+    player.equippedRelics.includes("Berserkers Rush") &&
+    player.health <= 20
+  ) {
+    player.increaseStrength(5);
+    player.updateStrengthDisplay();
+  }
+
   if (player.currentPoison > 0) {
     player.applyPoisonDamage();
     updateHealthBar(player);
@@ -548,6 +561,8 @@ async function triggerPostBattleScreen() {
   SoundManager.fadeOutBattleMusic();
   await wait(1000);
   SoundManager.play("LevelVictory");
+
+  player.strength = 0;
 
   if (player.equippedRelics.includes("Eternal Bloom")) {
     eternalBloom(player);

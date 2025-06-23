@@ -271,6 +271,15 @@ height: 0;
     transform: translateX(-50%);
 }
 
+.strength-tooltip {
+    position: absolute;
+    width: 400px;
+    text-align: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .block-tooltip {
     position: absolute;
     font-weight: normal;
@@ -629,14 +638,32 @@ button:disabled {
     image-rendering: pixelated;
 }
 
-#poison-status {
+#status-container {
     position: absolute;
     bottom: -30%;
-    left: 10%;
+    left: 35%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
     color: white;
-    padding: 5px 10px;
     font-size: 24px;
+    padding: 5px 10px;
     z-index: 1000;
+}
+
+#poison-status, #strength-status {
+  position: static;
+  left: auto;
+  bottom: auto;
+  padding: 0;
+}
+
+#status-container:has(#poison-status:not(.hidden):only-child),
+#status-container:has(#strength-status:not(.hidden):only-child) {
+  justify-content: center;
 }
 
 .poison-status-enemy {

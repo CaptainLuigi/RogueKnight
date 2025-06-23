@@ -369,6 +369,22 @@ const relicList = [
     "chest",
     100
   ),
+  new Relics(
+    "Berserkers Rush",
+    "Assets/peakCondition.png",
+    () => {},
+    "Get 5 Strength when ending your turn if you are at or below 20HP.",
+    "chest",
+    100
+  ),
+  new Relics(
+    "Enthusiastic Start",
+    "Assets/enthusiasticStart.png",
+    () => {},
+    "Start each battle with 10 Strength.",
+    "chest",
+    100
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
