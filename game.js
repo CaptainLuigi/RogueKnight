@@ -148,7 +148,7 @@ function disableGameInteractions() {
 function setEnemyIndices() {
   for (let index in enemies) {
     let enemy = enemies[index];
-    enemy.display.setAttribute("index", index);
+    // enemy.display.setAttribute("index", index);
   }
 }
 
@@ -264,6 +264,10 @@ async function executeAttack(weapon, enemyIndex) {
     SoundManager.play(soundCategory);
   }
 
+  if (weapon.selfDamage > 0) {
+    player.takeDamage(weapon.selfDamage);
+  }
+
   if (weapon.damage > 0 && weapon.blockAmount === 0) {
     triggerAttackAnimation();
     await wait(200);
@@ -315,8 +319,11 @@ async function executeAttack(weapon, enemyIndex) {
 }
 
 function selectEnemy(enemyNode) {
-  let index = enemyNode.getAttribute("index");
-  index = parseInt(index);
+  let index = enemies.findIndex((enemy) => enemy.display === enemyNode);
+  if (index === -1) {
+    displayTurnMessage("Couldn't find selected enemy!");
+    return;
+  }
 
   if (activeWeapon == null) {
     displayTurnMessage("No weapon selected!");

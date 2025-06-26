@@ -439,55 +439,44 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Upgrade button clicked");
       weaponDeckScreen.setAttribute("isupgrademode", "");
       weaponDeckScreen?.classList.remove("hidden");
-      player.showDeck((weapon) => weapon.level < 3); // This should generate .weapon elements
-      upgradeMode = true;
 
-      document.body.classList.add("upgrade-mode");
+      // Filter weapons to show only those that can be upgraded
+      const upgradeableWeapons = player.deck.filter((w) => w.level < 3);
 
+      // Call original showDeck (which renders filtered list)
+      player.showDeck((weapon) => weapon.level < 3);
+
+      // Attach the weapon object directly to each rendered .weapon element
       setTimeout(() => {
         const weaponElements = weaponDeckScreen.querySelectorAll(".weapon");
-        weaponElements.forEach((el) => {
+        weaponElements.forEach((el, index) => {
           el.style.cursor = "pointer";
+          el.weaponData = upgradeableWeapons[index]; // Attach the correct weapon
         });
       }, 0);
+
+      upgradeMode = true;
+      document.body.classList.add("upgrade-mode");
     });
 
-    // Listen for clicks on #weapon-deck-screen and check if it was a .weapon (not .weapon-item)
     weaponDeckScreen?.addEventListener("click", (event) => {
       if (!isUpgradeMode) return;
 
-      // Check if the click target is a .weapon (using index class for selection)
       const weaponElement = event.target.closest(".weapon");
 
-      if (weaponElement) {
-        console.log("Weapon clicked");
+      if (weaponElement?.weaponData) {
+        const weapon = weaponElement.weaponData;
 
-        // Get the index of the clicked weapon
-        const weaponIndex = Array.from(
-          weaponDeckScreen.querySelectorAll(".weapon")
-        ).indexOf(weaponElement);
-        console.log("Weapon clicked, index:", weaponIndex); // Debugging the index
+        console.log("Upgrading weapon:", weapon.name);
 
-        if (weaponIndex === -1) {
-          console.error("Weapon index not found!");
-          return;
-        }
-
-        const weapon = player.deck[weaponIndex]; // Get weapon by index
-        console.log("Weapon found:", weapon); // Debugging the weapon object
-
-        if (weapon) {
-          console.log("Upgrading weapon:", weapon.name); // Confirm weapon to be upgraded
-          if (typeof upgradeWeapon === "function") {
-            SoundManager.play("Upgrade");
-            upgradeWeapon(weapon); // Upgrade weapon
-          } else {
-            console.error("upgradeWeapon is not defined or is not a function.");
-          }
-          isUpgradeMode = false;
+        if (typeof upgradeWeapon === "function") {
+          SoundManager.play("Upgrade");
+          upgradeWeapon(weapon); // ✅ Matches game.js
         } else {
-          console.error("Weapon not found in player's deck");
+          console.error("upgradeWeapon is not defined or is not a function.");
         }
+
+        isUpgradeMode = false;
       }
     });
 
@@ -505,13 +494,14 @@ document.addEventListener("DOMContentLoaded", function () {
         displayTurnMessage(`${weapon.name} is already max level.`);
         return;
       }
+
       SoundManager.play("Upgrade");
       await wait(700);
+
       weapon.upgrade();
       player.savePlayerToStorage();
 
       displayTurnMessage(`Upgraded ${weapon.name}`);
-
       returnToMap();
     }
   }

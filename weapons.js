@@ -23,6 +23,7 @@ class Weapons {
   #wasUsed = false;
   #soundCategory;
   #strength = 0;
+  #selfDamage = 0;
 
   constructor(
     name,
@@ -47,7 +48,8 @@ class Weapons {
     energyGainOnUse = 0,
     drawAmountOnUse = 0,
     soundCategory = null,
-    strength = 0
+    strength = 0,
+    selfDamage = 0
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -73,6 +75,7 @@ class Weapons {
       drawAmountOnUse,
       soundCategory,
       strength,
+      selfDamage,
     });
   }
 
@@ -176,6 +179,10 @@ class Weapons {
 
   get strength() {
     return this.#strength;
+  }
+
+  get selfDamage() {
+    return this.#selfDamage;
   }
 
   set canHeal(value) {
@@ -360,6 +367,7 @@ class Weapons {
     this.#drawAmountOnUse = info.drawAmountOnUse || 0;
     this.#soundCategory = info.soundCategory;
     this.#strength = info.strength;
+    this.#selfDamage = info.selfDamage;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -2111,7 +2119,7 @@ class BerserkersBrew extends Weapons {
       0,
       0,
       1,
-      "Use to gain strength. Can only be used once per battle.",
+      "Use to gain strength and take selfdamage. Can only be used once per battle.",
       "Assets/berserkersBrew.png",
       false,
       0,
@@ -2126,6 +2134,7 @@ class BerserkersBrew extends Weapons {
       0,
       0,
       "ChargeSound",
+      10,
       10
     );
   }
@@ -2135,9 +2144,11 @@ class BerserkersBrew extends Weapons {
         break;
       case 2:
         weaponInfo.strength = 15;
+        weaponInfo.selfDamage = 7;
         break;
       case 3:
         weaponInfo.strength = 20;
+        weaponInfo.selfDamage = 5;
     }
   }
 }
@@ -2500,6 +2511,8 @@ function generateWeaponInfo(
           html += `<strong>Draw:</strong> ${w.drawAmountOnUse}<br>`;
         if (w.strength > 0)
           html += `<strong>Strength:</strong> ${w.strength}<br>`;
+        if (w.selfDamage > 0)
+          html += `<strong>Selfdamage:</strong> ${w.selfDamage}<br>`;
         html += `${w.description}<br>`;
         html += `</div>`;
         return html;
@@ -2603,6 +2616,10 @@ function generateWeaponInfo(
 
     if (weapon.strength > 0) {
       tooltipString += `<strong>Strength:</strong> ${weapon.strength}<br>`;
+    }
+
+    if (weapon.selfDamage > 0) {
+      tooltipString += `<strong>Selfdamage:</strong> ${weapon.selfDamage}<br>`;
     }
 
     tooltipString += `${weapon.description} <br>`;

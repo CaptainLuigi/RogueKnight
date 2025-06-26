@@ -47,7 +47,5 @@ aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, we
 
 prozentualer buff bei waffen anzeigen (wegen blood pact)
 
-wenn gegner mittendrin stirbt, ist targeting verzerrt (trifft den gegner hinter dem man eigentlich anvisiert), vllt problem von aliensrock
-
-manchmal bei upgrade event wird die waffe davor upgegraded, nicht die angeklickte
+wenn chest gefunden und danach auf map und im browser zurück -> neues relic in chest
 */
