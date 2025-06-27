@@ -1656,6 +1656,7 @@ class ChannelEnergy extends Weapons {
         weaponInfo.energyGainOnUse = 3;
         break;
       case 3:
+        weaponInfo.energyGainOnUse = 3;
         weaponInfo.oncePerBattle = false;
         weaponInfo.description = "Click to get energy.";
         break;
@@ -2196,6 +2197,58 @@ class RagingDagger extends Weapons {
   }
 }
 
+class BerserkersSpear extends Weapons {
+  constructor() {
+    super(
+      "Berserkers Spear",
+      1,
+      "Medium",
+      30,
+      50,
+      30,
+      1,
+      "Can only target the first enemy and pierces one enemy, click to get strength, instantly use weapon and take selfdamage.",
+      "Assets/berserkersSpear.png",
+      false,
+      0,
+      0,
+      0,
+      [1],
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      5,
+      10
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 35;
+        weaponInfo.criticalDamage = 60;
+        weaponInfo.criticalChance = 35;
+        weaponInfo.effectsRight = [1, 1];
+        weaponInfo.description =
+          "Can only target the first enemy and pierces two enemies, click to instantly use weapon, take selfdamage and get strength.";
+        break;
+      case 3:
+        weaponInfo.strength = 10;
+        weaponInfo.selfDamage = 5;
+        weaponInfo.effectsRight = [1, 1, 1];
+        weaponInfo.description =
+          "Can only target the first enemy and pierces three enemies, click to instantly use weapon, take selfdamage and get strength.";
+        break;
+    }
+  }
+}
+
 class DevWeapon extends Weapons {
   constructor() {
     super(
@@ -2354,6 +2407,7 @@ function getAvailableWeapons() {
     new RageAxe(),
     new BerserkersBrew(),
     new RagingDagger(),
+    new BerserkersSpear(),
   ];
 }
 
@@ -2398,6 +2452,7 @@ const weaponClassMapping = {
   DevWeapon,
   BerserkersBrew,
   RagingDagger,
+  BerserkersSpear,
   DevShield,
   DevBow,
   DevSword,
