@@ -385,6 +385,13 @@ const relicList = [
     "chest",
     100
   ),
+  new Relics(
+    "Burden of the Strong",
+    "Assets/burdenOfTheStrong.png",
+    burdenOfTheStrong,
+    "Curse: Decrease Hand size by 1.",
+    "curse"
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -475,6 +482,11 @@ function relicOfVigor(player) {
 
 function scrollOfKnowledge(player) {
   player.maxHandSize += 1;
+  player.drawHand();
+}
+
+function burdenOfTheStrong(player) {
+  player.maxHandSize -= 1;
   player.drawHand();
 }
 

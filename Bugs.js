@@ -39,9 +39,9 @@ more players with different starting weapons
 
 wenn zu viele relics, relics unterhalb des bildschirms
 
-player glitched wenn leathal damage aber gegner noch actions haben bzw, schaden durch relics gemacht wird
+player glitched wenn leathal damage aber gegner noch actions haben bzw, schaden durch relics gemacht wird -> evtl schon gefixed
 
-clear block interval in death animation -> sprite flickert nach tod manchmal
+clear block interval in death animation -> sprite flickert nach tod manchmal -> evtl schon gefixed
 
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 

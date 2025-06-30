@@ -927,6 +927,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // upgrade all and curse
+
+  if (eventType === "upgradeAll") {
+    const upgradeAndCurseBtn = document.getElementById("upgradeAndCurse");
+
+    upgradeAndCurseBtn?.addEventListener("click", async () => {
+      const upgradeableWeapons = player.deck.filter(
+        (weapon) => weapon.level < 3
+      );
+
+      if (upgradeableWeapons.length === 0) {
+        displayTurnMessage("All your weapons are already max level");
+      } else {
+        SoundManager.play("Upgrade");
+
+        for (const weapon of upgradeableWeapons) {
+          weapon.upgrade();
+        }
+      }
+
+      player.foundRelic("Burden of the Strong", true);
+      player.savePlayerToStorage();
+      await wait(1000);
+      returnToMap();
+    });
+  }
+
   //duplicate Weapon
 
   if (eventType === "duplicateWeapon") {

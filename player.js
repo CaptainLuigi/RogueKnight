@@ -343,7 +343,7 @@ class Player extends HealthEntity {
   }
 
   async takeDamage(amount) {
-    if (this.isDying) return;
+    if (isDying) return;
 
     const reduceAmount = this.equippedRelics.includes("Cloak of Protection")
       ? amount - 1
@@ -354,11 +354,11 @@ class Player extends HealthEntity {
     this.#health -= finalDamage;
 
     if (this.#health <= 0) {
-      this.isDying = true;
+      isDying = true;
       if (this.#equippedRelics.includes("Death's Bargain")) {
         this.#health = Math.floor((this.#maxHealth / 100) * 10);
         deathsBargain(this);
-        this.isDying = false;
+        isDying = false;
       } else {
         this.#health = 0; // Ensure health doesn't go negative
 
@@ -376,7 +376,7 @@ class Player extends HealthEntity {
         return;
       }
     } else {
-      if (!this.isDying) {
+      if (!isDying) {
         this.displayDamage(finalDamage, false, -60);
         triggerDamageAnimation();
         SoundManager.play("Hurt");
@@ -466,6 +466,8 @@ class Player extends HealthEntity {
   }
 
   heal(amount) {
+    if (isDying) return;
+
     if (isNaN(amount) || amount < 0) {
       console.error("Invalid heal amount:", amount);
       return; // Prevent healing if the amount is invalid

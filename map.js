@@ -298,6 +298,7 @@ function triggerRandomEvent() {
     { type: "dieGambling", action: showEvent },
     { type: "shopScouting", action: showEvent },
     { type: "infernalIngot", action: showEvent },
+    { type: "upgradeAll", action: showEvent },
   ];
 
   if (player.deck.length > 2) {

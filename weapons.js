@@ -2249,6 +2249,55 @@ class BerserkersSpear extends Weapons {
   }
 }
 
+class Leechfang extends Weapons {
+  constructor() {
+    super(
+      "Leechfang",
+      1,
+      "Melee",
+      50,
+      60,
+      10,
+      1,
+      "Can only target the first enemy, click to instantly use weapon and take selfdamage.",
+      "Assets/leechfang.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      [20],
+      true,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      0,
+      15
+    );
+  }
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        weaponInfo.damage = 60;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 15;
+        weaponInfo.healingAmount = [25];
+        break;
+      case 3:
+        weaponInfo.damage = 70;
+        weaponInfo.criticalDamage = 80;
+        weaponInfo.criticalChance = 20;
+        weaponInfo.healingAmount = [30];
+        break;
+    }
+  }
+}
+
 class DevWeapon extends Weapons {
   constructor() {
     super(
@@ -2408,6 +2457,7 @@ function getAvailableWeapons() {
     new BerserkersBrew(),
     new RagingDagger(),
     new BerserkersSpear(),
+    new Leechfang(),
   ];
 }
 
@@ -2453,6 +2503,7 @@ const weaponClassMapping = {
   BerserkersBrew,
   RagingDagger,
   BerserkersSpear,
+  Leechfang,
   DevShield,
   DevBow,
   DevSword,
