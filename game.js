@@ -699,7 +699,7 @@ function healPlayer(button) {
   } else if (globalSettings.playerGold >= healingCost) {
     SoundManager.play("HealSound");
     updatePlayerGold(-healingCost);
-    player.heal(30);
+    player.heal(player.maxHealth * 0.3);
 
     updateHealthBar();
     player.savePlayerToStorage();
