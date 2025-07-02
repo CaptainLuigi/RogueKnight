@@ -121,11 +121,17 @@ async function enemyDeathEvent(deadEnemy) {
 
     // await wait(1000);
 
-    if (globalSettings.difficulty === 10 || globalSettings.difficulty === 0) {
+    if (globalSettings.difficulty === 0 || globalSettings.difficulty === 20) {
       SoundManager.fadeOutBattleMusic();
       await wait(1500);
       localStorage.removeItem("selectedFightIndex");
       window.location.href = "winscreen.html";
+    } else if (globalSettings.difficulty === 10) {
+      SoundManager.fadeOutBattleMusic();
+      await wait(1500);
+      localStorage.removeItem("selectedFightIndex");
+      globalSettings.currentAct = 2;
+      window.location.href = "map.html";
     } else {
       triggerPostBattleScreen();
     }

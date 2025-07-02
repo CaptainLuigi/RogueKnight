@@ -27,9 +27,23 @@ const DEFAULT_EVENT_TYPE = "skull";
 
 let globalEventArray = [];
 
-const skullDifficulty = [
-  1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
-];
+let skullDifficulty;
+
+if (globalSettings.currentAct === 1) {
+  skullDifficulty = [
+    1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+    4,
+  ];
+} else if (globalSettings.currentAct === 2) {
+  skullDifficulty = [
+    11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14,
+    14, 14,
+  ];
+}
+
+// const skullDifficulty = [
+//   1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
+// ];
 
 let mapState;
 
@@ -112,7 +126,13 @@ function generateMap() {
     let nextRow = parentRow.nextElementSibling;
     if (nextRow == null) {
       buttonData.isFinalBoss = true;
-      buttonData.difficulty = 10;
+
+      if (globalSettings.currentAct === 1) {
+        buttonData.difficulty = 10;
+      } else {
+        buttonData.difficulty = 20;
+      }
+
       continue;
     }
 
@@ -275,9 +295,7 @@ function markPossibleLocations() {
 }
 
 function triggerRandomEvent() {
-  const allEvents = [
-    { type: "eliteFight", action: startEliteFight },
-    { type: "normalFight", action: startNormalFight },
+  const act1Events = [
     { type: "chest", action: openChest },
     { type: "upgradeWeapon", action: showEvent },
     { type: "ambushGold", action: showEvent },
@@ -296,12 +314,25 @@ function triggerRandomEvent() {
     { type: "weaponLifesteal", action: showEvent },
     { type: "bloodforge", action: showEvent },
     { type: "dieGambling", action: showEvent },
-    { type: "shopScouting", action: showEvent },
+  ];
+
+  const act2Events = [
     { type: "infernalIngot", action: showEvent },
     { type: "upgradeAll", action: showEvent },
   ];
 
-  if (player.deck.length > 2) {
+  const sharedEvents = [
+    { type: "shopScouting", action: showEvent },
+    { type: "eliteFight", action: startEliteFight },
+    { type: "normalFight", action: startNormalFight },
+  ];
+
+  let allEvents = [...sharedEvents];
+  allEvents.push(
+    ...(globalSettings.currentAct === 1 ? act1Events : act2Events)
+  );
+
+  if (player.deck.length > 2 && globalSettings.currentAct === 1) {
     allEvents.push({ type: "dropWeapon", action: showEvent });
   }
 
@@ -334,7 +365,7 @@ function triggerRandomEvent() {
 }
 
 function startEliteFight() {
-  globalSettings.difficulty = 8;
+  globalSettings.difficulty = globalSettings.currentAct === 2 ? 18 : 8;
   globalSettings.relicGroup = "elite";
   globalSettings.redirectToChest = true;
   window.location.href = "tutorial.html";

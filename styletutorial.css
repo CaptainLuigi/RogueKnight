@@ -17,6 +17,7 @@ html, body {
     object-fit: cover;
     /* margin-left: 2.5%; */
     position: absolute;
+    image-rendering: pixelated;
     z-index: 1;
 }
 

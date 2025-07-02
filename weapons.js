@@ -770,13 +770,13 @@ class PoisonArrow extends Weapons {
         weaponInfo.damage = 15;
         weaponInfo.criticalDamage = 45;
         weaponInfo.criticalChance = 25;
-        weaponInfo.poisonAmount = 15;
+        weaponInfo.poisonAmount += 5;
         break;
       case 3:
         weaponInfo.damage = 20;
         weaponInfo.criticalDamage = 55;
         weaponInfo.criticalChance = 30;
-        weaponInfo.poisonAmount = 20;
+        weaponInfo.poisonAmount += 5;
         break;
     }
   }
@@ -995,12 +995,12 @@ class PoisonDagger extends Weapons {
       case 2:
         weaponInfo.criticalDamage = 65;
         weaponInfo.criticalChance = 45;
-        weaponInfo.poisonAmount = 15;
+        weaponInfo.poisonAmount += 5;
         break;
       case 3:
         weaponInfo.criticalDamage = 80;
         weaponInfo.criticalChance = 60;
-        weaponInfo.poisonAmount = 20;
+        weaponInfo.poisonAmount += 5;
         break;
     }
   }
@@ -1463,10 +1463,10 @@ class PoisonPotion extends Weapons {
       case 1:
         break;
       case 2:
-        weaponInfo.poisonAmount = 15;
+        weaponInfo.poisonAmount += 5;
         break;
       case 3:
-        weaponInfo.poisonAmount = 25;
+        weaponInfo.poisonAmount += 5;
         break;
     }
   }
@@ -2056,7 +2056,7 @@ class BrokenBlade extends Weapons {
         weaponInfo.damage = 45;
         weaponInfo.criticalDamage = 80;
         weaponInfo.criticalChance = 30;
-        weaponInfo.poisonAmount = 5;
+        weaponInfo.poisonAmount += 5;
         break;
     }
   }

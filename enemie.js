@@ -1038,3 +1038,158 @@ class Necromancer extends Enemy {
     summonedSkeleton.displayIntent();
   }
 }
+
+class SpiderBoss extends Enemy {
+  constructor() {
+    super(
+      "Spider Boss",
+      2500,
+      20,
+      "Assets/spiderBoss.png",
+      true,
+      0,
+      100,
+      0,
+      0,
+      0,
+      0,
+      true
+    );
+    this.display.classList.add("biggestEnemy");
+  }
+  summon() {
+    const maxEnemies = 5;
+    if (enemies.length >= maxEnemies) {
+      return;
+    }
+    //constructor adds enemy at end of enemies
+    const summonedSkeleton = new SpiderSummon();
+    //because new enemy should not be at the end, it must be removed from there again
+    enemies.pop();
+
+    let index = enemies.findIndex((e) => e == this);
+    enemies.splice(index, 0, summonedSkeleton); // Add it to the enemies array so it's part of the game logic
+
+    this.display.parentNode.insertBefore(
+      summonedSkeleton.display,
+      this.display
+    );
+    summonedSkeleton.randomizeAction();
+    summonedSkeleton.displayIntent();
+  }
+}
+
+class Centepede extends Enemy {
+  constructor() {
+    super(
+      "Centepede",
+      350,
+      15,
+      "Assets/Transperent/Icon35.png",
+      true,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      false
+    );
+  }
+}
+
+class Bat extends Enemy {
+  constructor() {
+    super(
+      "Bat",
+      250,
+      20,
+      "Assets/Transperent/Icon38.png",
+      true,
+      10,
+      20,
+      0,
+      0,
+      0,
+      0,
+      false
+    );
+  }
+}
+
+class Spider extends Enemy {
+  constructor() {
+    super(
+      "Spider",
+      450,
+      10,
+      "Assets/Transperent2/Icon25.png",
+      true,
+      0,
+      20,
+      5,
+      0,
+      0,
+      0,
+      false
+    );
+  }
+}
+
+class SpiderSummon extends Enemy {
+  constructor() {
+    super(
+      "Spider",
+      300,
+      10,
+      "Assets/Transperent2/Icon25.png",
+      true,
+      0,
+      20,
+      5,
+      0,
+      0,
+      0,
+      false
+    );
+    this.isSummoned = true;
+  }
+}
+
+class Imp extends Enemy {
+  constructor() {
+    super(
+      "Imp",
+      200,
+      5,
+      "Assets/Transperent2/Icon22.png",
+      true,
+      0,
+      0,
+      0,
+      0,
+      3,
+      0,
+      false
+    );
+  }
+}
+
+class FatImp extends Enemy {
+  constructor() {
+    super(
+      "Fat Imp",
+      350,
+      1,
+      "Assets/Transperent2/Icon19.png",
+      true,
+      0,
+      25,
+      0,
+      50,
+      0,
+      0,
+      false
+    );
+  }
+}

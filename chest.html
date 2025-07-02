@@ -79,6 +79,16 @@
       player.loadPlayerFromStorage();
 
       document.addEventListener("DOMContentLoaded", () => {
+        const bg = document.getElementById("StartscreenBackground");
+
+        switch (globalSettings.currentAct) {
+          case 2:
+            bg.src = "Assets/cave-background.png";
+            break;
+          default:
+            bg.src = "Assets/background_forest.png";
+        }
+
         displayEquippedRelics();
         document
           .getElementById("current-deck")

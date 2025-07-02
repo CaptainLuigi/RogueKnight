@@ -49,5 +49,9 @@ prozentualer buff bei waffen anzeigen (wegen blood pact)
 
 wenn chest gefunden und danach auf map und im browser zurück -> neues relic in chest
 
-wenn poison event auf poison waffe und waffe danach upgraden -> waffe macht weniger poison
+events können auch gererolled werden wenn im browser zurück gegangen wird
+
+idee: gegner spawnen andere gegner bei tod
+
+boss relics einfügen + winscreen nach act 1
 */

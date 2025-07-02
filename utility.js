@@ -69,6 +69,7 @@ function deleteProgressAndExit(exit = true) {
 
   globalSettings.relicGroup = "chest";
   globalSettings.redirectToChest = false;
+  globalSettings.currentAct = 1;
 
   if (exit === true) {
     window.location.href = "startscreen.html";

@@ -81,4 +81,12 @@ class globalSettings {
   static get eventResolved() {
     return loadData("globalSetting_eventResolved") === true;
   }
+
+  static get currentAct() {
+    return loadData("globalSetting_currentAct") ?? 1;
+  }
+
+  static set currentAct(value) {
+    storeData("globalSetting_currentAct", value);
+  }
 }

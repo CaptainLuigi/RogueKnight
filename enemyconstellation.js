@@ -69,4 +69,19 @@ const enemyConstellationTemplates = [
     difficultyTo: 10,
     enemies: [MinonKnight, MasterMage, EvilKnight],
   },
+  {
+    difficultyFrom: 11,
+    difficultyTo: 14,
+    enemies: [Centepede, Centepede, Centepede, Centepede],
+  },
+  {
+    difficultyFrom: 18,
+    difficultyTo: 18,
+    enemies: [FatImp, Imp, Imp, Imp, Imp],
+  },
+  {
+    difficultyFrom: 20,
+    difficultyTo: 20,
+    enemies: [Spider, Spider, Spider, SpiderBoss],
+  },
 ];

@@ -156,6 +156,16 @@
       document.addEventListener("DOMContentLoaded", () => {
         const goldDisplay = document.getElementById("playerGold");
         goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+
+        const bg = document.getElementById("StartscreenBackground");
+
+        switch (globalSettings.currentAct) {
+          case 2:
+            bg.src = "Assets/cave-background.png";
+            break;
+          default:
+            argumentsbg.src = "Assets/background_forest.png";
+        }
       });
     </script>
   </body>
