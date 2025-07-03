@@ -1193,3 +1193,84 @@ class FatImp extends Enemy {
     );
   }
 }
+
+class SmallGolem extends Enemy {
+  constructor() {
+    super(
+      "Small Golem",
+      250,
+      10,
+      "Assets/stoneGolem.png",
+      true,
+      0,
+      25,
+      0,
+      0,
+      0,
+      0,
+      false
+    );
+  }
+}
+
+// class MediumGolem extends Enemy {
+//   constructor() {
+//     super(
+//       "Medium Golem",
+//       500,
+//       15,
+//       "Assets/stoneGolem.png",
+//       true,
+//       0,
+//       50,
+//       0,
+//       0,
+//       0,
+//       0,
+//       false
+//     );
+//     this.display.classList.add("bigEnemy");
+//   }
+
+//   onDeathSpawn() {
+//     const spawned = [];
+//     const maxEnemies = 5;
+//     const needed = Math.min(2, maxEnemies - enemies.length + 1);
+//     for (let i = 0; i < needed; i++) {
+//       const s = new SmallGolem();
+//       spawned.push(s);
+//     }
+//     return spawned;
+//   }
+// }
+
+// class BigGolem extends Enemy {
+//   constructor() {
+//     super(
+//       "Big Golem",
+//       1000,
+//       20,
+//       "Assets/stoneGolem.png",
+//       true,
+//       0,
+//       100,
+//       0,
+//       0,
+//       0,
+//       0,
+//       false
+//     );
+//     this.display.classList.add("biggestEnemy");
+//   }
+
+//   onDeathSpawn() {
+//     const spawned = [];
+//     const maxEnemies = 5;
+//     const needed = Math.min(2, maxEnemies - enemies.length + 1);
+//     for (let i = 0; i < needed; i++) {
+//       const s = new MediumGolem();
+//       spawned.push(s);
+//     }
+//     return spawned;
+//   }
+// }

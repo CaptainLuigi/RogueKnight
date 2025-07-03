@@ -10,6 +10,8 @@
     <script src="player.js"></script>
     <script src="relics.js"></script>
     <script src="enemie.js"></script>
+    <script src="utility.js"></script>
+    <script src="saveGame.js"></script>
   </head>
   <body>
     <div>
@@ -24,34 +26,7 @@
         resetToIdleAnimation();
 
         document.getElementById("backToMenu").addEventListener("click", () => {
-          // Clear relevant localStorage items
-          localStorage.removeItem("playerState");
-          localStorage.removeItem("MapState");
-          localStorage.removeItem("triggeredEvents");
-
-          // Prevent errors if relicNames is undefined
-          if (typeof relicNames !== "undefined" && Array.isArray(relicNames)) {
-            relicNames.forEach((relicName) => {
-              localStorage.removeItem("relic_" + relicName);
-            });
-          }
-
-          // Check if player exists before modifying it
-          if (
-            typeof window.player !== "undefined" &&
-            window.player &&
-            window.player.equippedRelics
-          ) {
-            window.player.equippedRelics = [];
-          }
-
-          // Prevent errors if globalSettings doesn't exist
-          if (typeof globalSettings !== "undefined") {
-            globalSettings.playerGold = 0;
-          }
-
-          // Redirect to the start screen
-          window.location.href = "startscreen.html";
+          deleteProgressAndExit(true);
         });
       });
     </script>
