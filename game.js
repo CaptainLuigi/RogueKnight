@@ -130,8 +130,25 @@ async function enemyDeathEvent(deadEnemy) {
       SoundManager.fadeOutBattleMusic();
       await wait(1500);
       localStorage.removeItem("selectedFightIndex");
-      globalSettings.currentAct = 2;
-      window.location.href = "map.html";
+
+      const actTransition = document.getElementById("actTransition");
+      actTransition.classList.remove("hidden");
+
+      await wait(50);
+
+      playerSprite = actTransition.querySelector(".sprite");
+
+      if (playerSprite) {
+        resetToIdleAnimation();
+      }
+
+      document.getElementById("act2").addEventListener("click", () => {
+        globalSettings.currentAct = 2;
+        updatePlayerGold(100);
+        player.heal(player.maxHealth);
+        player.savePlayerToStorage();
+        window.location.href = "map.html";
+      });
     } else {
       triggerPostBattleScreen();
     }

@@ -53,6 +53,7 @@ events können auch gererolled werden wenn im browser zurück gegangen wird
 
 idee: gegner spawnen andere gegner bei tod
 
-boss relics einfügen + winscreen nach act 1
+boss relics einfügen 
 
+button einfügen, dass map gesehen werden kann
 */

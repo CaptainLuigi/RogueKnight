@@ -753,3 +753,45 @@ button:disabled {
     font-size: 32px;
 }
 
+#actTransition {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85); /* semi-transparent dark background */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  gap: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 20px;
+
+    z-index: 1000;
+}
+
+#actTransition .sprite {
+    display: block;
+    width: 200px; 
+    height: 200px; 
+    margin: 0 auto; 
+    image-rendering: pixelated;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    background-size: 800px 200px; 
+    background-position: 0 0;
+    position: relative; 
+    transform: translate(5vw) scale(2);
+    transform-origin: center center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+#actTransition span {
+    font-size: 48px;
+}
+
