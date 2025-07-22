@@ -1213,64 +1213,92 @@ class SmallGolem extends Enemy {
   }
 }
 
-// class MediumGolem extends Enemy {
-//   constructor() {
-//     super(
-//       "Medium Golem",
-//       500,
-//       15,
-//       "Assets/stoneGolem.png",
-//       true,
-//       0,
-//       50,
-//       0,
-//       0,
-//       0,
-//       0,
-//       false
-//     );
-//     this.display.classList.add("bigEnemy");
-//   }
+class MediumGolem extends Enemy {
+  constructor() {
+    super(
+      "Medium Golem",
+      500,
+      15,
+      "Assets/stoneGolem.png",
+      true,
+      0,
+      50,
+      0,
+      0,
+      0,
+      0,
+      false
+    );
+    this.display.classList.add("bigEnemy");
+  }
 
-//   onDeathSpawn() {
-//     const spawned = [];
-//     const maxEnemies = 5;
-//     const needed = Math.min(2, maxEnemies - enemies.length + 1);
-//     for (let i = 0; i < needed; i++) {
-//       const s = new SmallGolem();
-//       spawned.push(s);
-//     }
-//     return spawned;
-//   }
-// }
+  async enemyDeath() {
+    this.spawnSmallGolemsOnDeath();
+    await super.enemyDeath();
+  }
 
-// class BigGolem extends Enemy {
-//   constructor() {
-//     super(
-//       "Big Golem",
-//       1000,
-//       20,
-//       "Assets/stoneGolem.png",
-//       true,
-//       0,
-//       100,
-//       0,
-//       0,
-//       0,
-//       0,
-//       false
-//     );
-//     this.display.classList.add("biggestEnemy");
-//   }
+  spawnSmallGolemsOnDeath() {
+    const maxEnemies = 5;
+    const golemsToSpawn = 2;
 
-//   onDeathSpawn() {
-//     const spawned = [];
-//     const maxEnemies = 5;
-//     const needed = Math.min(2, maxEnemies - enemies.length + 1);
-//     for (let i = 0; i < needed; i++) {
-//       const s = new MediumGolem();
-//       spawned.push(s);
-//     }
-//     return spawned;
-//   }
-// }
+    for (let i = 0; i < golemsToSpawn; i++) {
+      if (enemies.length >= maxEnemies) break;
+
+      const smallGolem = new SmallGolem();
+      enemies.pop();
+
+      let index = enemies.findIndex((e) => e === this);
+      enemies.splice(index, 0, smallGolem);
+
+      this.display.parentNode.insertBefore(smallGolem.display, this.display);
+
+      smallGolem.randomizeAction();
+      smallGolem.displayIntent();
+    }
+  }
+}
+
+class BigGolem extends Enemy {
+  constructor() {
+    super(
+      "Big Golem",
+      1000,
+      20,
+      "Assets/stoneGolem.png",
+      true,
+      0,
+      100,
+      0,
+      0,
+      0,
+      0,
+      false
+    );
+    this.display.classList.add("biggestEnemy");
+  }
+
+  async enemyDeath() {
+    this.spawnMediumGolemsOnDeath();
+    await super.enemyDeath();
+  }
+
+  spawnMediumGolemsOnDeath() {
+    const maxEnemies = 5;
+    const golemsToSpawn = 2;
+
+    for (let i = 0; i < golemsToSpawn; i++) {
+      if (enemies.length >= maxEnemies) break;
+
+      const mediumGolem = new MediumGolem();
+      enemies.pop();
+
+      let index = enemies.findIndex((e) => e === this);
+      enemies.splice(index, 0, mediumGolem);
+
+      this.display.parentNode.insertBefore(mediumGolem.display, this.display);
+
+      mediumGolem.randomizeAction();
+      mediumGolem.displayIntent();
+    }
+  }
+}

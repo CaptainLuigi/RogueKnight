@@ -317,7 +317,7 @@ function triggerRandomEvent() {
   ];
 
   const act2Events = [
-    { type: "infernalIngot", action: showEvent },
+    // { type: "infernalIngot", action: showEvent },
     { type: "upgradeAll", action: showEvent },
   ];
 

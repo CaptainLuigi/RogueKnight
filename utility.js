@@ -75,3 +75,48 @@ function deleteProgressAndExit(exit = true) {
     window.location.href = "startscreen.html";
   }
 }
+
+function applyActVisuals() {
+  const bg = document.getElementById("StartscreenBackground");
+  const playerSprite = document.querySelector(".sprite-player");
+  const genericSprites = document.querySelectorAll(".sprite");
+  const enemySprites = document.querySelectorAll(".sprite-enemie");
+
+  // Change background if possible
+  if (bg) {
+    switch (globalSettings.currentAct) {
+      case 2:
+        bg.src = "Assets/cave-background.png";
+        break;
+      default:
+        bg.src = "Assets/background_forest.png";
+        break;
+    }
+  }
+
+  // Apply darkness to player sprite if it exists
+  if (playerSprite) {
+    if (globalSettings.currentAct === 2) {
+      playerSprite.classList.add("dark-cave-effect");
+    } else {
+      playerSprite.classList.remove("dark-cave-effect");
+    }
+  }
+
+  genericSprites.forEach((sprite) => {
+    if (globalSettings.currentAct === 2) {
+      sprite.classList.add("dark-cave-effect");
+    } else {
+      sprite.classList.remove("dark-cave-effect");
+    }
+  });
+
+  // Always apply darkness to enemy sprites, even if playerSprite doesn't exist
+  enemySprites.forEach((enemy) => {
+    if (globalSettings.currentAct === 2) {
+      enemy.classList.add("dark-cave-effect");
+    } else {
+      enemy.classList.remove("dark-cave-effect");
+    }
+  });
+}

@@ -37,12 +37,6 @@ waffen machen prozentual schaden evtl implementieren
 
 more players with different starting weapons
 
-wenn zu viele relics, relics unterhalb des bildschirms
-
-player glitched wenn leathal damage aber gegner noch actions haben bzw, schaden durch relics gemacht wird -> evtl schon gefixed
-
-clear block interval in death animation -> sprite flickert nach tod manchmal -> evtl schon gefixed
-
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 
 prozentualer buff bei waffen anzeigen (wegen blood pact)
@@ -51,9 +45,10 @@ wenn chest gefunden und danach auf map und im browser zurück -> neues relic in 
 
 events können auch gererolled werden wenn im browser zurück gegangen wird
 
-idee: gegner spawnen andere gegner bei tod
-
 boss relics einfügen 
 
 button einfügen, dass map gesehen werden kann
+
+wenn viele waffen in der hand, waffen überlappen lassen
+
 */

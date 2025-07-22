@@ -514,7 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (ambushGoldLeaveBtn) {
       ambushGoldLeaveBtn.addEventListener("click", () => {
         // Corrected the Math.floor function
-        const goldToLose = Math.floor(globalSettings.playerGold * (2 / 3));
+        const goldToLose = Math.floor(globalSettings.playerGold * (1 / 5));
 
         // Log and update the player's gold
         globalSettings.playerGold -= goldToLose;
@@ -948,6 +948,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       player.foundRelic("Burden of the Strong", true);
+      const burdenRelic = relicList["Burden of the Strong"];
+      burdenRelic.equipRelic(player);
       player.savePlayerToStorage();
       await wait(1000);
       returnToMap();

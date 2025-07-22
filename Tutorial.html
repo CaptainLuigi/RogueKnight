@@ -213,15 +213,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         displayEquippedRelics();
 
-        const bg = document.getElementById("StartscreenBackground");
-
-        switch (globalSettings.currentAct) {
-          case 2:
-            bg.src = "Assets/cave-background.png";
-            break;
-          default:
-            argumentsbg.src = "Assets/background_forest.png";
-        }
+        applyActVisuals();
       });
     </script>
   </body>
