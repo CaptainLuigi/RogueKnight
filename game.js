@@ -613,6 +613,7 @@ async function triggerPostBattleScreen() {
     .addEventListener("click", function () {
       if (globalSettings.redirectToChest) {
         globalSettings.redirectToChest = false;
+        localStorage.setItem("comingFromElite", "true");
         window.location.href = "chest.html";
       } else {
         localStorage.removeItem("selectedFightIndex");

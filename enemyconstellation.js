@@ -89,4 +89,9 @@ const enemyConstellationTemplates = [
     difficultyTo: 20,
     enemies: [Spider, Spider, Spider, SpiderBoss],
   },
+  {
+    difficultyFrom: 100,
+    difficultyTo: 100,
+    enemies: [Mimic],
+  },
 ];

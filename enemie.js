@@ -1302,3 +1302,22 @@ class BigGolem extends Enemy {
     }
   }
 }
+
+class Mimic extends Enemy {
+  constructor() {
+    super(
+      "Mimic",
+      500,
+      15,
+      "Assets/mimic.png",
+      true,
+      0,
+      35,
+      0,
+      50,
+      0,
+      0,
+      false
+    );
+  }
+}

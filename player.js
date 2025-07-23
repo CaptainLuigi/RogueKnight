@@ -192,6 +192,15 @@ class Player extends HealthEntity {
         this.#hand.push(weaponToDraw);
       }
     }
+
+    const handContainer = document.getElementById("weapons-container");
+    const handSize = this.#hand.length;
+
+    if (handSize > 9) {
+      handContainer.classList.add("compressed-hand");
+    } else {
+      handContainer.classList.remove("compressed-hand");
+    }
   }
 
   #resetDrawPile() {

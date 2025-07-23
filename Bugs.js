@@ -51,4 +51,9 @@ button einfügen, dass map gesehen werden kann
 
 wenn viele waffen in der hand, waffen überlappen lassen
 
+Lexikon mit Waffen, Relics und Gegnern
+
+background bei waffen einfügen, für compressed hand
+
+tooltip von waffen centern
 */

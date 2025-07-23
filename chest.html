@@ -78,6 +78,11 @@
       let player = new Player("Knight", 100, 100, [], 3, 3);
       player.loadPlayerFromStorage();
 
+      function isMimicEncounter() {
+        const chance = 0.1;
+        return Math.random() < chance;
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         applyActVisuals();
 
@@ -138,6 +143,18 @@
         const chestButton = document.getElementById("chest-button");
         chestButton.disabled = true;
         chestButton.style.cursor = "default";
+
+        const comingFromElite =
+          localStorage.getItem("comingFromElite") === "true";
+
+        localStorage.removeItem("comingFromElite");
+
+        if (!comingFromElite && isMimicEncounter()) {
+          globalSettings.difficulty = 100;
+          globalSettings.relicGroup = "chest";
+          globalSettings.redirectToChest = true;
+          window.location.href = "tutorial.html";
+        }
 
         const relicContainer = document.getElementById("relic-container");
 

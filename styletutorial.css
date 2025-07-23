@@ -230,8 +230,26 @@ height: 0;
     overflow: visible;
 }
 
+#weapons-container.compressed-hand {
+    gap: 0;
+}
+
+#weapons-container.compressed-hand .weapon {
+    margin-left: -20px;
+}
+
+#weapons-container.compressed-hand .weapon:first-child {
+    margin-left: 0;
+}
+ 
 .weapon {
+    position: relative;
+    image-rendering: pixelated;
     cursor: pointer;
+}
+
+.weapon:hover {
+    z-index: 10;
 }
 
 .weapon-image {
@@ -244,12 +262,18 @@ height: 0;
     image-rendering: pixelated;
 }
 
+/* .weapon-image:hover {
+    transform: translateY(-10px) scale(1.1);
+    z-index: 10;
+    transform-style: preserve-3d;
+} */
+
 /* Tooltip styling */
 .tooltip {
     transition: opacity 0.3s ease;
-    bottom: 110%; /* Position it above the weapon */
-    left: 50%; /* Align it horizontally centered */
-    transform: translateX(-50%); /* Center it relative to the weapon */
+    bottom: 110%; 
+    left: 50%;
+    transform: translateX(-50%); 
     pointer-events: none;
 }
 
