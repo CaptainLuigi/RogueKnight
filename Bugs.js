@@ -56,4 +56,6 @@ Lexikon mit Waffen, Relics und Gegnern
 background bei waffen einfügen, für compressed hand
 
 tooltip von waffen centern
+
+event son of a bitch / outcast dave -> iou
 */

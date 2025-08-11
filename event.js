@@ -188,6 +188,155 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // golem encounter
+
+  if (eventType === "golemEncounter") {
+    document.getElementById("golemEncounter").classList.remove("hidden");
+    document
+      .getElementById("golemStones")
+      .addEventListener("click", function () {
+        player.addWeapon(new Stone());
+        player.addWeapon(new Stone());
+        player.addWeapon(new Stone());
+
+        player.savePlayerToStorage();
+
+        returnToMap();
+      });
+
+    document
+      .getElementById("noGolemStones")
+      .addEventListener("click", function () {
+        globalSettings.difficulty = 19;
+        globalSettings.relicGroup = "elite";
+        globalSettings.redirectToChest = true;
+        window.location.href = "tutorial.html";
+      });
+  }
+
+  // ancient writing
+
+  if (eventType === "ancientWriting") {
+    document.getElementById("ancientWriting").classList.remove("hidden");
+    document
+      .getElementById("meleeImprove")
+      .addEventListener("click", async function () {
+        const meleeWeapons = player.deck.filter(
+          (weapon) => weapon.range === "Melee" && weapon.level < 3
+        );
+
+        if (meleeWeapons.length === 0) {
+          displayTurnMessage("All your melee weapons are already max level");
+        } else {
+          SoundManager.play("Upgrade");
+
+          for (const weapon of meleeWeapons) {
+            weapon.upgrade();
+          }
+        }
+        player.savePlayerToStorage();
+        await wait(750);
+        returnToMap();
+      });
+
+    document.getElementById("thinning").addEventListener("click", () => {
+      const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+      const closeDeckButton = document.getElementById("close-deck-btn");
+
+      if (!weaponDeckScreen) {
+        console.error("weapon-deck-screen element not found!");
+        return;
+      }
+
+      // Show deck and enable remove mode
+      weaponDeckScreen.classList.remove("hidden");
+      player.showDeck(); // Show full deck
+      document.body.classList.add("remove-mode");
+
+      // Set cursor style on weapon elements
+      setTimeout(() => {
+        weaponDeckScreen.querySelectorAll(".weapon").forEach((el) => {
+          el.style.cursor = "pointer";
+        });
+      }, 0);
+
+      // Remove mode click handler (only add once)
+      if (!weaponDeckScreen._removeModeListenerAdded) {
+        weaponDeckScreen.addEventListener("click", (event) => {
+          if (!document.body.classList.contains("remove-mode")) return;
+
+          const weaponElement = event.target.closest(".weapon");
+          if (!weaponElement) return;
+
+          const weaponIndex = Array.from(
+            weaponDeckScreen.querySelectorAll(".weapon")
+          ).indexOf(weaponElement);
+          if (weaponIndex === -1) {
+            console.error("Weapon index not found!");
+            return;
+          }
+
+          const weapon = player.deck[weaponIndex];
+          if (weapon) {
+            console.log(`Removing weapon: ${weapon.name}`);
+
+            dropWeapon(weaponIndex); // Your existing weapon removal function
+
+            // Clean up UI and exit remove mode
+            weaponDeckScreen.classList.add("hidden");
+            document.body.classList.remove("remove-mode");
+
+            displayTurnMessage(`You removed ${weapon.name} from your deck.`);
+            returnToMap();
+          } else {
+            console.error("Weapon not found in player's deck");
+          }
+        });
+
+        weaponDeckScreen._removeModeListenerAdded = true;
+      }
+
+      // Close deck button listener (only add once)
+      if (
+        closeDeckButton &&
+        !closeDeckButton._ancientWritingCloseListenerAdded
+      ) {
+        closeDeckButton.addEventListener("click", () => {
+          weaponDeckScreen.classList.add("hidden");
+          document.body.classList.remove("remove-mode");
+        });
+
+        closeDeckButton._ancientWritingCloseListenerAdded = true;
+      }
+    });
+  }
+
+  // contract dave
+
+  if (eventType === "dave") {
+    document.getElementById("dave").classList.remove("hidden");
+    document.getElementById("helpDave").addEventListener("click", function () {
+      updatePlayerGold(-50);
+      player.foundRelic("Contract with Dave", true);
+      player.savePlayerToStorage();
+      returnToMap();
+    });
+  }
+
+  // reunion dave
+
+  if (eventType === "reunionDave") {
+    document.getElementById("reunionDave").classList.remove("hidden");
+    document
+      .getElementById("takeReward")
+      .addEventListener("click", function () {
+        updatePlayerGold(250);
+        player.removeRelic("Contract with Dave");
+        player.savePlayerToStorage();
+        returnToMap();
+      });
+  }
+
   //Thors Hammer Code
 
   if (eventType === "thorsHammer") {
@@ -227,6 +376,35 @@ document.addEventListener("DOMContentLoaded", function () {
         returnToMap();
       });
     }
+  }
+
+  // heal or max hp
+
+  if (eventType === "healOrHp") {
+    const healOrHpBox = document.getElementById("healOrHp");
+    const TouchedStalactiteBox = document.getElementById("TouchedStalactite");
+    const TouchedStalagmiteBox = document.getElementById("TouchedStalagmite");
+
+    healOrHpBox.classList.remove("hidden");
+
+    const stalactiteBtn = document.getElementById("stalactite");
+    const stalagmiteBtn = document.getElementById("stalagmite");
+
+    stalactiteBtn.addEventListener("click", function () {
+      healOrHpBox.classList.add("hidden");
+      TouchedStalactiteBox.classList.remove("hidden");
+      player.heal(20);
+      updateHealthBar(player);
+      player.savePlayerToStorage();
+    });
+
+    stalagmiteBtn.addEventListener("click", function () {
+      healOrHpBox.classList.add("hidden");
+      TouchedStalagmiteBox.classList.remove("hidden");
+      player.increaseMaxHealth(10, true);
+      updateHealthBar(player);
+      player.savePlayerToStorage();
+    });
   }
 
   //Die Gambling

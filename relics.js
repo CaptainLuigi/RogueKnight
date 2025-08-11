@@ -392,6 +392,13 @@ const relicList = [
     "Curse: Decrease Hand size by 1.",
     "curse"
   ),
+  new Relics(
+    "Contract with Dave",
+    "Assets/davesContract.png",
+    () => {},
+    "The promise that he will pay you back.",
+    "dave"
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -582,7 +589,7 @@ function brambleMantle(player) {
 
 function omnipotence(player) {
   player.setWeaponEnergy(0);
-  player.decreaseMaxHealth(player.maxHealth * 0.7);
+  player.decreaseMaxHealth(Math.floor(player.maxHealth * 0.7));
 }
 
 function souleater(player) {

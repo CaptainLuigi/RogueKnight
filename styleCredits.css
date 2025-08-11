@@ -56,3 +56,15 @@ h2 {
     max-height: 70vh;
     overflow: auto;
 }
+
+.patchnotes-container {
+    font-size: 32px;
+    z-index: 5;
+    position: relative;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+}
+
+.patchnote-changes {
+    font-weight: bold;
+}

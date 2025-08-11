@@ -81,7 +81,7 @@ const enemyConstellationTemplates = [
   },
   {
     difficultyFrom: 18,
-    difficultyTo: 18,
+    difficultyTo: 19,
     enemies: [BigGolem],
   },
   {

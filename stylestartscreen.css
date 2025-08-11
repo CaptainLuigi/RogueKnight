@@ -95,3 +95,23 @@ body {
     z-index: 1000;
 }
 
+#patchnotes {
+    position: fixed;
+    bottom: 10px;
+    right: 25px;
+}
+
+#patchnotes button {
+    font-family: 'Pirata_One';
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 24px;
+    z-index: 1500;
+}
+
+#patchnotes button:hover {
+    cursor: pointer;
+}

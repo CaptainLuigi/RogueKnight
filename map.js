@@ -296,7 +296,6 @@ function markPossibleLocations() {
 
 function triggerRandomEvent() {
   const act1Events = [
-    { type: "chest", action: openChest },
     { type: "upgradeWeapon", action: showEvent },
     { type: "ambushGold", action: showEvent },
     { type: "hurtAnkle", action: showEvent },
@@ -306,25 +305,30 @@ function triggerRandomEvent() {
     { type: "gambling", action: showEvent },
     { type: "rest", action: showEvent },
     { type: "lightning", action: showEvent },
-    { type: "goldenStatue", action: showEvent },
     { type: "succubus", action: showEvent },
     { type: "stoned", action: showEvent },
     { type: "poisonWeapon", action: showEvent },
-    { type: "lowerEnergyCost", action: showEvent },
     { type: "weaponLifesteal", action: showEvent },
     { type: "bloodforge", action: showEvent },
     { type: "dieGambling", action: showEvent },
+    { type: "dave", action: showEvent },
   ];
 
   const act2Events = [
-    // { type: "infernalIngot", action: showEvent },
+    { type: "infernalIngot", action: showEvent },
     { type: "upgradeAll", action: showEvent },
+    { type: "lowerEnergyCost", action: showEvent },
+    { type: "goldenStatue", action: showEvent },
+    { type: "healOrHp", action: showEvent },
+    { type: "golemEncounter", action: showEvent },
+    { type: "ancientWriting", action: showEvent },
   ];
 
   const sharedEvents = [
     { type: "shopScouting", action: showEvent },
     { type: "eliteFight", action: startEliteFight },
     { type: "normalFight", action: startNormalFight },
+    { type: "chest", action: openChest },
   ];
 
   let allEvents = [...sharedEvents];
@@ -336,8 +340,18 @@ function triggerRandomEvent() {
     allEvents.push({ type: "dropWeapon", action: showEvent });
   }
 
-  if (player.health <= (player.maxHealth / 100) * 20) {
+  if (
+    player.health <= (player.maxHealth / 100) * 20 &&
+    globalSettings.currentAct === 1
+  ) {
     allEvents.push({ type: "fullHeal", action: showEvent });
+  }
+
+  if (
+    player.equippedRelics.includes("Contract with Dave") &&
+    globalSettings.currentAct === 2
+  ) {
+    allEvents.push({ type: "reunionDave", action: showEvent });
   }
 
   let triggeredEvents =

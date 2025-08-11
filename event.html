@@ -378,11 +378,10 @@
 
     <div class="textbox hidden" id="goldenStatue">
       <span>
-        As you move through the forest, a faint shimmer flickers between the
-        trees.<br />
-        Pushing past the undergrowth, you find a cave hidden among the roots.
-        Inside, dim light reflects off a golden statue, its surface worn and
-        ancient.<br />
+        As you move through the cave, a faint shimmer flickers between the
+        rocks.<br />
+        Pushing further towards the light, you find a golden statue, its surface
+        worn and ancient.<br />
         You reach for it, but it's far too heavy to lift.<br />
         A thought crosses your mind. You could break the statue, shattering gold
         from its form — but the act feels... <br />wrong.<br />
@@ -508,7 +507,7 @@
 
     <div class="textbox hidden" id="lowerEnergyCost">
       <span>
-        In the heart of the forest, you find an ancient forge, its blue flames
+        Deep inside the caves, you find an ancient forge, its blue flames
         crackling with magic. A cloaked figure stands before it, speaking in a
         soft, commanding voice:<br />
         "I am the Forgekeeper. I can reduce the energy cost of your weapon, but
@@ -551,9 +550,9 @@
 
     <div class="textbox hidden" id="fullHeal">
       <span>
-        As you stumble through the dense forest, barely able to stand, a soft
-        glow catches your eye. The light flickers and dances around you until a
-        small, radiant fairy appears before you.<br />
+        As you stumble forward through your journey, barely able to stand, a
+        soft glow catches your eye. The light flickers and dances around you
+        until a small, radiant fairy appears before you.<br />
         "Ah, I see you're in quite a state, traveler," she says, her eyes filled
         with sympathy. "I can heal you completely, return your strength to its
         fullest."<br />
@@ -590,8 +589,7 @@
 
     <div class="textbox hidden" id="shopScouting">
       <span>
-        As you were wandering through the forest, you met another man carrying a
-        huge backpack.<br />
+        As you were wandering, you met another man carrying a huge backpack.<br />
         "Hello, have me met before? I'm trying to find some good areas to open a
         shop. In the meantime I can offer you a free sample!"<br />
       </span>
@@ -620,19 +618,127 @@
       </div>
     </div>
 
+    <!-- contract dave -->
+
+    <div class="textbox hidden" id="dave">
+      <span>
+        You see a lonely man with a sad face sitting next to the track on a
+        rock.<br />
+        "Nobody wants to talk to me. I'm an outcast, because my mother is a
+        whore. My name is Dave, by the way.<br />
+        And now I can't even afford food to live.<br />
+        Can you help me out? I promise, I will pay you back!"
+      </span>
+      <div>
+        <button class="textbox-btn" id="helpDave">Give 50 Gold</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- dave reunion -->
+
+    <div class="textbox hidden" id="reunionDave">
+      <span>
+        Suddenly, you hear a pickaxe working through stone.<br />
+        You follow the sound and cannot believe your eyes.<br />
+        It's Dave!<br />
+        Now he notices you. "Oh, hey! After our last encounter,<br />
+        I made a fortune mining rare ores in this cave.<br />
+        Thank's for helping me out, now I can pay you back."<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="takeReward">Take your reward</button>
+      </div>
+    </div>
+
     <!-- upgrade and curse -->
 
     <div class="textbox hidden" id="upgradeAll">
       <span>
-        As you tread deeper into the forest, a heavy fog swirls around you.<br />
-        Vines hift underfoot like living veins, guiding you to a clearing<br />
-        where an ancient tree pulses with eerie green light.<br />
+        As you tread deeper into the cave, a mystic light swirls around you,<br />
+        guiding you to a strange glowing rock formation.<br />
         Voices - whispers in a language just on the edge of comprehension.<br /><br />
-        "We can make all your weapons stronger...," the forest hums.<br />
+        "We can make all your weapons stronger...," the stones hum.<br />
         "But you will be cursed for the rest of your journey."
         <div>
           <button class="textbox-btn" id="upgradeAndCurse">Upgrade all</button>
           <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- heal or max HP -->
+
+    <div class="textbox hidden" id="healOrHp">
+      <span>
+        Futher inside the cave you come across a pink glowing stalactite<br />
+        and a purple glowing stalagmite.<br />
+        You feel like touching one of these mysterious stones, knowing deep
+        inside, <br />
+        that it will be helpful.<br />
+
+        <div>
+          <button class="textbox-btn" id="stalactite">Touch stalactite</button>
+          <button class="textbox-btn" id="stalagmite">Touch stalagmite</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- touch stalactite -->
+
+    <div class="textbox hidden" id="TouchedStalactite">
+      <span>
+        As you touch the stalactite, the whole room is filled<br />
+        with a pleasant pink glow and you feel well rested.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- touch stalagmite -->
+
+    <div class="textbox hidden" id="TouchedStalagmite">
+      <span>
+        As you touch the stalagmite, the whole room is filled<br />
+        with a warm purple glow and you feel your life force increasing.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- golem encounter -->
+
+    <div class="textbox hidden" id="golemEncounter">
+      <span>
+        After a while in the cave, you encounter a golem that<br />
+        seems kind of friendly.<br />
+        But that could change very soon, as the golem offered you some
+        stones.<br />
+        Do you take the stones and keep going, or do you risk denying the
+        friendship?<br />
+        <div>
+          <button class="textbox-btn" id="golemStones">Take the stones</button>
+          <button class="textbox-btn" id="noGolemStones">
+            Don't take them
+          </button>
+        </div>
+      </span>
+    </div>
+
+    <!-- ancient writing -->
+
+    <div class="textbox hidden" id="ancientWriting">
+      <span>
+        Looking at the walls of the old cave, you notice an ancient writing.<br />
+        As you try to wrap your head around what the puzzling symbols and glyphs
+        could mean,<br />
+        the writing begins to glow.<br />
+        Is the answer improving your melee weapons or thinning your deck?<br />
+        <div>
+          <button class="textbox-btn" id="meleeImprove">Improve melee</button>
+          <button class="textbox-btn" id="thinning">Thin to win</button>
         </div>
       </span>
     </div>
