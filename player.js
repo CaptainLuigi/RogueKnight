@@ -196,11 +196,11 @@ class Player extends HealthEntity {
     const handContainer = document.getElementById("weapons-container");
     const handSize = this.#hand.length;
 
-    if (handSize > 9) {
-      handContainer.classList.add("compressed-hand");
-    } else {
-      handContainer.classList.remove("compressed-hand");
-    }
+    // if (handSize > 9) {
+    //   handContainer.classList.add("compressed-hand");
+    // } else {
+    //   handContainer.classList.remove("compressed-hand");
+    // }
   }
 
   #resetDrawPile() {
@@ -548,7 +548,8 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      this.addWeapon(new DevWeapon());
+      // this.addWeapon(new DevWeapon());
+
       // this.addWeapon(new DevBow());
 
       // this.addWeapon(new DevShield());

@@ -399,6 +399,14 @@ const relicList = [
     "The promise that he will pay you back.",
     "dave"
   ),
+  new Relics(
+    "Woundmark",
+    "Assets/woundmark.png",
+    () => {},
+    "Elites take 10% damage of their max HP at the start of the fight.",
+    "chest",
+    100
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;

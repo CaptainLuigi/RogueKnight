@@ -73,6 +73,19 @@ document.addEventListener("DOMContentLoaded", function () {
     player.increaseStrength(10);
     player.updateStrengthDisplay();
   }
+
+  if (
+    player.equippedRelics.includes("Woundmark") &&
+    (globalSettings.difficulty === 8 ||
+      globalSettings.difficulty === 9 ||
+      globalSettings.difficulty === 18 ||
+      globalSettings.difficulty === 19)
+  ) {
+    enemies.forEach((enemy) => {
+      const damage = enemy.maxHealth * 0.1;
+      enemy.takeDamage(damage, false);
+    });
+  }
 });
 
 function fillEnemyArray(currentDifficulty) {

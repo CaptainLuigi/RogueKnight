@@ -311,7 +311,6 @@ function triggerRandomEvent() {
     { type: "weaponLifesteal", action: showEvent },
     { type: "bloodforge", action: showEvent },
     { type: "dieGambling", action: showEvent },
-    { type: "dave", action: showEvent },
   ];
 
   const act2Events = [
@@ -322,6 +321,8 @@ function triggerRandomEvent() {
     { type: "healOrHp", action: showEvent },
     { type: "golemEncounter", action: showEvent },
     { type: "ancientWriting", action: showEvent },
+    { type: "magicWand", action: showEvent },
+    { type: "fallingStones", action: showEvent },
   ];
 
   const sharedEvents = [
@@ -345,6 +346,10 @@ function triggerRandomEvent() {
     globalSettings.currentAct === 1
   ) {
     allEvents.push({ type: "fullHeal", action: showEvent });
+  }
+
+  if (player.playerGold >= 50 && globalSettings.currentAct === 1) {
+    allEvents.push({ type: "dave", action: showEvent });
   }
 
   if (

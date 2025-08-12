@@ -242,11 +242,18 @@ height: 0;
     margin-left: 0;
 }
  
-.weapon {
+/* .weapon {
     position: relative;
     image-rendering: pixelated;
     cursor: pointer;
+} */
+
+.weapon {
+    position: static; /* removes the positioning context */
+    image-rendering: pixelated;
+    cursor: pointer;
 }
+
 
 .weapon:hover {
     z-index: 10;
@@ -268,14 +275,37 @@ height: 0;
     transform-style: preserve-3d;
 } */
 
-/* Tooltip styling */
+
 .tooltip {
-    transition: opacity 0.3s ease;
-    bottom: 110%; 
+    position: absolute;
     left: 50%;
-    transform: translateX(-50%); 
-    pointer-events: none;
+    transform: translateX(-50%);
+    /* Keep your background, padding, etc. same as map HTML */
 }
+
+#weapon-deck-container .tooltip,
+#upgrade-weapon-options .tooltip
+{
+    bottom: 110%;
+}
+
+#weapon-purchase-options .tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 10px;
+}
+
+
+#weapons-container
+ {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
 
 .enemy-intent-tooltip {
     position: absolute;
@@ -515,7 +545,9 @@ height: 0;
 
 }
 
+
 #weapon-purchase-options {
+    position: relative; 
     display: flex;
     flex-direction: row;
     justify-content: center;

@@ -73,7 +73,7 @@
 
 .tooltip {
     display: none;
-    position: absolute;
+    position: absolute; 
     background-color: rgba(0, 0, 0, 0.85); /* Dark background */
     color: white;
     padding: 10px;

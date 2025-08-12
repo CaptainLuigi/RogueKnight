@@ -214,6 +214,44 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  // magic wand
+
+  if (eventType === "magicWand") {
+    document.getElementById("magicWand").classList.remove("hidden");
+    document
+      .getElementById("takeMagicWand")
+      .addEventListener("click", function () {
+        player.addWeapon(new MagicWand());
+        player.savePlayerToStorage();
+        returnToMap();
+      });
+  }
+
+  // falling stones
+
+  if (eventType === "fallingStones") {
+    document.getElementById("fallingStones").classList.remove("hidden");
+    document
+      .getElementById("dodgeLeft")
+      .addEventListener("click", async function () {
+        player.decreaseMaxHealth(7);
+        updateHealthBar(player);
+        player.savePlayerToStorage();
+        await wait(750);
+        returnToMap();
+      });
+
+    document
+      .getElementById("dodgeRight")
+      .addEventListener("click", async function () {
+        player.takeDamage(15);
+        updateHealthBar(player);
+        player.savePlayerToStorage();
+        await wait(750);
+        returnToMap();
+      });
+  }
+
   // ancient writing
 
   if (eventType === "ancientWriting") {

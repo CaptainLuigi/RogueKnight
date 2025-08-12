@@ -154,6 +154,12 @@ const SoundManager = {
       audio.dataset = { baseVolume: 0.075 };
       return audio;
     })(),
+    MagicSound: (() => {
+      const audio = new Audio("Assets/Sound/magickneekoo.ogg");
+      audio.volume = 0.075;
+      audio.dataset = { baseVolume: 0.075 };
+      return audio;
+    })(),
   },
 
   globalVolume: 0.5,

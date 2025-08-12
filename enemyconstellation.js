@@ -15,12 +15,12 @@ const enemyConstellationTemplates = [
     enemies: [Snail, Mantis, Mantis],
   },
   {
-    difficultyFrom: 2,
+    difficultyFrom: 3,
     difficultyTo: 3,
     enemies: [Scorpion, Scorpion, Scorpion, Scorpion],
   },
   {
-    difficultyFrom: 3,
+    difficultyFrom: 2,
     difficultyTo: 3,
     enemies: [Shroom, Shroom, Shroom, SadShroom],
   },
@@ -71,8 +71,23 @@ const enemyConstellationTemplates = [
   },
   {
     difficultyFrom: 11,
-    difficultyTo: 14,
+    difficultyTo: 12,
     enemies: [Centepede, Centepede, Centepede, Centepede],
+  },
+  {
+    difficultyFrom: 12,
+    difficultyTo: 14,
+    enemies: [Bat, Bat, Bat, Bat, Bat],
+  },
+  {
+    difficultyFrom: 11,
+    difficultyTo: 14,
+    enemies: [Rat, Imp, FatImp, HappyImp],
+  },
+  {
+    difficultyFrom: 13,
+    difficultyTo: 14,
+    enemies: [HappyImp, HappyImp, HappyImp, HappyImp],
   },
   {
     difficultyFrom: 18,
@@ -88,6 +103,11 @@ const enemyConstellationTemplates = [
     difficultyFrom: 20,
     difficultyTo: 20,
     enemies: [Spider, Spider, Spider, SpiderBoss],
+  },
+  {
+    difficultyFrom: 20,
+    difficultyTo: 20,
+    enemies: [Rat, Rat, RatKing, Rat],
   },
   {
     difficultyFrom: 100,

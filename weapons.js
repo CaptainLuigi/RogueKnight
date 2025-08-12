@@ -2298,6 +2298,54 @@ class Leechfang extends Weapons {
   }
 }
 
+class MagicWand extends Weapons {
+  constructor() {
+    super(
+      "Magic Wand",
+      1,
+      "Far",
+      5,
+      0,
+      0,
+      1,
+      "Once mastered, a powerful weapon.",
+      "Assets/magicWand.png",
+      true,
+      0,
+      6,
+      0,
+      0,
+      0,
+      true,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "MagicSound",
+      0,
+      0
+    );
+  }
+
+  applyUpgrades(weaponInfo) {
+    switch (this.level) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        weaponInfo.damage = 50;
+        weaponInfo.criticalDamage = 70;
+        weaponInfo.criticalChance = 35;
+        weaponInfo.healingAmount = 10;
+        weaponInfo.poisonAmount = 10;
+        weaponInfo.description =
+          "A powerful weapon that damages enemies and heals you. Click weapon first, then the enemy you want to hit.";
+    }
+  }
+}
+
 class DevWeapon extends Weapons {
   constructor() {
     super(
@@ -2504,6 +2552,7 @@ const weaponClassMapping = {
   RagingDagger,
   BerserkersSpear,
   Leechfang,
+  MagicWand,
   DevShield,
   DevBow,
   DevSword,

@@ -55,7 +55,6 @@ Lexikon mit Waffen, Relics und Gegnern
 
 background bei waffen einfügen, für compressed hand
 
-tooltip von waffen centern
+wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
-event son of a bitch / outcast dave -> iou
 */
