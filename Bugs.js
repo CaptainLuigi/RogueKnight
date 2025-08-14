@@ -43,7 +43,7 @@ prozentualer buff bei waffen anzeigen (wegen blood pact)
 
 boss relics einfügen 
 
-button einfügen, dass map gesehen werden kann
+button einfügen, dass map gesehen werden kann ggf über iframe
 
 Lexikon mit Waffen, Relics und Gegnern
 
