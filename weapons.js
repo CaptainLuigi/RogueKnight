@@ -1631,7 +1631,7 @@ class ChannelEnergy extends Weapons {
       0,
       0,
       1,
-      "Click to get energy. Can only be used once per battle.",
+      "Click to get energy and deal self damage. Can only be used once per battle.",
       "Assets/channelEnergy.png",
       false,
       0,
@@ -1645,7 +1645,9 @@ class ChannelEnergy extends Weapons {
       true,
       2,
       0,
-      "ChargeSound"
+      "ChargeSound",
+      0,
+      5
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1654,11 +1656,12 @@ class ChannelEnergy extends Weapons {
         break;
       case 2:
         weaponInfo.energyGainOnUse = 3;
+        weaponInfo.selfDamage = 3;
         break;
       case 3:
         weaponInfo.energyGainOnUse = 3;
         weaponInfo.oncePerBattle = false;
-        weaponInfo.description = "Click to get energy.";
+        weaponInfo.description = "Click to get energy and deal self damage.";
         break;
     }
   }
@@ -1804,7 +1807,7 @@ class BattleFocus extends Weapons {
       0,
       0,
       2,
-      "Click to get energy and draw one. Can only be used once per battle.",
+      "Click to get energy, draw one and deal self damage. Can only be used once per battle.",
       "Assets/battleFocus.png",
       false,
       0,
@@ -1818,7 +1821,9 @@ class BattleFocus extends Weapons {
       true,
       3,
       1,
-      "ChargeSound"
+      "ChargeSound",
+      0,
+      5
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1827,13 +1832,15 @@ class BattleFocus extends Weapons {
         break;
       case 2:
         weaponInfo.drawAmountOnUse = 2;
+        weaponInfo.selfDamage = 3;
         weaponInfo.description =
-          "Click to get energy and draw 2. Can only be used once per battle.";
+          "Click to get energy, draw 2 and deal self damage. Can only be used once per battle.";
         break;
       case 3:
         weaponInfo.energyGainOnUse = 4;
         weaponInfo.oncePerBattle = false;
-        weaponInfo.description = "Click to get energy and draw 2.";
+        weaponInfo.description =
+          "Click to get energy, draw 2 and deal self damage.";
         break;
     }
   }

@@ -57,4 +57,9 @@ background bei waffen einfügen, für compressed hand
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
+small golem reihenfolge überprüfen
+
+bei spawn gegner act 2 auch sprite verdunkeln
+
+energy geber/karten zieher nerf (selfdamage/once per battle)
 */

@@ -2,6 +2,12 @@
     font-family: 'Pirata_One';
     src: url(Assets/PirataOne-Regular.ttf) format('truetype');
 }
+
+@font-face {
+    font-family: 'Elvish';
+    src: url(Assets/tngan.ttf) format('truetype');
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -169,4 +175,8 @@ button#randomWeapon2 {
 #randomWeapon1 .weapon .tooltip,
 #randomWeapon2 .weapon .tooltip {
     top: -150%;
+}
+
+#elvish {
+    font-family: 'Elvish';
 }

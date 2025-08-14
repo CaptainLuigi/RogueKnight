@@ -323,6 +323,7 @@ function triggerRandomEvent() {
     { type: "ancientWriting", action: showEvent },
     { type: "magicWand", action: showEvent },
     { type: "fallingStones", action: showEvent },
+    { type: "offerWeapon", action: showEvent },
   ];
 
   const sharedEvents = [
@@ -348,7 +349,7 @@ function triggerRandomEvent() {
     allEvents.push({ type: "fullHeal", action: showEvent });
   }
 
-  if (player.playerGold >= 50 && globalSettings.currentAct === 1) {
+  if (globalSettings.playerGold >= 50 && globalSettings.currentAct === 1) {
     allEvents.push({ type: "dave", action: showEvent });
   }
 
@@ -357,6 +358,10 @@ function triggerRandomEvent() {
     globalSettings.currentAct === 2
   ) {
     allEvents.push({ type: "reunionDave", action: showEvent });
+  }
+
+  if (globalSettings.playerGold >= 150 && globalSettings.currentAct === 2) {
+    allEvents.push({ type: "zenRelic", action: showEvent });
   }
 
   let triggeredEvents =

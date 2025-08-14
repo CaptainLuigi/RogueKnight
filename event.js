@@ -252,6 +252,18 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  // zen relic
+
+  if (eventType === "zenRelic") {
+    document.getElementById("zenRelic").classList.remove("hidden");
+    document.getElementById("donateAll").addEventListener("click", function () {
+      updatePlayerGold(-globalSettings.playerGold);
+      player.foundRelic("Zen Barrier", true);
+      player.savePlayerToStorage();
+      returnToMap();
+    });
+  }
+
   // ancient writing
 
   if (eventType === "ancientWriting") {
@@ -345,6 +357,77 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         closeDeckButton._ancientWritingCloseListenerAdded = true;
+      }
+    });
+  }
+
+  // offer weapon
+
+  if (eventType === "offerWeapon") {
+    const offerBtn = document.getElementById("offerSomething");
+    const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+
+    let offerMode = false;
+
+    if (offerBtn) {
+      offerBtn.addEventListener("click", () => {
+        offerMode = true;
+        weaponDeckScreen.classList.remove("hidden");
+
+        player.showDeck();
+        document.body.classList.add("offer-mode");
+
+        setTimeout(() => {
+          weaponDeckScreen.querySelectorAll(".weapon").forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
+      });
+    }
+
+    weaponDeckScreen?.addEventListener("click", (event) => {
+      if (!offerMode) return;
+
+      const weaponElement = event.target.closest(".weapon");
+      if (!weaponElement) return;
+
+      const weaponIndex = Array.from(
+        weaponDeckScreen.querySelectorAll(".weapon")
+      ).indexOf(weaponElement);
+
+      if (weaponIndex === -1) {
+        console.error("Weapon index not found");
+        return;
+      }
+
+      const weapon = player.deck[weaponIndex];
+      if (!weapon) {
+        console.error("Weapon not found in player's deck");
+        return;
+      }
+
+      const level = weapon.level;
+
+      dropWeapon(weaponIndex);
+
+      weaponDeckScreen.classList.add("hidden");
+      document.body.classList.remove("offer-mode");
+      offerMode = false;
+
+      document.getElementById("offerWeapon").classList.add("hidden");
+
+      if (level === 1) {
+        document.getElementById("offerLvl1").classList.remove("hidden");
+      } else if (level === 2) {
+        document.getElementById("offerLvl2").classList.remove("hidden");
+        player.heal(40);
+        updateHealthBar(player);
+        player.savePlayerToStorage();
+      } else if (level >= 3) {
+        document.getElementById("offerLvl3").classList.remove("hidden");
+        player.increaseMaxHealth(25, true);
+        updateHealthBar(player);
+        player.savePlayerToStorage();
       }
     });
   }

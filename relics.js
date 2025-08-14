@@ -407,6 +407,13 @@ const relicList = [
     "chest",
     100
   ),
+  new Relics(
+    "Zen Barrier",
+    "Assets/zenBarrier.png",
+    () => {},
+    "Whenever an enemy attacks you and you have no cards in hand, take no damage.",
+    "event"
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;

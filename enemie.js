@@ -419,6 +419,14 @@ class Enemy extends HealthEntity {
       }
     }
 
+    if (
+      actualDamage > 0 &&
+      player.equippedRelics.includes("Zen Barrier") &&
+      player.hand.length === 0
+    ) {
+      actualDamage = 0;
+    }
+
     // Apply relics that reduce damage
     if (actualDamage > 0 && player.equippedRelics.includes("Death's Pact")) {
       actualDamage = Math.ceil(actualDamage / 2);
@@ -784,7 +792,7 @@ class Shroom extends Enemy {
 
 class Snail extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(4, 8);
+    const randomAttackPower = getRandomIntInclusive(5, 7);
     const randomShieldAmount = getRandomIntInclusive(12, 17);
     super(
       "Snail",
@@ -818,7 +826,7 @@ class SadShroom extends Enemy {
 
 class BiteShroom extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(8, 12);
+    const randomAttackPower = getRandomIntInclusive(9, 11);
     super(
       "Bite Shroom",
       250,
@@ -849,7 +857,7 @@ class Scorpion extends Enemy {
 
 class BitingPlant extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(6, 10);
+    const randomAttackPower = getRandomIntInclusive(7, 9);
     const randomShieldAllAmount = getRandomIntInclusive(12, 18);
     const randomPoisonAmount = getRandomIntInclusive(1, 3);
     super(
@@ -884,7 +892,7 @@ class SlimeHive extends Enemy {
 
 class Mantis extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(5, 10);
+    const randomAttackPower = getRandomIntInclusive(6, 9);
     const randomShieldAmount = getRandomIntInclusive(7, 13);
     super(
       "Mantis",
@@ -1126,8 +1134,8 @@ class MasterMage extends Enemy {
 
 class SkeletonSummon extends Enemy {
   constructor() {
-    const randomHealth = getRandomIntInclusive(35, 65);
-    const randomAttackPower = getRandomIntInclusive(1, 5);
+    const randomHealth = getRandomIntInclusive(45, 65);
+    const randomAttackPower = getRandomIntInclusive(3, 7);
     const randomShieldAmount = getRandomIntInclusive(5, 15);
     super(
       "Skeleton",
@@ -1266,7 +1274,7 @@ class RatKing extends Enemy {
     this.display.classList.add("biggestEnemy");
   }
   summon() {
-    const maxEnemies = 5;
+    const maxEnemies = 6;
     if (enemies.length >= maxEnemies) {
       return;
     }
@@ -1375,7 +1383,7 @@ class Rat extends Enemy {
 
 class RatSummon extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(10, 12);
+    const randomAttackPower = getRandomIntInclusive(12, 14);
     const randomShieldAmount = getRandomIntInclusive(25, 30);
     const randomPoisonAmount = getRandomIntInclusive(2, 4);
     super(
@@ -1595,10 +1603,12 @@ class BigGolem extends Enemy {
 
 class Mimic extends Enemy {
   constructor() {
+    const attackPower = 15 * globalSettings.currentAct;
+    const health = 500 * globalSettings.currentAct;
     super(
       "Mimic",
-      500,
-      15,
+      health,
+      attackPower,
       "Assets/mimic.png",
       true,
       0,

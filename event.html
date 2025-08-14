@@ -774,6 +774,78 @@
       </span>
     </div>
 
+    <!-- offer Weapon -->
+
+    <div class="textbox hidden" id="offerWeapon">
+      <span>
+        In the dark, you see a glowing light and follow it to an altar from
+        another time.<br />
+        It seems you can lay down a weapon to sacrifice it, but for what
+        purpose?<br />
+        Then you realize, there are ancient symbols above:<br /><br />
+        <span id="elvish"
+          >Lay down your offer and get a reward depending on the quality</span
+        >
+      </span>
+      <div>
+        <button class="textbox-btn" id="offerSomething">Offer a weapon</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="offerLvl1">
+      <span>
+        You take out one of your weapons and place it on the old structure.<br />
+        After you take a step back, the weapon vanishes without a sound.<br />
+        Nothing happens.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <div class="textbox hidden" id="offerLvl2">
+      <span>
+        You take out one of your weapons and place it on the old structure.<br />
+        After you take a step back, a flickering light appears and the weapon
+        vanishes.<br />
+        But something else happened, you recovered some of your strength.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <div class="textbox hidden" id="offerLvl3">
+      <span>
+        You take out one of your weapons and place it on the old structure.<br />
+        After you take a step back, a beam of light appears, so bright you have
+        to close your eyes.<br />
+        Then you open them again and the weapon is gone.<br />
+        Now you feel stronger than before, ready to take on the next enemy.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- zen relic -->
+
+    <div class="textbox hidden" id="zenRelic">
+      <span>
+        A sudden calm washes over you, and you are at peace with yourself.<br />
+        Warm light reaches you from candelabra, surrounding a little shrine.<br />
+        Without a care you step closer to see a scroll, promoting a life without
+        belongings.<br />
+        It seems like the right thing to do, but do you really want to donate
+        all your gold?<br />
+        <div>
+          <button class="textbox-btn" id="donateAll">Donate all</button>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         applyActVisuals();
