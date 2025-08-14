@@ -1401,6 +1401,7 @@ class RatSummon extends Enemy {
       false
     );
     this.isSummoned = true;
+    this.display.classList.add("dark-cave-effect");
   }
 }
 
@@ -1443,6 +1444,7 @@ class SpiderSummon extends Enemy {
       false
     );
     this.isSummoned = true;
+    this.display.classList.add("dark-cave-effect");
   }
 }
 
@@ -1506,6 +1508,7 @@ class SmallGolem extends Enemy {
       0,
       false
     );
+    this.display.classList.add("dark-cave-effect");
   }
 }
 
@@ -1528,6 +1531,7 @@ class MediumGolem extends Enemy {
       false
     );
     this.display.classList.add("bigEnemy");
+    this.display.classList.add("dark-cave-effect");
   }
 
   async enemyDeath() {

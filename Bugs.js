@@ -49,17 +49,10 @@ boss relics einfügen
 
 button einfügen, dass map gesehen werden kann
 
-wenn viele waffen in der hand, waffen überlappen lassen
-
 Lexikon mit Waffen, Relics und Gegnern
-
-background bei waffen einfügen, für compressed hand
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
 small golem reihenfolge überprüfen
 
-bei spawn gegner act 2 auch sprite verdunkeln
-
-energy geber/karten zieher nerf (selfdamage/once per battle)
 */

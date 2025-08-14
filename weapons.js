@@ -1989,8 +1989,8 @@ class Macuahuitl extends Weapons {
       15,
       30,
       10,
-      1,
-      "Can only target the first enemy, click to instantly use weapon and gain 1 energy.",
+      2,
+      "Can only target the first enemy, click to instantly use weapon and gain 2 energy.",
       "Assets/mayan.png",
       false,
       0,
@@ -2002,7 +2002,7 @@ class Macuahuitl extends Weapons {
       0,
       0,
       false,
-      1,
+      2,
       0,
       "SwordSlash"
     );

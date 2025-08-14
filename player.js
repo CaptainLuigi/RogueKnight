@@ -170,7 +170,16 @@ class Player extends HealthEntity {
   }
 
   drawExtraCards(amount) {
-    for (let i = 0; i < amount; i++) {
+    const hardcodeHandSize = 11;
+
+    let spaceLeft = hardcodeHandSize - this.#hand.length;
+    let cardsToDraw = Math.min(amount, spaceLeft);
+
+    if (cardsToDraw < amount) {
+      displayTurnMessage("Max hand size reached");
+    }
+
+    for (let i = 0; i < cardsToDraw; i++) {
       if (this.#drawPile.length === 0) {
         this.#resetDrawPile();
       }
@@ -192,15 +201,6 @@ class Player extends HealthEntity {
         this.#hand.push(weaponToDraw);
       }
     }
-
-    const handContainer = document.getElementById("weapons-container");
-    const handSize = this.#hand.length;
-
-    // if (handSize > 9) {
-    //   handContainer.classList.add("compressed-hand");
-    // } else {
-    //   handContainer.classList.remove("compressed-hand");
-    // }
   }
 
   #resetDrawPile() {
@@ -548,6 +548,11 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
+      this.addWeapon(new Restock());
+      this.addWeapon(new Restock());
+      this.addWeapon(new Restock());
+      this.addWeapon(new Restock());
+      this.addWeapon(new Restock());
       this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());

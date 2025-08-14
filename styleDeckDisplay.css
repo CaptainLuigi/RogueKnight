@@ -15,11 +15,6 @@
     z-index: 1000; 
 }
 
-/* @media (max-width: 1440px) {
-    #current-deck {
-        bottom: 225px;
-    }
-} */
 
 #weapon-list {
     display: flex;
