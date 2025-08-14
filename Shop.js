@@ -289,7 +289,6 @@ function displayShopRelics() {
     const relic = savedRelics[index];
 
     generateRelicInfo(player, relic, index, button, relicInfo);
-    // relicInfo.classList.remove("tooltip");
 
     button.addEventListener("mouseover", () => {
       if (relicInfo) {

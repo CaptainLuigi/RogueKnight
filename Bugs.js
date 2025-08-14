@@ -41,10 +41,6 @@ aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, we
 
 prozentualer buff bei waffen anzeigen (wegen blood pact)
 
-wenn chest gefunden und danach auf map und im browser zurück -> neues relic in chest
-
-events können auch gererolled werden wenn im browser zurück gegangen wird
-
 boss relics einfügen 
 
 button einfügen, dass map gesehen werden kann

@@ -482,6 +482,8 @@ class Player extends HealthEntity {
       return; // Prevent healing if the amount is invalid
     }
 
+    const oldHealth = this.#health;
+
     this.#health += Math.floor(amount); // Increase health
     if (this.#health > this.#maxHealth) {
       this.#health = this.#maxHealth; // Cap at max health
@@ -490,6 +492,12 @@ class Player extends HealthEntity {
       console.error("Invalid health value:", this.#health);
       this.#health = 0;
     }
+
+    const actualHealed = this.#health - oldHealth;
+    if (actualHealed > 0) {
+      this.displayHeal(actualHealed);
+    }
+
     this.savePlayerToStorage();
   }
 
@@ -548,11 +556,8 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      this.addWeapon(new Restock());
-      this.addWeapon(new Restock());
-      this.addWeapon(new Restock());
-      this.addWeapon(new Restock());
-      this.addWeapon(new Restock());
+      this.addWeapon(new SmallHealthPotion());
+
       this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());

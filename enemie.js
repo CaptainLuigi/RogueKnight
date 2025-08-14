@@ -432,6 +432,10 @@ class Enemy extends HealthEntity {
       actualDamage = Math.ceil(actualDamage / 2);
     }
 
+    if (actualDamage > 15 && player.equippedRelics.includes("Steady Ground")) {
+      actualDamage = 15;
+    }
+
     // Apply damage
     let playerWillSurvive = player.health - actualDamage > 0;
 

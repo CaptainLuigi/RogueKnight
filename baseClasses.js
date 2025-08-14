@@ -96,4 +96,38 @@ class HealthEntity {
       lifestealElement.remove();
     }, 1500);
   }
+
+  displayHeal(amount) {
+    const healthBar = document.getElementById("health-bar-container-player");
+    if (!healthBar) {
+      console.error("Player health bar not found");
+      return;
+    }
+
+    const healthBarRect = healthBar.getBoundingClientRect();
+
+    const healElement = document.createElement("div");
+    healElement.classList.add("heal-popup");
+    healElement.textContent = `+${amount}`;
+
+    healElement.style.color = "#4caf50";
+    healElement.style.fontSize = "32px";
+    healElement.style.fontWeight = "bold";
+    healElement.style.webkitTextStroke = "0.1px black";
+    healElement.style.position = "absolute";
+    healElement.style.left = `${
+      healthBarRect.left + healthBarRect.width / 2
+    }px`;
+    healElement.style.top = `${healthBarRect.top - 90}px`;
+    healElement.style.transform = "translateX(-50%)";
+    healElement.style.zIndex = "1000";
+    healElement.style.background = "none";
+    healElement.style.border = "none";
+
+    document.body.appendChild(healElement);
+
+    setTimeout(() => {
+      healElement.remove();
+    }, 1500);
+  }
 }

@@ -414,6 +414,14 @@ const relicList = [
     "Whenever an enemy attacks you and you have no cards in hand, take no damage.",
     "event"
   ),
+  new Relics(
+    "Steady Ground",
+    "Assets/steadyGround.png",
+    () => {},
+    "You can't take more than 15 damage from a single enemy hit.",
+    "elite",
+    150
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;

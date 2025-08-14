@@ -15,7 +15,6 @@ html, body {
     height: 100vh;
     display: block;
     object-fit: cover;
-    /* margin-left: 2.5%; */
     position: absolute;
     image-rendering: pixelated;
     z-index: 1;
@@ -47,9 +46,7 @@ html, body {
     display: flex;
     flex-flow: column;
     align-items: center;
-    /* gap: 20px; */
     padding-bottom: 10px;
-    /* position: relative; */
     
 }
 
@@ -253,18 +250,10 @@ height: 0;
     image-rendering: pixelated;
 }
 
-/* .weapon-image:hover {
-    transform: translateY(-10px) scale(1.1);
-    z-index: 10;
-    transform-style: preserve-3d;
-} */
-
-
 .tooltip {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    /* Keep your background, padding, etc. same as map HTML */
 }
 
 #weapon-deck-container .tooltip,

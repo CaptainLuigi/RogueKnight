@@ -41,10 +41,6 @@ if (globalSettings.currentAct === 1) {
   ];
 }
 
-// const skullDifficulty = [
-//   1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4,
-// ];
-
 let mapState;
 
 player.loadPlayerFromStorage();
@@ -212,10 +208,6 @@ function getSkullDifficulty(index) {
   return skullDifficulty[difficultyIndex];
 }
 
-// function triggerFight(difficulty) {
-//   console.log(`A fight is triggered with difficulty: $ {difficulty}`);
-// }
-
 function enterLocation(button) {
   let index = button.getAttribute("index");
   if (mapState.activeLocation == null && index != 0) {
@@ -367,6 +359,21 @@ function triggerRandomEvent() {
   let triggeredEvents =
     JSON.parse(localStorage.getItem("triggeredEvents")) || {};
 
+  let eventAssignments =
+    JSON.parse(localStorage.getItem("eventAssignments")) || {};
+
+  let locationKey = mapState.activeLocation;
+
+  if (eventAssignments[locationKey]) {
+    let assignedEventType = eventAssignments[locationKey];
+    let assignedEvent = allEvents.find((e) => e.type === assignedEventType);
+
+    if (assignedEvent) {
+      assignedEvent.action(assignedEvent.type);
+      return;
+    }
+  }
+
   const availableEvents = allEvents.filter((event) => {
     return (
       !triggeredEvents[event.type] ||
@@ -377,6 +384,9 @@ function triggerRandomEvent() {
   if (availableEvents.length > 0) {
     const randomEvent =
       availableEvents[Math.floor(Math.random() * availableEvents.length)];
+
+    eventAssignments[locationKey] = randomEvent.type;
+    localStorage.setItem("eventAssignments", JSON.stringify(eventAssignments));
 
     randomEvent.action(randomEvent.type);
 
@@ -413,6 +423,7 @@ function resetAll() {
   localStorage.removeItem("playerState");
   localStorage.removeItem("MapState");
   localStorage.removeItem("triggeredEvents");
+  localStorage.removeItem("eventAssignments");
 
   localStorage.removeItem("shopWeapons");
   localStorage.removeItem("shopRelics");

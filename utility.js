@@ -48,6 +48,7 @@ function deleteProgressAndExit(exit = true) {
   localStorage.removeItem("playerState");
   localStorage.removeItem("MapState");
   localStorage.removeItem("triggeredEvents");
+  localStorage.removeItem("eventAssignments");
 
   localStorage.removeItem("shopWeapons");
   localStorage.removeItem("shopRelics");
