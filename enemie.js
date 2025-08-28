@@ -25,6 +25,7 @@ class Enemy extends HealthEntity {
   #buffAll = 0;
   #shieldAll = 0;
   #canSummon = false;
+  #weakenPlayer = 0;
   #display;
   #nextAction = "";
   #possibleActions = [];
@@ -96,6 +97,10 @@ class Enemy extends HealthEntity {
     return this.#canSummon;
   }
 
+  get weakenPlayer() {
+    return this.#weakenPlayer;
+  }
+
   get nextAction() {
     return this.#nextAction;
   }
@@ -124,6 +129,10 @@ class Enemy extends HealthEntity {
     return this.#shieldAll > 0;
   }
 
+  get canWeakenPlayer() {
+    return this.#weakenPlayer > 0;
+  }
+
   constructor(
     name,
     maxHealth,
@@ -136,7 +145,8 @@ class Enemy extends HealthEntity {
     healAll = 0,
     buffAll = 0,
     shieldAll = 0,
-    canSummon = false
+    canSummon = false,
+    weakenPlayer = 0
   ) {
     super();
     this.#health = maxHealth;
@@ -157,6 +167,7 @@ class Enemy extends HealthEntity {
     this.#buffAll = buffAll;
     this.#shieldAll = shieldAll;
     this.#canSummon = canSummon;
+    this.#weakenPlayer = weakenPlayer;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
     enemies.push(this);
@@ -181,6 +192,9 @@ class Enemy extends HealthEntity {
     }
     if (this.canSummon()) {
       this.#possibleActions.push("canSummon");
+    }
+    if (this.canWeakenPlayer) {
+      this.#possibleActions.push("weakenPlayer");
     }
   }
 
@@ -250,6 +264,10 @@ class Enemy extends HealthEntity {
       intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/><img src="Assets/sparklesEmoji.png"/> ${
         this.#shieldAll
       }`;
+    } else if (this.#nextAction === "weakenPlayer") {
+      intentElement.innerHTML = `<img src="Assets/dizzyEmoji.png"/> ${
+        this.#weakenPlayer
+      }`;
     } else if (this.#nextAction === "canSummon") {
       intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
     }
@@ -277,6 +295,8 @@ class Enemy extends HealthEntity {
         tooltipText += `block all for ${this.#shieldAll}`;
       } else if (this.#nextAction === "canSummon") {
         tooltipText += `summon an enemy`;
+      } else if (this.#nextAction === "weakenPlayer") {
+        tooltipText += `weaken you by ${this.#weakenPlayer}`;
       }
 
       intentTooltip.innerText = tooltipText;
@@ -331,6 +351,9 @@ class Enemy extends HealthEntity {
         break;
       case "canSummon":
         this.summon();
+        break;
+      case "weakenPlayer":
+        await this.weakenPlayer(this.#weakenPlayer);
         break;
       default:
         console.log("No action performed");
@@ -541,6 +564,13 @@ class Enemy extends HealthEntity {
     }
   }
 
+  async weakenPlayer(amount) {
+    player.increaseWeak(amount);
+    player.updateStrengthDisplay();
+
+    await wait(300);
+  }
+
   summon() {}
 
   updatePoisonDisplay() {
@@ -639,6 +669,10 @@ class Enemy extends HealthEntity {
         }`;
       } else if (this.#nextAction === "canSummon") {
         intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
+      } else if (this.#nextAction === "weakenPlayer") {
+        intentElement.innerHTML = `<img src="Assets/dizzyEmoji.png"/> ${
+          this.#weakenPlayer
+        }`;
       }
 
       console.log(
@@ -780,151 +814,74 @@ function getRandomIntInclusive(min, max) {
 
 class Shroom extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(2, 4);
-    const randomShieldAmount = getRandomIntInclusive(12, 17);
-    super(
-      "Shroom",
-      200,
-      randomAttackPower,
-      "Assets/Transperent/Icon1.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Shroom", 200, 3, "Assets/Transperent/Icon1.png", true, 0, 15);
   }
 }
 
 class Snail extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(5, 7);
-    const randomShieldAmount = getRandomIntInclusive(12, 17);
-    super(
-      "Snail",
-      150,
-      randomAttackPower,
-      "Assets/Transperent/Icon5.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Snail", 150, 6, "Assets/Transperent/Icon5.png", true, 0, 15);
   }
 }
 
 class SadShroom extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(4, 6);
-    const randomShieldAmount = getRandomIntInclusive(5, 15);
-    const randomPoisonAmount = getRandomIntInclusive(2, 4);
-    super(
-      "Sad Shroom",
-      200,
-      randomAttackPower,
-      "Assets/Transperent/Icon6.png",
-      true,
-      0,
-      randomShieldAmount,
-      randomPoisonAmount
-    );
+    super("Sad Shroom", 200, 5, "Assets/Transperent/Icon6.png", true, 0, 10, 2);
   }
 }
 
 class BiteShroom extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(9, 11);
-    super(
-      "Bite Shroom",
-      250,
-      randomAttackPower,
-      "Assets/Transperent/Icon7.png",
-      true
-    );
+    super("Bite Shroom", 250, 10, "Assets/Transperent/Icon7.png", true);
   }
 }
 
 class Scorpion extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(2, 4);
-    const randomShieldAmount = getRandomIntInclusive(10, 25);
-    const randomPoisonAmount = getRandomIntInclusive(1, 3);
     super(
       "Scorpion Shroom",
       150,
-      randomAttackPower,
+      3,
       "Assets/Transperent/Icon9.png",
       true,
       0,
-      randomShieldAmount,
-      randomPoisonAmount
+      18,
+      2
     );
   }
 }
 
 class BitingPlant extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(7, 9);
-    const randomShieldAllAmount = getRandomIntInclusive(12, 18);
-    const randomPoisonAmount = getRandomIntInclusive(1, 3);
     super(
       "Biting Plant",
       250,
-      randomAttackPower,
+      8,
       "Assets/Transperent/Icon11.png",
       true,
-      randomAttackPower,
-      randomShieldAllAmount,
-      randomPoisonAmount
+      8,
+      15,
+      0
     );
   }
 }
 
 class SlimeHive extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(2, 4);
-    const randomShieldAmount = getRandomIntInclusive(20, 30);
-    super(
-      "Slime Hive",
-      500,
-      randomAttackPower,
-      "Assets/Transperent/Icon23.png",
-      false,
-      0,
-      randomShieldAmount
-    );
+    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png", false, 0, 25);
     this.display.classList.add("biggerEnemy");
   }
 }
 
 class Mantis extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(6, 9);
-    const randomShieldAmount = getRandomIntInclusive(7, 13);
-    super(
-      "Mantis",
-      150,
-      randomAttackPower,
-      "Assets/Transperent/Icon39.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Mantis", 150, 7, "Assets/Transperent/Icon39.png", true, 0, 10);
   }
 }
 
 class Hornet extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(10, 18);
-    const randomShieldAmount = getRandomIntInclusive(8, 12);
-    const randomPoisonAmount = getRandomIntInclusive(1, 4);
-    super(
-      "Hornet",
-      150,
-      randomAttackPower,
-      "Assets/Transperent/Icon42.png",
-      true,
-      0,
-      randomShieldAmount,
-      randomPoisonAmount
-    );
+    super("Hornet", 150, 13, "Assets/Transperent/Icon42.png", true, 0, 15, 3);
   }
 }
 
@@ -967,53 +924,40 @@ class EvilKnight extends Enemy {
 
 class HermitShroom extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(2, 4);
-    super(
-      "Hermit Shroom",
-      500,
-      randomAttackPower,
-      "Assets/Transperent/Icon10.png",
-      true
-    );
+    super("Hermit Shroom", 500, 3, "Assets/Transperent/Icon10.png", true);
   }
 }
 
 class Succubus extends Enemy {
   constructor() {
-    super("Succubus", 750, 15, "Assets/succubus.png", false, 15, 35);
+    super(
+      "Succubus",
+      750,
+      15,
+      "Assets/succubus.png",
+      false,
+      15,
+      35,
+      0,
+      0,
+      0,
+      0,
+      false,
+      2
+    );
     this.display.classList.add("biggerEnemy");
   }
 }
 
 class Gnome extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(3, 7);
-    const randomShieldAmount = getRandomIntInclusive(13, 17);
-    super(
-      "Gnome",
-      250,
-      randomAttackPower,
-      "Assets/Transperent/Icon44.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Gnome", 250, 5, "Assets/Transperent/Icon44.png", true, 0, 15);
   }
 }
 
 class MinonKnightSummon extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(4, 6);
-    const randomShieldAmount = getRandomIntInclusive(15, 25);
-    super(
-      "Minon Knight",
-      250,
-      randomAttackPower,
-      "Assets/minionKnight.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Minon Knight", 250, 5, "Assets/minionKnight.png", true, 0, 20);
     this.isSummoned = true;
   }
 }
@@ -1026,40 +970,19 @@ class MinonKnight extends Enemy {
 
 class TreeSlime extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(2, 7);
-    const randomShieldAmount = getRandomIntInclusive(5, 13);
-    super(
-      "Tree Slime",
-      150,
-      randomAttackPower,
-      "Assets/Transperent/Icon24.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Tree Slime", 150, 4, "Assets/Transperent/Icon24.png", true, 0, 9);
   }
 }
 
 class Amalgam extends Enemy {
   constructor() {
-    const randomAttackPower = getRandomIntInclusive(10, 15);
-    const randomShieldAmount = getRandomIntInclusive(20, 35);
-    super(
-      "Amalgam",
-      350,
-      randomAttackPower,
-      "Assets/Transperent/Icon25.png",
-      false,
-      0,
-      randomShieldAmount
-    );
+    super("Amalgam", 350, 10, "Assets/Transperent/Icon25.png", false, 0, 25);
     this.display.classList.add("biggerEnemy");
   }
 }
 
 class Cleric extends Enemy {
   constructor() {
-    const randomHealAmount = getRandomIntInclusive(10, 20);
     super(
       "Cleric",
       200,
@@ -1069,7 +992,11 @@ class Cleric extends Enemy {
       0,
       15,
       0,
-      randomHealAmount
+      20,
+      0,
+      0,
+      false,
+      3
     );
     this.display.classList.add("bigEnemy");
   }
@@ -1078,18 +1005,7 @@ class Cleric extends Enemy {
 class Druid extends Enemy {
   constructor() {
     const randomBuffAmount = getRandomIntInclusive(1, 3);
-    super(
-      "Druid",
-      150,
-      2,
-      "Assets/enemyDruid.png",
-      true,
-      0,
-      10,
-      0,
-      0,
-      randomBuffAmount
-    );
+    super("Druid", 150, 2, "Assets/enemyDruid.png", true, 0, 10, 0, 0, 2);
     this.display.classList.add("bigEnemy");
   }
 }
@@ -1108,7 +1024,7 @@ class CrystalMage extends Enemy {
       0,
       0,
       0,
-      randomShieldAllAmount
+      10
     );
     this.display.classList.add("bigEnemy");
   }
@@ -1128,9 +1044,11 @@ class MasterMage extends Enemy {
       0,
       20,
       0,
-      randomHealAmount,
-      randomBuffAmount,
-      randomShieldAllAmount
+      20,
+      3,
+      20,
+      false,
+      2
     );
     this.display.classList.add("bigEnemy");
   }
@@ -1141,22 +1059,14 @@ class SkeletonSummon extends Enemy {
     const randomHealth = getRandomIntInclusive(45, 65);
     const randomAttackPower = getRandomIntInclusive(3, 7);
     const randomShieldAmount = getRandomIntInclusive(5, 15);
-    super(
-      "Skeleton",
-      randomHealth,
-      randomAttackPower,
-      "Assets/skeleton.png",
-      true,
-      0,
-      randomShieldAmount
-    );
+    super("Skeleton", 50, 5, "Assets/skeleton.png", true, 0, 10);
     this.isSummoned = true;
   }
 }
 
 class Skeleton extends Enemy {
   constructor() {
-    super("Skeleton", 50, 3, "Assets/skeleton.png", true, 0, 10);
+    super("Skeleton", 50, 5, "Assets/skeleton.png", true, 0, 10);
   }
 }
 
@@ -1172,6 +1082,9 @@ class TrainingDummy extends Enemy {
       5,
       1,
       5,
+      1,
+      0,
+      false,
       1
     );
     this.display.classList.add("bigEnemy");
@@ -1233,7 +1146,8 @@ class SpiderBoss extends Enemy {
       0,
       0,
       0,
-      true
+      true,
+      5
     );
     this.display.classList.add("biggestEnemy");
   }
@@ -1307,7 +1221,7 @@ class RatKing extends Enemy {
     for (let i = 0; i < RatsToSpawn; i++) {
       if (enemies.length >= maxEnemies) break;
 
-      const rat = new Rat();
+      const rat = new RatSummon();
       enemies.pop();
 
       let index = enemies.findIndex((e) => e === this);
@@ -1328,11 +1242,11 @@ class Centepede extends Enemy {
     super(
       "Centepede",
       350,
-      randomAttackPower,
+      15,
       "Assets/Transperent/Icon35.png",
       true,
       0,
-      randomShieldAmount,
+      18,
       0,
       0,
       0,
@@ -1349,11 +1263,11 @@ class Bat extends Enemy {
     super(
       "Bat",
       250,
-      randomAttackPower,
+      18,
       "Assets/Transperent/Icon38.png",
       true,
-      randomAttackPower,
-      randomShieldAmount,
+      18,
+      20,
       0,
       0,
       0,
@@ -1370,18 +1284,19 @@ class Rat extends Enemy {
     const randomPoisonAmount = getRandomIntInclusive(2, 4);
     super(
       "Rat",
-      250,
-      randomAttackPower,
+      550,
+      11,
       "Assets/Transperent2/Icon18.png",
       true,
       0,
-      randomShieldAmount,
-      randomPoisonAmount,
+      27,
+      3,
       0,
       0,
       0,
       false
     );
+    this.display.classList.add("dark-cave-effect");
   }
 }
 
@@ -1392,13 +1307,13 @@ class RatSummon extends Enemy {
     const randomPoisonAmount = getRandomIntInclusive(2, 4);
     super(
       "Rat",
-      250,
-      randomAttackPower,
+      550,
+      11,
       "Assets/Transperent2/Icon18.png",
       true,
       0,
-      randomShieldAmount,
-      randomPoisonAmount,
+      27,
+      3,
       0,
       0,
       0,
@@ -1435,13 +1350,13 @@ class SpiderSummon extends Enemy {
     const randomPoisonAmount = getRandomIntInclusive(3, 7);
     super(
       "Spider",
-      300,
-      randomAttackPower,
+      450,
+      10,
       "Assets/Transperent2/Icon25.png",
       true,
       0,
-      randomShieldAmount,
-      randomPoisonAmount,
+      20,
+      5,
       0,
       0,
       0,
@@ -1459,14 +1374,14 @@ class Imp extends Enemy {
     super(
       "Imp",
       250,
-      randomAttackPower,
+      5,
       "Assets/Transperent2/Icon22.png",
       true,
       0,
       0,
       0,
       0,
-      randomBuffAmount,
+      4,
       0,
       false
     );
@@ -1484,9 +1399,9 @@ class FatImp extends Enemy {
       "Assets/Transperent2/Icon19.png",
       true,
       0,
-      randomShieldAmount,
+      25,
       0,
-      randomHealAmount,
+      60,
       0,
       0,
       false
@@ -1501,11 +1416,11 @@ class SmallGolem extends Enemy {
     super(
       "Small Golem",
       250,
-      randomAttackPower,
+      15,
       "Assets/stoneGolem.png",
       true,
       0,
-      randomShieldAmount,
+      30,
       0,
       0,
       0,
@@ -1523,11 +1438,11 @@ class MediumGolem extends Enemy {
     super(
       "Medium Golem",
       500,
-      randomAttackPower,
+      20,
       "Assets/stoneGolem.png",
       true,
       0,
-      randomShieldAmount,
+      60,
       0,
       0,
       0,
@@ -1569,11 +1484,11 @@ class BigGolem extends Enemy {
     super(
       "Big Golem",
       1000,
-      20,
+      40,
       "Assets/stoneGolem.png",
       true,
       0,
-      100,
+      120,
       0,
       0,
       0,
@@ -1613,6 +1528,7 @@ class Mimic extends Enemy {
   constructor() {
     const attackPower = 15 * globalSettings.currentAct;
     const health = 500 * globalSettings.currentAct;
+    const weaken = 3 * globalSettings.currentAct;
     super(
       "Mimic",
       health,
@@ -1625,7 +1541,8 @@ class Mimic extends Enemy {
       50,
       0,
       0,
-      false
+      false,
+      weaken
     );
   }
 }
@@ -1637,13 +1554,13 @@ class HappyImp extends Enemy {
     super(
       "Happy Imp",
       350,
-      randomAttackPower,
+      15,
       "Assets/Transperent2/Icon26.png",
       true,
       0,
       0,
       0,
-      randomHealAmount,
+      60,
       0,
       0,
       false

@@ -274,7 +274,8 @@ class Weapons {
     const baseDamage = isCritical ? this.criticalDamage : this.damage;
 
     const flatModifier =
-      (isCritical ? critDamageModifier : damageModifier) + player.strength;
+      (isCritical ? critDamageModifier : damageModifier) +
+      (player.strength - player.weak);
 
     const percentModifier = isCritical
       ? player.critDamagePercentModifier || 0
@@ -2359,8 +2360,8 @@ class DevWeapon extends Weapons {
       "Dev Weapon",
       1,
       "Melee",
-      1000,
-      1000,
+      10000,
+      10000,
       0,
       0,
       "Instakill",
@@ -2697,39 +2698,71 @@ function generateWeaponInfo(
       <strong>Range:</strong> ${weapon.range} <br>`;
 
     if (weapon.damage > 0) {
-      let modifierDisplay = "";
-      const totalDamageBuff = player.damageModifier + player.strength;
+      const flatBuff = player.damageModifier + player.strength - player.weak;
+      const percentBuff = player.damagePercentModifier || 0;
 
-      if (totalDamageBuff > 0) {
-        modifierDisplay = `(+${totalDamageBuff})`;
+      let modifierDisplay = "";
+      if (flatBuff !== 0) {
+        modifierDisplay += ` (${flatBuff >= 0 ? "+" : ""}${flatBuff})`;
       }
-      if (totalDamageBuff < 0) {
-        modifierDisplay = `(${totalDamageBuff})`;
+      if (percentBuff !== 0) {
+        modifierDisplay += ` (+${percentBuff}%)`;
       }
-      tooltipString += `<strong>Damage:</strong> ${weapon.damage} ${modifierDisplay} <br>`;
+
+      // Only calculate and show finalDamage if there are modifiers
+      if (flatBuff !== 0 || percentBuff !== 0) {
+        const finalDamage = Math.floor(
+          (weapon.damage + flatBuff) * (1 + percentBuff / 100)
+        );
+        tooltipString += `<strong>Damage:</strong> ${weapon.damage}${modifierDisplay} → ${finalDamage}<br>`;
+      } else {
+        tooltipString += `<strong>Damage:</strong> ${weapon.damage}<br>`;
+      }
     }
 
     if (weapon.criticalDamage > 0) {
-      let modifierDisplay = "";
-      const totalCritDamageBuff = player.critDamageModifier + player.strength;
+      const flatBuff =
+        player.critDamageModifier + player.strength - player.weak;
+      const percentBuff = player.critDamagePercentModifier || 0;
 
-      if (totalCritDamageBuff > 0) {
-        modifierDisplay = `(+${totalCritDamageBuff})`;
+      let modifierDisplay = "";
+      if (flatBuff !== 0) {
+        modifierDisplay += ` (${flatBuff >= 0 ? "+" : ""}${flatBuff})`;
       }
-      if (totalCritDamageBuff < 0) {
-        modifierDisplay = `(${totalCritDamageBuff})`;
+      if (percentBuff !== 0) {
+        modifierDisplay += ` (+${percentBuff}%)`;
       }
-      tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage} ${modifierDisplay} <br>`;
+
+      // Only calculate and show finalCritDamage if there are modifiers
+      if (flatBuff !== 0 || percentBuff !== 0) {
+        const finalCritDamage = Math.floor(
+          (weapon.criticalDamage + flatBuff) * (1 + percentBuff / 100)
+        );
+        tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage}${modifierDisplay} → ${finalCritDamage}<br>`;
+      } else {
+        tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage}<br>`;
+      }
     }
 
     if (player.critsDisabled) {
       tooltipString += `<strong>Critical Chance:</strong> ❌ Disabled<br>`;
     } else if (weapon.criticalChance > 0) {
+      const flatBuff = player.critChanceModifier || 0;
       let modifierDisplay = "";
-      if (player.critChanceModifier > 0) {
-        modifierDisplay = `(+${player.critChanceModifier}%)`;
+      let finalCritChance = weapon.criticalChance;
+
+      if (flatBuff !== 0) {
+        modifierDisplay = `(${flatBuff >= 0 ? "+" : ""}${flatBuff}%)`;
+        finalCritChance += flatBuff;
       }
-      tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}%  ${modifierDisplay}<br>`;
+
+      tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}% ${modifierDisplay}`;
+
+      if (modifierDisplay !== "") {
+        tooltipString += ` → ${finalCritChance}%`;
+      }
+
+      tooltipString += `<br>`;
     }
 
     if (weapon.poisonAmount > 0) {
@@ -2743,18 +2776,29 @@ function generateWeaponInfo(
     if (weapon.canHeal) {
       let healingString = "";
       let modifierDisplay = "";
+      let finalHealing = 0;
       if (Array.isArray(weapon.healingAmount)) {
         healingString = weapon.healingAmount.join("%, ") + "%";
 
         if (player.lifestealModifier > 0 && weapon.damage > 0) {
+          finalHealing = weapon.healingAmount.map(
+            (h) => h + player.lifestealModifier
+          );
           modifierDisplay = `(+${player.lifestealModifier}%)`;
+          healingString += ` ${modifierDisplay} → ${finalHealing.join("%, ")}%`;
         }
       } else {
         healingString = weapon.healingAmount;
+
+        if (player.lifestealModifier > 0 && weapon.damage > 0) {
+          finalHealing = weapon.healingAmount + player.lifestealModifier;
+          modifierDisplay = `(+${player.lifestealModifier}%)`;
+          healingString += ` ${modifierDisplay} → ${finalHealing}%`;
+        }
       }
-      tooltipString += `<strong>Healing:</strong> ${healingString} ${modifierDisplay}<br>`;
+      tooltipString += `<strong>Healing:</strong> ${healingString}<br>`;
     } else if (player.lifestealModifier > 0 && weapon.damage > 0) {
-      tooltipString += `<strong>Healing:</strong> (+${player.lifestealModifier}%)<br>`;
+      tooltipString += `<strong>Healing:</strong> (+${player.lifestealModifier}%) → ${player.lifestealModifier}%<br>`;
     }
 
     if (weapon.blockAmount > 0) {

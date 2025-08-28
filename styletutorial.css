@@ -308,6 +308,15 @@ height: 0;
     transform: translateX(-50%);
 }
 
+.weak-tooltip {
+    position: absolute;
+    width: 400px;
+    text-align: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .block-tooltip {
     position: absolute;
     font-weight: normal;
@@ -684,7 +693,7 @@ button:disabled {
     z-index: 1000;
 }
 
-#poison-status, #strength-status {
+#poison-status, #strength-status, #weak-status {
   position: static;
   left: auto;
   bottom: auto;
@@ -692,7 +701,8 @@ button:disabled {
 }
 
 #status-container:has(#poison-status:not(.hidden):only-child),
-#status-container:has(#strength-status:not(.hidden):only-child) {
+#status-container:has(#strength-status:not(.hidden):only-child),
+#status-container:has(#weak-status:not(.hidden):only-child) {
   justify-content: center;
 }
 

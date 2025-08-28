@@ -23,8 +23,6 @@ function calculate damage
 
 meta progression, startrelic aussuchen
 
-flüche (wie relics)
-
 bei einem gegner, diesen centern
 
 succubus soll instant angreifen
@@ -39,8 +37,6 @@ more players with different starting weapons
 
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 
-prozentualer buff bei waffen anzeigen (wegen blood pact)
-
 boss relics einfügen 
 
 button einfügen, dass map gesehen werden kann ggf über iframe
@@ -49,6 +45,6 @@ Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
-small golem reihenfolge überprüfen
+nerf weapons with strength
 
 */

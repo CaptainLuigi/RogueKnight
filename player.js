@@ -19,6 +19,7 @@ class Player extends HealthEntity {
   #damageReductionModifier = 0;
   #poisonModifier = 0;
   #strength = 0;
+  #weak = 0;
   #critsDisabled = false;
   #currentPoison = 0;
   #canTargetAnyEnemy = false;
@@ -109,6 +110,10 @@ class Player extends HealthEntity {
     return this.#strength;
   }
 
+  get weak() {
+    return this.#weak;
+  }
+
   get critsDisabled() {
     return this.#critsDisabled;
   }
@@ -143,6 +148,10 @@ class Player extends HealthEntity {
 
   set strength(value) {
     this.#strength = value;
+  }
+
+  set weak(value) {
+    this.#weak = value;
   }
 
   removeUsed() {
@@ -296,6 +305,10 @@ class Player extends HealthEntity {
     this.#strength += amount;
   }
 
+  increaseWeak(amount) {
+    this.#weak += amount;
+  }
+
   setWeaponEnergy(amount) {
     this.#deck.forEach((weapon) => {
       weapon.energy = amount;
@@ -443,6 +456,7 @@ class Player extends HealthEntity {
 
   updateStrengthDisplay() {
     const strengthElement = document.getElementById("strength-status");
+    const weakElement = document.getElementById("weak-status");
     if (strengthElement) {
       if (this.#strength > 0) {
         strengthElement.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${
@@ -470,6 +484,35 @@ class Player extends HealthEntity {
         });
       } else {
         strengthElement.classList.add("hidden");
+      }
+    }
+
+    if (weakElement) {
+      if (this.#weak > 0) {
+        weakElement.innerHTML = `<img src="Assets/dizzyEmoji.png"/> ${
+          this.#weak
+        }`;
+        weakElement.classList.remove("hidden");
+
+        weakElement.addEventListener("mouseenter", () => {
+          if (!weakElement.querySelector(".weak-tooltip")) {
+            const weakTooltip = document.createElement("div");
+            weakTooltip.classList.add("weak-tooltip");
+
+            weakTooltip.innerText = `You were weakened, which decreases your damage and critical damage by ${
+              this.#weak
+            }`;
+            weakElement.appendChild(weakTooltip);
+          }
+        });
+        weakElement.addEventListener("mouseleave", function () {
+          const weakTooltip = weakElement.querySelector(".weak-tooltip");
+          if (weakTooltip) {
+            weakTooltip.remove();
+          }
+        });
+      } else {
+        weakElement.classList.add("hidden");
       }
     }
   }
@@ -556,9 +599,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      this.addWeapon(new SmallHealthPotion());
-
-      this.addWeapon(new DevWeapon());
+      // this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());
 
