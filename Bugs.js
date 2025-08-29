@@ -47,5 +47,4 @@ nerf weapons with strength
 
 combined block in tooltip wie bei damage
 
-erster combat in act 2 sind act 1 gegner
 */

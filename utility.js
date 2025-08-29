@@ -130,3 +130,12 @@ function openMap() {
 function closeMap() {
   document.getElementById("mapOverlay").style.display = "none";
 }
+
+window.addEventListener("message", (event) => {
+  if (event.data.type === "updateDifficulty") {
+    console.log(
+      "Updated difficulty from map iframe:",
+      globalSettings.difficulty
+    );
+  }
+});

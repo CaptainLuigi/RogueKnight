@@ -29,21 +29,25 @@ let globalEventArray = [];
 
 let skullDifficulty;
 
-if (globalSettings.currentAct === 1) {
-  skullDifficulty = [
-    1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
-    4,
-  ];
-} else if (globalSettings.currentAct === 2) {
-  skullDifficulty = [
-    11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14,
-    14, 14,
-  ];
+player.loadPlayerFromStorage();
+
+function setSkullDifficulty() {
+  if (globalSettings.currentAct === 1) {
+    skullDifficulty = [
+      1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4,
+      4,
+    ];
+  } else if (globalSettings.currentAct === 2) {
+    skullDifficulty = [
+      11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14,
+      14, 14, 14,
+    ];
+  }
 }
 
-let mapState;
+setSkullDifficulty();
 
-player.loadPlayerFromStorage();
+let mapState;
 
 document.addEventListener("DOMContentLoaded", function () {
   const params = new URLSearchParams(window.location.search);
@@ -51,8 +55,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   displayEquippedRelics();
   mapState = loadData("MapState");
-  if (mapState == null || mapState.wasFinalBoss == true) generateMap();
-  else loadMap();
+  const lastAct = loadData("MapAct");
+
+  if (
+    mapState == null ||
+    mapState.wasFinalBoss == true ||
+    lastAct !== globalSettings.currentAct
+  ) {
+    generateMap();
+    storeData("MapAct", globalSettings.currentAct);
+  } else {
+    loadMap();
+  }
 
   if (viewOnly) {
     markCurrentLocation();
@@ -172,6 +186,7 @@ function generateMap() {
   }
   mapState = tempMapState;
   storeData("MapState", mapState);
+  storeData("MapAct", globalSettings.currentAct);
 }
 function loadMap() {
   const navigationButtons = document.querySelectorAll(".navigation");
@@ -258,6 +273,13 @@ function enterLocation(button) {
   mapState.wasFinalBoss = active.isFinalBoss;
   storeData("MapState", mapState);
   globalSettings.difficulty = active.difficulty;
+
+  if (window.parent !== window) {
+    window.parent.postMessage(
+      { type: "updateDifficulty", difficulty: active.difficulty },
+      "*"
+    );
+  }
 
   if (active.type == "questionmark") {
     triggerRandomEvent();
