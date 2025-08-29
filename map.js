@@ -46,11 +46,21 @@ let mapState;
 player.loadPlayerFromStorage();
 
 document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const viewOnly = params.get("viewonly") === "true";
+
   displayEquippedRelics();
   mapState = loadData("MapState");
   if (mapState == null || mapState.wasFinalBoss == true) generateMap();
   else loadMap();
-  markPossibleLocations();
+
+  if (viewOnly) {
+    markCurrentLocation();
+    disableInteractions();
+  } else {
+    markPossibleLocations();
+  }
+
   document.getElementById("current-deck").addEventListener("click", () => {
     player.showDeck();
   });
@@ -284,6 +294,31 @@ function markPossibleLocations() {
   }
   for (let index of nextLocations)
     nextRow.children[index].classList.add("next");
+}
+
+function markCurrentLocation() {
+  if (mapState && mapState.activeLocation != null) {
+    let currentButton = document.querySelector(
+      `.navigation[index="${mapState.activeLocation}"]`
+    );
+    if (currentButton) {
+      currentButton.classList.add("current-location");
+    }
+  }
+}
+
+function disableInteractions() {
+  const buttons = document.querySelectorAll(".navigation");
+  buttons.forEach((btn) => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+    btn.style.cursor = "default";
+  });
+  document.getElementById("pause-menu-button").style.display = "none";
+  document.getElementById("current-deck").style.display = "none";
 }
 
 function triggerRandomEvent() {

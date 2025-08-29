@@ -53,6 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
     SoundManager.playBattleMusic();
 
     if (globalSettings.isTutorial) {
+      document.getElementById("lookAtMap").style.display = "none";
+      document.getElementById("closeLookAtMap").style.display = "none";
       document.getElementById("tutorial-intro-overlay").style.display = "block";
 
       document

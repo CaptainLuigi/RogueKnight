@@ -39,12 +39,13 @@ aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, we
 
 boss relics einfügen 
 
-button einfügen, dass map gesehen werden kann ggf über iframe
-
 Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
 nerf weapons with strength
 
+combined block in tooltip wie bei damage
+
+erster combat in act 2 sind act 1 gegner
 */

@@ -138,6 +138,13 @@ body > * {
     border-radius: 50%;
 }
 
+.current-location {
+  height: 80px;
+  width: 80px;
+  background-color: darkorchid;
+  border-radius: 50%;
+}
+
 @media (min-width: 1024px) {
     .next {
       height: 70px;

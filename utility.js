@@ -121,3 +121,12 @@ function applyActVisuals() {
     }
   });
 }
+
+function openMap() {
+  document.getElementById("mapFrame").src = "map.html?viewonly=true";
+  document.getElementById("mapOverlay").style.display = "block";
+}
+
+function closeMap() {
+  document.getElementById("mapOverlay").style.display = "none";
+}
