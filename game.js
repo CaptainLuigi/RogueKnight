@@ -304,6 +304,20 @@ async function executeAttack(weapon, enemyIndex) {
 
   if (weapon.selfDamage > 0) {
     player.takeDamage(weapon.selfDamage);
+    if (player.equippedRelics.includes("Blood Ink")) {
+      player.drawExtraCards(1);
+    }
+    if (player.equippedRelics.includes("Enrage")) {
+      player.increaseStrength(3);
+      player.updateStrengthDisplay();
+    }
+  }
+
+  if (weapon.damage > 0) {
+    if (player.equippedRelics.includes("Rage Reward")) {
+      player.increaseStrength(1);
+      player.updateStrengthDisplay();
+    }
   }
 
   if (weapon.damage > 0 && weapon.blockAmount === 0) {

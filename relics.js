@@ -422,6 +422,38 @@ const relicList = [
     "elite",
     150
   ),
+  new Relics(
+    "Blood Ink",
+    "Assets/bloodInk.png",
+    () => {},
+    "Whenever you take self damage, draw 1.",
+    "chest",
+    100
+  ),
+  new Relics(
+    "Rage Reward",
+    "Assets/rageReward.png",
+    () => {},
+    "Whenever you attack, get 1 Strength.",
+    "elite",
+    150
+  ),
+  new Relics(
+    "Enrage",
+    "Assets/Sword.png",
+    () => {},
+    "Whenever you take self damage, get 3 Strength.",
+    "chest",
+    100
+  ),
+  new Relics(
+    "Critterbite",
+    "Assets/Sword.png",
+    () => {},
+    "Whenever you deal critical damage, apply 5 Poison to the first enemy.",
+    "chest",
+    100
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;

@@ -287,8 +287,13 @@ class Weapons {
 
     if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
       console.log("Sharp focus activated");
-
       sharpFocus(player);
+    }
+
+    if (isCritical && player.equippedRelics.includes("Critterbite")) {
+      const firstEnemy = enemies[0];
+      firstEnemy.addPoisonFromPlayer(5 + player.poisonModifier);
+      firstEnemy.updatePoisonDisplay();
     }
 
     let startIndex = enemyIndex - this.#effectsLeft.length;
@@ -2079,8 +2084,8 @@ class RageAxe extends Weapons {
       20,
       35,
       30,
-      2,
-      "Can only target the first enemy, click to gain strength and instantly use weapon.",
+      1,
+      "Can only target the first enemy, click to gain strength and instantly use weapon. Can only be used once per battle.",
       "Assets/rageAxe.png",
       false,
       0,
@@ -2091,7 +2096,7 @@ class RageAxe extends Weapons {
       false,
       0,
       0,
-      false,
+      true,
       0,
       0,
       "SwordSlash",
@@ -2187,7 +2192,7 @@ class RagingDagger extends Weapons {
       0,
       0,
       "SwordSlash",
-      5
+      10
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2196,7 +2201,7 @@ class RagingDagger extends Weapons {
         break;
       case 2:
         weaponInfo.criticalDamage = 25;
-        weaponInfo.strength = 10;
+        weaponInfo.strength = 15;
         break;
       case 3:
         weaponInfo.criticalDamage = 40;
@@ -2209,13 +2214,13 @@ class BerserkersSpear extends Weapons {
   constructor() {
     super(
       "Berserkers Spear",
-      2,
+      1,
       "Medium",
       30,
       50,
       30,
       1,
-      "Can only target the first enemy and pierces one enemy, click to get strength, instantly use weapon and take selfdamage.",
+      "Can only target the first enemy and pierces one enemy, click to get strength, instantly use weapon and take selfdamage. Can only be used once per battle.",
       "Assets/berserkersSpear.png",
       false,
       0,
@@ -2226,7 +2231,7 @@ class BerserkersSpear extends Weapons {
       false,
       0,
       0,
-      false,
+      true,
       0,
       0,
       "SwordSlash",
