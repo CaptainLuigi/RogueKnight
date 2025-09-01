@@ -13,7 +13,7 @@ const events = [
   },
   {
     name: "elite",
-    propability: 10,
+    propability: 5,
     fillRemaining: false,
   },
   {

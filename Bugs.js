@@ -45,6 +45,4 @@ wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswä
 
 nerf weapons with strength
 
-combined block in tooltip wie bei damage
-
 */

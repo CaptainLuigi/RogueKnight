@@ -416,7 +416,7 @@ const relicList = [
   ),
   new Relics(
     "Steady Ground",
-    "Assets/steadyGround.png",
+    "Assets/steadyGround1.png",
     () => {},
     "You can't take more than 15 damage from a single enemy hit.",
     "elite",

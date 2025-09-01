@@ -192,160 +192,154 @@
        * Function to open the chest and reveal a random relic.
        */
       function openChest() {
-        SoundManager.play("OpenChest");
+  SoundManager.play("OpenChest");
+  console.log("Chest opened!");
 
-        console.log("Chest opened!");
+  const chestButton = document.getElementById("chest-button");
+  chestButton.disabled = true;
+  chestButton.style.cursor = "default";
 
-        const chestButton = document.getElementById("chest-button");
-        chestButton.disabled = true;
-        chestButton.style.cursor = "default";
+  const comingFromElite = localStorage.getItem("comingFromElite") === "true";
+  localStorage.removeItem("comingFromElite");
 
-        const comingFromElite =
-          localStorage.getItem("comingFromElite") === "true";
+  if (!comingFromElite && isMimicEncounter()) {
+    globalSettings.difficulty = 100;
+    globalSettings.relicGroup = "chest";
+    globalSettings.redirectToChest = true;
+    window.location.href = "tutorial.html";
+    return;
+  }
 
-        localStorage.removeItem("comingFromElite");
+  const relicContainer = document.getElementById("relic-container");
+  if (!relicContainer) {
+    console.error("Relic container not found!");
+    return;
+  }
 
-        if (!comingFromElite && isMimicEncounter()) {
-          globalSettings.difficulty = 100;
-          globalSettings.relicGroup = "chest";
-          globalSettings.redirectToChest = true;
-          window.location.href = "tutorial.html";
-        }
+  document.getElementById("addToDeck").style.display = "none";
+  document.getElementById("skip").style.display = "none";
 
-        const relicContainer = document.getElementById("relic-container");
+  const chestRelicGroup = globalSettings.relicGroup;
 
-        // Ensure the relic container exists before modifying it
-        if (!relicContainer) {
-          console.error("Relic container not found!");
-          return;
-        }
+  // Generate relics if not saved
+  let r1 = localStorage.getItem("selectedRelic1");
+  let r2 = localStorage.getItem("selectedRelic2");
 
-        // Display the buttons
-        document.getElementById("addToDeck").style.display = "block";
-        document.getElementById("skip").style.display = "block";
+  if (!r1 || !r2) {
+    let availableRelics = relicNames.filter(name => {
+      const relic = relicList[name];
+      return relic.relicGroup === chestRelicGroup
+          && !player.foundRelics.includes(name)
+          && (!player.equippedRelics || !player.equippedRelics.includes(name));
+    });
 
-        let availableRelics = [];
-        let chestRelic = globalSettings.relicGroup;
+    if (availableRelics.length > 0) {
+      r1 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+      localStorage.setItem("selectedRelic1", r1);
+    }
+    if (availableRelics.length > 0) {
+      r2 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+      localStorage.setItem("selectedRelic2", r2);
+    }
+  }
 
-        for (let currentRelicName of relicNames) {
-          const currentRelic = relicList[currentRelicName];
+  relicContainer.innerHTML = "";
+  [r1, r2].forEach(name => {
+    if (!name) return;
+    const relic = relicList[name];
+    const relicElement = createRelicElement(relic);
+    relicElement.setAttribute("data-relic-name", name);
+    relicElement.addEventListener("click", () => selectRelic(name));
+    relicContainer.appendChild(relicElement);
+  });
+}
 
-          // Skip relics that are not from the current chest group
-          if (currentRelic.relicGroup !== chestRelic) continue;
+    function selectRelic(relicName) {
+  const relicContainer = document.getElementById("relic-container");
+  relicContainer.querySelectorAll(".selected-relic").forEach(el => el.classList.remove("selected-relic"));
 
-          // Skip relics the player has already seen (skipped or equipped)
-          if (player.foundRelics.includes(currentRelicName)) continue;
+  const selectedEl = [...relicContainer.children].find(el => el.getAttribute("data-relic-name") === relicName);
+  if (selectedEl) selectedEl.classList.add("selected-relic");
 
-          availableRelics.push(currentRelicName);
-        }
+  relicContainer.setAttribute("data-selected-relic", relicName);
 
-        // Select a random relic
-        const randomRelicName =
-          availableRelics[Math.floor(Math.random() * availableRelics.length)];
-        const randomRelic = relicList[randomRelicName];
+  document.getElementById("addToDeck").style.display = "block";
+  document.getElementById("skip").style.display = "block";
+}
 
-        localStorage.setItem("selectedRelicName", randomRelicName);
+     function displaySavedRelic(savedRelic) {
+  const relicContainer = document.getElementById("relic-container");
+  if (!savedRelic) return;
 
-        // Clear previous relics and display new one
-        relicContainer.innerHTML = "";
+  const relicElement = createRelicElement(savedRelic);
+  relicContainer.appendChild(relicElement);
+  relicContainer.setAttribute("data-selected-relic", savedRelic.name);
 
-        const relicElement = createRelicElement(randomRelic);
-
-        relicContainer.appendChild(relicElement);
-
-        // Store selected relic name
-        relicContainer.setAttribute("data-selected-relic", randomRelicName);
-      }
-
-      function displaySavedRelic(savedRelic) {
-        const relicContainer = document.getElementById("relic-container");
-
-        relicContainer.innerHTML = "";
-
-        const relicElement = createRelicElement(savedRelic);
-        relicContainer.appendChild(relicElement);
-
-        relicContainer.setAttribute("data-selected-relic", savedRelic.name);
-
-        document.getElementById("addToDeck").style.display = "block";
-        document.getElementById("skip").style.display = "block";
-      }
+  document.getElementById("addToDeck").style.display = "block";
+  document.getElementById("skip").style.display = "block";
+}
 
       /**
        * Function to add the selected relic to the player's inventory and update equippedRelics.
        */
-      async function addRelicToDeck() {
-        SoundManager.play("EquipRelic");
+   async function addRelicToDeck() {
+  SoundManager.play("EquipRelic");
+  await wait(850);
 
-        await wait(850);
+  const relicContainer = document.getElementById("relic-container");
+  const selectedRelicName = relicContainer.getAttribute("data-selected-relic");
+  if (!selectedRelicName) return console.warn("No relic selected.");
 
-        const relicContainer = document.getElementById("relic-container");
+  const relicChoices = [localStorage.getItem("selectedRelic1"), localStorage.getItem("selectedRelic2")];
 
-        if (!relicContainer) {
-          console.error("Relic container not found!");
-          return;
-        }
+  const selectedRelic = relicList[selectedRelicName];
+  player.foundRelic(selectedRelicName, true);
+  selectedRelic.equipRelic(player);
+  displayEquippedRelics();
 
-        const selectedRelicName = relicContainer.getAttribute(
-          "data-selected-relic"
-        );
+  relicChoices.forEach(name => {
+    if (name && name !== selectedRelicName) player.foundRelic(name, false);
+  });
 
-        if (selectedRelicName) {
-          const selectedRelic = relicList[selectedRelicName];
+  if (player.maxHealth <= 0 || player.health <= 0) {
+    window.location.href = "deathscreen.html";
+    await wait(500);
+  }
 
-          // Add relic to equipped relics array
-          player.foundRelic(selectedRelicName, true);
+  player.savePlayerToStorage();
 
-          // Apply relic effect
-          selectedRelic.equipRelic(player);
+  localStorage.removeItem("selectedRelic1");
+  localStorage.removeItem("selectedRelic2");
 
-          console.log(`Added relic: ${selectedRelicName} to equippedRelics.`);
-
-          displayEquippedRelics();
-        } else {
-          console.warn("No relic selected.");
-        }
-
-        if (player.maxHealth <= 0 || player.health <= 0) {
-          window.location.href = "deathscreen.html";
-          await wait(500);
-        }
-
-        player.savePlayerToStorage();
-
-        localStorage.removeItem("selectedRelicName");
-
-        // Redirect to map.html
-        returnToMap();
-      }
-
+  returnToMap();
+}
       /**
        * Function to skip selecting a relic and go to map.html.
        */
-      function skipRelic() {
-        const relicContainer = document.getElementById("relic-container");
+function skipRelic() {
+  const relicChoices = [localStorage.getItem("selectedRelic1"), localStorage.getItem("selectedRelic2")];
 
-        const selectedRelicName = relicContainer.getAttribute(
-          "data-selected-relic"
-        );
+  relicChoices.forEach(name => {
+    if (name) player.foundRelic(name, false);
+  });
 
-        console.log("Relic skipped!");
-        player.foundRelic(selectedRelicName, false);
-        console.log("Current foundRelics:", player.foundRelics);
-        player.savePlayerToStorage();
+  console.log("Relics skipped:", relicChoices);
+  console.log("Current foundRelics:", player.foundRelics);
 
-        localStorage.removeItem("selectedRelicName");
+  player.savePlayerToStorage();
 
-        // Redirect to map.html
-        returnToMap();
-      }
+  localStorage.removeItem("selectedRelic1");
+  localStorage.removeItem("selectedRelic2");
 
-      function returnToMap() {
-        localStorage.removeItem("selectedFightIndex");
-        // mark event as done
-        globalSettings.eventResolved = true;
-        window.location.href = "map.html";
-      }
+  returnToMap();
+}
+
+function returnToMap() {
+  localStorage.removeItem("selectedFightIndex");
+  globalSettings.eventResolved = true;
+  window.location.href = "map.html";
+}
+
     </script>
   </body>
 </html>

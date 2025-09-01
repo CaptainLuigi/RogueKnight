@@ -2079,7 +2079,7 @@ class RageAxe extends Weapons {
       20,
       35,
       30,
-      1,
+      2,
       "Can only target the first enemy, click to gain strength and instantly use weapon.",
       "Assets/rageAxe.png",
       false,
@@ -2172,7 +2172,7 @@ class RagingDagger extends Weapons {
       15,
       60,
       0,
-      "Can only target the first enemy, click to gain strength and instantly use weapon.",
+      "Can only target the first enemy, click to gain strength and instantly use weapon. Can only be used once per battle.",
       "Assets/Sword.png",
       false,
       0,
@@ -2183,7 +2183,7 @@ class RagingDagger extends Weapons {
       false,
       0,
       0,
-      false,
+      true,
       0,
       0,
       "SwordSlash",
@@ -2209,7 +2209,7 @@ class BerserkersSpear extends Weapons {
   constructor() {
     super(
       "Berserkers Spear",
-      1,
+      2,
       "Medium",
       30,
       50,
@@ -2802,14 +2802,20 @@ function generateWeaponInfo(
     }
 
     if (weapon.blockAmount > 0) {
+      const flatBuff = player.blockModifier || 0;
+
       let modifierDisplay = "";
-      if (player.blockModifier > 0) {
-        modifierDisplay = `(+${player.blockModifier})`;
+      if (flatBuff !== 0) {
+        modifierDisplay = ` (${flatBuff >= 0 ? "+" : ""}${flatBuff})`;
       }
-      if (player.blockModifier < 0) {
-        modifierDisplay = `(${player.blockModifier})`;
+
+      // Only calculate and show finalBlock if there's a modifier
+      if (flatBuff !== 0) {
+        const finalBlock = weapon.blockAmount + flatBuff;
+        tooltipString += `<strong>Block:</strong> ${weapon.blockAmount}${modifierDisplay} → ${finalBlock}<br>`;
+      } else {
+        tooltipString += `<strong>Block:</strong> ${weapon.blockAmount}<br>`;
       }
-      tooltipString += `<strong>Block:</strong> ${weapon.blockAmount} ${modifierDisplay}<br>`;
     }
 
     if (weapon.energyGainOnUse > 0) {
