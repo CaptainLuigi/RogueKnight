@@ -52,6 +52,21 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("battle-overlay").style.display = "none";
     SoundManager.playBattleMusic();
 
+    const startFightEvent = new CustomEvent("StartFight", {
+      detail: {
+        player: player,
+        enemies: enemies,
+        eventQueue: Promise.resolve(),
+      },
+    });
+
+    window.dispatchEvent(startFightEvent);
+
+    if (player.equippedRelics.includes("Blood Pact")) {
+      const healButton = document.getElementById("heal-btn");
+      if (healButton) healButton.disabled = true;
+    }
+
     if (globalSettings.isTutorial) {
       document.getElementById("lookAtMap").style.display = "none";
       document.getElementById("closeLookAtMap").style.display = "none";
@@ -65,29 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
   });
-
-  if (player.equippedRelics.includes("Blood Pact")) {
-    const healButton = document.getElementById("heal-btn");
-    healButton.disabled = true;
-  }
-
-  if (player.equippedRelics.includes("Enthusiastic Start")) {
-    player.increaseStrength(10);
-    player.updateStrengthDisplay();
-  }
-
-  if (
-    player.equippedRelics.includes("Woundmark") &&
-    (globalSettings.difficulty === 8 ||
-      globalSettings.difficulty === 9 ||
-      globalSettings.difficulty === 18 ||
-      globalSettings.difficulty === 19)
-  ) {
-    enemies.forEach((enemy) => {
-      const damage = enemy.maxHealth * 0.1;
-      enemy.takeDamage(damage, false);
-    });
-  }
 });
 
 function fillEnemyArray(currentDifficulty) {
@@ -314,10 +306,15 @@ async function executeAttack(weapon, enemyIndex) {
   }
 
   if (weapon.damage > 0) {
-    if (player.equippedRelics.includes("Rage Reward")) {
-      player.increaseStrength(1);
-      player.updateStrengthDisplay();
-    }
+    const attackEvent = new CustomEvent("Attack", {
+      detail: {
+        player: player,
+        enemies: enemies,
+        eventQueue: Promise.resolve(),
+      },
+    });
+
+    window.dispatchEvent(attackEvent);
   }
 
   if (weapon.damage > 0 && weapon.blockAmount === 0) {
@@ -417,13 +414,17 @@ async function endTurn() {
   console.log("End turn clicked!");
   document.getElementById("end-turn-btn").disabled = true;
 
-  if (
-    player.equippedRelics.includes("Berserkers Rush") &&
-    player.health <= 20
-  ) {
-    player.increaseStrength(5);
-    player.updateStrengthDisplay();
-  }
+  const endTurnEvent = new CustomEvent("EndTurn", {
+    detail: {
+      unusedEnergy: player.energy,
+      player: player,
+      eventQueue: Promise.resolve(),
+    },
+  });
+  window.dispatchEvent(endTurnEvent);
+  await wait(10);
+  await endTurnEvent.detail.eventQueue;
+  updateHealthBar(player);
 
   if (player.currentPoison > 0) {
     player.applyPoisonDamage();
@@ -434,32 +435,6 @@ async function endTurn() {
   disableWeapons();
 
   isPlayerTurn = false;
-
-  if (player.equippedRelics.includes("Overcharged Core")) {
-    player.takeDamage(3);
-    updateHealthBar(player);
-    await wait(300);
-  }
-
-  if (player.equippedRelics.includes("Stonewall Totem")) {
-    stonewallTotem();
-    await wait(300);
-  }
-
-  if (player.equippedRelics.includes("Vengeful Echo")) {
-    enemies.forEach((enemy) => {
-      enemy.takeDamage(10, false);
-    });
-    await wait(300);
-  }
-
-  if (player.equippedRelics.includes("Curse of the plague")) {
-    enemies.forEach((enemy) => {
-      enemy.addPoisonFromPlayer(5 + player.poisonModifier);
-      enemy.updatePoisonDisplay();
-    });
-    await wait(300);
-  }
 
   enemies.forEach((enemy) => {
     enemy.removeBlock(enemy.activeShield);
@@ -512,35 +487,24 @@ async function endTurn() {
   // Show turn message for the player
   displayTurnMessage("Your Turn Again!");
 
-  const endTurnEvent = new CustomEvent("EndTurn", {
+  // Refill the player's energy and update energy display
+  refillEnergy();
+
+  const startSecondTurnEvent = new CustomEvent("StartSecondTurn", {
     detail: {
-      unusedEnergy: player.energy,
       player: player,
       eventQueue: Promise.resolve(),
     },
   });
-  window.dispatchEvent(endTurnEvent);
-  await wait(10);
-  await endTurnEvent.detail.eventQueue;
-  updateHealthBar(player);
 
-  // Refill the player's energy and update energy display
-  refillEnergy();
+  window.dispatchEvent(startSecondTurnEvent);
+
   updateEnergyDisplay();
 }
 
 // Function to refill the player's energy (e.g., set to full energy)
 function refillEnergy() {
   player.restoreEnergy(player.maxEnergy); // Set the energy back to the maximum value
-
-  adrenalSurge();
-  if (player.equippedRelics.includes("Gambler's Die")) {
-    if (Math.random() < 0.5) {
-      player.addEnergy(2);
-    } else {
-      player.loseEnergy(1);
-    }
-  }
 }
 
 // Update the player's energy display
@@ -623,13 +587,15 @@ async function triggerPostBattleScreen() {
 
   player.strength = 0;
 
-  if (player.equippedRelics.includes("Eternal Bloom")) {
-    eternalBloom(player);
-  }
+  const endFightEvent = new CustomEvent("EndFight", {
+    detail: {
+      player: player,
+      eventQueue: Promise.resolve(),
+    },
+  });
 
-  if (player.equippedRelics.includes("Golden Sigil")) {
-    goldenSigil(player);
-  }
+  window.dispatchEvent(endFightEvent);
+
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");
 

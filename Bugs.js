@@ -43,6 +43,7 @@ Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
-nerf weapons with strength
+upgrade weapon options remove, wenn alle waffen max lvl
 
+enemy haben double strike, trippel strike
 */

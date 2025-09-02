@@ -296,7 +296,7 @@ class Enemy extends HealthEntity {
       } else if (this.#nextAction === "canSummon") {
         tooltipText += `summon an enemy`;
       } else if (this.#nextAction === "weakenPlayer") {
-        tooltipText += `weaken you by ${this.#weakenPlayer}`;
+        tooltipText += `weaken you for ${this.#weakenPlayer}`;
       }
 
       intentTooltip.innerText = tooltipText;

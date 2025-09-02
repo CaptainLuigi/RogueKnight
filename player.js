@@ -353,6 +353,7 @@ class Player extends HealthEntity {
   foundRelic(relicName, wasEquipped) {
     this.#foundRelics.push(relicName);
     if (wasEquipped === true) {
+      relicList[relicName].equipRelic(this);
       this.#equippedRelics.push(relicName);
     }
   }
@@ -592,15 +593,14 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicSword());
       this.addWeapon(new BasicSpear());
       this.addWeapon(new BasicBow());
-      this.addWeapon(new BasicAxe());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
-      this.addWeapon(new BasicShield());
-      // this.addWeapon(new ChannelEnergy());
+      // this.addWeapon(new BasicAxe());
+      // this.addWeapon(new BasicShield());
+      // this.addWeapon(new BasicShield());
+      // this.addWeapon(new BasicShield());
+      // this.addWeapon(new BasicShield());
+      // this.addWeapon(new BasicShield());
 
-      // this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());
 

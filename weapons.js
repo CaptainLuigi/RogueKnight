@@ -281,8 +281,9 @@ class Weapons {
       ? player.critDamagePercentModifier || 0
       : player.damagePercentModifier || 0;
 
-    const damage = Math.floor(
-      (baseDamage + flatModifier) * (1 + percentModifier / 100)
+    const damage = Math.max(
+      1,
+      Math.floor((baseDamage + flatModifier) * (1 + percentModifier / 100))
     );
 
     if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
@@ -330,10 +331,6 @@ class Weapons {
 
       return Math.max(0, damage - blocked);
     });
-
-    if (damage > 0 && player.equippedRelics.includes("Fist of Bulwark")) {
-      fistOfBulwark();
-    }
 
     return {
       startIndex,
@@ -2716,8 +2713,9 @@ function generateWeaponInfo(
 
       // Only calculate and show finalDamage if there are modifiers
       if (flatBuff !== 0 || percentBuff !== 0) {
-        const finalDamage = Math.floor(
-          (weapon.damage + flatBuff) * (1 + percentBuff / 100)
+        const finalDamage = Math.max(
+          1,
+          Math.floor((weapon.damage + flatBuff) * (1 + percentBuff / 100))
         );
         tooltipString += `<strong>Damage:</strong> ${weapon.damage}${modifierDisplay} → ${finalDamage}<br>`;
       } else {
@@ -2740,8 +2738,11 @@ function generateWeaponInfo(
 
       // Only calculate and show finalCritDamage if there are modifiers
       if (flatBuff !== 0 || percentBuff !== 0) {
-        const finalCritDamage = Math.floor(
-          (weapon.criticalDamage + flatBuff) * (1 + percentBuff / 100)
+        const finalCritDamage = Math.max(
+          1,
+          Math.floor(
+            (weapon.criticalDamage + flatBuff) * (1 + percentBuff / 100)
+          )
         );
         tooltipString += `<strong>Critical Damage:</strong> ${weapon.criticalDamage}${modifierDisplay} → ${finalCritDamage}<br>`;
       } else {

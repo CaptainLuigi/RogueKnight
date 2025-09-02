@@ -96,7 +96,7 @@ const relicList = [
     "Spirit Totem",
     "Assets/spiritTotem.png",
     spiritTotem,
-    "Whenever an enemy dies during your turn, get 1 energy.",
+    "Whenever an enemy dies during your turn, get 1 Energy.",
     "chest",
     125
   ),
@@ -108,14 +108,7 @@ const relicList = [
     "chest",
     100
   ),
-  new Relics(
-    "Eternal Bloom",
-    "Assets/eternalBloom.png",
-    () => {},
-    "Heal 10 HP at the end of combat.",
-    "chest",
-    75
-  ),
+
   new Relics(
     "Souleater",
     "Assets/souleater.png",
@@ -183,7 +176,7 @@ const relicList = [
     "Omnipotence",
     "Assets/blackHole.png",
     omnipotence,
-    "Actions don't cost energy, but -70% max HP.",
+    "Actions don't cost Energy, but -70% max HP.",
     "elite",
     175
   ),
@@ -203,7 +196,7 @@ const relicList = [
     "elite",
     125
   ),
-  new Relics(
+  new ActiveRelics(
     "Overcharged Core",
     "Assets/overchargedCore.png",
     overchargedCore,
@@ -211,14 +204,7 @@ const relicList = [
     "elite",
     125
   ),
-  new Relics(
-    "Cloak of Protection",
-    "Assets/cloakOfProtection.png",
-    cloakOfProtection,
-    "Reduces all incomming damage by 1.",
-    "chest",
-    100
-  ),
+
   new Relics(
     "Tincture of Suffering",
     "Assets/tinctureOfSuffering.png",
@@ -227,10 +213,10 @@ const relicList = [
     "chest",
     100
   ),
-  new Relics(
+  new ActiveRelics(
     "Golden Sigil",
     "Assets/goldenSigil.png",
-    () => {},
+    goldenSigil,
     "Get 25 Gold at the end of combat.",
     "chest",
     75
@@ -246,7 +232,7 @@ const relicList = [
   new Relics(
     "Stonewall Totem",
     "Assets/stonewallTotem.png",
-    () => {},
+    stonewallTotem,
     "At the end of your turn, add 10 block.",
     "chest",
     100
@@ -267,10 +253,10 @@ const relicList = [
     "elite",
     125
   ),
-  new Relics(
+  new ActiveRelics(
     "Fist of Bulwark",
     "Assets/fistOfBulwark.png",
-    () => {},
+    fistOfBulwark,
     "When you attack, also gain 5 block.",
     "chest",
     100
@@ -283,10 +269,10 @@ const relicList = [
     "chest",
     100
   ),
-  new Relics(
+  new ActiveRelics(
     "Adrenal Surge",
     "Assets/adrenalSurge.png",
-    () => {},
+    adrenalSurge,
     "Get +1 Energy at the start of your turn if you have 30% or less health.",
     "elite",
     125
@@ -303,7 +289,7 @@ const relicList = [
     "Curse of Continuity",
     "Assets/CurseOfContinuity.png",
     curseOfContinuity,
-    "Carry over up to 3 unused energy to the next turn. Each carried over energy does 1 damage to you.",
+    "Carry over up to 3 unused Energy to the next turn. Each carried over Energy does 1 damage to you.",
     "elite",
     150
   ),
@@ -323,11 +309,11 @@ const relicList = [
     "unfindable",
     0
   ),
-  new Relics(
+  new ActiveRelics(
     "Gambler's Die",
     "Assets/dice.png",
-    () => {},
-    "50% chance each turn to gain 2 energy or lose 1.",
+    gamblersDie,
+    "50% chance each turn to gain 2 Energy or lose 1.",
     "event"
   ),
   new Relics(
@@ -348,7 +334,7 @@ const relicList = [
   new Relics(
     "Vengeful Echo",
     "Assets/vengefulEcho.png",
-    () => {},
+    vengefulEcho,
     "Deal 10 damage to all enemies at the end of your turn.",
     "chest",
     75
@@ -356,7 +342,7 @@ const relicList = [
   new Relics(
     "Curse of the plague",
     "Assets/curseOfThePlague.png",
-    () => {},
+    curseOfThePlague,
     "Apply 5 poison to all enemies at the end of your turn.",
     "chest",
     100
@@ -372,15 +358,15 @@ const relicList = [
   new Relics(
     "Berserkers Rush",
     "Assets/peakCondition.png",
-    () => {},
-    "Get 5 Strength when ending your turn if you are at or below 20HP.",
+    berserkersRush,
+    "Get 5 Strength at the end of your turn if you are at or below 35HP.",
     "chest",
     100
   ),
-  new Relics(
+  new ActiveRelics(
     "Enthusiastic Start",
     "Assets/enthusiasticStart.png",
-    () => {},
+    enthusiasticStart,
     "Start each battle with 10 Strength.",
     "chest",
     100
@@ -399,10 +385,10 @@ const relicList = [
     "The promise that he will pay you back.",
     "dave"
   ),
-  new Relics(
+  new ActiveRelics(
     "Woundmark",
     "Assets/woundmark.png",
-    () => {},
+    woundmark,
     "Elites take 10% damage of their max HP at the start of the fight.",
     "chest",
     100
@@ -423,6 +409,14 @@ const relicList = [
     150
   ),
   new Relics(
+    "Cloak of Protection",
+    "Assets/cloakOfProtection.png",
+    cloakOfProtection,
+    "Reduces all incomming damage by 1.",
+    "chest",
+    100
+  ),
+  new Relics(
     "Blood Ink",
     "Assets/bloodInk.png",
     () => {},
@@ -430,17 +424,17 @@ const relicList = [
     "chest",
     100
   ),
-  new Relics(
+  new ActiveRelics(
     "Rage Reward",
     "Assets/rageReward.png",
-    () => {},
+    rageReward,
     "Whenever you attack, get 1 Strength.",
     "elite",
     150
   ),
   new Relics(
     "Enrage",
-    "Assets/Sword.png",
+    "Assets/enrage.png",
     () => {},
     "Whenever you take self damage, get 3 Strength.",
     "chest",
@@ -451,6 +445,30 @@ const relicList = [
     "Assets/Sword.png",
     () => {},
     "Whenever you deal critical damage, apply 5 Poison to the first enemy.",
+    "chest",
+    100
+  ),
+  new ActiveRelics(
+    "Untouched Heart",
+    "Assets/untouchedHeart.png",
+    untouchedHeart,
+    "Get +5 max HP if you finish a fight full life.",
+    "chest",
+    100
+  ),
+  new ActiveRelics(
+    "Eternal Bloom",
+    "Assets/eternalBloom.png",
+    eternalBloom,
+    "Heal 10 HP at the end of combat.",
+    "chest",
+    75
+  ),
+  new Relics(
+    "Reservoir Lotus",
+    "Assets/Sword.png",
+    reservoirLotus,
+    "Heal 1HP for each unspent Energy at the end of your turn.",
     "chest",
     100
   ),
@@ -483,6 +501,219 @@ function curseOfContinuity(player, relicObject) {
     }
 
     relicObject.bonusEnergy = unusedEnergy;
+  });
+}
+
+function reservoirLotus(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    let unusedEnergy = 0;
+    unusedEnergy = player.energy;
+    if (unusedEnergy > 0) {
+      event.detail.eventQueue = event.detail.eventQueue.then(() => {
+        return player.heal(unusedEnergy);
+      });
+    }
+
+    relicObject.bonusEnergy = unusedEnergy;
+  });
+}
+
+function berserkersRush(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    if (player.health <= 35) {
+      event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+        player.increaseStrength(5);
+        player.updateStrengthDisplay();
+      });
+    }
+  });
+}
+
+function overchargedCore(player, relicObject) {
+  if (!player.equippedRelics.includes("Overcharged Core")) {
+    player.increaseMaxEnergy(1);
+  }
+  window.addEventListener("EndTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      return player.takeDamage(3).then(() => wait(300));
+    });
+  });
+}
+
+function bloodPact(player, relicObject) {
+  if (!player.equippedRelics.includes("Blood Pact")) {
+    player.increaseWeaponDamagePercent(25);
+    player.increaseWeaponCritDamagePercent(25);
+    player.savePlayerToStorage();
+  }
+}
+
+function stonewallTotem(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+      const blockContainer = document.getElementById("block-container");
+      const blockText = document.getElementById("block-text");
+
+      let currentBlock = parseInt(blockText.innerText) || 0;
+
+      currentBlock += 10;
+
+      player.blockAmount = currentBlock;
+      blockText.innerText = currentBlock;
+
+      blockContainer.classList.remove("hidden");
+
+      await wait(300);
+    });
+  });
+}
+
+function vengefulEcho(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+      enemies.forEach((enemy) => {
+        enemy.takeDamage(10, false);
+      });
+      await wait(300);
+    });
+  });
+}
+
+function curseOfThePlague(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+      enemies.forEach((enemy) => {
+        enemy.addPoisonFromPlayer(5 + player.poisonModifier);
+        enemy.updatePoisonDisplay();
+      });
+      await wait(300);
+    });
+  });
+}
+
+function enthusiasticStart(player, relicObject) {
+  window.addEventListener("StartFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      player.increaseStrength(10);
+      player.updateStrengthDisplay();
+    });
+  });
+}
+
+function woundmark(player, relicObject) {
+  window.addEventListener("StartFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      const allowedDifficulties = [8, 9, 18, 19, 100];
+
+      if (allowedDifficulties.includes(globalSettings.difficulty)) {
+        enemies.forEach((enemy) => {
+          const damage = enemy.maxHealth * 0.1;
+          enemy.takeDamage(damage, false);
+        });
+      }
+    });
+  });
+}
+
+function untouchedHeart(player, relicObject) {
+  window.addEventListener("EndFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      if (player.health === player.maxHealth) {
+        player.increaseMaxHealth(5, true);
+        updateHealthBar(player);
+      }
+    });
+  });
+}
+
+function eternalBloom(player, relicObject) {
+  window.addEventListener("EndFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      player.heal(10);
+      updateHealthBar(player);
+    });
+  });
+}
+
+function goldenSigil(player, relicObject) {
+  window.addEventListener("EndFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      updatePlayerGold(25);
+    });
+  });
+}
+
+function adrenalSurge(player, relicObject) {
+  window.addEventListener("StartFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      triggerAdrenalSurge(event.detail.player);
+    });
+  });
+
+  window.addEventListener("StartSecondTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      triggerAdrenalSurge(event.detail.player);
+    });
+  });
+}
+
+function triggerAdrenalSurge() {
+  if (player.equippedRelics.includes("Adrenal Surge")) {
+    const hpRatio = player.health / player.maxHealth;
+    if (hpRatio <= 0.3) {
+      player.addEnergy(1);
+      updateEnergyDisplay(player);
+    }
+  }
+}
+
+function gamblersDie(player, relicObject) {
+  window.addEventListener("StartFight", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      triggergamblersDie(event.detail.player);
+    });
+  });
+
+  window.addEventListener("StartSecondTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      triggergamblersDie(event.detail.player);
+    });
+  });
+}
+
+function triggergamblersDie() {
+  if (Math.random() < 0.5) {
+    player.addEnergy(2);
+    updateEnergyDisplay(player);
+  } else {
+    player.loseEnergy(1);
+    updateEnergyDisplay(player);
+  }
+}
+
+function rageReward(player, relicObject) {
+  window.addEventListener("Attack", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      player.increaseStrength(1);
+      player.updateStrengthDisplay();
+    });
+  });
+}
+
+function fistOfBulwark(player, relicObject) {
+  window.addEventListener("Attack", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(() => {
+      const blockContainer = document.getElementById("block-container");
+      const blockText = document.getElementById("block-text");
+
+      let currentBlock = parseInt(blockText.innerText) || 0;
+      currentBlock += 5;
+
+      player.blockAmount = currentBlock;
+      blockText.innerText = currentBlock;
+
+      blockContainer.classList.remove("hidden");
+    });
   });
 }
 
@@ -522,10 +753,6 @@ function pacifistAmulet(player) {
   player.increaseMaxEnergy(1);
 }
 
-function overchargedCore(player) {
-  player.increaseMaxEnergy(1);
-}
-
 function whetstone(player) {
   player.increaseWeaponCritChance(15);
 }
@@ -560,11 +787,6 @@ function tinktureOfSuffering(player) {
   player.increasePoisonApplied(10);
 }
 
-function eternalBloom(player) {
-  player.heal(10);
-  updateHealthBar(player);
-}
-
 function aliensRock(player) {
   player.setTargetAnyEnemy(true);
 }
@@ -578,47 +800,6 @@ function deathsBargain(player) {
   player.removeRelic("Death's Bargain");
   player.foundRelic("Death's Pact", true);
   displayEquippedRelics();
-}
-
-function adrenalSurge() {
-  if (player.equippedRelics.includes("Adrenal Surge")) {
-    const hpRatio = player.health / player.maxHealth;
-    if (hpRatio <= 0.3) {
-      player.addEnergy(1);
-      updateEnergyDisplay();
-    }
-  }
-}
-
-function stonewallTotem() {
-  const blockContainer = document.getElementById("block-container");
-  const blockText = document.getElementById("block-text");
-
-  let currentBlock = parseInt(blockText.innerText) || 0;
-
-  currentBlock += 10;
-
-  player.blockAmount = currentBlock;
-  blockText.innerText = currentBlock;
-
-  blockContainer.classList.remove("hidden");
-}
-
-function fistOfBulwark() {
-  const blockContainer = document.getElementById("block-container");
-  const blockText = document.getElementById("block-text");
-
-  let currentBlock = parseInt(blockText.innerText) || 0;
-  currentBlock += 5;
-
-  player.blockAmount = currentBlock;
-  blockText.innerText = currentBlock;
-
-  blockContainer.classList.remove("hidden");
-}
-
-function goldenSigil() {
-  updatePlayerGold(25);
 }
 
 function brambleMantle(player) {
@@ -663,12 +844,6 @@ function infernalIngot(player) {
 function backToBasics(player) {
   player.increaseMaxEnergy(1);
   player.critsDisabled = true;
-}
-
-function bloodPact(player) {
-  player.increaseWeaponDamagePercent(25);
-  player.increaseWeaponCritDamagePercent(25);
-  player.savePlayerToStorage();
 }
 
 function createRelicElement(relic) {
