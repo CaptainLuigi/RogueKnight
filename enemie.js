@@ -26,6 +26,8 @@ class Enemy extends HealthEntity {
   #shieldAll = 0;
   #canSummon = false;
   #weakenPlayer = 0;
+  #doubleStrike = 0;
+  #tripleStrike = 0;
   #display;
   #nextAction = "";
   #possibleActions = [];
@@ -101,6 +103,14 @@ class Enemy extends HealthEntity {
     return this.#weakenPlayer;
   }
 
+  get doubleStrike() {
+    return this.#doubleStrike;
+  }
+
+  get tripleStrike() {
+    return this.#tripleStrike;
+  }
+
   get nextAction() {
     return this.#nextAction;
   }
@@ -133,6 +143,14 @@ class Enemy extends HealthEntity {
     return this.#weakenPlayer > 0;
   }
 
+  get canDoubleStrike() {
+    return this.#doubleStrike > 0;
+  }
+
+  get canTripleStrike() {
+    return this.#tripleStrike > 0;
+  }
+
   constructor(
     name,
     maxHealth,
@@ -146,7 +164,9 @@ class Enemy extends HealthEntity {
     buffAll = 0,
     shieldAll = 0,
     canSummon = false,
-    weakenPlayer = 0
+    weakenPlayer = 0,
+    doubleStrike = 0,
+    tripleStrike = 0
   ) {
     super();
     this.#health = maxHealth;
@@ -168,6 +188,8 @@ class Enemy extends HealthEntity {
     this.#shieldAll = shieldAll;
     this.#canSummon = canSummon;
     this.#weakenPlayer = weakenPlayer;
+    this.#doubleStrike = doubleStrike;
+    this.#tripleStrike = tripleStrike;
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
     enemies.push(this);
@@ -195,6 +217,12 @@ class Enemy extends HealthEntity {
     }
     if (this.canWeakenPlayer) {
       this.#possibleActions.push("weakenPlayer");
+    }
+    if (this.canDoubleStrike) {
+      this.#possibleActions.push("doubleStrike");
+    }
+    if (this.canTripleStrike) {
+      this.#possibleActions.push("tripleStrike");
     }
   }
 
@@ -270,6 +298,14 @@ class Enemy extends HealthEntity {
       }`;
     } else if (this.#nextAction === "canSummon") {
       intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
+    } else if (this.#nextAction === "doubleStrike") {
+      intentElement.innerHTML = `2x<img src="Assets/swordsEmoji.png"/> ${
+        this.#doubleStrike
+      }`;
+    } else if (this.#nextAction === "tripleStrike") {
+      intentElement.innerHTML = `3x<img src="Assets/swordsEmoji.png"/> ${
+        this.#tripleStrike
+      }`;
     }
 
     console.log(
@@ -297,6 +333,10 @@ class Enemy extends HealthEntity {
         tooltipText += `summon an enemy`;
       } else if (this.#nextAction === "weakenPlayer") {
         tooltipText += `weaken you for ${this.#weakenPlayer}`;
+      } else if (this.#nextAction === "doubleStrike") {
+        tooltipText += `attack for ${this.#doubleStrike} damage two times`;
+      } else if (this.#nextAction === "tripleStrike") {
+        tooltipText += `attack for ${this.#tripleStrike} damage three times`;
       }
 
       intentTooltip.innerText = tooltipText;
@@ -354,6 +394,12 @@ class Enemy extends HealthEntity {
         break;
       case "weakenPlayer":
         await this.weakenPlayer(this.#weakenPlayer);
+        break;
+      case "doubleStrike":
+        await this.multiAttack(player, this.#doubleStrike, 2);
+        break;
+      case "tripleStrike":
+        await this.multiAttack(player, this.#tripleStrike, 3);
         break;
       default:
         console.log("No action performed");
@@ -420,23 +466,24 @@ class Enemy extends HealthEntity {
     return false;
   }
 
-  attack(player) {
+  attack(player, damageOverride = null) {
     player.attackingEnemy = this;
     console.log("Player is being attacked by:", player.attackingEnemy);
 
-    let actualDamage = this.#attackPower;
+    let actualDamage =
+      damageOverride !== null ? damageOverride : this.#attackPower;
 
     let blockedSomeDamage = false;
 
     // Handle blocking logic
     if (player.blockAmount > 0) {
-      if (player.blockAmount >= this.#attackPower) {
+      if (player.blockAmount >= actualDamage) {
         SoundManager.play("ShieldSound");
-        player.blockAmount -= this.#attackPower;
+        player.blockAmount -= actualDamage;
         actualDamage = 0; // Fully blocked
         blockedSomeDamage = true;
       } else {
-        actualDamage = this.#attackPower - player.blockAmount;
+        actualDamage -= player.blockAmount;
         player.blockAmount = 0;
         blockedSomeDamage = true;
       }
@@ -503,6 +550,16 @@ class Enemy extends HealthEntity {
         const reflectionDamage = player.blockAmount * 3;
         enemy.takeDamage(reflectionDamage);
       }
+    }
+  }
+
+  async multiAttack(player, damagePerHit, times) {
+    for (let i = 0; i < times; i++) {
+      this.#display.classList.add("grow-shrink");
+      this.attack(player, damagePerHit);
+      await wait(400);
+      this.#display.classList.remove("grow-shrink");
+      await wait(400);
     }
   }
 
@@ -640,8 +697,8 @@ class Enemy extends HealthEntity {
     healthText.textContent = `${this.health} / ${this.maxHealth}`; // Show health value
 
     if (intentElement) {
-      intentElement.style.display = "block"; // Ensure it's visible
-      intentElement.style.visibility = "visible"; // Ensure it's visible
+      intentElement.style.display = "block";
+      intentElement.style.visibility = "visible";
 
       if (this.#nextAction === "attack") {
         intentElement.innerHTML = `<img src="Assets/swordsEmoji.png"/> ${
@@ -672,6 +729,14 @@ class Enemy extends HealthEntity {
       } else if (this.#nextAction === "weakenPlayer") {
         intentElement.innerHTML = `<img src="Assets/dizzyEmoji.png"/> ${
           this.#weakenPlayer
+        }`;
+      } else if (this.#nextAction === "doubleStrike") {
+        intentElement.innerHTML = `2x<img src="Assets/swordsEmoji.png"/> ${
+          this.#doubleStrike
+        }`;
+      } else if (this.#nextAction === "tripleStrike") {
+        intentElement.innerHTML = `3x<img src="Assets/swordsEmoji.png"/> ${
+          this.#tripleStrike
         }`;
       }
 
@@ -820,7 +885,23 @@ class Shroom extends Enemy {
 
 class Snail extends Enemy {
   constructor() {
-    super("Snail", 150, 6, "Assets/Transperent/Icon5.png", true, 0, 15);
+    super(
+      "Snail",
+      150,
+      6,
+      "Assets/Transperent/Icon5.png",
+      true,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      2,
+      1
+    );
   }
 }
 
