@@ -464,6 +464,7 @@ class Enemy extends HealthEntity {
       this.#display.classList.add("grow-shrink");
       this.attack(player, damagePerHit);
       await wait(400);
+      updateHealthBar(player);
       this.#display.classList.remove("grow-shrink");
       await wait(400);
     }
@@ -519,7 +520,9 @@ class Enemy extends HealthEntity {
     SoundManager.play("EnemyBuff");
     for (let enemy of enemies) {
       if (!enemy.isDead()) {
-        enemy.#attackPower += amount;
+        if (enemy.#attackPower > 0) enemy.#attackPower += amount;
+        if (enemy.#doubleStrike > 0) enemy.#doubleStrike += amount;
+        if (enemy.#tripleStrike > 0) enemy.#tripleStrike += amount;
         enemy.updateDisplay();
 
         await wait(300);
@@ -811,7 +814,23 @@ class Shroom extends Enemy {
 
 class Snail extends Enemy {
   constructor() {
-    super("Snail", 150, 6, "Assets/Transperent/Icon5.png", true, 0, 15);
+    super(
+      "Snail",
+      150,
+      6,
+      "Assets/Transperent/Icon5.png",
+      true,
+      0,
+      15,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      3,
+      0
+    );
   }
 }
 
@@ -934,7 +953,9 @@ class Succubus extends Enemy {
       0,
       0,
       false,
-      2
+      2,
+      8,
+      6
     );
     this.display.classList.add("biggerEnemy");
   }
