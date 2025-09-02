@@ -255,111 +255,17 @@ class Enemy extends HealthEntity {
   }
 
   displayIntent() {
-    const enemyElement = this.#display;
-    const intentElement = enemyElement.querySelector(".enemy-intent");
+    this.updateIntentElement();
 
-    if (!intentElement) {
-      console.error("Enemy intent display element not found");
-      return;
-    }
+    const intentElement = this.#display.querySelector(".enemy-intent");
+    if (!intentElement) return;
 
-    intentElement.style.display = "block";
-    intentElement.style.visibility = "visible";
-
-    console.log("Intent element:", intentElement);
-
-    if (this.#nextAction === "attack") {
-      intentElement.innerHTML = `<img src="Assets/swordsEmoji.png"/> ${
-        this.#attackPower
-      }`;
-    } else if (this.#nextAction === "block") {
-      intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/> ${
-        this.#blockAmount
-      }`;
-    } else if (this.#nextAction === "poison") {
-      intentElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
-        this.#poison
-      }`;
-    } else if (this.#nextAction === "healAll") {
-      intentElement.innerHTML = `<img src="Assets/greenHeartEmoji.png"/> ${
-        this.#healAll
-      }`;
-    } else if (this.#nextAction === "buffAll") {
-      intentElement.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${
-        this.#buffAll
-      }`;
-    } else if (this.#nextAction === "shieldAll") {
-      intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/><img src="Assets/sparklesEmoji.png"/> ${
-        this.#shieldAll
-      }`;
-    } else if (this.#nextAction === "weakenPlayer") {
-      intentElement.innerHTML = `<img src="Assets/dizzyEmoji.png"/> ${
-        this.#weakenPlayer
-      }`;
-    } else if (this.#nextAction === "canSummon") {
-      intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
-    } else if (this.#nextAction === "doubleStrike") {
-      intentElement.innerHTML = `2x<img src="Assets/swordsEmoji.png"/> ${
-        this.#doubleStrike
-      }`;
-    } else if (this.#nextAction === "tripleStrike") {
-      intentElement.innerHTML = `3x<img src="Assets/swordsEmoji.png"/> ${
-        this.#tripleStrike
-      }`;
-    }
-
-    console.log(
-      `Enemy ${this.name} intent: ${this.nextAction} - ${intentElement.textContent}`
+    intentElement.addEventListener("mouseenter", () =>
+      this.showIntentTooltip(intentElement)
     );
-
-    intentElement.addEventListener("mouseenter", () => {
-      const intentTooltip = document.createElement("div");
-      intentTooltip.classList.add("enemy-intent-tooltip");
-
-      let tooltipText = `Enemy intends to `;
-      if (this.#nextAction === "attack") {
-        tooltipText += `attack for ${this.#attackPower} damage`;
-      } else if (this.#nextAction === "block") {
-        tooltipText += `block for ${this.#blockAmount}`;
-      } else if (this.#nextAction === "poison") {
-        tooltipText += `poison you for ${this.#poison}`;
-      } else if (this.#nextAction === "healAll") {
-        tooltipText += `heal all for ${this.#healAll} HP`;
-      } else if (this.#nextAction === "buffAll") {
-        tooltipText += `buff all by ${this.#buffAll}`;
-      } else if (this.#nextAction === "shieldAll") {
-        tooltipText += `block all for ${this.#shieldAll}`;
-      } else if (this.#nextAction === "canSummon") {
-        tooltipText += `summon an enemy`;
-      } else if (this.#nextAction === "weakenPlayer") {
-        tooltipText += `weaken you for ${this.#weakenPlayer}`;
-      } else if (this.#nextAction === "doubleStrike") {
-        tooltipText += `attack for ${this.#doubleStrike} damage two times`;
-      } else if (this.#nextAction === "tripleStrike") {
-        tooltipText += `attack for ${this.#tripleStrike} damage three times`;
-      }
-
-      intentTooltip.innerText = tooltipText;
-      intentElement.appendChild(intentTooltip);
-
-      const intentElementTop = intentElement.offsetTop;
-      const intentElementHeight = intentElement.offsetHeight;
-
-      // Set the tooltip's position just below the intent element
-      intentTooltip.style.top = `${
-        intentElementTop + intentElementHeight + 5
-      }px`;
-      intentTooltip.style.left = `${intentElement.offsetLeft + 20}px`;
-    });
-
-    intentElement.addEventListener("mouseleave", function () {
-      const intentTooltip = intentElement.querySelector(
-        ".enemy-intent-tooltip"
-      );
-      if (intentTooltip) {
-        intentTooltip.remove();
-      }
-    });
+    intentElement.addEventListener("mouseleave", () =>
+      this.hideIntentTooltip(intentElement)
+    );
   }
 
   async performAction(player) {
@@ -645,12 +551,82 @@ class Enemy extends HealthEntity {
     }
   }
 
-  updateDisplay() {
+  updateIntentElement() {
     const intentElement = this.#display.querySelector(".enemy-intent");
-    const healthPercentage = (this.health / this.maxHealth) * 100;
+    if (!intentElement) {
+      console.error("Enemy intent display element not found");
+      return;
+    }
 
-    console.log("Updating enemy health bar:", this.health, "/", this.maxHealth); // debugging
+    intentElement.style.display = "block";
+    intentElement.style.visibility = "visible";
 
+    const actionMap = {
+      attack: `<img src="Assets/swordsEmoji.png"/> ${this.#attackPower}`,
+      block: `<img src="Assets/shieldEmoji.png"/> ${this.#blockAmount}`,
+      poison: `<img src="Assets/skullEmoji.png"/> ${this.#poison}`,
+      healAll: `<img src="Assets/greenHeartEmoji.png"/> ${this.#healAll}`,
+      buffAll: `<img src="Assets/bicepsEmoji.png"/> ${this.#buffAll}`,
+      shieldAll: `<img src="Assets/shieldEmoji.png"/><img src="Assets/sparklesEmoji.png"/> ${
+        this.#shieldAll
+      }`,
+      weakenPlayer: `<img src="Assets/dizzyEmoji.png"/> ${this.#weakenPlayer}`,
+      canSummon: `<img src="Assets/gravestoneEmoji.png"/>`,
+      doubleStrike: `2x <img src="Assets/swordsEmoji.png"/> ${
+        this.#doubleStrike
+      }`,
+      tripleStrike: `3x <img src="Assets/swordsEmoji.png"/> ${
+        this.#tripleStrike
+      }`,
+    };
+
+    intentElement.innerHTML = actionMap[this.#nextAction] || "";
+
+    console.log(
+      `Enemy ${this.name} intent: ${this.#nextAction} - ${
+        intentElement.textContent
+      }`
+    );
+  }
+
+  // Show tooltip when hovering over intent
+  showIntentTooltip(intentElement) {
+    const intentTooltip = document.createElement("div");
+    intentTooltip.classList.add("enemy-intent-tooltip");
+
+    let tooltipText = `Enemy intends to `;
+    const tooltipMap = {
+      attack: `attack for ${this.#attackPower} damage`,
+      block: `block for ${this.#blockAmount}`,
+      poison: `poison you for ${this.#poison}`,
+      healAll: `heal all for ${this.#healAll} HP`,
+      buffAll: `buff all by ${this.#buffAll}`,
+      shieldAll: `block all for ${this.#shieldAll}`,
+      weakenPlayer: `weaken you for ${this.#weakenPlayer}`,
+      canSummon: `summon an enemy`,
+      doubleStrike: `attack for ${this.#doubleStrike} damage two times`,
+      tripleStrike: `attack for ${this.#tripleStrike} damage three times`,
+    };
+
+    tooltipText += tooltipMap[this.#nextAction] || "";
+    intentTooltip.innerText = tooltipText;
+
+    intentElement.appendChild(intentTooltip);
+
+    const intentElementTop = intentElement.offsetTop;
+    const intentElementHeight = intentElement.offsetHeight;
+
+    intentTooltip.style.top = `${intentElementTop + intentElementHeight + 5}px`;
+    intentTooltip.style.left = `${intentElement.offsetLeft + 20}px`;
+  }
+
+  // Hide tooltip when mouse leaves
+  hideIntentTooltip(intentElement) {
+    const intentTooltip = intentElement.querySelector(".enemy-intent-tooltip");
+    if (intentTooltip) intentTooltip.remove();
+  }
+
+  updateDisplay() {
     const healthBarContainerEnemy = this.healthBar;
     const healthBarEnemy = this.#display.querySelector(".health-bar-enemy");
 
@@ -659,6 +635,23 @@ class Enemy extends HealthEntity {
       return;
     }
 
+    const healthPercentage = (this.health / this.maxHealth) * 100;
+    healthBarEnemy.style.width = `${healthPercentage}%`;
+    healthBarEnemy.style.backgroundColor =
+      healthPercentage > 50
+        ? "#4caf50"
+        : healthPercentage > 25
+        ? "#ff9800"
+        : "#f44336";
+
+    let healthText = healthBarContainerEnemy.querySelector("span");
+    if (!healthText) {
+      healthText = document.createElement("span");
+      healthBarContainerEnemy.appendChild(healthText);
+    }
+    healthText.textContent = `${this.health} / ${this.maxHealth}`;
+
+    // Update block display
     let displayedBlock = this.#display.querySelector(".enemy-block");
     displayedBlock.textContent = this.#activeShield;
     if (this.#activeShield > 0) {
@@ -668,6 +661,7 @@ class Enemy extends HealthEntity {
       displayedBlock.classList.add("hidden");
     }
 
+    // Update buff display
     let displayedBuff = this.#display.querySelector(".enemy-buff");
     const buffAmount = this.#attackPower - this.#baseAttackPower;
     if (buffAmount > 0) {
@@ -678,76 +672,8 @@ class Enemy extends HealthEntity {
       displayedBuff.classList.add("hidden");
     }
 
-    // Set the width of the health bar based on health percentage
-    healthBarEnemy.style.width = `${healthPercentage}%`;
-    healthBarEnemy.style.backgroundColor =
-      healthPercentage > 50
-        ? "#4caf50"
-        : healthPercentage > 25
-        ? "#ff9800"
-        : "#f44336";
-
-    // Set the health text inside the bar
-    let healthText = healthBarContainerEnemy.querySelector("span");
-    if (!healthText) {
-      healthText = document.createElement("span");
-      healthBarContainerEnemy.appendChild(healthText);
-    }
-
-    healthText.textContent = `${this.health} / ${this.maxHealth}`; // Show health value
-
-    if (intentElement) {
-      intentElement.style.display = "block";
-      intentElement.style.visibility = "visible";
-
-      if (this.#nextAction === "attack") {
-        intentElement.innerHTML = `<img src="Assets/swordsEmoji.png"/> ${
-          this.#attackPower
-        }`;
-      } else if (this.#nextAction === "block") {
-        intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/> ${
-          this.#blockAmount
-        }`;
-      } else if (this.#nextAction === "poison") {
-        intentElement.innerHTML = `<img src="Assets/skullEmoji.png"/> ${
-          this.#poison
-        }`;
-      } else if (this.#nextAction === "healAll") {
-        intentElement.innerHTML = `<img src="Assets/greenHeartEmoji.png"/> ${
-          this.#healAll
-        }`;
-      } else if (this.#nextAction === "buffAll") {
-        intentElement.innerHTML = `<img src="Assets/bicepsEmoji.png"/> ${
-          this.#buffAll
-        }`;
-      } else if (this.#nextAction === "shieldAll") {
-        intentElement.innerHTML = `<img src="Assets/shieldEmoji.png"/><img src="Assets/sparklesEmoji.png"/> ${
-          this.#shieldAll
-        }`;
-      } else if (this.#nextAction === "canSummon") {
-        intentElement.innerHTML = `<img src="Assets/gravestoneEmoji.png"/>`;
-      } else if (this.#nextAction === "weakenPlayer") {
-        intentElement.innerHTML = `<img src="Assets/dizzyEmoji.png"/> ${
-          this.#weakenPlayer
-        }`;
-      } else if (this.#nextAction === "doubleStrike") {
-        intentElement.innerHTML = `2x<img src="Assets/swordsEmoji.png"/> ${
-          this.#doubleStrike
-        }`;
-      } else if (this.#nextAction === "tripleStrike") {
-        intentElement.innerHTML = `3x<img src="Assets/swordsEmoji.png"/> ${
-          this.#tripleStrike
-        }`;
-      }
-
-      console.log(
-        `Enemy ${this.name} intent: ${this.#nextAction} - ${
-          intentElement.textContent
-        }`
-      );
-    } else {
-      console.error("Intent element not found!");
-    }
+    // Update intent using helper
+    this.updateIntentElement();
   }
 
   addBlockTooltip(blockElement) {
@@ -885,23 +811,7 @@ class Shroom extends Enemy {
 
 class Snail extends Enemy {
   constructor() {
-    super(
-      "Snail",
-      150,
-      6,
-      "Assets/Transperent/Icon5.png",
-      true,
-      0,
-      15,
-      0,
-      0,
-      0,
-      0,
-      false,
-      0,
-      2,
-      1
-    );
+    super("Snail", 150, 6, "Assets/Transperent/Icon5.png", true, 0, 15);
   }
 }
 

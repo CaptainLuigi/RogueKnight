@@ -45,5 +45,4 @@ wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswä
 
 upgrade weapon options remove, wenn alle waffen max lvl
 
-enemy haben double strike, trippel strike
 */

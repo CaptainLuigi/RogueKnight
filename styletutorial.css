@@ -282,7 +282,7 @@ height: 0;
 
 .enemy-intent-tooltip {
     position: absolute;
-    width: 200px;
+    width: 250px;
     text-align: center;
     display: flex;
     justify-content: center;
