@@ -1,0 +1,117 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+}
+
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    /* margin-left: 2.5%; */
+    position: absolute;
+}
+
+.flex-container {   
+    width: 100%;
+    flex-direction: column;
+    z-index: 1;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#Title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+}
+
+
+.start-button {
+    color: black;
+    background-color: #1D9208;
+    width: 15vw;
+    height: 3vw;
+    font-family: 'Pirata_One';
+    cursor: pointer;
+    text-align: center;
+    font-size: 1.5vw;
+    margin: 1vh 0;
+    border-radius: 10px;
+    border: 3px solid black;
+}
+
+.start-button:hover {
+    color: orange;
+}
+
+.sprite {
+    width: 100px;
+    height: 100px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: 700px 100px;
+    top: 50vh;
+    left: 150px;
+    image-rendering: pixelated;
+}
+
+@media (min-width: 1024px) {
+    .sprite {
+        width: 150px;
+        height: 150px;
+        background-size: 1050px 150px;
+        top: 50vh;
+    }
+}
+
+@media (min-width: 1280px) {
+    .sprite {
+        width: 200px;
+        height: 200px;
+        background-size: 1400px 200px;
+      
+    }
+}
+
+#version {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    font-size: 18px;
+    color: white;
+    z-index: 1000;
+}
+
+#patchnotes {
+    position: fixed;
+    bottom: 10px;
+    right: 25px;
+}
+
+#patchnotes button {
+    font-family: 'Pirata_One';
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 24px;
+    z-index: 1500;
+}
+
+#patchnotes button:hover {
+    cursor: pointer;
+}

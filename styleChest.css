@@ -1,0 +1,175 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+}
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    /* margin-left: 2.5%; */
+    position: absolute;
+    z-index: 1;
+}
+
+#Chest {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 150px;
+    height: auto;
+    image-rendering: pixelated;
+}
+
+#chest-button {
+    position: absolute;
+    cursor: pointer;
+    top: 55%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    background: none;
+    border: none;
+    padding: 0;
+    width: 0px;
+    height: 0px;
+}
+
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
+}
+
+#relic-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;   
+  transition: top 0.3s ease;
+}
+
+
+.weapon-image {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    padding: 5px;
+    border: 3px solid black;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
+.relic-image {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    padding: 5px;
+    border: 3px solid black;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
+.tooltip {
+    position: absolute;
+    top: -100%; /* Vertically center it */
+    left: 50%; /* Horizontally center it */
+    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
+    z-index: 10; /* Ensure the tooltip appears above other elements */
+    font-size: 24px;
+    width: 250px; /* Set width for the tooltip */
+}
+
+.weapon:hover .tooltip {
+    opacity: 1;
+    visibility: visible; /* Show the tooltip when hovering */
+}
+
+.sprite {
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: 1400px 200px;
+    top: 450px;
+    left: 35vw;
+    z-index: 1100;
+    image-rendering: pixelated;
+}
+
+#addToDeck {
+    width: 150px;
+    height: 75px;
+    position: absolute;
+    font-size: 24px;
+    z-index: 1100;
+    display: none;
+    top: 65%;
+    left: 40%;
+    font-family: 'Pirata_One';
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: rgba(240, 26, 14);
+    cursor: pointer;
+}
+
+#skip {
+    width: 150px;
+    height: 75px;
+    position: absolute;
+    font-size: 24px;
+    z-index: 1100;
+    display: none;
+    top: 65%;
+    left: 52%;
+    font-family: 'Pirata_One';
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: rgba(240, 26, 14);
+    cursor: pointer;  
+}
+
+.hidden {
+    display: none;
+}
+
+.selected-relic {
+    outline: 3px solid gold;
+    border-radius: 8px;
+}
+
+#relic-container .relic-wrapper {
+    margin: 20px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+

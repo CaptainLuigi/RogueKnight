@@ -1,0 +1,182 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Elvish';
+    src: url(Assets/tngan.ttf) format('truetype');
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+
+}
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    /* margin-left: 2.5%; */
+    position: absolute;
+    z-index: 1;
+}
+
+.textbox {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 500px;
+    width: 750px;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1500;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.textbox-btn {
+    font-family: 'Pirata_one';
+    width: 200px;
+    height: 50px;
+    font-size: 24px;
+    padding: 10px 20px;
+    border: none;
+    background-color: antiquewhite;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.hidden {
+    display: none;
+}
+
+.sprite {
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: 1400px 200px;
+    top: 450px;
+    left: 13vw;
+    z-index: 1100;
+    image-rendering: pixelated;
+}
+
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
+}
+
+#health-bar-container-player {
+    width: 200px;
+    height: 15px;
+    background-color: #333;
+    border: 2px solid #000;
+    border-radius: 5px;
+    position: relative;
+    top: 450px;
+    left: 11%;
+    z-index: 4;
+}
+
+#health-bar span {
+    position: absolute; /* Position the text */
+    top: 50%; /* Vertically center the text */
+    left: 50%; /* Horizontally center the text */
+    transform: translate(-50%, -50%); /* Perfect centering */
+    color: white;
+    font-size: 15px; /* Adjust the font size as needed */
+    font-weight: lighter;
+}
+
+#health-bar {
+    height: 100%; /* The bar's height should fill the container */
+    background-color: #4caf50; /* Initial green color for the bar */
+    width: 100%; /* Default to full width */
+    transition: width 0.3s ease; /* Smooth transition for changes */
+    z-index: 6;
+
+}
+
+.weapon-image {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+    padding: 5px;
+    border: 3px solid black;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
+.tooltip {
+    font-family: 'Pirata_One';
+    top: -80%; /* Vertically center it */
+    left: 50%; /* Horizontally center it */
+    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
+    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
+}
+
+#weapon-deck-screen[isupgrademode] .tooltip {
+    top: -120%;
+}
+
+.orange-btn {
+    width: 300px;
+    height: 75px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body.upgrade-mode .weapon {
+    cursor: pointer;
+}
+
+button#randomWeapon1 .weapon img,
+button#randomWeapon2 .weapon img {
+    width: 100px;
+    height: 100px;
+    image-rendering: pixelated;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+}
+
+button#randomWeapon1,
+button#randomWeapon2 {
+    background-color: antiquewhite;
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+#randomWeapon1 .weapon,
+#randomWeapon2 .weapon {
+  position: relative;
+}
+
+#randomWeapon1 .weapon .tooltip,
+#randomWeapon2 .weapon .tooltip {
+    top: -150%;
+}
+
+#elvish {
+    font-family: 'Elvish';
+}

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutorial</title>
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <link rel="stylesheet" href="styletutorial.css" />
+    <script src="utility.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="relics.js"></script>
+    <script src="player.js"></script>
+    <script src="music.js"></script>
+    <script src="enemie.js"></script>
+    <script src="enemyconstellation.js"></script>
+    <script src="weapons.js"></script>
+    <script src="game.js"></script>
+    <script src="saveGame.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button onclick="closePauseMenu()">Close</button>
+    </div>
+
+    <div class="sprite-player">
+      <div id="status-container">
+        <div id="poison-status" class="hidden"></div>
+        <div id="strength-status" class="hidden"></div>
+        <div id="weak-status" class="hidden"></div>
+      </div>
+    </div>
+
+    <div id="health-bar-container-player">
+      <div id="health-bar"></div>
+    </div>
+
+    <div id="enemies">
+      <div class="sprite-enemie" onclick="selectEnemy(this);">
+        <div class="enemy-status-container">
+          <div class="enemy-block hidden"></div>
+          <div class="poison-status-enemy hidden"></div>
+          <div class="enemy-buff hidden"></div>
+        </div>
+
+        <div class="health-bar-container-enemy">
+          <div class="health-bar-enemy"></div>
+        </div>
+        <img class="enemy-icon" />
+        <div class="enemy-intent"></div>
+      </div>
+    </div>
+
+    <div id="energy-container">
+      <div id="energy-circle">
+        <span id="energy-text"></span>
+      </div>
+    </div>
+
+    <div id="equipped-relic-container"></div>
+
+    <div id="weapons-container"></div>
+
+    <div class="hidden" id="block-container">
+      <div id="block-circle">
+        <span id="block-text"></span>
+      </div>
+    </div>
+
+    <!-- Your Turn Again message -->
+    <div id="turn-message" style="display: none"></div>
+    <div id="playerGold">Gold:</div>
+
+    <button id="current-deck" class="orange-btn absolute-button">
+      Your Deck
+    </button>
+
+    <button id="end-turn-btn" class="orange-btn absolute-button">
+      End Turn
+    </button>
+
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn" class="orange-btn absolute-button">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <div id="battle-overlay">
+      <div class="overlay-content">
+        <h1>Click to start fight</h1>
+        <button id="start-fight-btn" class="absolute-button">
+          Start Fight
+        </button>
+      </div>
+    </div>
+
+    <div id="post-battle-screen" class="hidden">
+      <div id="headline-post-battle">Fight complete</div>
+      <div id="weapon-purchase-options">
+        <div id="weapon-1" class="weapon-option"></div>
+        <div id="weapon-2" class="weapon-option"></div>
+        <div id="weapon-3" class="weapon-option"></div>
+      </div>
+      <div>
+        <div id="upgrade-weapon-container">
+          <button
+            id="choose-weapon-upgrade-btn"
+            class="orange-btn absolute-button"
+          >
+            Upgrade weapon (30 Gold)
+          </button>
+
+          <div
+            id="upgrade-weapon-options"
+            onclick="weaponSelectedUpgrade(event);"
+          >
+            <select id="weapon-to-upgrade"></select>
+          </div>
+        </div>
+        <div id="heal-option">
+          <button
+            id="heal-btn"
+            class="orange-btn absolute-button"
+            onclick="healPlayer(this);"
+          >
+            Heal 30% HP (30 Gold)
+          </button>
+        </div>
+        <button id="close-post-battle" class="orange-btn absolute-button">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="tutorial-intro-overlay"
+      class="intro-overlay"
+      style="display: none"
+    >
+      <h2>Welcome to RogueKnight!</h2>
+      <p>In this tutorial, you'll learn the basics:</p>
+      <ul>
+        <li>
+          In the circle above the knight, you can see how much energy you have.
+        </li>
+        <li>
+          Hover over the weapons in the weapon bar to see how much energy using
+          this weapon costs.
+        </li>
+        <li>
+          click on the weapon to use it, sometimes you have to click the enemy
+          you want to hit afterwards.
+        </li>
+        <li>
+          Hover over the icons below the enemies to see what they will do in
+          their turn.
+        </li>
+        <li>
+          When you are done attacking or you don't have energy left, click on
+          the End Turn button.
+        </li>
+        <li>
+          Then the enemies perform their actions, your energy is refilled and
+          it's your turn again.
+        </li>
+        <li>Defeat all enemies to win the fight.</li>
+      </ul>
+      <button id="continue-fight" class="orange-btn absolute-button">
+        Got it!
+      </button>
+    </div>
+
+    <div id="actTransition" class="hidden">
+      <span> You have beaten the forest boss!<br /> </span>
+      <div class="sprite"></div>
+      <button id="act2" class="orange-btn">Go to the caves</button>
+    </div>
+
+    <button
+      class="orange-btn absolute-button"
+      id="lookAtMap"
+      onclick="openMap()"
+      style="
+        position: absolute;
+        bottom: 20px;
+        left: 93%;
+        z-index: 1001;
+        width: 150px;
+        height: 50px;
+      "
+      ;
+    >
+      View Map
+    </button>
+    <div
+      id="mapOverlay"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1501;
+      "
+    >
+      <iframe
+        id="mapFrame"
+        src="map.html"
+        style="
+          width: 80%;
+          height: 80%;
+          margin: 5% auto;
+          display: block;
+          border: 5px solid black;
+          border-radius: 12px;
+          z-index: 1501;
+        "
+      >
+      </iframe>
+      <button
+        class="orange-btn absolute-button"
+        id="closeLookAtMap"
+        onclick="closeMap()"
+        style="
+          position: absolute;
+          bottom: 20px;
+          left: 93%;
+          z-index: 1001;
+          width: 150px;
+          height: 50px;
+        "
+      >
+        Close Map
+      </button>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        displayEquippedRelics();
+
+        applyActVisuals();
+      });
+    </script>
+  </body>
+</html>

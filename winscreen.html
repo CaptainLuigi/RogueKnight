@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Winscreen</title>
+    <link rel="stylesheet" href="styleWinScreen.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
+    <script src="relics.js"></script>
+    <script src="enemie.js"></script>
+    <script src="utility.js"></script>
+    <script src="saveGame.js"></script>
+  </head>
+  <body>
+    <div>
+      <span>You won!</span>
+      <div class="sprite"></div>
+      <button id="backToMenu">Back to menu</button>
+    </div>
+    <script>
+      let playerSprite;
+      document.addEventListener("DOMContentLoaded", () => {
+        playerSprite = document.querySelector(".sprite");
+        resetToIdleAnimation();
+
+        document.getElementById("backToMenu").addEventListener("click", () => {
+          deleteProgressAndExit(true);
+        });
+      });
+    </script>
+  </body>
+</html>

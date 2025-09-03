@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Startscreen</title>
+    <link rel="stylesheet" href="stylestartscreen.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="saveGame.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="utility.js"></script>
+    <script src="player.js"></script>
+    <script src="music.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button onclick="closePauseMenu()">Close</button>
+    </div>
+
+    <div class="flex-container">
+      <h1 id="Title">RogueKnight</h1>
+      <button class="start-button" onclick="window.location.href='map.html'">
+        Play
+      </button>
+      <button
+        class="start-button"
+        onclick="globalSettings.setTutorial(); globalSettings.difficulty = 0; window.location.href='Tutorial.html'"
+      >
+        Tutorial
+      </button>
+
+      <button
+        class="start-button"
+        onclick="window.location.href='Credits.html'"
+      >
+        Credits
+      </button>
+    </div>
+
+    <div class="sprite"></div>
+
+    <div id="version">Version 1.0</div>
+
+    <div id="patchnotes">
+      <button onclick="window.location.href='patchnotes.html'">
+        Patchnotes
+      </button>
+    </div>
+
+    <script>
+      globalSettings.clearTutorial();
+      let frame = 0;
+      const playerSprite = document.querySelector(".sprite");
+
+      function getResponsiveConfig() {
+        const screenWidth = window.innerWidth;
+
+        if (screenWidth >= 1280) {
+          return {
+            image: "Assets/Knight_1/Run.png",
+            totalFrames: 7,
+            frameWidth: 200, // Width of each frame for running
+            backgroundSize: "1400px 200px", // Full sprite sheet size for running
+            frameDelay: 100,
+          };
+        } else if (screenWidth >= 1024) {
+          return {
+            image: "Assets/Knight_1/Run.png",
+            totalFrames: 7,
+            frameWidth: 150, // Width of each frame for running
+            backgroundSize: "1050px 150px", // Full sprite sheet size for running
+            frameDelay: 100,
+          };
+        } else {
+          return {
+            image: "Assets/Knight_1/Run.png",
+            totalFrames: 7,
+            frameWidth: 100, // Width of each frame for running
+            backgroundSize: "700px 100px", // Full sprite sheet size for running
+            frameDelay: 100,
+          };
+        }
+      }
+
+      let currentConfig = getResponsiveConfig(); // Start with the running animation
+      let spritePositionX = 0; // Initial position of the sprite
+      const spriteSpeed = 2; // Speed of the sprite movement
+      const switchPoint2 = 45;
+
+      function setSpriteConfig(config) {
+        playerSprite.style.backgroundImage = `url(${config.image})`;
+        playerSprite.style.backgroundSize = config.backgroundSize;
+      }
+
+      function animateSprite() {
+        // Calculate the x-offset for the current frame
+        const xOffset = -(frame * currentConfig.frameWidth);
+        playerSprite.style.backgroundPosition = `${xOffset}px 0`;
+
+        spritePositionX += spriteSpeed;
+        playerSprite.style.left = `${spritePositionX}%`;
+
+        // Switch to the idle animation if the sprite has reached the switch point
+        if (spritePositionX >= switchPoint2) {
+          resetToIdleAnimation();
+        }
+        // Use the delay from the current configuration
+        else setTimeout(animateSprite, currentConfig.frameDelay);
+
+        // Loop through frames
+        frame = (frame + 1) % currentConfig.totalFrames;
+      }
+
+      // Apply the initial running animation config and start the animation
+      setSpriteConfig(currentConfig);
+      animateSprite();
+    </script>
+  </body>
+</html>

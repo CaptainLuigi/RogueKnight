@@ -1,0 +1,289 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+body, button {
+    font-family: 'Pirata_One';
+
+}
+
+div {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#ShopBackground {
+    width: 100%;
+    height: 100vh;  
+    object-fit: cover;
+    position: absolute;    
+    margin-left: 0;
+    image-rendering: pixelated;
+}
+
+#WoodBackground {
+    width: 67vw;
+    height: 56vh;
+    z-index: 1;
+    position: absolute;
+    top: 12vh;
+    left: 10%;
+    border: 2px solid black;
+    border-radius: 10px;
+    image-rendering: pixelated;
+}
+
+@media (max-width: 1440px) {
+    #WoodBackground {
+        width: 63vw;
+    }
+}
+
+#WoodFloor {
+    width: 100%;
+    height: 2vh;
+    z-index: 1;
+    position: absolute;
+    top: 98%;
+}
+
+.container-order {
+    flex-direction: column;
+}
+
+.Shop-weapon {
+    width: 175px;
+    height: 175px;
+    background-color: rgba(214, 163, 21);
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 3;
+    image-rendering: pixelated;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+@media (max-width: 1440px) {
+   .Shop-weapon {
+    width: 155px;
+    height: 155px;
+   }
+}
+
+.weapon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+ .Shop-weapon-container {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 200px;
+    margin-right: 450px;
+    margin-top: 150px;
+ }
+
+ .Shop-relic {
+    width: 175px;
+    height: 175px;
+    background-color: rgba(214, 163, 21);
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    z-index: 3;
+    margin-top: 80px;
+}
+
+@media (max-width: 1440px) {
+    .Shop-relic {
+        width: 155px;
+        height: 155px;
+    }
+}
+
+ .Shop-relic-container {
+    display: flex;
+    justify-content: space-around;
+    margin-left: 200px;
+    margin-right: 450px;
+ }
+
+#Shop-removal {
+    z-index: 1;
+    width: 250px;
+    height: 100px;
+    position: fixed;
+    bottom: 150px;
+    left: 36.5%;
+    font-size: 32px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(235, 118, 9);
+    text-align: center;
+    cursor: pointer;
+}
+
+#close-post-battle {
+    z-index: 1;
+    width: 250px;
+    height: 100px;
+    position: fixed;
+    top: 11.5%;
+    left: 91%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(240, 26, 14);
+    text-align: center;
+    cursor: pointer;
+}
+
+@media (max-width: 1440px) {
+    #close-post-battle {
+        width: 200px;
+        height: 75px;
+    }
+}
+
+#speech-bubble {
+    position: fixed;
+    top: 25%;
+    left: 90%;
+    transform: translateX(-50%);
+    background-color: white;
+    color: black;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 24px;
+    width: 350px;
+    display: none;
+    z-index: 1200;
+    text-align: center;
+    border: 2px solid black;
+}
+
+@media (max-width: 1440px) {
+    #speech-bubble {
+        top: 22%;
+        left: 87%;
+    }
+}
+
+#speech-bubble:has(> .visible) {
+    display: block;
+}
+
+#weapon-info {
+    font-size: 24px;
+    
+}
+
+#playerGold {
+    position: absolute;
+    top: 20px;
+    left: 90vw;
+    color: gold;
+    z-index: 1100;
+    font-size: 36px;
+}
+
+#Shopkeeper {
+    width: 96px;
+    height: 80px;
+    background-image: url(Assets/BLACKSMITHv2.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: 672px 96px;
+    top: 70%;
+    left: 83%;
+    z-index: 1100;
+    image-rendering: pixelated;
+    transform: scale(5.5);
+}
+
+img.weapon-image {
+    width: 150px;
+    height: 150px;
+    box-sizing: border-box;
+}
+
+.Shop-weapon img.weapon-image {
+    padding: 10px;
+}
+
+@media (max-width: 1440px) {
+    .Shop-weapon img.weapon-image {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+.Shop-relic img {
+    width: 150px;
+    height: 150px;
+}
+
+@media (max-width: 1440px) {
+    .Shop-relic img {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+#weapon-list .weapon .weapon-image {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    padding: 5px;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
+.tooltip {
+    position: absolute;
+    top: -100%; /* Vertically center it */
+    left: 50%; /* Horizontally center it */
+    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background */
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
+    z-index: 10; /* Ensure the tooltip appears above other elements */
+    font-size: 24px;
+    width: 250px; /* Set width for the tooltip */
+}
+
+#weapon-info.tooltip.visible {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    color: black;
+    background-color: transparent;
+    position: relative;
+    position: initial;
+    transform: unset;
+    box-shadow: none;
+    width: unset;
+}
+
+.sold {
+    pointer-events: none;
+}
