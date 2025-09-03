@@ -283,7 +283,7 @@ function enterLocation(button) {
 
   if (active.type == "questionmark") {
     triggerRandomEvent();
-  } else if (active.type == "skull") window.location.href = "./tutorial.html";
+  } else if (active.type == "skull") window.location.href = "./Tutorial.html";
   else if (active.type == "shop") window.location.href = "./Shop.html";
   else if (active.type == "chest") openChest();
   else if (active.type == "elite") {
@@ -459,11 +459,11 @@ function startEliteFight() {
   globalSettings.difficulty = globalSettings.currentAct === 2 ? 18 : 8;
   globalSettings.relicGroup = "elite";
   globalSettings.redirectToChest = true;
-  window.location.href = "tutorial.html";
+  window.location.href = "Tutorial.html";
 }
 
 function startNormalFight() {
-  window.location.href = "./tutorial.html";
+  window.location.href = "./Tutorial.html";
 }
 
 function openChest() {

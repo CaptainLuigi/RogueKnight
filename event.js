@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
           globalSettings.difficulty = 9;
           globalSettings.relicGroup = "succubus";
           globalSettings.redirectToChest = true;
-          window.location.href = "tutorial.html";
+          window.location.href = "Tutorial.html";
         });
     });
   }
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
         globalSettings.difficulty = 19;
         globalSettings.relicGroup = "elite";
         globalSettings.redirectToChest = true;
-        window.location.href = "tutorial.html";
+        window.location.href = "Tutorial.html";
       });
   }
 
