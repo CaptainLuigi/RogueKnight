@@ -68,7 +68,7 @@ body {
     image-rendering: pixelated;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 1024px) {
     .sprite {
         width: 150px;
         height: 150px;

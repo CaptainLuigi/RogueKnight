@@ -76,6 +76,12 @@ html, body {
     image-rendering: pixelated;
 }
 
+@media (min-width: 2560px) {
+    .sprite {
+        top: 550px;
+    }
+}
+
 #playerGold {
     position: absolute;
     top: 20px;
@@ -97,6 +103,12 @@ html, body {
     z-index: 4;
 }
 
+@media (min-width: 2560px) {
+    #health-bar-container-player {
+        top: 550px;
+    }
+}
+
 #health-bar span {
     position: absolute; /* Position the text */
     top: 50%; /* Vertically center the text */
@@ -114,16 +126,6 @@ html, body {
     transition: width 0.3s ease; /* Smooth transition for changes */
     z-index: 6;
 
-}
-
-.weapon-image {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    padding: 5px;
-    border: 3px solid black;
-    border-radius: 5px;
-    image-rendering: pixelated;
 }
 
 .tooltip {

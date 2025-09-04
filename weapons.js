@@ -2599,6 +2599,19 @@ function displayWeapons(
       showUpgradePreview
     );
 
+    const weaponInner = document.createElement("div");
+    weaponInner.classList.add("weapon-inner");
+    weaponInner.style.position = "relative";
+
+    const costElement = document.createElement("div");
+    costElement.classList.add("weapon-cost");
+    costElement.innerText = weapon.energy;
+
+    weaponInner.appendChild(costElement);
+    weaponInner.appendChild(weaponElement);
+
+    weaponsContainer.appendChild(weaponInner);
+
     if (weapon.wasUsed) {
       weaponElement.classList.add("used");
     }

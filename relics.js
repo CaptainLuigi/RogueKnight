@@ -176,7 +176,7 @@ const relicList = [
     "Omnipotence",
     "Assets/blackHole.png",
     omnipotence,
-    "Actions don't cost Energy, but -70% max HP.",
+    "Max Energy is increased by 3, but -70% max HP.",
     "elite",
     175
   ),
@@ -229,7 +229,7 @@ const relicList = [
     "elite",
     125
   ),
-  new Relics(
+  new ActiveRelics(
     "Stonewall Totem",
     "Assets/stonewallTotem.png",
     stonewallTotem,
@@ -442,9 +442,9 @@ const relicList = [
   ),
   new Relics(
     "Critterbite",
-    "Assets/Sword.png",
+    "Assets/critterbite.png",
     () => {},
-    "Whenever you deal critical damage, apply 5 Poison to the first enemy.",
+    "Whenever you hit a crit, apply 5 Poison to the first enemy.",
     "chest",
     100
   ),
@@ -464,11 +464,11 @@ const relicList = [
     "chest",
     75
   ),
-  new Relics(
+  new ActiveRelics(
     "Reservoir Lotus",
-    "Assets/Sword.png",
+    "Assets/reservoirLotus.png",
     reservoirLotus,
-    "Heal 1HP for each unspent Energy at the end of your turn.",
+    "Heal 5 HP for each unspent Energy at the end of your turn.",
     "chest",
     100
   ),
@@ -509,8 +509,9 @@ function reservoirLotus(player, relicObject) {
     let unusedEnergy = 0;
     unusedEnergy = player.energy;
     if (unusedEnergy > 0) {
-      event.detail.eventQueue = event.detail.eventQueue.then(() => {
-        return player.heal(unusedEnergy);
+      event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+        player.heal(unusedEnergy * 5);
+        await wait(400);
       });
     }
 
@@ -534,8 +535,9 @@ function overchargedCore(player, relicObject) {
     player.increaseMaxEnergy(1);
   }
   window.addEventListener("EndTurn", (event) => {
-    event.detail.eventQueue = event.detail.eventQueue.then(() => {
-      return player.takeDamage(3).then(() => wait(300));
+    event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+      player.takeDamage(3);
+      await wait(400);
     });
   });
 }
@@ -824,7 +826,7 @@ function brambleMantle(player) {
 }
 
 function omnipotence(player) {
-  player.setWeaponEnergy(0);
+  player.increaseMaxEnergy(3);
   player.decreaseMaxHealth(Math.floor(player.maxHealth * 0.7));
 }
 
