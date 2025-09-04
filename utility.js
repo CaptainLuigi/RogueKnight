@@ -41,7 +41,7 @@ function closePauseMenu() {
 
 function saveAndExit() {
   player.savePlayerToStorage();
-  window.location.href = "startscreen.html";
+  window.location.href = "index.html";
 }
 
 function deleteProgressAndExit(exit = true) {
@@ -73,7 +73,7 @@ function deleteProgressAndExit(exit = true) {
   globalSettings.currentAct = 1;
 
   if (exit === true) {
-    window.location.href = "startscreen.html";
+    window.location.href = "index.html";
   }
 }
 
