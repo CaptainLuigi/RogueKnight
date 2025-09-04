@@ -339,7 +339,7 @@ const relicList = [
     "chest",
     75
   ),
-  new Relics(
+  new ActiveRelics(
     "Curse of the plague",
     "Assets/curseOfThePlague.png",
     curseOfThePlague,
