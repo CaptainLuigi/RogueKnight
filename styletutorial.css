@@ -39,6 +39,12 @@ html, body {
     }
 }
 
+@media (min-width: 2560px) {
+    .sprite-player {
+        top: 550px;
+    }
+}
+
 .sprite-enemie {
     --base-scale: 1;
     height: fit-content;
@@ -123,6 +129,12 @@ height: 0;
     top: 450px;
     left: 18%;
     z-index: 4;
+}
+
+@media (min-width: 2560px) {
+    #health-bar-container-player {
+        top: 550px;
+    }
 }
 
 @media (max-width: 1440px) {
@@ -225,9 +237,14 @@ height: 0;
     width: auto;
     height: auto; /* Ensure the container's height is properly adjusted */
     overflow: visible;
+    justify-content: center;
 }
 
-
+@media (min-width: 1440px) {
+    #weapons-container {
+        gap: 10px;
+    }
+}
 
 .weapon {
     position: static; /* removes the positioning context */
@@ -235,31 +252,22 @@ height: 0;
     cursor: pointer;
 }
 
-
 .weapon:hover {
     z-index: 10;
 }
 
-.weapon-image {
-    width: 75px;
-    height: 75px;
-    object-fit: contain;
-    padding: 5px;
-    border: 3px solid black;
-    border-radius: 5px;
-    image-rendering: pixelated;
-}
-
 .tooltip {
-    position: absolute;
+    position: fixed;
     left: 50%;
     transform: translateX(-50%);
 }
 
-#weapon-deck-container .tooltip,
-#upgrade-weapon-options .tooltip
-{
+#weapon-deck-container .tooltip {
     bottom: 110%;
+} 
+
+#upgrade-weapon-options .tooltip {
+    top: 20px;
 }
 
 #weapon-purchase-options .tooltip {
@@ -277,8 +285,6 @@ height: 0;
     left: 50%;
     transform: translateX(-50%);
 }
-
-
 
 .enemy-intent-tooltip {
     position: absolute;
@@ -366,7 +372,6 @@ height: 0;
     right: -100px;
 }
 
-
 #energy-container {
     position: absolute;
     top: 400px; /* Position it above the health bar */
@@ -383,6 +388,13 @@ height: 0;
     #energy-container {
         top: 350px;
         left: 23.5%;
+    }
+}
+
+@media (min-width: 2560px) {
+    #energy-container {
+        top: 500px;
+        left: 21.5%;
     }
 }
 
@@ -467,7 +479,6 @@ height: 0;
 }
 
 #end-turn-btn {
-
     position: absolute;
     width: 100px;
     height: 50px;
@@ -475,8 +486,6 @@ height: 0;
     left: 85%;
     z-index: 1000;
 }
-
-
 
 .highlight {
     border: 2px solid #ffcc00;
@@ -496,10 +505,16 @@ height: 0;
     display: none;
 }
 
-#weapon-deck-container .weapon.used {
+#weapon-deck-container .weapon.used .weapon-image{
     background-color: #d3d3d3;
 }
 
+/* @media (max-width: 1440px) {
+    #weapon-deck-container .weapon.used {
+      height: 76px;
+      width: 76px;
+    }
+} */
 
 #post-battle-screen {
     position: fixed;
@@ -524,9 +539,7 @@ height: 0;
     border-radius: 10px;
     position: relative;
     cursor: pointer;
-
 }
-
 
 #weapon-purchase-options {
     position: relative; 
@@ -594,7 +607,6 @@ height: 0;
     position: absolute;
     width: 270px;
     z-index: 900;
-    
     justify-content: center;
     align-items: center;
     display: flex;
@@ -612,6 +624,12 @@ height: 0;
     }
 }
 
+@media (min-width: 2560px) {
+    #heal-btn {
+        top: 60%;
+    }
+}
+
 #close-post-battle {
     top: 80%; 
     width: 270px;
@@ -625,10 +643,16 @@ height: 0;
     margin-bottom: 5px;
 }
 
+@media (max-width: 1440px) {
+    #upgrade-weapon-options .weapon {
+      height: 60px;
+      width: 60px;
+    }
+}
+
 button:disabled {
     background-color: darkgrey !important;
 }
-
 
 .enemy-intent {
     display: block;
@@ -828,6 +852,12 @@ button:disabled {
     transform-origin: center center;
     margin-top: 100px;
     margin-bottom: 100px;
+}
+
+@media (min-width: 2560px) {
+    #actTransition .sprite {
+        right: 2%;
+    }
 }
 
 #actTransition span {

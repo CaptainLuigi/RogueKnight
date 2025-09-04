@@ -212,7 +212,7 @@ function setButtonData(button, data) {
   } else if (data.type === "skull") {
     imageTag = '<img src="Assets/skull.png" alt="Skull" />';
   } else if (data.type === "chest") {
-    imageTag = '<img src="Assets/chest.png" alt="Chest" />';
+    imageTag = '<img src="Assets/Chest.png" alt="Chest" />';
   }
 
   button.innerHTML = imageTag;

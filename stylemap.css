@@ -138,6 +138,13 @@ body > * {
     border-radius: 50%;
 }
 
+@media (max-width: 1440px) {
+    .next {
+      height: 70px;
+      width: 70px;
+    }
+}
+
 .current-location {
   height: 80px;
   width: 80px;
@@ -145,11 +152,11 @@ body > * {
   border-radius: 50%;
 }
 
-@media (min-width: 1024px) {
-    .next {
-      height: 70px;
-      width: 70px;
-    }
+@media (max-width: 1440px) {
+  .current-location {
+    height: 70px;
+    width: 70px;
+  }
 }
 
 #playerGold {
@@ -159,16 +166,6 @@ body > * {
   color: gold;
   z-index: 1100;
   font-size: 36px;
-}
-
-.weapon-image {
-  width: 75px;
-  height: 75px;
-  object-fit: contain;
-  padding: 5px;
-  border: 3px solid black;
-  border-radius: 5px;
-  image-rendering: pixelated;
 }
 
 .tooltip {

@@ -45,5 +45,7 @@ wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswä
 
 upgrade weapon options remove, wenn alle waffen max lvl
 
-wahrscheinlichkeit verschiedener enemy intends anpassen
+tooltip bei kleinerem screen überprüfen
+
+sprite für raging dagger einbauen
 */

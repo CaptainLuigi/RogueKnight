@@ -31,6 +31,7 @@ class Enemy extends HealthEntity {
   #display;
   #nextAction = "";
   #possibleActions = [];
+  #actionWeights;
 
   get icon() {
     return this.#icon;
@@ -151,6 +152,14 @@ class Enemy extends HealthEntity {
     return this.#tripleStrike > 0;
   }
 
+  setActionWeights(weights) {
+    for (const [action, weight] of Object.entries(weights)) {
+      if (this.#actionWeights.hasOwnProperty(action)) {
+        this.#actionWeights[action] = weight;
+      }
+    }
+  }
+
   constructor(
     name,
     maxHealth,
@@ -190,6 +199,18 @@ class Enemy extends HealthEntity {
     this.#weakenPlayer = weakenPlayer;
     this.#doubleStrike = doubleStrike;
     this.#tripleStrike = tripleStrike;
+    this.#actionWeights = {
+      attack: 1,
+      block: 1,
+      poison: 1,
+      healAll: 1,
+      buffAll: 1,
+      shieldAll: 1,
+      canSummon: 1,
+      weakenPlayer: 1,
+      doubleStrike: 1,
+      tripleStrike: 1,
+    };
     this.updateDisplay();
     Enemy.#enemyDisplay.appendChild(this.#display);
     enemies.push(this);
@@ -249,8 +270,23 @@ class Enemy extends HealthEntity {
       );
     }
 
-    let actionIndex = Math.floor(Math.random() * availableActions.length);
-    this.#nextAction = availableActions[actionIndex];
+    let weightedActions = availableActions.map((action) => ({
+      action,
+      weight: this.#actionWeights[action] || 0,
+    }));
+
+    const totalWeight = weightedActions.reduce((sum, a) => sum + a.weight, 0);
+    if (totalWeight === 0) return;
+
+    let rand = Math.random() * totalWeight;
+    for (let { action, weight } of weightedActions) {
+      if (rand < weight) {
+        this.#nextAction = action;
+        break;
+      }
+      rand -= weight;
+    }
+
     this.updateDisplay();
   }
 
@@ -466,7 +502,10 @@ class Enemy extends HealthEntity {
       await wait(400);
       updateHealthBar(player);
       this.#display.classList.remove("grow-shrink");
-      await wait(400);
+
+      if (i < times - 1) {
+        await wait(400);
+      }
     }
   }
 
@@ -561,8 +600,8 @@ class Enemy extends HealthEntity {
       return;
     }
 
-    intentElement.style.display = "block";
-    intentElement.style.visibility = "visible";
+    // intentElement.style.display = "block";
+    // intentElement.style.visibility = "visible";
 
     const actionMap = {
       attack: `<img src="Assets/swordsEmoji.png"/> ${this.#attackPower}`,
@@ -583,7 +622,16 @@ class Enemy extends HealthEntity {
       }`,
     };
 
-    intentElement.innerHTML = actionMap[this.#nextAction] || "";
+    // intentElement.innerHTML = actionMap[this.#nextAction] || "";
+
+    const html = actionMap[this.#nextAction];
+
+    if (html) {
+      intentElement.innerHTML = html;
+      intentElement.style.visibility = "visible";
+    } else {
+      intentElement.style.visibility = "hidden";
+    }
 
     console.log(
       `Enemy ${this.name} intent: ${this.#nextAction} - ${
@@ -831,6 +879,12 @@ class Snail extends Enemy {
       3,
       0
     );
+
+    this.setActionWeights({
+      attack: 25,
+      block: 50,
+      doubleStrike: 25,
+    });
   }
 }
 
@@ -842,7 +896,29 @@ class SadShroom extends Enemy {
 
 class BiteShroom extends Enemy {
   constructor() {
-    super("Bite Shroom", 250, 10, "Assets/Transperent/Icon7.png", true);
+    super(
+      "Bite Shroom",
+      250,
+      10,
+      "Assets/Transperent/Icon7.png",
+      true,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      4
+    );
+
+    this.setActionWeights({
+      attack: 25,
+      tripleStrike: 25,
+      block: 50,
+    });
   }
 }
 
@@ -878,7 +954,29 @@ class BitingPlant extends Enemy {
 
 class SlimeHive extends Enemy {
   constructor() {
-    super("Slime Hive", 500, 3, "Assets/Transperent/Icon23.png", false, 0, 25);
+    super(
+      "Slime Hive",
+      400,
+      3,
+      "Assets/Transperent/Icon23.png",
+      false,
+      0,
+      25,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      3
+    );
+
+    this.setActionWeights({
+      attack: 40,
+      block: 50,
+      tripleStrike: 10,
+    });
     this.display.classList.add("biggerEnemy");
   }
 }
@@ -891,7 +989,31 @@ class Mantis extends Enemy {
 
 class Hornet extends Enemy {
   constructor() {
-    super("Hornet", 150, 13, "Assets/Transperent/Icon42.png", true, 0, 15, 3);
+    super(
+      "Hornet",
+      150,
+      13,
+      "Assets/Transperent/Icon42.png",
+      true,
+      0,
+      15,
+      3,
+      0,
+      0,
+      0,
+      false,
+      0,
+      7,
+      4
+    );
+
+    this.setActionWeights({
+      attack: 20,
+      doubleStrike: 10,
+      tripleStrike: 10,
+      poison: 10,
+      block: 50,
+    });
   }
 }
 
@@ -909,8 +1031,20 @@ class EvilKnight extends Enemy {
       0,
       0,
       0,
-      true
+      true,
+      0,
+      15,
+      12
     );
+
+    this.setActionWeights({
+      attack: 10,
+      shield: 10,
+      canSummon: 15,
+      block: 45,
+      doubleStrike: 10,
+      tripleStrike: 10,
+    });
     this.display.classList.add("biggestEnemy");
   }
   summon() {
@@ -957,6 +1091,13 @@ class Succubus extends Enemy {
       8,
       6
     );
+    this.setActionWeights({
+      block: 40,
+      attack: 15,
+      weakenPlayer: 15,
+      doubleStrike: 15,
+      tripleStrike: 15,
+    });
     this.display.classList.add("biggerEnemy");
   }
 }
@@ -988,7 +1129,29 @@ class TreeSlime extends Enemy {
 
 class Amalgam extends Enemy {
   constructor() {
-    super("Amalgam", 350, 10, "Assets/Transperent/Icon25.png", false, 0, 25);
+    super(
+      "Amalgam",
+      350,
+      10,
+      "Assets/Transperent/Icon25.png",
+      false,
+      0,
+      25,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      2,
+      1
+    );
+    this.setActionWeights({
+      block: 50,
+      attack: 30,
+      doubleStrike: 10,
+      trippleStrike: 10,
+    });
     this.display.classList.add("biggerEnemy");
   }
 }
@@ -1010,6 +1173,12 @@ class Cleric extends Enemy {
       false,
       3
     );
+    this.setActionWeights({
+      block: 45,
+      attack: 15,
+      healAll: 20,
+      weakenPlayer: 20,
+    });
     this.display.classList.add("bigEnemy");
   }
 }
@@ -1018,6 +1187,11 @@ class Druid extends Enemy {
   constructor() {
     const randomBuffAmount = getRandomIntInclusive(1, 3);
     super("Druid", 150, 2, "Assets/enemyDruid.png", true, 0, 10, 0, 0, 2);
+    this.setActionWeights({
+      block: 45,
+      attack: 25,
+      buffAll: 30,
+    });
     this.display.classList.add("bigEnemy");
   }
 }
@@ -1038,6 +1212,11 @@ class CrystalMage extends Enemy {
       0,
       10
     );
+    this.setActionWeights({
+      block: 45,
+      attack: 25,
+      shieldAll: 30,
+    });
     this.display.classList.add("bigEnemy");
   }
 }
@@ -1062,6 +1241,14 @@ class MasterMage extends Enemy {
       false,
       2
     );
+    this.setActionWeights({
+      block: 50,
+      attack: 10,
+      healAll: 10,
+      shieldAll: 10,
+      buffAll: 10,
+      weakenPlayer: 10,
+    });
     this.display.classList.add("bigEnemy");
   }
 }
@@ -1119,6 +1306,11 @@ class Necromancer extends Enemy {
       0,
       true
     );
+    this.setActionWeights({
+      block: 35,
+      canSummon: 50,
+      attack: 15,
+    });
     this.display.classList.add("bigEnemy");
   }
 
@@ -1153,7 +1345,7 @@ class SpiderBoss extends Enemy {
       "Assets/spiderBoss.png",
       true,
       0,
-      100,
+      150,
       0,
       0,
       0,
@@ -1161,6 +1353,12 @@ class SpiderBoss extends Enemy {
       true,
       5
     );
+    this.setActionWeights({
+      block: 50,
+      canSummon: 20,
+      attack: 15,
+      weakenPlayer: 15,
+    });
     this.display.classList.add("biggestEnemy");
   }
   summon() {
@@ -1190,7 +1388,7 @@ class RatKing extends Enemy {
     super(
       "Rat King",
       2500,
-      15,
+      25,
       "Assets/ratKing.png",
       true,
       0,
@@ -1201,6 +1399,11 @@ class RatKing extends Enemy {
       0,
       true
     );
+    this.setActionWeights({
+      block: 35,
+      attack: 25,
+      canSummon: 40,
+    });
     this.display.classList.add("biggestEnemy");
   }
   summon() {
@@ -1297,12 +1500,12 @@ class Rat extends Enemy {
     super(
       "Rat",
       550,
-      11,
+      15,
       "Assets/Transperent2/Icon18.png",
       true,
       0,
       27,
-      3,
+      0,
       0,
       0,
       0,
@@ -1320,12 +1523,12 @@ class RatSummon extends Enemy {
     super(
       "Rat",
       550,
-      11,
+      15,
       "Assets/Transperent2/Icon18.png",
       true,
       0,
       27,
-      3,
+      0,
       0,
       0,
       0,
@@ -1352,6 +1555,11 @@ class Spider extends Enemy {
       0,
       false
     );
+    this.setActionWeights({
+      block: 30,
+      attack: 30,
+      poison: 40,
+    });
   }
 }
 
@@ -1374,6 +1582,11 @@ class SpiderSummon extends Enemy {
       0,
       false
     );
+    this.setActionWeights({
+      block: 30,
+      attack: 30,
+      poison: 40,
+    });
     this.isSummoned = true;
     this.display.classList.add("dark-cave-effect");
   }
@@ -1459,8 +1672,15 @@ class MediumGolem extends Enemy {
       0,
       0,
       0,
-      false
+      false,
+      0,
+      15
     );
+    this.setActionWeights({
+      block: 45,
+      attack: 25,
+      doubleStrike: 30,
+    });
     this.display.classList.add("bigEnemy");
     this.display.classList.add("dark-cave-effect");
   }
@@ -1505,8 +1725,17 @@ class BigGolem extends Enemy {
       0,
       0,
       0,
-      false
+      false,
+      0,
+      25,
+      20
     );
+    this.setActionWeights({
+      block: 40,
+      attack: 20,
+      doubleStrike: 20,
+      tripleStrike: 20,
+    });
     this.display.classList.add("biggestEnemy");
   }
 

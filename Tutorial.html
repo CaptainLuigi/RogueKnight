@@ -178,8 +178,8 @@
           In the circle above the knight, you can see how much energy you have.
         </li>
         <li>
-          Hover over the weapons in the weapon bar to see how much energy using
-          this weapon costs.
+          Above the weapons is displayed how much Energy using this weapon
+          costs. Hover over the weapon for more information.
         </li>
         <li>
           click on the weapon to use it, sometimes you have to click the enemy
@@ -214,30 +214,10 @@
       class="orange-btn absolute-button"
       id="lookAtMap"
       onclick="openMap()"
-      style="
-        position: absolute;
-        bottom: 20px;
-        left: 93%;
-        z-index: 1001;
-        width: 150px;
-        height: 50px;
-      "
-      ;
     >
       View Map
     </button>
-    <div
-      id="mapOverlay"
-      style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1501;
-      "
-    >
+    <div id="mapOverlay">
       <iframe
         id="mapFrame"
         src="map.html"
@@ -256,14 +236,6 @@
         class="orange-btn absolute-button"
         id="closeLookAtMap"
         onclick="closeMap()"
-        style="
-          position: absolute;
-          bottom: 20px;
-          left: 93%;
-          z-index: 1001;
-          width: 150px;
-          height: 50px;
-        "
       >
         Close Map
       </button>

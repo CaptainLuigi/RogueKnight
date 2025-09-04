@@ -2175,7 +2175,7 @@ class RagingDagger extends Weapons {
       60,
       0,
       "Can only target the first enemy, click to gain strength and instantly use weapon. Can only be used once per battle.",
-      "Assets/Sword.png",
+      "Assets/sword.png",
       false,
       0,
       0,
@@ -2598,6 +2598,19 @@ function displayWeapons(
       null,
       showUpgradePreview
     );
+
+    const weaponInner = document.createElement("div");
+    weaponInner.classList.add("weapon-inner");
+    weaponInner.style.position = "relative";
+
+    const costElement = document.createElement("div");
+    costElement.classList.add("weapon-cost");
+    costElement.innerText = weapon.energy;
+
+    weaponInner.appendChild(costElement);
+    weaponInner.appendChild(weaponElement);
+
+    weaponsContainer.appendChild(weaponInner);
 
     if (weapon.wasUsed) {
       weaponElement.classList.add("used");
