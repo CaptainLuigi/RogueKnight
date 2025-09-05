@@ -102,7 +102,7 @@ const relicList = [
   ),
   new ActiveRelics(
     "Sanguine Blessing",
-    "Assets/sanguineBlessing.png",
+    "Assets/SanguineBlessing.png",
     sanguineBlessing,
     "Heal 3 HP for every enemy killed.",
     "chest",

@@ -231,8 +231,14 @@ div {
 
 @media (min-width: 2560px) {
     #Shopkeeper {
-        top: 75%;
-        
+        top: 75%;  
+    }
+}
+
+@media (max-width: 1440px) {
+    #Shopkeeper {
+        top: 72%;
+        transform: scale(4.5);
     }
 }
 
@@ -274,6 +280,13 @@ img.weapon-image {
     image-rendering: pixelated;
 }
 
+@media (max-width: 1440px) {
+    #weapon-list .weapon .weapon-image {
+        height: 75px;
+        width: 75px;
+    }
+
+}
 
 .tooltip {
     position: absolute;

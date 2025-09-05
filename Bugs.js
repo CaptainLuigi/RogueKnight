@@ -47,4 +47,5 @@ upgrade weapon options remove, wenn alle waffen max lvl
 
 tooltip bei kleinerem screen überprüfen
 
+sprite für raging dagger einbauen
 */

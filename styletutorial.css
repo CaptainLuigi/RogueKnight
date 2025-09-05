@@ -35,7 +35,7 @@ html, body {
 
 @media (max-width: 1440px) {
     .sprite-player {
-        top: 400px;
+        top: 375px;
     }
 }
 
@@ -139,7 +139,7 @@ height: 0;
 
 @media (max-width: 1440px) {
     #health-bar-container-player {
-        top: 400px;
+        top: 375px;
     }
 }
 
@@ -386,7 +386,7 @@ height: 0;
 
 @media (max-width: 1440px) {
     #energy-container {
-        top: 350px;
+        top: 325px;
         left: 23.5%;
     }
 }
@@ -434,7 +434,7 @@ height: 0;
 
 @media (max-width: 1440px) {
     #block-container {
-        top: 350px;
+        top: 325px;
         left: 27%;
     }
 }
@@ -452,6 +452,13 @@ height: 0;
     font-weight: bold;  /* Make the number bold */
     border: 2px solid black;
     box-sizing: border-box;
+}
+
+@media (min-width: 2560px) {
+    #block-container {
+        top: 500px;
+        left: 23.5%;
+    }
 }
 
 #block-text {
@@ -476,6 +483,12 @@ height: 0;
     gap: 15px;
     transition: transform 1s ease-out;
     image-rendering: pixelated;
+}
+
+@media (max-width: 1440px) {
+    #enemies {
+        top: 53%;
+    }
 }
 
 #end-turn-btn {
@@ -620,7 +633,7 @@ height: 0;
 
 @media (max-width: 1440px) {
     #heal-btn {
-      top: 67%;
+      top: 67.5%;
     }
 }
 
