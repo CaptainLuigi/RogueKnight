@@ -49,6 +49,11 @@
         display: block;
         box-sizing: border-box;
     }
+
+    #weapon-list > .weapon-inner{
+        height: 90px;
+        width: 90px;
+    }
 }
 
 
