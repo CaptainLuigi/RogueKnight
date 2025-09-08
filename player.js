@@ -416,7 +416,28 @@ class Player extends HealthEntity {
 
   applyPoisonDamage() {
     if (this.#currentPoison > 0) {
-      const poisonDamage = this.#currentPoison;
+      let poisonDamage = this.#currentPoison;
+
+      if (player.equippedRelics.includes("Alchemist Shield")) {
+        const blockText = document.getElementById("block-text");
+        const blockContainer = document.getElementById("block-container");
+
+        let currentBlock = parseInt(blockText.innerText) || 0;
+
+        if (currentBlock > 0) {
+          let blockUsed = Math.min(currentBlock, poisonDamage);
+
+          poisonDamage -= blockUsed;
+          currentBlock -= blockUsed;
+
+          blockText.innerText = currentBlock;
+
+          if (currentBlock <= 0) {
+            blockContainer.classList.add("hidden");
+          }
+        }
+      }
+
       this.takeDamage(poisonDamage);
       this.#currentPoison = Math.max(this.#currentPoison - 1, 0);
       this.updatePoisonDisplay();

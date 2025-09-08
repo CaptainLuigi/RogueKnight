@@ -82,7 +82,7 @@ const relicList = [
     grindingMonstera,
     "Get +1 max HP for every non-summon enemy killed.",
     "elite",
-    100
+    125
   ),
   new ActiveRelics(
     "Executioner's Mark",
@@ -289,7 +289,7 @@ const relicList = [
     "Curse of Continuity",
     "Assets/CurseOfContinuity.png",
     curseOfContinuity,
-    "Carry over up to 3 unused Energy to the next turn. Each carried over Energy does 1 damage to you.",
+    "Carry over up to 3 unused Energy to the next turn. Each carried over Energy does 1 damage to you at the end of your turn.",
     "elite",
     150
   ),
@@ -331,7 +331,7 @@ const relicList = [
     "elite",
     150
   ),
-  new Relics(
+  new ActiveRelics(
     "Vengeful Echo",
     "Assets/vengefulEcho.png",
     vengefulEcho,
@@ -355,7 +355,7 @@ const relicList = [
     "chest",
     100
   ),
-  new Relics(
+  new ActiveRelics(
     "Berserkers Rush",
     "Assets/peakCondition.png",
     berserkersRush,
@@ -472,6 +472,14 @@ const relicList = [
     "chest",
     100
   ),
+  new Relics(
+    "Alchemist Shield",
+    "Assets/alchemistShield.png",
+    () => {},
+    "You can block Poison.",
+    "chest",
+    100
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -520,13 +528,19 @@ function reservoirLotus(player, relicObject) {
 }
 
 function berserkersRush(player, relicObject) {
-  window.addEventListener("EndTurn", (event) => {
+  const applyBerserkersRush = async () => {
     if (player.health <= 35) {
-      event.detail.eventQueue = event.detail.eventQueue.then(async () => {
-        player.increaseStrength(5);
-        player.updateStrengthDisplay();
-      });
+      player.increaseStrength(5);
+      player.updateStrengthDisplay();
     }
+  };
+
+  window.addEventListener("StartFight", async () => {
+    await applyBerserkersRush();
+  });
+
+  window.addEventListener("StartSecondTurn", async () => {
+    await applyBerserkersRush();
   });
 }
 
