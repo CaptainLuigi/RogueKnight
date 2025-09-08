@@ -238,7 +238,8 @@ class Weapons {
 
     const displayTargets = [];
     for (let index = this.#minRange; index <= this.#maxRange; index++) {
-      if (!enemies[index]?.isDead?.()) {
+      const enemy = enemies[index];
+      if (enemy && !enemy.isDead()) {
         displayTargets.push(index);
       }
     }

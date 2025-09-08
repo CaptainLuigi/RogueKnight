@@ -26,6 +26,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add the event listener to the "End Turn" button
   document.getElementById("end-turn-btn").addEventListener("click", endTurn);
 
+  document.addEventListener("keydown", (event) => {
+    if (event.code === "Space") {
+      event.preventDefault();
+      const endTurnBtn = document.getElementById("end-turn-btn");
+      if (endTurnBtn && !endTurnBtn.disabled) {
+        endTurn();
+      }
+    }
+  });
+
   updatePlayerGold(0);
   updateHealthBar(player);
   updateEnergyDisplay(player);
@@ -78,6 +88,66 @@ document.addEventListener("DOMContentLoaded", function () {
           document.getElementById("tutorial-intro-overlay").style.display =
             "none";
         });
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!isPlayerTurn) return;
+
+    // Handle spacebar to end turn
+    if (event.code === "Space") {
+      event.preventDefault();
+      const endTurnBtn = document.getElementById("end-turn-btn");
+      if (endTurnBtn && !endTurnBtn.disabled) {
+        endTurn();
+      }
+      return;
+    }
+
+    // Enemy selection mode
+    if (activeWeaponForTargeting !== null) {
+      const weapon = player.hand[activeWeaponForTargeting];
+      if (!weapon) {
+        activeWeaponForTargeting = null;
+        clearSelection();
+        return;
+      }
+
+      const validTargets = weapon.possibleTargets();
+      if (!validTargets || validTargets.length === 0) {
+        activeWeaponForTargeting = null;
+        clearSelection();
+        return;
+      }
+
+      let enemyIndex =
+        event.key >= "1" && event.key <= "9"
+          ? parseInt(event.key, 10) - 1
+          : null;
+      if (enemyIndex === null) return;
+
+      if (validTargets.includes(enemyIndex)) {
+        event.preventDefault();
+        executeAttack(weapon, enemyIndex).then(() => {
+          activeWeaponForTargeting = null;
+          clearSelection();
+        });
+      } else {
+        displayTurnMessage("Cannot target that enemy!");
+      }
+
+      return; // Stop here to prevent treating key as weapon selection
+    }
+
+    // Weapon selection mode
+    let weaponIndex = event.key === "0" ? 9 : parseInt(event.key, 10) - 1;
+    if (
+      !isNaN(weaponIndex) &&
+      weaponIndex >= 0 &&
+      weaponIndex < player.hand.length
+    ) {
+      event.preventDefault();
+      useWeapon(weaponIndex); // Handles single-target shortcut internally
     }
   });
 });
@@ -182,10 +252,10 @@ function setEnemyIndices() {
   }
 }
 
+let activeWeaponForTargeting = null;
 // Handle weapon selection
 function useWeapon(weaponIndex) {
   if (!isPlayerTurn) {
-    // Prevent using weapons if it's not the player's turn
     displayTurnMessage("It's not your turn!");
     return;
   }
@@ -196,31 +266,47 @@ function useWeapon(weaponIndex) {
   }
 
   const weapon = player.hand[weaponIndex];
-  if (weapon.wasUsed) {
-    displayTurnMessage("Not so fast!");
-    return;
-  }
+  if (!weapon || weapon.wasUsed) return;
 
   console.log("Using weapon:", weapon.name);
 
-  if (player.energy >= weapon.energy) {
-    const hasRelicTargeting = player.canTargetAnyEnemy(weapon);
-    const needsTargeting = weapon.requiresTargeting || hasRelicTargeting;
+  if (player.energy < weapon.energy) {
+    displayTurnMessage("Not enough energy!");
+    return;
+  }
 
-    if (weapon.drawAmountOnUse > 0) {
-      player.drawExtraCards(weapon.drawAmountOnUse);
+  if (weapon.drawAmountOnUse > 0) player.drawExtraCards(weapon.drawAmountOnUse);
+
+  const needsTargeting =
+    weapon.requiresTargeting || player.canTargetAnyEnemy(weapon);
+
+  if (needsTargeting) {
+    const validTargets = weapon.possibleTargets();
+
+    if (!validTargets || validTargets.length === 0) {
+      displayTurnMessage("No valid targets!");
+      activeWeaponForTargeting = null;
+      clearSelection();
+      return;
     }
 
-    if (needsTargeting) {
-      setActiveWeapon(weaponIndex, true);
+    // Single-target shortcut handled here
+    if (validTargets.length === 1) {
+      executeAttack(weapon, validTargets[0]).then(() => {
+        activeWeaponForTargeting = null;
+        clearSelection();
+      });
     } else {
-      executeAttack(weapon, weapon.minRange).then(() => {});
-      if (weapon.energyGainOnUse > 0) {
-        player.addEnergy(weapon.energyGainOnUse);
-      }
+      // Multiple targets: set as active for targeting
+      activeWeaponForTargeting = weaponIndex;
+      setActiveWeapon(weaponIndex, true);
     }
   } else {
-    displayTurnMessage("Not enough energy!");
+    // Non-targeting weapon, execute immediately
+    executeAttack(weapon, weapon.minRange).then(() => {
+      if (weapon.energyGainOnUse > 0) player.addEnergy(weapon.energyGainOnUse);
+      updateEnergyDisplay();
+    });
   }
 }
 
@@ -263,6 +349,15 @@ function setActiveWeapon(weaponIndex) {
   }
   activeWeapon = player.hand[weaponIndex];
   activePossibleTargets = activeWeapon.possibleTargets();
+
+  if (activeWeapon.requiresTargeting && activePossibleTargets.length === 1) {
+    const targetIndex = activePossibleTargets[0];
+
+    activeWeapon = null;
+    activePossibleTargets = null;
+
+    executeAttack(player.hand[weaponIndex], targetIndex);
+  }
 }
 
 /**
