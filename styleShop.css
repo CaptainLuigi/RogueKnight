@@ -36,23 +36,23 @@ div {
     position: absolute;
     top: 12vh;
     left: 10%;
-    border: 2px solid black;
+    border: 0.2vw solid black;
     border-radius: 10px;
     image-rendering: pixelated;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     #WoodBackground {
         width: 63vw;
     }
-}
+} */
 
 #WoodFloor {
     width: 100%;
     height: 2vh;
     z-index: 1;
     position: absolute;
-    top: 98%;
+    top: 98vh;
 }
 
 .container-order {
@@ -60,26 +60,26 @@ div {
 }
 
 .Shop-weapon {
-    width: 175px;
-    height: 175px;
+    width: 9vw;
+    height: 9vw;
     background-color: rgba(214, 163, 21);
-    border: 2px solid black;
+    border: 0.2vw solid black;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
     z-index: 3;
     image-rendering: pixelated;
-    padding: 10px;
+    padding: 0.5vw;
     box-sizing: border-box;
     overflow: hidden;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
    .Shop-weapon {
     width: 155px;
     height: 155px;
    }
-}
+} */
 
 .weapon {
     width: 100%;
@@ -91,59 +91,59 @@ div {
  .Shop-weapon-container {
     display: flex;
     justify-content: space-around;
-    margin-left: 200px;
-    margin-right: 450px;
-    margin-top: 150px;
+    margin-left: 10.5vw;
+    margin-right: 23.5vw;
+    margin-top: 16.5vh;
  }
 
- @media (min-width: 2560px) {
+ /* @media (min-width: 2560px) {
     .Shop-weapon-container {
         margin-right: 525px;
         margin-top: 200px;
     }
- }
+ } */
 
  .Shop-relic {
-    width: 175px;
-    height: 175px;
+    width: 9vw;
+    height: 9vw;
     background-color: rgba(214, 163, 21);
-    border: 2px solid black;
+    border: 0.2vw solid black;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
     z-index: 3;
-    margin-top: 80px;
+    margin-top: 8.5vh;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     .Shop-relic {
         width: 155px;
         height: 155px;
     }
-}
+} */
 
  .Shop-relic-container {
     display: flex;
     justify-content: space-around;
-    margin-left: 200px;
-    margin-right: 450px;
+    margin-left: 10.5vw;
+    margin-right: 23.5vw;
  }
 
- @media (min-width: 2560px) {
+ /* @media (min-width: 2560px) {
     .Shop-relic-container {
         margin-right: 525px;
     }
- }
+ } */
 
 #Shop-removal {
     z-index: 1;
-    width: 250px;
-    height: 100px;
+    width: 13vw;
+    height: 11vh;
     position: fixed;
-    bottom: 150px;
+    bottom: 16.5vh;
     left: 36.5%;
-    font-size: 32px;
-    border: 2px solid black;
+    font-size: 2rem;
+    border: 0.2vw solid black;
     border-radius: 10px;
     background-color: rgba(235, 118, 9);
     text-align: center;
@@ -152,26 +152,26 @@ div {
 
 #close-post-battle {
     z-index: 1;
-    width: 250px;
-    height: 100px;
+    width: 13vw;
+    height: 11vh;
     position: fixed;
     top: 11.5%;
     left: 91%;
     transform: translateX(-50%);
-    font-size: 32px;
-    border: 2px solid black;
+    font-size: 2rem;
+    border: 0.2vw solid black;
     border-radius: 10px;
     background-color: rgba(240, 26, 14);
     text-align: center;
     cursor: pointer;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     #close-post-battle {
         width: 200px;
         height: 75px;
     }
-}
+} */
 
 #speech-bubble {
     position: fixed;
@@ -180,39 +180,39 @@ div {
     transform: translateX(-50%);
     background-color: white;
     color: black;
-    padding: 10px;
+    padding: 0.5vw;
     border-radius: 20px;
-    font-size: 24px;
-    width: 350px;
+    font-size: 1.5rem;
+    width: 18vw;
     display: none;
     z-index: 1200;
     text-align: center;
-    border: 2px solid black;
+    border: 0.2vw solid black;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     #speech-bubble {
         top: 22%;
         left: 87%;
     }
-}
+} */
 
 #speech-bubble:has(> .visible) {
     display: block;
 }
 
 #weapon-info {
-    font-size: 24px;
+    font-size: 1.5rem;
     
 }
 
 #playerGold {
     position: absolute;
-    top: 20px;
+    top: 2vh;
     left: 90vw;
     color: gold;
     z-index: 1100;
-    font-size: 36px;
+    font-size: 2.5rem;
 }
 
 #Shopkeeper {
@@ -243,50 +243,50 @@ div {
 }
 
 img.weapon-image {
-    width: 150px;
-    height: 150px;
+    width: 8vw;
+    height: 8vw;
     box-sizing: border-box;
 }
 
 .Shop-weapon img.weapon-image {
-    padding: 10px;
+    padding: 0.5vw;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     .Shop-weapon img.weapon-image {
         width: 130px;
         height: 130px;
     }
-}
+} */
 
 .Shop-relic img {
-    width: 150px;
-    height: 150px;
+    width: 8vw;
+    height: 8vw;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     .Shop-relic img {
         width: 130px;
         height: 130px;
-    }
-}
+    } */
+/* } */
 
 #weapon-list .weapon .weapon-image {
-    width: 90px;
-    height: 90px;
+    width: 4.5vw;
+    height: 4.5vw;
     object-fit: contain;
-    padding: 5px;
+    padding: 0.25vw;
     border-radius: 5px;
     image-rendering: pixelated;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     #weapon-list .weapon .weapon-image {
         height: 75px;
         width: 75px;
     }
 
-}
+} */
 
 .tooltip {
     position: absolute;
@@ -295,14 +295,14 @@ img.weapon-image {
     transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
     background-color: rgba(0, 0, 0, 0.7); /* Dark background */
     color: white;
-    padding: 10px;
+    padding: 0.5vw;
     border-radius: 8px;
     opacity: 0; /* Initially hidden */
     visibility: hidden; /* Initially hidden */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
     z-index: 10; /* Ensure the tooltip appears above other elements */
-    font-size: 24px;
-    width: 250px; /* Set width for the tooltip */
+    font-size: 1.5rem;
+    width: 13vw; /* Set width for the tooltip */
 }
 
 #weapon-info.tooltip.visible {

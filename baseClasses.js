@@ -33,9 +33,9 @@ class HealthEntity {
 
     // Set styles for the popup
     damageElement.style.color = isCritical ? "#b8860b" : "red";
-    damageElement.style.fontSize = "32px";
-    damageElement.style.fontWeight = "bold";
-    damageElement.style.webkitTextStroke = "0.1px black";
+    damageElement.style.fontSize = "1.5rem";
+    damageElement.style.fontWeight = "light";
+    damageElement.style.webkitTextStroke = "0.1vh black";
     damageElement.style.position = "absolute";
     damageElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
@@ -75,9 +75,9 @@ class HealthEntity {
 
     // Set styles for the popup
     lifestealElement.style.color = "#4caf50"; // Green color for lifesteal
-    lifestealElement.style.fontSize = "32px";
+    lifestealElement.style.fontSize = "2rem";
     lifestealElement.style.fontWeight = "bold";
-    lifestealElement.style.webkitTextStroke = "0.1px black";
+    lifestealElement.style.webkitTextStroke = "0.1vw black";
     lifestealElement.style.position = "absolute";
     lifestealElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
@@ -111,9 +111,9 @@ class HealthEntity {
     healElement.textContent = `+${amount}`;
 
     healElement.style.color = "#4caf50";
-    healElement.style.fontSize = "32px";
+    healElement.style.fontSize = "2rem";
     healElement.style.fontWeight = "bold";
-    healElement.style.webkitTextStroke = "0.1px black";
+    healElement.style.webkitTextStroke = "0.1vw black";
     healElement.style.position = "absolute";
     healElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2

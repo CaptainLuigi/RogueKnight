@@ -31,14 +31,14 @@ html, body {
     bottom: 20%;
     left: 50%;
     transform: translateX(-50%);
-    height: 500px;
-    width: 750px;
+    height: 55vh;
+    width: 39.5vw;
     background-color: black;
     color: white;
-    padding: 20px;
+    padding: 1vw;
     border-radius: 10px;
     z-index: 1500;
-    font-size: 24px;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,15 +48,15 @@ html, body {
 
 .textbox-btn {
     font-family: 'Pirata_one';
-    width: 200px;
-    height: 50px;
-    font-size: 24px;
-    padding: 10px 20px;
+    width: 10.5vw;
+    height: 5.5vh;
+    font-size: 1.5rem;
+    padding: 0.5vw 1vw;
     border: none;
     background-color: antiquewhite;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 50px;
+    margin-top: 5.5vh;
 }
 
 .hidden {
@@ -84,18 +84,18 @@ html, body {
 
 #playerGold {
     position: absolute;
-    top: 20px;
+    top: 2vh;
     left: 90%;
     color: gold;
     z-index: 1100;
-    font-size: 36px;
+    font-size: 2.5rem;
 }
 
 #health-bar-container-player {
     width: 200px;
     height: 15px;
     background-color: #333;
-    border: 2px solid #000;
+    border: 0.2vw solid #000;
     border-radius: 5px;
     position: relative;
     top: 450px;
@@ -115,7 +115,7 @@ html, body {
     left: 50%; /* Horizontally center the text */
     transform: translate(-50%, -50%); /* Perfect centering */
     color: white;
-    font-size: 15px; /* Adjust the font size as needed */
+    font-size: 1rem; /* Adjust the font size as needed */
     font-weight: lighter;
 }
 
@@ -141,8 +141,8 @@ html, body {
 }
 
 .orange-btn {
-    width: 300px;
-    height: 75px;
+    width: 15.5vw;
+    height: 8vh;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -154,11 +154,11 @@ body.upgrade-mode .weapon {
 
 button#randomWeapon1 .weapon img,
 button#randomWeapon2 .weapon img {
-    width: 100px;
-    height: 100px;
+    width: 5vw;
+    height: 5vw;
     image-rendering: pixelated;
     cursor: pointer;
-    padding: 10px;
+    padding: 0.5vw;
     border: none;
 }
 
@@ -166,7 +166,7 @@ button#randomWeapon1,
 button#randomWeapon2 {
     background-color: antiquewhite;
     border-radius: 5px;
-    margin-top: 50px;
+    margin-top: 5.5vh;
 }
 
 #randomWeapon1 .weapon,

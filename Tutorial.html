@@ -29,7 +29,7 @@
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
-      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
       <div class="volume-info">Music Volume</div>
       <input
@@ -136,33 +136,35 @@
         <div id="weapon-3" class="weapon-option"></div>
       </div>
       <div>
-        <div id="upgrade-weapon-container">
-          <button
-            id="choose-weapon-upgrade-btn"
-            class="orange-btn absolute-button"
-          >
-            Upgrade weapon (30 Gold)
-          </button>
+        <div id="post-battle-buttons">
+          <div id="upgrade-weapon-container">
+            <button
+              id="choose-weapon-upgrade-btn"
+              class="orange-btn absolute-button"
+            >
+              Upgrade weapon (30 Gold)
+            </button>
 
-          <div
-            id="upgrade-weapon-options"
-            onclick="weaponSelectedUpgrade(event);"
-          >
-            <select id="weapon-to-upgrade"></select>
+            <div
+              id="upgrade-weapon-options"
+              onclick="weaponSelectedUpgrade(event);"
+            >
+              <select id="weapon-to-upgrade"></select>
+            </div>
           </div>
-        </div>
-        <div id="heal-option">
-          <button
-            id="heal-btn"
-            class="orange-btn absolute-button"
-            onclick="healPlayer(this);"
-          >
-            Heal 30% HP (30 Gold)
+          <div id="heal-option">
+            <button
+              id="heal-btn"
+              class="orange-btn absolute-button"
+              onclick="healPlayer(this);"
+            >
+              Heal 30% HP (30 Gold)
+            </button>
+          </div>
+          <button id="close-post-battle" class="orange-btn absolute-button">
+            Next
           </button>
         </div>
-        <button id="close-post-battle" class="orange-btn absolute-button">
-          Next
-        </button>
       </div>
     </div>
 
@@ -226,7 +228,7 @@
           height: 80%;
           margin: 5% auto;
           display: block;
-          border: 5px solid black;
+          border: 0.2vw solid black;
           border-radius: 12px;
           z-index: 1501;
         "

@@ -27,26 +27,26 @@ body {
 }
 
 #Title {
-    font-size: 64px;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+    font-size: 4.5rem;
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
 }
 
 h2 {
     z-index: 5;
-    font-size: 48px;
+    font-size: 3rem;
     display: flex;
     position: relative;
     justify-content: center;
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
 }
 
 .text-container {
-    font-size: 32px;
+    font-size: 2rem;
     z-index: 5;
     position: relative;
     text-align: left;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
     column-count: 2;
     margin-left: 20%;
 }
@@ -57,11 +57,11 @@ h2 {
 }
 
 .patchnotes-container {
-    font-size: 32px;
+    font-size: 2rem;
     z-index: 5;
     position: relative;
     text-align: center;
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
 }
 
 .patchnote-changes {

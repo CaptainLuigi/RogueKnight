@@ -45,5 +45,7 @@ wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswä
 
 upgrade weapon options remove, wenn alle waffen max lvl
 
+energy circle responsive anpassen
 
+status img bei player anpassen für responsive
 */

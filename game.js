@@ -8,6 +8,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("DOM fully loaded, difficulty: " + globalSettings.difficulty);
   playerSprite = document.querySelector(".sprite-player");
+
+  const DESIGN_WIDTH = 1920;
+
+  function updateSpriteScale() {
+    const scale = window.innerWidth / DESIGN_WIDTH;
+    playerSprite.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener("resize", updateSpriteScale);
+  updateSpriteScale();
+
   // Start the idle animation immediately when the page loads
   resetToIdleAnimation(); // This will start the idle animation
   // Call the function to display the weapons
