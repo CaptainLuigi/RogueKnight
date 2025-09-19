@@ -62,10 +62,8 @@ body {
     background-image: url(Assets/Knight_1/Idlenew.png);
     background-repeat: no-repeat;
     position: absolute;
-    /* background-size: 700% 50%; */
     top: 50vh;
     left: 50vw;
-    /* transform: translate(-50%, -50%); */
     image-rendering: pixelated;
     transform-origin: top left;
 }

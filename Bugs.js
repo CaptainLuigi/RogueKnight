@@ -45,7 +45,9 @@ wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswä
 
 upgrade weapon options remove, wenn alle waffen max lvl
 
-energy circle responsive anpassen
+shop waffen und relics sind nicht centered
 
-status img bei player anpassen für responsive
+damage anzeige wenn player schaden bekommt nicht richtig positioniert bei kleinerem bildschirm
+
+sprite responsive machen bei shop, event und chest
 */

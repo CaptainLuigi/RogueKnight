@@ -52,20 +52,23 @@ body > * {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 14% 1fr 14%;
-  grid-template-columns: 14% 1fr 13%;
+  grid-template-rows: 14vh 1fr 14vh;
+  grid-template-columns: 14vw 1fr 13vw;
   grid-template-areas: 
     "a a a"
     "b map c"
     "d d d";
+
+    gap: 1vh;
+    padding: 1vh;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     #navigation-positioner {
       grid-template-rows: 21% 1fr 20%;
       grid-template-columns: 15% 1fr 12%;
     }
-}
+} */
 
 .navigation-container {
   grid-area: map;
@@ -96,13 +99,6 @@ body > * {
   width: 3vw;
   height: auto;
 }
-
-/* @media (max-width: 1440px) {
-    .navigation-container .navigation img {
-      width: 50px;
-      height: auto;
-    }
-} */
 
 .navigation-container #bossfight img {
   width: 5vw;

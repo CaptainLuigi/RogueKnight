@@ -48,7 +48,7 @@ html, body {
 
 .textbox-btn {
     font-family: 'Pirata_one';
-    width: 10.5vw;
+    width: 12vw;
     height: 5.5vh;
     font-size: 1.5rem;
     padding: 0.5vw 1vw;
@@ -56,7 +56,7 @@ html, body {
     background-color: antiquewhite;
     cursor: pointer;
     border-radius: 5px;
-    margin-top: 5.5vh;
+    margin-top: 3vh;
 }
 
 .hidden {
