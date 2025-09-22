@@ -87,7 +87,7 @@ html, body {
     visibility: hidden; /* Initially hidden */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
     z-index: 10; /* Ensure the tooltip appears above other elements */
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     width: 13vw; /* Set width for the tooltip */
 }
 
@@ -96,30 +96,17 @@ html, body {
     visibility: visible; /* Show the tooltip when hovering */
 }
 
-.sprite {
+.sprite-player {
     width: 200px;
     height: 200px;
     background-image: url(Assets/Knight_1/Idlenew.png);
     background-repeat: no-repeat;
     position: absolute;
-    background-size: 1400px 200px;
-    top: 450px;
+    top: 50vh;
     left: 35vw;
     z-index: 1100;
     image-rendering: pixelated;
-}
-
-@media (max-width: 1440px) {
-    .sprite {
-        top: 400px;
-        left: 30vw;
-    }
-}
-
-@media (min-width: 2560px) {
-    .sprite {
-        top: 550px;
-    }
+    transform-origin: top left;
 }
 
 #addToDeck {
@@ -132,17 +119,11 @@ html, body {
     top: 65%;
     left: 40%;
     font-family: 'Pirata_One';
-    border-radius: 5px;
+    border-radius: 10px;
     border: 0.2vw solid black;
     background-color: rgba(240, 26, 14);
     cursor: pointer;
 }
-
-/* @media (min-width: 2560px) {
-    #addToDeck {
-        left: 43%;
-    }
-} */
 
 #skip {
     width: 7.5vw;
@@ -154,16 +135,10 @@ html, body {
     top: 65%;
     left: 52%;
     font-family: 'Pirata_One';
-    border-radius: 5px;
+    border-radius: 10px;
     border: 0.2vw solid black;
     background-color: rgba(240, 26, 14);
     cursor: pointer;  
-}
-
-@media (min-width: 2560px) {
-    #skip {
-        left: 51%;
-    }
 }
 
 .hidden {

@@ -113,7 +113,7 @@ html {
     opacity: 0; /* Initially hidden */
     visibility: hidden; /* Initially hidden */
     z-index: 1000; /* Ensure the tooltip appears above other elements */
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     max-width: 26vw;
     width: max-content;
     box-shadow: 0 0.2vw 0.3vw rgba(0, 0, 0, 0.3);
@@ -126,7 +126,7 @@ html {
     color: white;
     padding: 0.5vw;
     border-radius: 8px;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     max-width: 20.5vw;
     width: max-content;
     white-space: nowrap;
@@ -352,9 +352,9 @@ html {
 #lookAtMap {
     position: absolute;
     bottom: 2vh;
-    left: 93%;
+    left: 92%;
     z-index: 1001;
-    width: 6.5vw;
+    width: 7vw;
     height: 5vh;    
 }
 
@@ -363,7 +363,7 @@ html {
     bottom: 2vh;
     left: 93%;
     z-index: 1001;
-    width: 6.5vw;
+    width: 7vw;
     height: 5vh; 
 }
 

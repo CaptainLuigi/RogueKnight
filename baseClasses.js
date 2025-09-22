@@ -34,6 +34,16 @@ class HealthEntity {
     damageElement.classList.add("damage-popup");
     damageElement.textContent = damage;
 
+    let topPosition = healthBarRect.top / vh - 10;
+
+    if (enemyHealthBar.classList.contains("health-bar-container-enemy")) {
+      topPosition += 5;
+    }
+
+    if (document.querySelector(".textbox")) {
+      topPosition += 5;
+    }
+
     // Set styles for the popup
     damageElement.style.color = isCritical ? "#b8860b" : "red";
     damageElement.style.fontSize = "1.5rem";
@@ -43,7 +53,7 @@ class HealthEntity {
     damageElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
     }px`;
-    damageElement.style.top = `${healthBarRect.top / vh - 4.5 - offset / vh}vh`;
+    damageElement.style.top = `${topPosition}vh`;
     damageElement.style.transform = "translateX(-50%)"; // Center horizontally
     damageElement.style.zIndex = "1000"; // Ensure it's visible above other elements
 
@@ -117,6 +127,16 @@ class HealthEntity {
     healElement.classList.add("heal-popup");
     healElement.textContent = `+${amount}`;
 
+    let topPosition = healthBarRect.top / vh - 10;
+
+    if (healthBar.classList.contains("health-bar-container-enemy")) {
+      topPosition += 5;
+    }
+
+    if (document.querySelector(".textbox")) {
+      topPosition += 5;
+    }
+
     healElement.style.color = "#4caf50";
     healElement.style.fontSize = "1.5rem";
     healElement.style.fontWeight = "light";
@@ -125,7 +145,7 @@ class HealthEntity {
     healElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
     }px`;
-    healElement.style.top = `${healthBarRect.top / vh - 4.5}vh`;
+    healElement.style.top = `${topPosition}vh`;
     healElement.style.transform = "translateX(-50%)";
     healElement.style.zIndex = "1000";
     healElement.style.background = "none";

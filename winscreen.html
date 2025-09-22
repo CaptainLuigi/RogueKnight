@@ -14,15 +14,29 @@
     <script src="saveGame.js"></script>
   </head>
   <body>
-    <div>
+    <div class="winscreen-container flex-fill">
       <span>You won!</span>
-      <div class="sprite"></div>
+      <div id="sprite-wrapper" class="flex-fill">
+        <div class="sprite"></div>
+      </div>
+
       <button id="backToMenu">Back to menu</button>
     </div>
     <script>
       let playerSprite;
       document.addEventListener("DOMContentLoaded", () => {
         playerSprite = document.querySelector(".sprite");
+
+        const DESIGN_WIDTH = 1920;
+
+        function updateSpriteScale() {
+          const scale = (window.innerWidth / DESIGN_WIDTH) * 2;
+          playerSprite.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener("resize", updateSpriteScale);
+        updateSpriteScale();
+
         resetToIdleAnimation();
 
         document.getElementById("backToMenu").addEventListener("click", () => {

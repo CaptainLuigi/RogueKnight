@@ -19,6 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
   goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
   player.loadPlayerFromStorage();
   sprite = document.querySelector("#Shopkeeper");
+
+  const DESIGN_WIDTH = 1920;
+
+  function updateShopkeeperScale() {
+    const scale = window.innerWidth / DESIGN_WIDTH;
+    sprite.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener("resize", updateShopkeeperScale);
+  updateShopkeeperScale();
+
   setSpriteConfig(idleShopkeeper);
   animateSprite();
 
@@ -382,9 +393,9 @@ let frame = 0;
 const idleShopkeeper = {
   image: "Assets/BLACKSMITHv2.png",
   totalFrames: 7,
-  frameWidth: 96, // Width of each frame for idle
-  frameHeight: 80,
-  backgroundSize: "672px 80px", // Full sprite sheet size for idle
+  frameWidth: 480, // Width of each frame for idle
+  frameHeight: 400,
+  backgroundSize: "3360px 400px", // Full sprite sheet size for idle
   frameDelay: 175,
 };
 

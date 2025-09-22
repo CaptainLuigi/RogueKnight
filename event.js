@@ -39,6 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
   goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
   playerSprite = document.querySelector(".sprite");
 
+  const DESIGN_WIDTH = 1920;
+
+  function updateSpriteScale() {
+    const scale = window.innerWidth / DESIGN_WIDTH;
+    playerSprite.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener("resize", updateSpriteScale);
+  updateSpriteScale();
+
   resetToIdleAnimation();
 
   initializeHealthBars();

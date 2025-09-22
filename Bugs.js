@@ -37,17 +37,22 @@ more players with different starting weapons
 
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 
-boss relics einfügen 
-
 Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
 upgrade weapon options remove, wenn alle waffen max lvl
 
-shop waffen und relics sind nicht centered
+wenn gestorben und beim deathscreen im browser zurück gegangen wird -> volle Leben und Kampf ist noch vor dem ersten Fight 
+(wenn dieser Kampf gewonnen wird, muss man danach den allerersten Fight machen)
 
-damage anzeige wenn player schaden bekommt nicht richtig positioniert bei kleinerem bildschirm
+rewards einbauen, wenn man forest boss besiegt hat
 
-sprite responsive machen bei shop, event und chest
+damage display in event anpassen
+
+player sprite, healthbar, energy, block, status container alles in ein div
+positionieren höhe wie energy, left wie healthbar
+player sprite noch in eigenen wrapper
+absolute positioning von block, energy und healthbar entfernen
+
 */

@@ -57,7 +57,7 @@
 
     <div id="playerGold">Gold:</div>
 
-    <div class="sprite"></div>
+    <div class="sprite-player"></div>
 
     <div id="relic-container"></div>
 
@@ -174,8 +174,18 @@
       function wait(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
+      const playerSprite = document.querySelector(".sprite-player");
 
-      const playerSprite = document.querySelector(".sprite");
+      const DESIGN_WIDTH = 1920;
+
+      function updateSpriteScale() {
+        const scale = window.innerWidth / DESIGN_WIDTH;
+        playerSprite.style.transform = `scale(${scale})`;
+      }
+
+      window.addEventListener("resize", updateSpriteScale);
+      updateSpriteScale();
+
       resetToIdleAnimation();
 
       /**

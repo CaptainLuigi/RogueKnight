@@ -41,18 +41,12 @@ div {
     image-rendering: pixelated;
 }
 
-/* @media (max-width: 1440px) {
-    #WoodBackground {
-        width: 63vw;
-    }
-} */
-
 #WoodFloor {
     width: 100%;
     height: 2vh;
     z-index: 1;
     position: absolute;
-    top: 98vh;
+    bottom: 0;
 }
 
 .container-order {
@@ -66,25 +60,22 @@ div {
     border: 0.2vw solid black;
     border-radius: 10px;
     cursor: pointer;
+    display: flex;
     text-align: center;
+    justify-content: center;
     z-index: 3;
     image-rendering: pixelated;
-    padding: 0.5vw;
+    padding: 0;
     box-sizing: border-box;
     overflow: hidden;
 }
 
-/* @media (max-width: 1440px) {
-   .Shop-weapon {
-    width: 155px;
-    height: 155px;
-   }
-} */
-
 .weapon {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -96,13 +87,6 @@ div {
     margin-top: 16.5vh;
  }
 
- /* @media (min-width: 2560px) {
-    .Shop-weapon-container {
-        margin-right: 525px;
-        margin-top: 200px;
-    }
- } */
-
  .Shop-relic {
     width: 9vw;
     height: 9vw;
@@ -110,17 +94,14 @@ div {
     border: 0.2vw solid black;
     border-radius: 10px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    box-sizing: border-box;
     z-index: 3;
     margin-top: 8.5vh;
 }
-
-/* @media (max-width: 1440px) {
-    .Shop-relic {
-        width: 155px;
-        height: 155px;
-    }
-} */
 
  .Shop-relic-container {
     display: flex;
@@ -128,12 +109,6 @@ div {
     margin-left: 10.5vw;
     margin-right: 23.5vw;
  }
-
- /* @media (min-width: 2560px) {
-    .Shop-relic-container {
-        margin-right: 525px;
-    }
- } */
 
 #Shop-removal {
     z-index: 1;
@@ -166,13 +141,6 @@ div {
     cursor: pointer;
 }
 
-/* @media (max-width: 1440px) {
-    #close-post-battle {
-        width: 200px;
-        height: 75px;
-    }
-} */
-
 #speech-bubble {
     position: fixed;
     top: 25%;
@@ -182,20 +150,13 @@ div {
     color: black;
     padding: 0.5vw;
     border-radius: 20px;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     width: 18vw;
     display: none;
     z-index: 1200;
     text-align: center;
     border: 0.2vw solid black;
 }
-
-/* @media (max-width: 1440px) {
-    #speech-bubble {
-        top: 22%;
-        left: 87%;
-    }
-} */
 
 #speech-bubble:has(> .visible) {
     display: block;
@@ -216,60 +177,41 @@ div {
 }
 
 #Shopkeeper {
-    width: 96px;
-    height: 80px;
+    width: 480px;
+    height: 400px;
     background-image: url(Assets/BLACKSMITHv2.png);
     background-repeat: no-repeat;
     position: absolute;
-    background-size: 672px 96px;
-    top: 70%;
-    left: 83%;
+    bottom: 1vh;
+    right: 0;
     z-index: 1100;
     image-rendering: pixelated;
-    transform: scale(5.5);
-}
-
-@media (min-width: 2560px) {
-    #Shopkeeper {
-        top: 75%;  
-    }
-}
-
-@media (max-width: 1440px) {
-    #Shopkeeper {
-        top: 72%;
-        transform: scale(4.5);
-    }
+    transform-origin: bottom right;
 }
 
 img.weapon-image {
-    width: 8vw;
-    height: 8vw;
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    image-rendering: pixelated;
     box-sizing: border-box;
 }
 
 .Shop-weapon img.weapon-image {
-    padding: 0.5vw;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    display: block;
+    image-rendering: pixelated;
+    border-radius: 5px;
 }
-
-/* @media (max-width: 1440px) {
-    .Shop-weapon img.weapon-image {
-        width: 130px;
-        height: 130px;
-    }
-} */
 
 .Shop-relic img {
-    width: 8vw;
-    height: 8vw;
+    max-width: 90%;
+    max-height: 90%;
+    width: auto;
+    height: auto;
 }
-
-/* @media (max-width: 1440px) {
-    .Shop-relic img {
-        width: 130px;
-        height: 130px;
-    } */
-/* } */
 
 #weapon-list .weapon .weapon-image {
     width: 4.5vw;
@@ -279,14 +221,6 @@ img.weapon-image {
     border-radius: 5px;
     image-rendering: pixelated;
 }
-
-/* @media (max-width: 1440px) {
-    #weapon-list .weapon .weapon-image {
-        height: 75px;
-        width: 75px;
-    }
-
-} */
 
 .tooltip {
     position: absolute;
@@ -301,7 +235,7 @@ img.weapon-image {
     visibility: hidden; /* Initially hidden */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
     z-index: 10; /* Ensure the tooltip appears above other elements */
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     width: 13vw; /* Set width for the tooltip */
 }
 

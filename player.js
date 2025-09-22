@@ -395,6 +395,7 @@ class Player extends HealthEntity {
         globalSettings.relicGroup = "chest";
         globalSettings.redirectToChest = false;
         localStorage.removeItem("selectedFightIndex");
+        // deleteProgressAndExit(false);
         window.location.href = "deathscreen.html";
         return;
       }
@@ -620,6 +621,8 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
+
+      this.addWeapon(new SmallHealthPotion());
 
       this.addWeapon(new DevWeapon());
 
