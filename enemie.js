@@ -463,7 +463,7 @@ class Enemy extends HealthEntity {
 
     // UI updates
     const blockText = document.getElementById("block-text");
-    const blockContainer = document.getElementById("block-container");
+    const blockContainer = document.getElementById("block-circle");
 
     blockText.innerText = player.blockAmount;
     if (player.blockAmount === 0) {
@@ -821,7 +821,7 @@ class Enemy extends HealthEntity {
       goldDisplay.textContent = `+${goldDropped} Gold`;
       goldDisplay.style.position = "absolute";
       goldDisplay.style.color = "gold";
-      goldDisplay.style.fontSize = "20px";
+      goldDisplay.style.fontSize = "1.5rem";
       goldDisplay.style.fontWeight = "bold";
       goldDisplay.style.zIndex = "1000";
       goldDisplay.style.transition = "opacity 1s ease-out";

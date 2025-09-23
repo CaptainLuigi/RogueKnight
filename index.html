@@ -45,6 +45,9 @@
         step="0.01"
         value="0.5"
       />
+      <!-- <button id="fullScreenBtn" onclick="enterDocumentFullscreen()">
+        Enter Fullscreen
+      </button> -->
       <button onclick="closePauseMenu()">Close</button>
     </div>
 
@@ -70,7 +73,11 @@
 
     <div class="sprite"></div>
 
-    <div id="version">Version 1.3</div>
+    <div id="version">Version 1.4</div>
+
+    <div id="switchToMobile" class="hidden">
+      <button onclick="window.location.href='iframeIndex.html'">Mobile</button>
+    </div>
 
     <div id="patchnotes">
       <button onclick="window.location.href='patchnotes.html'">
@@ -79,72 +86,147 @@
     </div>
 
     <script>
+      window.addEventListener("load", () => {
+        let isMobile = "ontouchstart" in window && window.top !== window;
+        if (isMobile) {
+          document.getElementById("switchToMobile").classList.remove("hidden");
+        }
+      });
+
       globalSettings.clearTutorial();
-      let frame = 0;
       const playerSprite = document.querySelector(".sprite");
 
-      function getResponsiveConfig() {
-        const screenWidth = window.innerWidth;
+      const DESIGN_WIDTH = 1920;
 
-        if (screenWidth >= 1280) {
-          return {
-            image: "Assets/Knight_1/Run.png",
-            totalFrames: 7,
-            frameWidth: 200, // Width of each frame for running
-            backgroundSize: "1400px 200px", // Full sprite sheet size for running
-            frameDelay: 100,
-          };
-        } else if (screenWidth >= 1024) {
-          return {
-            image: "Assets/Knight_1/Run.png",
-            totalFrames: 7,
-            frameWidth: 150, // Width of each frame for running
-            backgroundSize: "1050px 150px", // Full sprite sheet size for running
-            frameDelay: 100,
-          };
-        } else {
-          return {
-            image: "Assets/Knight_1/Run.png",
-            totalFrames: 7,
-            frameWidth: 100, // Width of each frame for running
-            backgroundSize: "700px 100px", // Full sprite sheet size for running
-            frameDelay: 100,
-          };
-        }
+      function updateSpriteScale() {
+        const scale = window.innerWidth / DESIGN_WIDTH;
+        playerSprite.style.transform = `scale(${scale})`;
       }
 
-      let currentConfig = getResponsiveConfig(); // Start with the running animation
-      let spritePositionX = 0; // Initial position of the sprite
-      const spriteSpeed = 2; // Speed of the sprite movement
+      window.addEventListener("resize", updateSpriteScale);
+      updateSpriteScale();
+
+      // Define the run animation configuration (same style as player.js)
+      const runConfig = {
+        image: "Assets/Knight_1/Run.png",
+        totalFrames: 7,
+        frameWidth: 200, // width of each frame in the sprite sheet
+        backgroundSize: "1400px 200px", // full sprite sheet size
+        frameDelay: 100,
+      };
+
+      let runFrame = 0;
+      let runInterval;
+      let spritePositionX = 0;
+      const spriteSpeed = 2;
       const switchPoint2 = 45;
 
-      function setSpriteConfig(config) {
-        playerSprite.style.backgroundImage = `url(${config.image})`;
-        playerSprite.style.backgroundSize = config.backgroundSize;
-      }
+      function animateRun() {
+        if (typeof playerSprite === "undefined") return;
 
-      function animateSprite() {
-        // Calculate the x-offset for the current frame
-        const xOffset = -(frame * currentConfig.frameWidth);
-        playerSprite.style.backgroundPosition = `${xOffset}px 0`;
+        runFrame = (runFrame + 1) % runConfig.totalFrames;
+        const frameX = runFrame * runConfig.frameWidth;
+        playerSprite.style.backgroundPositionX = `-${frameX}px`;
 
         spritePositionX += spriteSpeed;
         playerSprite.style.left = `${spritePositionX}%`;
 
-        // Switch to the idle animation if the sprite has reached the switch point
         if (spritePositionX >= switchPoint2) {
+          clearInterval(runInterval);
           resetToIdleAnimation();
         }
-        // Use the delay from the current configuration
-        else setTimeout(animateSprite, currentConfig.frameDelay);
-
-        // Loop through frames
-        frame = (frame + 1) % currentConfig.totalFrames;
       }
 
-      // Apply the initial running animation config and start the animation
-      setSpriteConfig(currentConfig);
-      animateSprite();
+      function triggerRunAnimation() {
+        clearInterval(runInterval);
+
+        playerSprite.style.backgroundImage = `url(${runConfig.image})`;
+        playerSprite.style.backgroundSize = runConfig.backgroundSize;
+
+        runFrame = 0;
+        playerSprite.style.backgroundPositionX = `0px`;
+
+        runInterval = setInterval(animateRun, runConfig.frameDelay);
+      }
+
+      function resetToIdleAnimation() {
+        playerSprite.style.backgroundImage = `url(${idleConfig.image})`;
+        playerSprite.style.backgroundSize = idleConfig.backgroundSize;
+
+        let frame = 0;
+
+        function animateSprite() {
+          frame = (frame + 1) % idleConfig.totalFrames;
+          const frameX = frame * idleConfig.frameWidth;
+          playerSprite.style.backgroundPositionX = `-${frameX}px`;
+        }
+
+        clearInterval(runInterval);
+        idleInterval = setInterval(animateSprite, idleConfig.frameDelay);
+      }
+
+      // Start running animation
+      triggerRunAnimation();
+
+      // globalSettings.clearTutorial();
+      // let frame = 0;
+      // const playerSprite = document.querySelector(".sprite");
+
+      // function getResponsiveConfig() {
+      //   const screenWidth = window.innerWidth;
+
+      //   if (screenWidth >= 1280) {
+      //     return {
+      //       image: "Assets/Knight_1/Run.png",
+      //       totalFrames: 7,
+      //       frameWidth: 200,
+      //       backgroundSize: "1400px 200px",
+      //     };
+      //   } else if (screenWidth >= 1024) {
+      //     return {
+      //       image: "Assets/Knight_1/Run.png",
+      //       totalFrames: 7,
+      //       frameWidth: 150,
+      //       backgroundSize: "1050px 150px",
+      //       frameDelay: 100,
+      //     };
+      //   } else {
+      //     return {
+      //       image: "Assets/Knight_1/Run.png",
+      //       totalFrames: 7,
+      //       frameWidth: 100,
+      //       backgroundSize: "700px 100px",
+      //       frameDelay: 100,
+      //     };
+      //   }
+      // }
+
+      // let currentConfig = getResponsiveConfig();
+      // let spritePositionX = 0;
+      // const spriteSpeed = 2;
+      // const switchPoint2 = 45;
+
+      // function setSpriteConfig(config) {
+      //   playerSprite.style.backgroundImage = `url(${config.image})`;
+      //   playerSprite.style.backgroundSize = config.backgroundSize;
+      // }
+
+      // function animateSprite() {
+      //   const xOffset = -(frame * currentConfig.frameWidth);
+      //   playerSprite.style.backgroundPosition = `${xOffset}px 0`;
+
+      //   spritePositionX += spriteSpeed;
+      //   playerSprite.style.left = `${spritePositionX}%`;
+
+      //   if (spritePositionX >= switchPoint2) {
+      //     resetToIdleAnimation();
+      //   } else setTimeout(animateSprite, currentConfig.frameDelay);
+
+      //   frame = (frame + 1) % currentConfig.totalFrames;
+      // }
+
+      // setSpriteConfig(currentConfig);
+      // animateSprite();
     </script>
   </body>
 </html>

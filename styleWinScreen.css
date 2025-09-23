@@ -6,33 +6,49 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: 'Pirata_One';
-    position: relative;
-    overflow: hidden;
     background-color: black;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     text-align: center;
 }
 
+.winscreen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4vw;
+}
+
+.flex-fill {
+    flex: 1 1 0;
+}
+
+#sprite-wrapper {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
 span {
+    display: block;
     color: gold;
-    font-size: 128px;
-    margin-bottom: 20px;
+    font-size: 10rem;
 }
 
 
 button {
-    margin-top: 40px;
-    padding: 10px 20px;
-    font-size: 24px;
+    position: relative;
+    padding: 0.5vw 1vw;
+    font-size: 1.5rem;
     cursor: pointer;
     background-color: gold;
     color: white;
-    border: 3px solid black;
-    border-radius: 5px;
+    border: 0.15vw solid black;
+    border-radius: 0.25vw;
     font-family: 'Pirata_one';
+    bottom: 5vh;
 }
 
 button:hover {
@@ -40,20 +56,12 @@ button:hover {
 }
 
 .sprite {
-    display: block;
-    width: 200px; /* Match deadPlayer */
-    height: 200px; /* Keep aspect ratio */
-    margin: 0 auto; /* Center horizontally */
-    image-rendering: pixelated;
+    width: 200px;
+    height: 200px;
     background-image: url(Assets/Knight_1/Idlenew.png);
     background-repeat: no-repeat;
-    background-size: 800px 200px; /* Adjust for correct scaling */
-    background-position: 0 0;
-    position: relative; /* Remove absolute positioning */
-    transform: scale(2);
-    transform-origin: center center;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%) scale(2);
+    background-size: 800px 200px; 
+    image-rendering: pixelated;
+    position: relative;
+    left: 5vw;
 }

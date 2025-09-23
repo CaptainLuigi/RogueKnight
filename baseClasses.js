@@ -14,8 +14,11 @@ class HealthEntity {
    * @param {HealthEntity} entity targeted enemy
    * @returns
    */
+
   displayDamage(damage, isCritical, offset = 0) {
     console.log("Displaying damage:", damage, "Critical:", isCritical);
+
+    const vh = window.innerHeight / 100;
 
     const enemyHealthBar = this.healthBar;
     if (!enemyHealthBar) {
@@ -31,16 +34,26 @@ class HealthEntity {
     damageElement.classList.add("damage-popup");
     damageElement.textContent = damage;
 
+    let topPosition = healthBarRect.top / vh - 10;
+
+    if (enemyHealthBar.classList.contains("health-bar-container-enemy")) {
+      topPosition += 5;
+    }
+
+    if (document.querySelector(".textbox")) {
+      topPosition += 5;
+    }
+
     // Set styles for the popup
     damageElement.style.color = isCritical ? "#b8860b" : "red";
-    damageElement.style.fontSize = "32px";
-    damageElement.style.fontWeight = "bold";
-    damageElement.style.webkitTextStroke = "0.1px black";
+    damageElement.style.fontSize = "1.5rem";
+    damageElement.style.fontWeight = "light";
+    damageElement.style.webkitTextStroke = "0.1vh black";
     damageElement.style.position = "absolute";
     damageElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
     }px`;
-    damageElement.style.top = `${healthBarRect.top - 40 - offset}px`; // Slightly above the health bar
+    damageElement.style.top = `${topPosition}vh`;
     damageElement.style.transform = "translateX(-50%)"; // Center horizontally
     damageElement.style.zIndex = "1000"; // Ensure it's visible above other elements
 
@@ -66,6 +79,8 @@ class HealthEntity {
       return;
     }
 
+    const vh = window.innerHeight / 100;
+
     const healthBarRect = healthBar.getBoundingClientRect();
 
     // Create a lifesteal popup element
@@ -75,14 +90,14 @@ class HealthEntity {
 
     // Set styles for the popup
     lifestealElement.style.color = "#4caf50"; // Green color for lifesteal
-    lifestealElement.style.fontSize = "32px";
-    lifestealElement.style.fontWeight = "bold";
-    lifestealElement.style.webkitTextStroke = "0.1px black";
+    lifestealElement.style.fontSize = "1.5rem";
+    lifestealElement.style.fontWeight = "light";
+    lifestealElement.style.webkitTextStroke = "0.1vh black";
     lifestealElement.style.position = "absolute";
     lifestealElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
     }px`;
-    lifestealElement.style.top = `${healthBarRect.top - 40}px`; // Slightly above the health bar
+    lifestealElement.style.top = `${healthBarRect.top / vh - 4.5}vh`;
     lifestealElement.style.transform = "translateX(-50%)"; // Center horizontally
     lifestealElement.style.zIndex = "1000"; // Ensure it's visible above other elements
 
@@ -104,21 +119,33 @@ class HealthEntity {
       return;
     }
 
+    const vh = window.innerHeight / 100;
+
     const healthBarRect = healthBar.getBoundingClientRect();
 
     const healElement = document.createElement("div");
     healElement.classList.add("heal-popup");
     healElement.textContent = `+${amount}`;
 
+    let topPosition = healthBarRect.top / vh - 10;
+
+    if (healthBar.classList.contains("health-bar-container-enemy")) {
+      topPosition += 5;
+    }
+
+    if (document.querySelector(".textbox")) {
+      topPosition += 5;
+    }
+
     healElement.style.color = "#4caf50";
-    healElement.style.fontSize = "32px";
-    healElement.style.fontWeight = "bold";
-    healElement.style.webkitTextStroke = "0.1px black";
+    healElement.style.fontSize = "1.5rem";
+    healElement.style.fontWeight = "light";
+    healElement.style.webkitTextStroke = "0.1vh black";
     healElement.style.position = "absolute";
     healElement.style.left = `${
       healthBarRect.left + healthBarRect.width / 2
     }px`;
-    healElement.style.top = `${healthBarRect.top - 90}px`;
+    healElement.style.top = `${topPosition}vh`;
     healElement.style.transform = "translateX(-50%)";
     healElement.style.zIndex = "1000";
     healElement.style.background = "none";

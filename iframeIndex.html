@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script>
+      (() => {
+        const inFullScreenModeClass = "isFullScreen";
+        let isInFullScreen = false;
+        function enterDocumentFullscreen() {
+          isInFullScreen = false;
+          screen.orientation.lock("landscape");
+          return exitDocumentFullscreen().finally((r) =>
+            document.documentElement
+              .requestFullscreen({ navigationUI: "hide" })
+              .then((r) => {
+                isInFullScreen = true;
+                document.body.classList.add(inFullScreenModeClass);
+              })
+          );
+        }
+        globalThis.enterDocumentFullscreen = enterDocumentFullscreen;
+
+        function exitDocumentFullscreen() {
+          if (document.fullscreenElement) return document.exitFullscreen();
+          return Promise.resolve();
+        }
+
+        screen.orientation.addEventListener("change", (event) => {
+          document.body.classList.remove(inFullScreenModeClass);
+        });
+
+        window.addEventListener("load", () => {
+          let isMobile =
+            "ontouchstart" in window || navigator.maxTouchPoints > 0;
+          if (isMobile) {
+            document.body.classList.add("mobile");
+            document.body.classList.remove("desktop");
+          }
+        });
+      })();
+    </script>
+    <style>
+      html,
+      body,
+      iframe {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        border: none;
+      }
+
+      body.mobile.isFullScreen #fullScreenBtn,
+      body:not(.mobile) #fullScreenBtn {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="fullScreenBtn" onclick="enterDocumentFullscreen()">
+      Fullscreen
+    </button>
+    <iframe src="index.html" frameborder="0"></iframe>
+  </body>
+</html>

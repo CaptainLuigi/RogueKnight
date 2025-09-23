@@ -37,13 +37,18 @@ more players with different starting weapons
 
 aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
 
-boss relics einfügen 
-
 Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
 upgrade weapon options remove, wenn alle waffen max lvl
 
+wenn gestorben und beim deathscreen im browser zurück gegangen wird -> volle Leben und Kampf ist noch vor dem ersten Fight 
+(wenn dieser Kampf gewonnen wird, muss man danach den allerersten Fight machen)
 
+rewards einbauen, wenn man forest boss besiegt hat
+
+weak soll auch wie poison reduziert werden
+
+hover elemente für mobile anpassen
 */

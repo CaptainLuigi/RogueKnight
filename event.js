@@ -39,6 +39,24 @@ document.addEventListener("DOMContentLoaded", () => {
   goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
   playerSprite = document.querySelector(".sprite");
 
+  const DESIGN_WIDTH = 1920;
+
+  let playerSpriteWidth = playerSprite.offsetWidth;
+  let playerSpriteHeight = playerSprite.offsetHeight;
+
+  function updateSpriteScale() {
+    const scale = window.innerWidth / DESIGN_WIDTH;
+    playerSprite.style.transform = `scale(${scale})`;
+    if (playerSprite.parentNode.classList.contains("sprite-wrapper")) {
+      let parent = playerSprite.parentNode;
+      parent.style.height = scale * playerSpriteHeight + 1 + "px";
+      parent.style.width = scale * playerSpriteWidth + 1 + "px";
+    }
+  }
+
+  window.addEventListener("resize", updateSpriteScale);
+  updateSpriteScale();
+
   resetToIdleAnimation();
 
   initializeHealthBars();

@@ -2883,7 +2883,7 @@ function generateWeaponInfo(
 
 function applyBlock(weapon, blockModifier) {
   if (weapon.blockAmount > 0) {
-    const blockContainer = document.getElementById("block-container");
+    const blockContainer = document.getElementById("block-circle");
     const blockText = document.getElementById("block-text");
 
     let currentBlock = parseInt(blockText.innerText) || 0;

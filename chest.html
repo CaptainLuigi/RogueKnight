@@ -26,7 +26,7 @@
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
-      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
       <div class="volume-info">Music Volume</div>
       <input
@@ -57,7 +57,7 @@
 
     <div id="playerGold">Gold:</div>
 
-    <div class="sprite"></div>
+    <div class="sprite-player"></div>
 
     <div id="relic-container"></div>
 
@@ -79,11 +79,11 @@
       onclick="openMap()"
       style="
         position: absolute;
-        bottom: 20px;
+        bottom: 2vh;
         left: 89%;
         z-index: 1001;
-        width: 125px;
-        height: 50px;
+        width: 6.5vw;
+        height: 5.5vh;
       "
       ;
     >
@@ -99,8 +99,8 @@
           height: 80%;
           margin: 5% auto;
           display: block;
-          border: 5px solid black;
-          border-radius: 12px;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
           z-index: 1501;
         "
       >
@@ -110,11 +110,11 @@
         onclick="closeMap()"
         style="
           position: absolute;
-          bottom: 20px;
+          bottom: 2vh;
           left: 89%;
           z-index: 1001;
-          width: 125px;
-          height: 50px;
+          width: 6.5vw;
+          height: 5.5vh;
         "
       >
         Close Map
@@ -174,8 +174,18 @@
       function wait(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
+      const playerSprite = document.querySelector(".sprite-player");
 
-      const playerSprite = document.querySelector(".sprite");
+      const DESIGN_WIDTH = 1920;
+
+      function updateSpriteScale() {
+        const scale = window.innerWidth / DESIGN_WIDTH;
+        playerSprite.style.transform = `scale(${scale})`;
+      }
+
+      window.addEventListener("resize", updateSpriteScale);
+      updateSpriteScale();
+
       resetToIdleAnimation();
 
       /**

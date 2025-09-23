@@ -19,6 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
   goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
   player.loadPlayerFromStorage();
   sprite = document.querySelector("#Shopkeeper");
+
+  const DESIGN_WIDTH = 1920;
+
+  function updateShopkeeperScale() {
+    const scale = window.innerWidth / DESIGN_WIDTH;
+    sprite.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener("resize", updateShopkeeperScale);
+  updateShopkeeperScale();
+
   setSpriteConfig(idleShopkeeper);
   animateSprite();
 
@@ -202,7 +213,7 @@ document
           document.getElementById("Shop-removal").disabled = true;
           document.body.classList.remove("remove-mode");
 
-          displayTurnMessage(`You removed the weapon and lost 50 gold.`); // Show a message to the player
+          displayTurnMessage(`You removed the weapon and lost 20 gold.`); // Show a message to the player
         } else {
           // If player doesn't have enough gold, close the deck and show a message
           document.getElementById("weapon-deck-screen").classList.add("hidden");
@@ -382,9 +393,9 @@ let frame = 0;
 const idleShopkeeper = {
   image: "Assets/BLACKSMITHv2.png",
   totalFrames: 7,
-  frameWidth: 96, // Width of each frame for idle
-  frameHeight: 80,
-  backgroundSize: "672px 80px", // Full sprite sheet size for idle
+  frameWidth: 480, // Width of each frame for idle
+  frameHeight: 400,
+  backgroundSize: "3360px 400px", // Full sprite sheet size for idle
   frameDelay: 175,
 };
 

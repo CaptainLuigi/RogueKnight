@@ -52,20 +52,23 @@ body > * {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-rows: 14% 1fr 14%;
-  grid-template-columns: 14% 1fr 13%;
+  grid-template-rows: 14vh 1fr 14vh;
+  grid-template-columns: 14vw 1fr 13vw;
   grid-template-areas: 
     "a a a"
     "b map c"
     "d d d";
+
+    gap: 1vh;
+    padding: 1vh;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     #navigation-positioner {
       grid-template-rows: 21% 1fr 20%;
       grid-template-columns: 15% 1fr 12%;
     }
-}
+} */
 
 .navigation-container {
   grid-area: map;
@@ -85,27 +88,20 @@ body > * {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    height: 60px;
+    width: 3vw;
+    height: 3vw;
     background-color: transparent;
     z-index: 15;
     border: none;
 }
 
 .navigation-container .navigation img {
-  width: 60px;
+  width: 3vw;
   height: auto;
 }
 
-@media (max-width: 1440px) {
-    .navigation-container .navigation img {
-      width: 50px;
-      height: auto;
-    }
-}
-
 .navigation-container #bossfight img {
-  width: 100px;
+  width: 5vw;
   height: auto;
   object-fit: contain;
 }
@@ -132,40 +128,40 @@ body > * {
 }
 
 .next {
-    height: 80px;
-    width: 80px;
+    height: 4vw;
+    width: 4vw;
     background-color: green;
     border-radius: 50%;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
     .next {
       height: 70px;
       width: 70px;
     }
-}
+} */
 
 .current-location {
-  height: 80px;
-  width: 80px;
+  height: 4vw;
+  width: 4vw;
   background-color: darkorchid;
   border-radius: 50%;
 }
 
-@media (max-width: 1440px) {
+/* @media (max-width: 1440px) {
   .current-location {
     height: 70px;
     width: 70px;
   }
-}
+} */
 
 #playerGold {
   position: absolute;
-  top: 20px;
+  top: 2vh;
   left: 90%;
   color: gold;
   z-index: 1100;
-  font-size: 36px;
+  font-size: 2.5rem;
 }
 
 .tooltip {
@@ -178,6 +174,6 @@ body > * {
 
 #reset-save-btn {
   position: absolute;
-  top: 50px;
+  top: 2vh;
   z-index: 9999;
 }

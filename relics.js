@@ -567,7 +567,7 @@ function bloodPact(player, relicObject) {
 function stonewallTotem(player, relicObject) {
   window.addEventListener("EndTurn", (event) => {
     event.detail.eventQueue = event.detail.eventQueue.then(async () => {
-      const blockContainer = document.getElementById("block-container");
+      const blockCircle = document.getElementById("block-circle");
       const blockText = document.getElementById("block-text");
 
       let currentBlock = parseInt(blockText.innerText) || 0;
@@ -577,7 +577,7 @@ function stonewallTotem(player, relicObject) {
       player.blockAmount = currentBlock;
       blockText.innerText = currentBlock;
 
-      blockContainer.classList.remove("hidden");
+      blockCircle.classList.remove("hidden");
 
       await wait(300);
     });
@@ -719,7 +719,7 @@ function rageReward(player, relicObject) {
 function fistOfBulwark(player, relicObject) {
   window.addEventListener("Attack", (event) => {
     event.detail.eventQueue = event.detail.eventQueue.then(() => {
-      const blockContainer = document.getElementById("block-container");
+      const blockCircle = document.getElementById("block-circle");
       const blockText = document.getElementById("block-text");
 
       let currentBlock = parseInt(blockText.innerText) || 0;
@@ -728,7 +728,7 @@ function fistOfBulwark(player, relicObject) {
       player.blockAmount = currentBlock;
       blockText.innerText = currentBlock;
 
-      blockContainer.classList.remove("hidden");
+      blockCircle.classList.remove("hidden");
     });
   });
 }

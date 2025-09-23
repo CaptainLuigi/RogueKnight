@@ -27,7 +27,7 @@
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
-      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
       <div class="volume-info">Music Volume</div>
       <input
@@ -56,10 +56,16 @@
 
     <div id="turn-message" style="display: none"></div>
 
-    <div class="sprite"></div>
+    <div class="player-wrapper">
+      
+      <div id="health-bar-container-player">
+        <div id="health-bar"></div>
+      </div>
 
-    <div id="health-bar-container-player">
-      <div id="health-bar"></div>
+      <div class="sprite-wrapper">
+        <div class="sprite"></div>
+      </div>
+
     </div>
 
     <div id="equipped-relic-container"></div>
@@ -853,11 +859,11 @@
       onclick="openMap()"
       style="
         position: absolute;
-        bottom: 20px;
+        bottom: 2vh;
         left: 93%;
         z-index: 1001;
-        width: 125px;
-        height: 50px;
+        width: 6.5vw;
+        height: 5.5vh;
       "
       ;
     >
@@ -873,8 +879,8 @@
           height: 80%;
           margin: 5% auto;
           display: block;
-          border: 5px solid black;
-          border-radius: 12px;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
           z-index: 1501;
         "
       >
@@ -884,11 +890,11 @@
         onclick="closeMap()"
         style="
           position: absolute;
-          bottom: 20px;
+          bottom: 2vh;
           left: 93%;
           z-index: 1001;
-          width: 125px;
-          height: 50px;
+          width: 6.5vw;
+          height: 5.5vh;
         "
       >
         Close Map

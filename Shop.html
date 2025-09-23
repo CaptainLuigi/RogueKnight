@@ -34,7 +34,7 @@
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
-      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
       <div class="volume-info">Music Volume</div>
       <input
@@ -106,11 +106,11 @@
       onclick="openMap()"
       style="
         position: fixed;
-        bottom: 20px;
+        bottom: 2vh;
         left: 25%;
         z-index: 1001;
-        width: 125px;
-        height: 50px;
+        width: 6.5vw;
+        height: 5.5vh;
       "
     >
       View Map
@@ -124,8 +124,8 @@
           height: 80%;
           margin: 5% auto;
           display: block;
-          border: 5px solid black;
-          border-radius: 12px;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
           z-index: 3501;
         "
       >
@@ -135,11 +135,11 @@
         onclick="closeMap()"
         style="
           position: fixed;
-          bottom: 20px;
+          bottom: 2vh;
           left: 25%;
           z-index: 1001;
-          width: 125px;
-          height: 50px;
+          width: 6.5vw;
+          height: 5.5vh;
         "
       >
         Close Map

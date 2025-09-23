@@ -29,7 +29,7 @@
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
-      <button onclick="saveAndExit()">Save & Return to Start</button>
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
       <div class="volume-info">Music Volume</div>
       <input
@@ -54,16 +54,31 @@
       <button onclick="closePauseMenu()">Close</button>
     </div>
 
-    <div class="sprite-player">
+    <div class="player-wrapper">
+      <div id="circle-container">
+        <div></div>
+        <div id="energy-circle">
+          <span id="energy-text"></span>
+        </div>
+
+        <div class="hidden" id="block-circle">
+          <span id="block-text"></span>
+        </div>
+      </div>
+
+      <div id="health-bar-container-player">
+        <div id="health-bar"></div>
+      </div>
+
+      <div class="sprite-wrapper">
+        <div class="sprite-player"></div>
+      </div>
+
       <div id="status-container">
         <div id="poison-status" class="hidden"></div>
         <div id="strength-status" class="hidden"></div>
         <div id="weak-status" class="hidden"></div>
       </div>
-    </div>
-
-    <div id="health-bar-container-player">
-      <div id="health-bar"></div>
     </div>
 
     <div id="enemies">
@@ -82,21 +97,9 @@
       </div>
     </div>
 
-    <div id="energy-container">
-      <div id="energy-circle">
-        <span id="energy-text"></span>
-      </div>
-    </div>
-
     <div id="equipped-relic-container"></div>
 
     <div id="weapons-container"></div>
-
-    <div class="hidden" id="block-container">
-      <div id="block-circle">
-        <span id="block-text"></span>
-      </div>
-    </div>
 
     <!-- Your Turn Again message -->
     <div id="turn-message" style="display: none"></div>
@@ -136,33 +139,35 @@
         <div id="weapon-3" class="weapon-option"></div>
       </div>
       <div>
-        <div id="upgrade-weapon-container">
-          <button
-            id="choose-weapon-upgrade-btn"
-            class="orange-btn absolute-button"
-          >
-            Upgrade weapon (30 Gold)
-          </button>
+        <div id="post-battle-buttons">
+          <div id="upgrade-weapon-container">
+            <button
+              id="choose-weapon-upgrade-btn"
+              class="orange-btn absolute-button"
+            >
+              Upgrade weapon (30 Gold)
+            </button>
 
-          <div
-            id="upgrade-weapon-options"
-            onclick="weaponSelectedUpgrade(event);"
-          >
-            <select id="weapon-to-upgrade"></select>
+            <div
+              id="upgrade-weapon-options"
+              onclick="weaponSelectedUpgrade(event);"
+            >
+              <select id="weapon-to-upgrade"></select>
+            </div>
           </div>
-        </div>
-        <div id="heal-option">
-          <button
-            id="heal-btn"
-            class="orange-btn absolute-button"
-            onclick="healPlayer(this);"
-          >
-            Heal 30% HP (30 Gold)
+          <div id="heal-option">
+            <button
+              id="heal-btn"
+              class="orange-btn absolute-button"
+              onclick="healPlayer(this);"
+            >
+              Heal 30% HP (30 Gold)
+            </button>
+          </div>
+          <button id="close-post-battle" class="orange-btn absolute-button">
+            Next
           </button>
         </div>
-        <button id="close-post-battle" class="orange-btn absolute-button">
-          Next
-        </button>
       </div>
     </div>
 
@@ -204,9 +209,13 @@
       </button>
     </div>
 
-    <div id="actTransition" class="hidden">
+    <div id="actTransition" class="hidden flex-fill">
       <span> You have beaten the forest boss!<br /> </span>
-      <div class="sprite"></div>
+
+      <div id="sprite-wrapper-transition" class="flex-fill">
+        <div class="sprite"></div>
+      </div>
+
       <button id="act2" class="orange-btn">Go to the caves</button>
     </div>
 
@@ -226,8 +235,8 @@
           height: 80%;
           margin: 5% auto;
           display: block;
-          border: 5px solid black;
-          border-radius: 12px;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
           z-index: 1501;
         "
       >
@@ -242,10 +251,23 @@
     </div>
 
     <script>
+      let transitionSprite;
       document.addEventListener("DOMContentLoaded", function () {
         displayEquippedRelics();
 
         applyActVisuals();
+
+        transitionSprite = document.querySelector(".sprite");
+
+        const DESIGN_WIDTH = 1920;
+
+        function updateSpriteScale() {
+          const scale = (window.innerWidth / DESIGN_WIDTH) * 2;
+          transitionSprite.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener("resize", updateSpriteScale);
+        updateSpriteScale();
       });
     </script>
   </body>
