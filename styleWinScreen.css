@@ -46,7 +46,7 @@ button {
     background-color: gold;
     color: white;
     border: 0.15vw solid black;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     font-family: 'Pirata_one';
     bottom: 5vh;
 }

@@ -48,11 +48,7 @@ wenn gestorben und beim deathscreen im browser zurück gegangen wird -> volle Le
 
 rewards einbauen, wenn man forest boss besiegt hat
 
-damage display in event anpassen
+weak soll auch wie poison reduziert werden
 
-player sprite, healthbar, energy, block, status container alles in ein div
-positionieren höhe wie energy, left wie healthbar
-player sprite noch in eigenen wrapper
-absolute positioning von block, energy und healthbar entfernen
-
+hover elemente für mobile anpassen
 */

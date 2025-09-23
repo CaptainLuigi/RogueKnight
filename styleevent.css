@@ -35,7 +35,7 @@ html, body {
     background-color: black;
     color: white;
     padding: 1vw;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     z-index: 1500;
     font-size: 1.5rem;
     display: flex;
@@ -54,7 +54,7 @@ html, body {
     border: none;
     background-color: antiquewhite;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     margin-top: 3vh;
 }
 
@@ -62,23 +62,29 @@ html, body {
     display: none;
 }
 
-.sprite {
-    width: 200px;
-    height: 200px;
-    background-image: url(Assets/Knight_1/Idlenew.png);
-    background-repeat: no-repeat;
+.player-wrapper{
     position: absolute;
-    top: 50vh;
-    left: 13vw;
-    z-index: 1100;
-    image-rendering: pixelated;
-    transform-origin: top left;
+    left: 12vw;
+    bottom: 25vh;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
 }
 
-@media (min-width: 2560px) {
-    .sprite {
-        top: 550px;
-    }
+.sprite {
+    width: 200px;
+    min-height: 160px;
+    height: 160px;
+    background-image: url(Assets/Knight_1/run.png);
+    background-repeat: no-repeat;
+    position: relative;
+    left: 2vw;
+    z-index: 2;
+    image-rendering: pixelated;
+    transform-origin: top left;
+    overflow: visible;
+    background-position-y: bottom;
 }
 
 #playerGold {
@@ -95,21 +101,27 @@ html, body {
     height: 2vh;
     background-color: #333;
     border: 0.15vw solid #000;
-    border-radius: 5px;
-    position: relative;
-    top: 49.5vh;
-    left: 11vw;
-    z-index: 4;
+    border-radius: 0.25vw;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;  
+}
+
+.health-text {
+    color: white;
+    font-size: 1rem;
+    font-weight: lighter;
+    z-index: 10;
+    pointer-events: none;
 }
 
 #health-bar span {
-    position: absolute; /* Position the text */
-    top: 50%; /* Vertically center the text */
-    left: 50%; /* Horizontally center the text */
-    transform: translate(-50%, -50%); /* Perfect centering */
     color: white;
-    font-size: 1rem; /* Adjust the font size as needed */
+    font-size: 1rem;
     font-weight: lighter;
+    text-align: center;
 }
 
 #health-bar {
@@ -117,8 +129,9 @@ html, body {
     background-color: #4caf50; /* Initial green color for the bar */
     width: 100%; /* Default to full width */
     transition: width 0.3s ease; /* Smooth transition for changes */
-    z-index: 6;
-
+    position: absolute;
+    left: 0;
+    z-index: -1 !important;
 }
 
 .tooltip {
@@ -158,7 +171,7 @@ button#randomWeapon2 .weapon img {
 button#randomWeapon1,
 button#randomWeapon2 {
     background-color: antiquewhite;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     margin-top: 5.5vh;
 }
 

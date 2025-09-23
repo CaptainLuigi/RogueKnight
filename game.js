@@ -11,9 +11,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const DESIGN_WIDTH = 1920;
 
+  let playerSpriteWidth = playerSprite.offsetWidth;
+  let playerSpriteHeight = playerSprite.offsetHeight;
   function updateSpriteScale() {
     const scale = window.innerWidth / DESIGN_WIDTH;
     playerSprite.style.transform = `scale(${scale})`;
+    if (playerSprite.parentNode.classList.contains("sprite-wrapper")) {
+      let parent = playerSprite.parentNode;
+      parent.style.height = scale * playerSpriteHeight + 1 + "px";
+      parent.style.width = scale * playerSpriteWidth + 1 + "px";
+    }
   }
 
   window.addEventListener("resize", updateSpriteScale);
@@ -586,8 +593,8 @@ async function endTurn() {
   const blockText = document.getElementById("block-text");
   blockText.innerText = "0";
 
-  const blockContainer = document.getElementById("block-container");
-  blockContainer.classList.add("hidden");
+  const blockCircle = document.getElementById("block-circle");
+  blockCircle.classList.add("hidden");
   setEnemyIndices();
 
   // Show turn message for the player

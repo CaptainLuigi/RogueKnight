@@ -39,7 +39,7 @@ button {
     background-color: red;
     color: white;
     border: 0.2vw solid black;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     font-family: 'Pirata_one';
 }
 

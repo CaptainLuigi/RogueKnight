@@ -25,7 +25,7 @@ html {
     object-fit: contain;
     padding: 0.25vw;
     border: 0.2vw solid black;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     image-rendering: pixelated;
 }
 
@@ -66,7 +66,7 @@ html {
     left: 50%;
     transform: translateX(-50%);
     padding: 1vw;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     border: 0.2vw solid black;
     text-align: center;
     width: 90%;
@@ -81,7 +81,7 @@ html {
     background-color: burlywood;
     z-index: 2000;
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
 }
 
 .weapon-cost {
@@ -109,7 +109,7 @@ html {
     background-color: rgba(0, 0, 0, 0.85); /* Dark background */
     color: white;
     padding: 0.5vw;
-    border-radius: 8px;
+    border-radius: 0.5vw;
     opacity: 0; /* Initially hidden */
     visibility: hidden; /* Initially hidden */
     z-index: 1000; /* Ensure the tooltip appears above other elements */
@@ -125,7 +125,7 @@ html {
     background-color: rgba(0, 0, 0, 0.85);
     color: white;
     padding: 0.5vw;
-    border-radius: 8px;
+    border-radius: 0.5vw;
     font-size: 1.25rem;
     max-width: 20.5vw;
     width: max-content;
@@ -166,7 +166,7 @@ html {
     font-size: 1.5rem;
     color: black;
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     cursor: pointer;
     background-color: #ff5722;
     align-items: center;
@@ -193,7 +193,7 @@ html {
     color: white;
     padding: 0.5vw;
     font-size: 1.5rem;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     display: none;  /* Initially hidden */
     z-index: 1100;
 }
@@ -215,7 +215,7 @@ html {
     object-fit: contain;
     padding: 0.25vw;
     border: 0.2vw solid black;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     image-rendering: pixelated;
 }
 
@@ -228,7 +228,7 @@ html {
     color: white;
     border: none;
     padding: 0.5vw 0.75vw;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     cursor: pointer;
     z-index: 999;
     overflow: visible;
@@ -239,7 +239,7 @@ html {
     top: 6.5vh;
     left: 0.5vw;
     background: rgba(0, 0, 0, 0.85);
-    border-radius: 8px;
+    border-radius: 0.5vw;
     padding: 0.5vw;
     z-index: 1000;
     display: flex;
@@ -258,7 +258,7 @@ html {
     color: black;
     padding: 0.5vw 0.75vw;
     font-size: 1.25rem;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     cursor: pointer;
     font-family: inherit;
     box-sizing: border-box;
@@ -274,7 +274,7 @@ html {
     width: 100%;
     appearance: none;
     height: 1vh;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     background: #ddd;
     outline: none;
     margin: 0.5vw 0;
@@ -325,7 +325,7 @@ html {
 .tooltip-block {
     background-color: rgba(0, 0, 0, 0.85);
     padding: 0.5vw;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     min-width: 8.5vw;
 }
 
@@ -361,7 +361,7 @@ html {
 #closeLookAtMap {
     position: absolute;
     bottom: 2vh;
-    left: 93%;
+    left: 92%;
     z-index: 1001;
     width: 7vw;
     height: 5vh; 
@@ -373,3 +373,4 @@ html {
     left: 2%;
     z-index: 1005;
 }
+

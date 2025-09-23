@@ -421,7 +421,7 @@ class Player extends HealthEntity {
 
       if (player.equippedRelics.includes("Alchemist Shield")) {
         const blockText = document.getElementById("block-text");
-        const blockContainer = document.getElementById("block-container");
+        const blockContainer = document.getElementById("block-circle");
 
         let currentBlock = parseInt(blockText.innerText) || 0;
 
@@ -622,9 +622,7 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
 
-      this.addWeapon(new SmallHealthPotion());
-
-      this.addWeapon(new DevWeapon());
+      // this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());
 
@@ -756,7 +754,7 @@ function animateDamage() {
   }
 
   const frameX = damageFrame * hurtConfig.frameWidth;
-  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPositionX = `-${frameX}px`;
 }
 
 function triggerDamageAnimation() {
@@ -770,7 +768,7 @@ function triggerDamageAnimation() {
   playerSprite.style.backgroundSize = hurtConfig.backgroundSize;
 
   damageFrame = 0;
-  playerSprite.style.backgroundPosition = `0px 0px`;
+  playerSprite.style.backgroundPositionX = `0px`;
 
   damageInterval = setInterval(animateDamage, hurtConfig.frameDelay);
 }
@@ -782,14 +780,14 @@ function animateDeath() {
   if (typeof playerSprite === "undefined") return;
   deathFrame = (deathFrame + 1) % deathConfig.totalFrames;
   const frameX = deathFrame * deathConfig.frameWidth;
-  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPositionX = `-${frameX}px`;
 
   if (deathFrame === 0) {
     clearInterval(deathInterval);
 
-    playerSprite.style.backgroundPosition = `-${
+    playerSprite.style.backgroundPositionX = `-${
       (deathConfig.totalFrames - 1) * deathConfig.frameWidth
-    }px 0px`;
+    }px`;
   }
 }
 
@@ -803,7 +801,7 @@ function triggerDeathAnimation() {
 
   deathFrame = 0;
   const frameX = deathFrame * deathConfig.frameWidth;
-  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPositionX = `-${frameX}px`;
 
   clearInterval(deathInterval);
   deathInterval = setInterval(animateDeath, deathConfig.frameDelay);
@@ -820,7 +818,7 @@ function animateAttack() {
   if (typeof playerSprite === "undefined") return;
   attackFrame = (attackFrame + 1) % attackConfig.totalFrames;
   const frameX = attackFrame * attackConfig.frameWidth;
-  playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+  playerSprite.style.backgroundPositionX = `-${frameX}px`;
 
   // If the attack animation reaches the last frame, stop it and reset to idle
   if (attackFrame === 0) {
@@ -903,7 +901,7 @@ function resetToIdleAnimation() {
   function animateSprite() {
     frame = (frame + 1) % idleConfig.totalFrames;
     const frameX = frame * idleConfig.frameWidth;
-    playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+    playerSprite.style.backgroundPositionX = `-${frameX}px`;
   }
 
   clearInterval(idleInterval); // Clear any previous idle intervals
@@ -925,6 +923,9 @@ function updateHealthBar() {
     player.maxHealth
   ); // debugging
   const healthBar = document.getElementById("health-bar"); // Ensure this ID is correct
+  const healthContainer = document.getElementById(
+    "health-bar-container-player"
+  );
 
   if (!healthBar) {
     console.error("Health bar not found!");
@@ -941,10 +942,11 @@ function updateHealthBar() {
       : "#f44336";
 
   // Set the health text inside the bar
-  let healthText = healthBar.querySelector("span");
+  let healthText = healthContainer.querySelector(".health-text");
   if (!healthText) {
     healthText = document.createElement("span");
-    healthBar.appendChild(healthText);
+    healthText.classList.add("health-text");
+    healthContainer.appendChild(healthText);
   }
 
   healthText.textContent = `${player.health} / ${player.maxHealth}`; // Show health value

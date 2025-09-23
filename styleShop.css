@@ -37,7 +37,7 @@ div {
     top: 12vh;
     left: 10%;
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     image-rendering: pixelated;
 }
 
@@ -58,7 +58,7 @@ div {
     height: 9vw;
     background-color: rgba(214, 163, 21);
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     cursor: pointer;
     display: flex;
     text-align: center;
@@ -92,7 +92,7 @@ div {
     height: 9vw;
     background-color: rgba(214, 163, 21);
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -119,7 +119,7 @@ div {
     left: 36.5%;
     font-size: 2rem;
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     background-color: rgba(235, 118, 9);
     text-align: center;
     cursor: pointer;
@@ -135,7 +135,7 @@ div {
     transform: translateX(-50%);
     font-size: 2rem;
     border: 0.2vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     background-color: rgba(240, 26, 14);
     text-align: center;
     cursor: pointer;
@@ -149,7 +149,7 @@ div {
     background-color: white;
     color: black;
     padding: 0.5vw;
-    border-radius: 20px;
+    border-radius: 1vw;
     font-size: 1.25rem;
     width: 18vw;
     display: none;
@@ -203,7 +203,7 @@ img.weapon-image {
     object-fit: contain;
     display: block;
     image-rendering: pixelated;
-    border-radius: 5px;
+    border-radius: 0.25vw;
 }
 
 .Shop-relic img {
@@ -218,7 +218,7 @@ img.weapon-image {
     height: 4.5vw;
     object-fit: contain;
     padding: 0.25vw;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     image-rendering: pixelated;
 }
 
@@ -230,7 +230,7 @@ img.weapon-image {
     background-color: rgba(0, 0, 0, 0.7); /* Dark background */
     color: white;
     padding: 0.5vw;
-    border-radius: 8px;
+    border-radius: 0.5vw;
     opacity: 0; /* Initially hidden */
     visibility: hidden; /* Initially hidden */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */

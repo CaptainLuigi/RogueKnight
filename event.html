@@ -56,10 +56,16 @@
 
     <div id="turn-message" style="display: none"></div>
 
-    <div class="sprite"></div>
+    <div class="player-wrapper">
+      
+      <div id="health-bar-container-player">
+        <div id="health-bar"></div>
+      </div>
 
-    <div id="health-bar-container-player">
-      <div id="health-bar"></div>
+      <div class="sprite-wrapper">
+        <div class="sprite"></div>
+      </div>
+
     </div>
 
     <div id="equipped-relic-container"></div>
@@ -874,7 +880,7 @@
           margin: 5% auto;
           display: block;
           border: 0.2vw solid black;
-          border-radius: 12px;
+          border-radius: 0.5vw;
           z-index: 1501;
         "
       >

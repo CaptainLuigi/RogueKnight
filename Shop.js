@@ -213,7 +213,7 @@ document
           document.getElementById("Shop-removal").disabled = true;
           document.body.classList.remove("remove-mode");
 
-          displayTurnMessage(`You removed the weapon and lost 50 gold.`); // Show a message to the player
+          displayTurnMessage(`You removed the weapon and lost 20 gold.`); // Show a message to the player
         } else {
           // If player doesn't have enough gold, close the deck and show a message
           document.getElementById("weapon-deck-screen").classList.add("hidden");

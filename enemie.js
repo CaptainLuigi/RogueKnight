@@ -463,7 +463,7 @@ class Enemy extends HealthEntity {
 
     // UI updates
     const blockText = document.getElementById("block-text");
-    const blockContainer = document.getElementById("block-container");
+    const blockContainer = document.getElementById("block-circle");
 
     blockText.innerText = player.blockAmount;
     if (player.blockAmount === 0) {

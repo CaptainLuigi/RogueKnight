@@ -45,6 +45,9 @@
         step="0.01"
         value="0.5"
       />
+      <!-- <button id="fullScreenBtn" onclick="enterDocumentFullscreen()">
+        Enter Fullscreen
+      </button> -->
       <button onclick="closePauseMenu()">Close</button>
     </div>
 
@@ -72,6 +75,10 @@
 
     <div id="version">Version 1.4</div>
 
+    <div id="switchToMobile" class="hidden">
+      <button onclick="window.location.href='iframeIndex.html'">Mobile</button>
+    </div>
+
     <div id="patchnotes">
       <button onclick="window.location.href='patchnotes.html'">
         Patchnotes
@@ -79,6 +86,13 @@
     </div>
 
     <script>
+      window.addEventListener("load", () => {
+        let isMobile = "ontouchstart" in window && window.top !== window;
+        if (isMobile) {
+          document.getElementById("switchToMobile").classList.remove("hidden");
+        }
+      });
+
       globalSettings.clearTutorial();
       const playerSprite = document.querySelector(".sprite");
 
@@ -112,7 +126,7 @@
 
         runFrame = (runFrame + 1) % runConfig.totalFrames;
         const frameX = runFrame * runConfig.frameWidth;
-        playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+        playerSprite.style.backgroundPositionX = `-${frameX}px`;
 
         spritePositionX += spriteSpeed;
         playerSprite.style.left = `${spritePositionX}%`;
@@ -130,7 +144,7 @@
         playerSprite.style.backgroundSize = runConfig.backgroundSize;
 
         runFrame = 0;
-        playerSprite.style.backgroundPosition = `0px 0px`;
+        playerSprite.style.backgroundPositionX = `0px`;
 
         runInterval = setInterval(animateRun, runConfig.frameDelay);
       }
@@ -144,7 +158,7 @@
         function animateSprite() {
           frame = (frame + 1) % idleConfig.totalFrames;
           const frameX = frame * idleConfig.frameWidth;
-          playerSprite.style.backgroundPosition = `-${frameX}px 0px`;
+          playerSprite.style.backgroundPositionX = `-${frameX}px`;
         }
 
         clearInterval(runInterval);

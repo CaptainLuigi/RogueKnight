@@ -20,18 +20,29 @@ html, body {
     z-index: 1;
 }
 
+.player-wrapper {
+    position: absolute;
+    left: 12vw;
+    bottom: 25vh;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
 .sprite-player {
     width: 200px;
-    height: 200px;
+    min-height: 160px;
+    height: 160px;
     background-image: url(Assets/Knight_1/run.png);
     background-repeat: no-repeat;
-    position: absolute;
-    top: 50vh;
-    left: 20vw;
+    position: relative;
+    left: 2vw;
     z-index: 2;
     image-rendering: pixelated;
     transform-origin: top left;
     overflow: visible;
+    background-position-y: bottom;
 }
 
 .sprite-enemie {
@@ -41,7 +52,7 @@ html, body {
     display: flex;
     flex-flow: column;
     align-items: center;
-    padding-bottom: 1vh;
+    /* padding-bottom: 1vh; */
     
 }
 
@@ -69,7 +80,7 @@ height: 0;
 .sprite-enemie.tempTargets {
     border-top: 0.5vw solid #ff08;
     padding-top: 0;
-    border-radius: 5px;
+    border-radius: 0.25vw;
 }
 
 .sprite-enemie img{
@@ -86,7 +97,7 @@ height: 0;
 .biggestEnemy.tempTargets {
     border-top: 0.5vw solid #ff08;
     padding-top: 0px;
-    border-radius: 5px;
+    border-radius: 0.25vw;
 }
 
 .biggestEnemy .health-bar-container-enemy {
@@ -110,28 +121,31 @@ height: 0;
 
 #health-bar-container-player {
     width: 10.5vw;
-    height: 2vh;
-    background-color: #333;
-    border: 0.15vw solid #000;
-    border-radius: 5px;
-    position: relative;
-    top: 49.5vh;
-    left: 18vw;
-    z-index: 4;
 }
 
-.health-bar-container-enemy {
-    width: 8vw;
+.health-text {
+    color: white;
+    font-size: 1rem;
+    font-weight: lighter;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.health-bar-container-enemy, #health-bar-container-player {
     height: 2vh;
     background-color: #333;
     border: 0.15vw solid #000;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     z-index: 5;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    margin-top: 1vh;
+    position: relative;  
+}
+
+.health-bar-container-enemy {
+    width: 8vw;
+    margin-top: 1vh; 
 }
 
 
@@ -140,30 +154,16 @@ height: 0;
     background-color: #4caf50; /* Initial green color for the bar */
     width: 100%; /* Default to full width */
     transition: width 0.3s ease; /* Smooth transition for changes */
-    z-index: 6;
-}
-
-.health-bar-enemy {
     position: absolute;
     left: 0;
     z-index: -1 !important;
 }
 
-.health-bar-container-enemy span {
+.health-bar-container-enemy span, #health-bar span {
     color: white;
     font-size: 1rem;
     font-weight: lighter;
     text-align: center;
-}
-
-#health-bar span {
-    position: absolute; /* Position the text */
-    top: 50%; /* Vertically center the text */
-    left: 50%; /* Horizontally center the text */
-    transform: translate(-50%, -50%); /* Perfect centering */
-    color: white;
-    font-size: 1rem; /* Adjust the font size as needed */
-    font-weight: lighter;
 }
 
 .death-smoke img{
@@ -327,10 +327,11 @@ height: 0;
 .energy-tooltip {
     position: absolute;
     font-weight: normal;
+    width: 15vw;
     text-align: center;
-    font-size: 1.5rem;
-    width: 20vw;
-    bottom: 150%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25vh;
 }
 
 #weapons-container .tooltip{
@@ -345,16 +346,13 @@ height: 0;
     right: -5vw;
 }
 
-#energy-container {
-    position: absolute;
-    top: 44vh; /* Position it above the health bar */
-    left: 22.5%;  /* Adjust to your desired position */
-    width: 2vw; /* Set a fixed width */
-    height: 2vw; /* Set a fixed height */
-    display: flex;
+#circle-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     justify-content: center;
     align-items: center;
-    z-index: 6;
+    gap: 0.5vw;
+    margin-bottom: 1vh;
 }
 
 #energy-circle {
@@ -380,7 +378,7 @@ height: 0;
 }
 
 #block-container {
-    position: absolute;
+    /* position: absolute; */
     top: 44vh;
     left: 25vw;
     width: 2vw;
@@ -421,7 +419,7 @@ height: 0;
     width: 10.5vw;
     height: 10.5vw;
     position: absolute;
-    top: 57vh;
+    bottom: 25vh;
     left: 40vw;
     z-index: 3;
     gap: 1vw;
@@ -470,7 +468,7 @@ height: 0;
     background-color: burlywood;
     color: black;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     border: 0.15vw solid black;
     z-index: 1500;
 }
@@ -480,7 +478,7 @@ height: 0;
     padding: 0.5vw;
     background-color: darkgoldenrod;
     border: 0.15vw solid black;
-    border-radius: 10px;
+    border-radius: 0.5vw;
     position: relative;
     cursor: pointer;
 }
@@ -524,7 +522,7 @@ height: 0;
     column-gap: 1vw;
     background-color: peru;
     border: 0.15vw solid black;
-    border-radius: 2px;
+    border-radius: 0.25vw;
     z-index: 999;
 }
 
@@ -570,6 +568,8 @@ button:disabled {
     color: white;
     z-index: 100;
     margin-top: 1vh;
+    margin-bottom: 1vh;
+    height: 5vh;
 }
 
 .enemy-intent img {
@@ -609,12 +609,8 @@ button:disabled {
 }
 
 #status-container {
-    position: absolute;
-    bottom: -30%;
-    left: 35%;
-    transform: translateX(-50%);
     display: flex;
-    gap: 2vw;
+    gap: 1vw;
     justify-content: center;
     align-items: center;
     width: 20vw;
@@ -624,6 +620,8 @@ button:disabled {
     min-height: 1.5vw;
     padding: 0.25vw 0.5vw;
     z-index: 1000;
+    height: 5vh;
+    margin-top: 1vh;
 }
 
 #status-container img {
@@ -686,7 +684,7 @@ button:disabled {
     padding: 0.5vw 0.5vw;
     cursor: pointer;
     font-family: 'Pirata_One';
-    border-radius: 10px;
+    border-radius: 0.5vw;
     border: none;
     background-color: #ff5722;
     color: black;
@@ -727,7 +725,11 @@ button:disabled {
 
 #tutorial-intro-overlay p,
 #tutorial-intro-overlay ul {
-    font-size: 2rem;
+    font-size: 1.75rem;
+}
+
+#continue-fight {
+    margin: 2rem auto 0 auto;
 }
 
 #actTransition {
@@ -751,7 +753,7 @@ button:disabled {
 }
 
 #actTransition .sprite {
-    display: block;
+    /* display: block;
     width: 10.5vw; 
     height: 10.5vw; 
     margin: 0 auto; 
@@ -764,10 +766,38 @@ button:disabled {
     transform: translate(5vw) scale(2);
     transform-origin: center center;
     margin-top: 11vh;
-    margin-bottom: 11vh;
+    margin-bottom: 11vh; */
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    background-size: 800px 200px; 
+    image-rendering: pixelated;
+    position: relative;
+    left: 5vw;
+}
+
+#sprite-wrapper-transition {
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }
 
 #actTransition span {
     font-size: 4rem;
 }
 
+#act2 {
+    position: relative;
+    padding: 0.5vw 1vw;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: 0.15vw solid black;
+    border-radius: 0.25vw;
+    font-family: 'Pirata_one';
+    bottom: 5vh;
+}
+
+.flex-fill {
+    flex: 1 1 0;
+}

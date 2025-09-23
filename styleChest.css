@@ -70,7 +70,7 @@ html, body {
     object-fit: contain;
     padding: 0.25vw;
     border: 0.2vw solid black;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     image-rendering: pixelated;
 }
 
@@ -82,7 +82,7 @@ html, body {
     background-color: rgba(0, 0, 0, 0.7); /* Dark background */
     color: white;
     padding: 0.5vw;
-    border-radius: 5px;
+    border-radius: 0.25vw;
     opacity: 0; /* Initially hidden */
     visibility: hidden; /* Initially hidden */
     transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
@@ -119,7 +119,7 @@ html, body {
     top: 65%;
     left: 40%;
     font-family: 'Pirata_One';
-    border-radius: 10px;
+    border-radius: 0.5vw;
     border: 0.2vw solid black;
     background-color: rgba(240, 26, 14);
     cursor: pointer;
@@ -135,7 +135,7 @@ html, body {
     top: 65%;
     left: 52%;
     font-family: 'Pirata_One';
-    border-radius: 10px;
+    border-radius: 0.5vw;
     border: 0.2vw solid black;
     background-color: rgba(240, 26, 14);
     cursor: pointer;  
@@ -147,7 +147,7 @@ html, body {
 
 .selected-relic {
     outline: 0.2vw solid gold;
-    border-radius: 5px;
+    border-radius: 0.25vw;
 }
 
 #relic-container .relic-wrapper {
