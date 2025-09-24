@@ -58,8 +58,5 @@ waffen critten immer
 
 bei double strike relic:
 wenn der erste hit gegner tötet, trifft der nächste hit den nächsten gegner
-
-weapon tooltip für prozent modifier anpassen wenn negative prozent
-
 wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt
 */
