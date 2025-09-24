@@ -106,13 +106,13 @@ html {
 .tooltip {
     display: none;
     position: fixed; 
-    background-color: rgba(0, 0, 0, 0.85); /* Dark background */
+    background-color: rgba(0, 0, 0, 0.85);
     color: white;
     padding: 0.5vw;
     border-radius: 0.5vw;
-    opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Initially hidden */
-    z-index: 1000; /* Ensure the tooltip appears above other elements */
+    opacity: 0; 
+    visibility: hidden; 
+    z-index: 1000; 
     font-size: 1.25rem;
     max-width: 26vw;
     width: max-content;
@@ -156,7 +156,7 @@ html {
 
 .weapon:hover .tooltip, .weapon-option:hover .tooltip {
     opacity: 1;
-    visibility: visible; /* Show the tooltip when hovering */
+    visibility: visible;
     display: block;
 }
 

@@ -87,8 +87,8 @@
 
     <script>
       window.addEventListener("load", () => {
-        let isMobile = "ontouchstart" in window && window.top !== window;
-        if (isMobile) {
+        let isMobile = "ontouchstart" in window;
+        if (isMobile && window.top == window) {
           document.getElementById("switchToMobile").classList.remove("hidden");
         }
       });

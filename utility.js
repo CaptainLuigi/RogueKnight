@@ -139,3 +139,40 @@ window.addEventListener("message", (event) => {
     );
   }
 });
+
+function setupLongPressHover(
+  element,
+  { onTap, onHover, onClear },
+  longPressDuration = 1000
+) {
+  let pressTimer;
+  let longPress = false;
+
+  element.addEventListener("mouseenter", () => onHover?.());
+  element.addEventListener("mouseleave", () => onClear?.());
+
+  element.addEventListener("click", () => onTap?.());
+
+  element.addEventListener("touchstart", () => {
+    longPress = false;
+    pressTimer = setTimeout(() => {
+      longPress = true;
+      onHover?.();
+    }, longPressDuration);
+  });
+
+  element.addEventListener("touchend", () => {
+    clearTimeout(pressTimer);
+    if (!longPress) {
+      onTap?.();
+    }
+    onClear?.();
+  });
+
+  element.addEventListener("touchcancel", () => {
+    clearTimeout(pressTimer);
+    onClear?.();
+  });
+
+  element.addEventListener("contextmenu", (e) => e.preventDefault());
+}
