@@ -256,10 +256,10 @@ class Weapons {
   ) {
     this.#wasUsed = true;
 
-    if (this.#strength > 0) {
-      player.increaseStrength(this.#strength);
-      player.updateStrengthDisplay();
-    }
+    // if (this.#strength > 0) {
+    //   player.increaseStrength(this.#strength);
+    //   player.updateStrengthDisplay();
+    // }
 
     if (this.damage == 0 && this.criticalDamage == 0)
       return {
@@ -287,16 +287,16 @@ class Weapons {
       Math.floor((baseDamage + flatModifier) * (1 + percentModifier / 100))
     );
 
-    if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
-      console.log("Sharp focus activated");
-      sharpFocus(player);
-    }
+    // if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
+    //   console.log("Sharp focus activated");
+    //   sharpFocus(player);
+    // }
 
-    if (isCritical && player.equippedRelics.includes("Critterbite")) {
-      const firstEnemy = enemies[0];
-      firstEnemy.addPoisonFromPlayer(5 + player.poisonModifier);
-      firstEnemy.updatePoisonDisplay();
-    }
+    // if (isCritical && player.equippedRelics.includes("Critterbite")) {
+    //   const firstEnemy = enemies[0];
+    //   firstEnemy.addPoisonFromPlayer(5 + player.poisonModifier);
+    //   firstEnemy.updatePoisonDisplay();
+    // }
 
     let startIndex = enemyIndex - this.#effectsLeft.length;
     let leftOffset = 0;
@@ -324,7 +324,7 @@ class Weapons {
       const targetEnemy = enemies[startIndex + index];
       const previewBlock = targetEnemy.currentBlock || 0;
 
-      this.applyPoisonToEnemy(targetEnemy, poisonModifier);
+      // this.applyPoisonToEnemy(targetEnemy, poisonModifier);
 
       let blocked = Math.min(previewBlock, damage);
 

@@ -60,6 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   SoundManager.preloadAll();
 
+  player.hand.forEach((weapon, index) => {
+    const weaponNode = document.querySelector(`[index="${index}"]`);
+
+    setupLongPressHover(weaponNode, {
+      onTap: () => useWeapon(index),
+      onHover: () => weaponHover(weaponNode),
+      onClear: () => clearSelection(),
+    });
+  });
+
   document.getElementById("start-fight-btn").addEventListener("click", () => {
     // Unlock all sounds by playing silently once
     for (const key in SoundManager.sounds) {
@@ -389,6 +399,11 @@ async function executeAttack(weapon, enemyIndex) {
     return;
   }
 
+  let attackCount = 1;
+  if (player.equippedRelics.includes("Double Strike") && weapon.damage > 0) {
+    attackCount = 2;
+  }
+
   // Call the damage calculation function
   let { startIndex, isCritical, damages } = weapon.calculateDamage(
     enemyIndex,
@@ -440,25 +455,63 @@ async function executeAttack(weapon, enemyIndex) {
 
   let overallDamageTaken = 0;
 
-  for (let i = 0; i < damages.length; i++) {
-    const targetIndex = startIndex - i;
-    const enemy = enemies[targetIndex];
-    const enemyDamage = damages[i];
+  for (let n = 0; n < attackCount; n++) {
+    // repeat the attack
+    triggerAttackAnimation();
+    // await wait(200);
 
-    enemy.displayDamage(enemyDamage, isCritical);
+    for (let i = 0; i < damages.length; i++) {
+      const targetIndex = startIndex - i;
+      const enemy = enemies[targetIndex];
+      const enemyDamage = damages[i];
 
-    const damageTaken = enemy.takeDamage(enemyDamage);
-    damages[i] = damageTaken;
-    overallDamageTaken += damageTaken;
+      enemy.displayDamage(enemyDamage, isCritical);
 
-    // === Alchemist’s Needle poison application ===
-    if (
-      damageTaken > 0 &&
-      !enemy.isDead() &&
-      player.equippedRelics.includes("Alchemist’s Needle")
-    ) {
-      enemy.addPoisonFromPlayer(5 + player.poisonModifier);
-      enemy.updatePoisonDisplay();
+      const damageTaken = enemy.takeDamage(enemyDamage);
+      overallDamageTaken += damageTaken;
+
+      if (weapon.strength > 0) {
+        player.increaseStrength(weapon.strength);
+        player.updateStrengthDisplay();
+      }
+
+      if (damageTaken > 0 && player.lifestealModifier > 0) {
+        const healAmount = (damageTaken * player.lifestealModifier) / 100;
+        player.heal(healAmount);
+      }
+
+      if (damageTaken > 0 && weapon.calculateHealing) {
+        const healAmount = weapon.calculateHealing([damageTaken]);
+        player.heal(healAmount);
+      }
+
+      if (weapon.poisonAmount > 0) {
+        weapon.applyPoisonToEnemy(enemy, player.poisonModifier);
+      }
+
+      if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
+        console.log("Sharp focus activated");
+        sharpFocus(player);
+      }
+
+      if (isCritical && player.equippedRelics.includes("Critterbite")) {
+        const firstEnemy = enemies[0];
+        firstEnemy.addPoisonFromPlayer(5 + player.poisonModifier);
+        firstEnemy.updatePoisonDisplay();
+      }
+
+      if (
+        damageTaken > 0 &&
+        !enemy.isDead() &&
+        player.equippedRelics.includes("Alchemist’s Needle")
+      ) {
+        enemy.addPoisonFromPlayer(5 + player.poisonModifier);
+        enemy.updatePoisonDisplay();
+      }
+    }
+
+    if (attackCount > 1 && n === 0) {
+      await wait(650);
     }
   }
 
@@ -543,6 +596,11 @@ async function endTurn() {
     player.applyPoisonDamage();
     updateHealthBar(player);
     await wait(400);
+  }
+
+  if (player.weak > 0) {
+    player.weak -= 1;
+    player.updateStrengthDisplay();
   }
 
   disableWeapons();

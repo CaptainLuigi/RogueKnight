@@ -327,9 +327,6 @@ class Player extends HealthEntity {
 
   addWeapon(weapon) {
     this.#deck.push(weapon);
-    if (this.#equippedRelics.includes("Omnipotence")) {
-      weapon.energy = 0;
-    }
     if (this.#equippedRelics.includes("Bloodforge")) {
       if (weapon.level < 3) {
         weapon.upgrade();
@@ -524,7 +521,7 @@ class Player extends HealthEntity {
 
             weakTooltip.innerText = `You were weakened, which decreases your damage and critical damage by ${
               this.#weak
-            }`;
+            }. Weak is reduced by one at the end of your turn.`;
             weakElement.appendChild(weakTooltip);
           }
         });
@@ -621,6 +618,10 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
+      // this.addWeapon(new PoisonPotion());
+      // this.addWeapon(new VampiricDagger());
+      // this.addWeapon(new SmallHealthPotion());
+      this.addWeapon(new RagingDagger());
 
       // this.addWeapon(new DevWeapon());
 

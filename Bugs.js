@@ -48,7 +48,15 @@ wenn gestorben und beim deathscreen im browser zurück gegangen wird -> volle Le
 
 rewards einbauen, wenn man forest boss besiegt hat
 
-weak soll auch wie poison reduziert werden
-
 hover elemente für mobile anpassen
+
+enemy intent nicht sichtbar solange enemy poison damage nimmt
+
+Boss Relic idea:
+Waffen greifen doppelt an mit halben damage
+waffen critten immer
+
+bei double strike relic:
+wenn erster hit gegner schild trifft und 0 damage macht, macht 2.hit auch 0 damage, egal wie viel schild danach noch übrig ist
+wenn der erste hit gegner tötet, trifft der nächste hit den nächsten gegner
 */
