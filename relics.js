@@ -482,9 +482,9 @@ const relicList = [
   ),
   new Relics(
     "Double Strike",
-    "Assets/Sword.png",
+    "Assets/doubleStrike.png",
     doubleStrike,
-    "All your attacks hit twice, but weapons deal 50% damage.",
+    "All your attacks hit twice, but weapon damage is reduced by 40%.",
     "boss"
   ),
 ].reduce((o, r) => {
@@ -574,8 +574,8 @@ function bloodPact(player, relicObject) {
 function doubleStrike(player, relicObject) {
   if (!player) return;
 
-  player.increaseWeaponDamagePercent(-50);
-  player.increaseWeaponCritDamagePercent(-50);
+  player.increaseWeaponDamagePercent(-40);
+  player.increaseWeaponCritDamagePercent(-40);
   player.savePlayerToStorage();
 }
 

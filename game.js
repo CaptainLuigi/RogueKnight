@@ -399,6 +399,9 @@ async function executeAttack(weapon, enemyIndex) {
     return;
   }
 
+  if (player.isAttacking) return;
+  player.isAttacking = true;
+
   let attackCount = 1;
   if (player.equippedRelics.includes("Double Strike") && weapon.damage > 0) {
     attackCount = 2;
@@ -463,11 +466,12 @@ async function executeAttack(weapon, enemyIndex) {
     for (let i = 0; i < damages.length; i++) {
       const targetIndex = startIndex - i;
       const enemy = enemies[targetIndex];
+
       const enemyDamage = damages[i];
 
-      enemy.displayDamage(enemyDamage, isCritical);
-
       const damageTaken = enemy.takeDamage(enemyDamage);
+      enemy.displayDamage(damageTaken, isCritical);
+
       overallDamageTaken += damageTaken;
 
       if (weapon.strength > 0) {
@@ -510,6 +514,15 @@ async function executeAttack(weapon, enemyIndex) {
       }
     }
 
+    if (n === 0) {
+      player.useEnergy(weapon.energy);
+      updateHealthBar(player);
+      updateEnergyDisplay();
+      setActiveWeapon(-1);
+      player.removeUsed();
+      displayWeapons(player, player.hand);
+    }
+
     if (attackCount > 1 && n === 0) {
       await wait(650);
     }
@@ -525,12 +538,8 @@ async function executeAttack(weapon, enemyIndex) {
   healing += weapon.calculateHealing(damages);
 
   player.heal(healing);
-  player.useEnergy(weapon.energy);
-  updateHealthBar(player);
-  updateEnergyDisplay();
-  setActiveWeapon(-1);
-  player.removeUsed();
-  displayWeapons(player, player.hand);
+
+  player.isAttacking = false;
 }
 
 function selectEnemy(enemyNode) {

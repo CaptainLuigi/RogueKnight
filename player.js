@@ -621,7 +621,8 @@ class Player extends HealthEntity {
       // this.addWeapon(new PoisonPotion());
       // this.addWeapon(new VampiricDagger());
       // this.addWeapon(new SmallHealthPotion());
-      this.addWeapon(new RagingDagger());
+      // this.addWeapon(new RagingDagger());
+      // this.addWeapon(new SpikedShield());
 
       // this.addWeapon(new DevWeapon());
 
