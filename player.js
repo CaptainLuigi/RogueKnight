@@ -178,7 +178,7 @@ class Player extends HealthEntity {
     }
   }
 
-  drawExtraCards(amount) {
+  drawExtraCards(amount, ignoreHandFilter = false) {
     const hardcodeHandSize = 11;
 
     let spaceLeft = hardcodeHandSize - this.#hand.length;
@@ -193,18 +193,24 @@ class Player extends HealthEntity {
         this.#resetDrawPile();
       }
 
-      const availableWeapons = this.#drawPile.filter(
-        (w) => !this.#hand.includes(w)
-      );
+      let availableWeapons;
+      if (ignoreHandFilter) {
+        availableWeapons = [...this.#drawPile];
+      } else {
+        availableWeapons = this.#drawPile.filter(
+          (w) => !this.#hand.includes(w)
+        );
+      }
 
       if (availableWeapons.length === 0) {
         break;
       }
 
       const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-      const weaponToDraw = availableWeapons[randomIndex];
+      const weaponToDraw = this.#drawPile[randomIndex];
 
       const drawPileIndex = this.#drawPile.indexOf(weaponToDraw);
+
       if (drawPileIndex !== -1) {
         this.#drawPile.splice(drawPileIndex, 1);
         this.#hand.push(weaponToDraw);
@@ -327,6 +333,14 @@ class Player extends HealthEntity {
 
   addWeapon(weapon) {
     this.#deck.push(weapon);
+
+    if (
+      player.equippedRelics.includes("Champion's Might") &&
+      weapon.damage > 0
+    ) {
+      weapon.energy = Math.max(1, weapon.energy - 1);
+    }
+
     if (this.#equippedRelics.includes("Bloodforge")) {
       if (weapon.level < 3) {
         weapon.upgrade();
@@ -623,8 +637,15 @@ class Player extends HealthEntity {
       // this.addWeapon(new SmallHealthPotion());
       // this.addWeapon(new RagingDagger());
       // this.addWeapon(new SpikedShield());
+      // this.addWeapon(new BerserkersBrew());
+      // this.addWeapon(new SwiftSword());
+      // this.addWeapon(new Macuahuitl());
 
-      // this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
+      this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());
 
@@ -815,6 +836,8 @@ let idleInterval;
 
 // Function to animate the sprite for attack
 let attackFrame = 0;
+player.isAnimating = false;
+player.isActing = false;
 
 function animateAttack() {
   if (typeof playerSprite === "undefined") return;
@@ -827,15 +850,14 @@ function animateAttack() {
     clearInterval(attackInterval);
     resetToIdleAnimation(); // Switch to idle animation after attack completes
 
-    isAttacking = false;
+    player.isAnimating = false;
   }
 }
 
 // Function to trigger attack animation and reset to idle after attack
 function triggerAttackAnimation() {
   if (isDying) return;
-  if (isAttacking) return;
-  isAttacking = true;
+  player.isAnimating = true;
   // Stop the idle animation if it's running
   clearInterval(attackInterval);
   clearInterval(idleInterval);
@@ -849,9 +871,8 @@ function triggerAttackAnimation() {
 }
 
 function triggerBlockAnimation() {
-  if (isDying) return;
-  if (isAttacking) return;
-  isAttacking = true;
+  if (isDying || player.isAnimating) return;
+  player.isAnimating = true;
 
   clearInterval(attackInterval);
   clearInterval(idleInterval);
@@ -864,18 +885,19 @@ function triggerBlockAnimation() {
 
   setTimeout(() => {
     clearInterval(attackInterval);
-    isAttacking = false;
+    player.isAnimating = false;
   }, blockConfig.totalFrames * blockConfig.frameDelay);
 }
 
 function animateBlock() {
   if (isDying) return;
-  if (isAttacking) return;
+  if (isAnimating) return;
   if (typeof playerSprite === "undefined") return;
   attackFrame++;
   if (attackFrame >= blockConfig.totalFrames) {
     clearInterval(attackInterval);
-    isAttacking = false;
+    resetToIdleAnimation();
+    player.isAnimating = false;
   }
 }
 

@@ -156,7 +156,60 @@ html, body {
 }
 
 
+#actTransition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85); /* semi-transparent dark background */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    gap: 1vw;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 1vw;
+}
 
+#actTransition .sprite {
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    background-size: 800px 200px; 
+    image-rendering: pixelated;
+    position: relative;
+    left: 5vw;
+}
+
+#sprite-wrapper-transition {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+#actTransition span {
+    font-size: 4rem;
+}
+
+#act2 {
+    position: relative;
+    padding: 0.5vw 1vw;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: 0.15vw solid black;
+    border-radius: 0.25vw;
+    font-family: 'Pirata_one';
+    bottom: 5vh;
+}
+
+.flex-fill {
+    flex: 1 1 0;
+}
 
 
 

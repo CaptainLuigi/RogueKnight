@@ -484,7 +484,21 @@ const relicList = [
     "Double Strike",
     "Assets/doubleStrike.png",
     doubleStrike,
-    "All your attacks hit twice, but weapon damage is reduced by 40%.",
+    "Your weapons attack twice, but weapon damage is reduced by 40%.",
+    "boss"
+  ),
+  new Relics(
+    "Critikris",
+    "Assets/critikris.png",
+    critikris,
+    "Your weapons always hit a critial hit.",
+    "boss"
+  ),
+  new Relics(
+    "Champion's Might",
+    "Assets/championsMight.png",
+    championsMight,
+    "Reduce Energy cost for weapons by one, can't reduce to 0. Weapon damage is reduced by 25%.",
     "boss"
   ),
 ].reduce((o, r) => {
@@ -501,6 +515,17 @@ function grindingMonstera(player) {
       player.increaseMaxHealth(1, true);
     }
   });
+}
+
+function championsMight(player, relicObject) {
+  player.deck.forEach((weapon) => {
+    if (weapon.damage > 0) {
+      weapon.energy = Math.max(1, weapon.energy - 1);
+    }
+  });
+  player.increaseWeaponDamagePercent(-25);
+  player.increaseWeaponCritDamagePercent(-25);
+  player.savePlayerToStorage();
 }
 
 function curseOfContinuity(player, relicObject) {
@@ -786,6 +811,10 @@ function pacifistAmulet(player) {
 
 function whetstone(player) {
   player.increaseWeaponCritChance(15);
+}
+
+function critikris(player) {
+  player.increaseWeaponCritChance(100);
 }
 
 function criticalSurge(player) {

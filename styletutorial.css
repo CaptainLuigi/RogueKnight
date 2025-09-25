@@ -736,13 +736,13 @@ button:disabled {
     margin: 2rem auto 0 auto;
 }
 
-#actTransition {
+/* #actTransition {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85); /* semi-transparent dark background */
+    background-color: rgba(0, 0, 0, 0.85); 
     color: white;
     display: flex;
     flex-direction: column;
@@ -757,20 +757,6 @@ button:disabled {
 }
 
 #actTransition .sprite {
-    /* display: block;
-    width: 10.5vw; 
-    height: 10.5vw; 
-    margin: 0 auto; 
-    image-rendering: pixelated;
-    background-image: url(Assets/Knight_1/Idlenew.png);
-    background-repeat: no-repeat;
-    background-size: 800px 200px; 
-    background-position: 0 0;
-    position: relative; 
-    transform: translate(5vw) scale(2);
-    transform-origin: center center;
-    margin-top: 11vh;
-    margin-bottom: 11vh; */
     width: 200px;
     height: 200px;
     background-image: url(Assets/Knight_1/Idlenew.png);
@@ -804,4 +790,4 @@ button:disabled {
 
 .flex-fill {
     flex: 1 1 0;
-}
+} */

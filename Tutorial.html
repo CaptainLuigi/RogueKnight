@@ -209,7 +209,7 @@
       </button>
     </div>
 
-    <div id="actTransition" class="hidden flex-fill">
+    <!-- <div id="actTransition" class="hidden flex-fill">
       <span> You have beaten the forest boss!<br /> </span>
 
       <div id="sprite-wrapper-transition" class="flex-fill">
@@ -217,7 +217,7 @@
       </div>
 
       <button id="act2" class="orange-btn">Go to the caves</button>
-    </div>
+    </div> -->
 
     <button
       class="orange-btn absolute-button"
@@ -251,23 +251,10 @@
     </div>
 
     <script>
-      let transitionSprite;
       document.addEventListener("DOMContentLoaded", function () {
         displayEquippedRelics();
 
         applyActVisuals();
-
-        transitionSprite = document.querySelector(".sprite");
-
-        const DESIGN_WIDTH = 1920;
-
-        function updateSpriteScale() {
-          const scale = (window.innerWidth / DESIGN_WIDTH) * 2;
-          transitionSprite.style.transform = `scale(${scale})`;
-        }
-
-        window.addEventListener("resize", updateSpriteScale);
-        updateSpriteScale();
       });
     </script>
   </body>

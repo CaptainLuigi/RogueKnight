@@ -35,8 +35,6 @@ waffen machen prozentual schaden evtl implementieren
 
 more players with different starting weapons
 
-aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
-
 Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
@@ -46,17 +44,18 @@ upgrade weapon options remove, wenn alle waffen max lvl
 wenn gestorben und beim deathscreen im browser zurück gegangen wird -> volle Leben und Kampf ist noch vor dem ersten Fight 
 (wenn dieser Kampf gewonnen wird, muss man danach den allerersten Fight machen)
 
-rewards einbauen, wenn man forest boss besiegt hat
-
 hover elemente für mobile anpassen
 
 enemy intent nicht sichtbar solange enemy poison damage nimmt
 
-Boss Relic idea:
-Waffen greifen doppelt an mit halben damage
-waffen critten immer
+custom start
+
 
 bei double strike relic:
 wenn der erste hit gegner tötet, trifft der nächste hit den nächsten gegner
-wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt
+wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt (nicht nachstellbar)
+
+waffen aus der hand ryceln?
+
+zindex in vielen fällen nicht notwendig, ggf rausnehmen
 */

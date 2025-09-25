@@ -731,7 +731,7 @@ class PoisonArrow extends Weapons {
       35,
       20,
       1,
-      "Can target any enemy, click weapon first, then the enemy you want to hit.",
+      "Can target any enemy, click weapon first, then the enemy you want to hit. Applies poison on attack.",
       "Assets/poisonArrow.png",
       true,
       0,
@@ -957,7 +957,7 @@ class PoisonDagger extends Weapons {
       55,
       35,
       1,
-      "Can only target the first enemy and applies poison, click to instantly use weapon.",
+      "Can only target the first enemy, click to instantly use weapon. Applies poison on attack.",
       "Assets/poisonDagger.png",
       false,
       0,
@@ -1427,7 +1427,7 @@ class PoisonPotion extends Weapons {
       10,
       35,
       2,
-      "Damages and applies poison to all enemies, click to instantly use weapon.",
+      "Damages all enemies, click to instantly use weapon. Applies poison on attack.",
       "Assets/poisonPotion.png",
       false,
       0,
@@ -1704,7 +1704,7 @@ class SwiftSword extends Weapons {
       50,
       30,
       1,
-      "Can only target the first enemy, click to instantly use weapon and draw one.",
+      "Can only target the first enemy, click to instantly use weapon. Draw one on attack.",
       "Assets/swiftSword.png",
       false,
       0,
@@ -1976,7 +1976,7 @@ class Macuahuitl extends Weapons {
       30,
       10,
       2,
-      "Can only target the first enemy, click to instantly use weapon and gain 2 energy.",
+      "Can only target the first enemy, click to instantly use weapon. Gain two Energy on attack",
       "Assets/mayan.png",
       false,
       0,
@@ -2050,6 +2050,8 @@ class BrokenBlade extends Weapons {
         weaponInfo.criticalDamage = 80;
         weaponInfo.criticalChance = 30;
         weaponInfo.poisonAmount += 5;
+        weaponInfo.description =
+          "Can only target the first enemy, click to instantly use weapon. Apply poison on attack. Can only be used once per battle.";
         break;
     }
   }
@@ -2065,7 +2067,7 @@ class RageAxe extends Weapons {
       35,
       30,
       1,
-      "Can only target the first enemy, click to gain strength and instantly use weapon. Can only be used once per battle.",
+      "Can only target the first enemy, click to instantly use weapon. Gain strength on attack. Can only be used once per battle.",
       "Assets/rageAxe.png",
       false,
       0,
@@ -2157,7 +2159,7 @@ class RagingDagger extends Weapons {
       15,
       60,
       0,
-      "Can only target the first enemy, click to gain strength and instantly use weapon. Can only be used once per battle.",
+      "Can only target the first enemy, click to instantly use weapon. Gain strength on attack. Can only be used once per battle.",
       "Assets/ragingDagger.png",
       false,
       0,
@@ -2200,7 +2202,7 @@ class BerserkersSpear extends Weapons {
       50,
       30,
       1,
-      "Can only target the first enemy and pierces one enemy, click to get strength, instantly use weapon and take selfdamage. Can only be used once per battle.",
+      "Can only target the first enemy and pierces one enemy, click to instantly use weapon and take selfdamage. Gain strength on attack. Can only be used once per battle.",
       "Assets/berserkersSpear.png",
       false,
       0,
@@ -2229,14 +2231,14 @@ class BerserkersSpear extends Weapons {
         weaponInfo.criticalChance = 35;
         weaponInfo.effectsRight = [1, 1];
         weaponInfo.description =
-          "Can only target the first enemy and pierces two enemies, click to instantly use weapon, take selfdamage and get strength.";
+          "Can only target the first enemy and pierces two enemies, click to instantly use weapon and take selfdamage. Gain strength on attack.";
         break;
       case 3:
         weaponInfo.strength = 10;
         weaponInfo.selfDamage = 5;
         weaponInfo.effectsRight = [1, 1, 1];
         weaponInfo.description =
-          "Can only target the first enemy and pierces three enemies, click to instantly use weapon, take selfdamage and get strength.";
+          "Can only target the first enemy and pierces three enemies, click to instantly use weapon and take selfdamage. Gain strength on attack.";
         break;
     }
   }
@@ -2764,6 +2766,7 @@ function generateWeaponInfo(
       if (flatBuff !== 0) {
         modifierDisplay = `(${flatBuff >= 0 ? "+" : ""}${flatBuff}%)`;
         finalCritChance += flatBuff;
+        finalCritChance = Math.min(finalCritChance, 100);
       }
 
       tooltipString += `<strong>Critical Chance:</strong> ${weapon.criticalChance}% ${modifierDisplay}`;
