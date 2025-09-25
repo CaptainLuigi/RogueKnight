@@ -494,6 +494,13 @@ const relicList = [
     "Your weapons always hit a critial hit.",
     "boss"
   ),
+  new Relics(
+    "Champion's Might",
+    "Assets/championsMight.png",
+    championsMight,
+    "Reduce Energy cost for weapons by one, can't reduce to 0. Weapon damage is reduced by 25%.",
+    "boss"
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -508,6 +515,17 @@ function grindingMonstera(player) {
       player.increaseMaxHealth(1, true);
     }
   });
+}
+
+function championsMight(player, relicObject) {
+  player.deck.forEach((weapon) => {
+    if (weapon.damage > 0) {
+      weapon.energy = Math.max(1, weapon.energy - 1);
+    }
+  });
+  player.increaseWeaponDamagePercent(-25);
+  player.increaseWeaponCritDamagePercent(-25);
+  player.savePlayerToStorage();
 }
 
 function curseOfContinuity(player, relicObject) {

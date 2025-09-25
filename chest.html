@@ -66,6 +66,16 @@
     <button id="addToDeck">Add</button>
     <button id="skip">Skip</button>
 
+    <div id="actTransition" class="hidden flex-fill">
+      <span> You have beaten the forest boss!<br /> </span>
+
+      <div id="sprite-wrapper-transition" class="flex-fill">
+        <div class="sprite"></div>
+      </div>
+
+      <button id="act2" class="orange-btn">Go to the caves</button>
+    </div>
+
     <button id="current-deck" class="orange-btn">Your Deck</button>
     <div id="weapon-deck-screen" class="hidden">
       <div id="weapon-deck-container">
@@ -129,6 +139,25 @@
         return Math.random() < chance;
       }
 
+       let transitionSprite;
+      document.addEventListener("DOMContentLoaded", function () {
+        displayEquippedRelics();
+
+        applyActVisuals();
+
+        transitionSprite = document.querySelector(".sprite");
+
+        const DESIGN_WIDTH = 1920;
+
+        function updateSpriteScale() {
+          const scale = (window.innerWidth / DESIGN_WIDTH) * 2;
+          transitionSprite.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener("resize", updateSpriteScale);
+        updateSpriteScale();
+      });
+
       document.addEventListener("DOMContentLoaded", () => {
         applyActVisuals();
 
@@ -174,7 +203,7 @@
       function wait(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
       }
-      const playerSprite = document.querySelector(".sprite-player");
+      let playerSprite = document.querySelector(".sprite-player");
 
       const DESIGN_WIDTH = 1920;
 
@@ -200,9 +229,10 @@
   chestButton.style.cursor = "default";
 
   const comingFromElite = localStorage.getItem("comingFromElite") === "true";
+  const comingFromBoss = localStorage.getItem("comingFromBoss") === "true";
   localStorage.removeItem("comingFromElite");
 
-  if (!comingFromElite && isMimicEncounter()) {
+  if (!comingFromElite && !comingFromBoss && isMimicEncounter()) {
     globalSettings.difficulty = 100;
     globalSettings.relicGroup = "chest";
     globalSettings.redirectToChest = true;
@@ -219,7 +249,13 @@
   document.getElementById("addToDeck").style.display = "none";
   document.getElementById("skip").style.display = "none";
 
-  const chestRelicGroup = globalSettings.relicGroup;
+  let chestRelicGroup;
+
+  if (comingFromBoss) {
+    chestRelicGroup = "boss";
+  } else {
+    chestRelicGroup = globalSettings.relicGroup;
+  }
 
   // Generate relics if not saved
   let r1 = localStorage.getItem("selectedRelic1");
@@ -335,9 +371,30 @@ function skipRelic() {
 }
 
 function returnToMap() {
+  const comingFromBoss = localStorage.getItem("comingFromBoss") === "true";
+
   localStorage.removeItem("selectedFightIndex");
   globalSettings.eventResolved = true;
-  window.location.href = "map.html";
+
+  if (comingFromBoss) {
+    const actTransition = document.getElementById("actTransition");
+    actTransition.classList.remove("hidden");
+
+    clearInterval(idleInterval);
+
+    playerSprite = actTransition.querySelector(".sprite");
+    if (playerSprite) resetToIdleAnimation();
+
+    document.getElementById("act2").addEventListener("click", () => {
+      globalSettings.currentAct = 2;
+      localStorage.setItem("currentAct", "2");
+      localStorage.removeItem("comingFromBoss")
+      window.location.href = "map.html";
+    })
+  } else {
+    window.location.href = "map.html";
+  }
+
 }
 
     </script>

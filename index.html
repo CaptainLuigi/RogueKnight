@@ -73,7 +73,7 @@
 
     <div class="sprite"></div>
 
-    <div id="version">Version 1.4</div>
+    <div id="version">Version 1.5</div>
 
     <div id="switchToMobile" class="hidden">
       <button onclick="window.location.href='iframeIndex.html'">Mobile</button>
@@ -167,66 +167,6 @@
 
       // Start running animation
       triggerRunAnimation();
-
-      // globalSettings.clearTutorial();
-      // let frame = 0;
-      // const playerSprite = document.querySelector(".sprite");
-
-      // function getResponsiveConfig() {
-      //   const screenWidth = window.innerWidth;
-
-      //   if (screenWidth >= 1280) {
-      //     return {
-      //       image: "Assets/Knight_1/Run.png",
-      //       totalFrames: 7,
-      //       frameWidth: 200,
-      //       backgroundSize: "1400px 200px",
-      //     };
-      //   } else if (screenWidth >= 1024) {
-      //     return {
-      //       image: "Assets/Knight_1/Run.png",
-      //       totalFrames: 7,
-      //       frameWidth: 150,
-      //       backgroundSize: "1050px 150px",
-      //       frameDelay: 100,
-      //     };
-      //   } else {
-      //     return {
-      //       image: "Assets/Knight_1/Run.png",
-      //       totalFrames: 7,
-      //       frameWidth: 100,
-      //       backgroundSize: "700px 100px",
-      //       frameDelay: 100,
-      //     };
-      //   }
-      // }
-
-      // let currentConfig = getResponsiveConfig();
-      // let spritePositionX = 0;
-      // const spriteSpeed = 2;
-      // const switchPoint2 = 45;
-
-      // function setSpriteConfig(config) {
-      //   playerSprite.style.backgroundImage = `url(${config.image})`;
-      //   playerSprite.style.backgroundSize = config.backgroundSize;
-      // }
-
-      // function animateSprite() {
-      //   const xOffset = -(frame * currentConfig.frameWidth);
-      //   playerSprite.style.backgroundPosition = `${xOffset}px 0`;
-
-      //   spritePositionX += spriteSpeed;
-      //   playerSprite.style.left = `${spritePositionX}%`;
-
-      //   if (spritePositionX >= switchPoint2) {
-      //     resetToIdleAnimation();
-      //   } else setTimeout(animateSprite, currentConfig.frameDelay);
-
-      //   frame = (frame + 1) % currentConfig.totalFrames;
-      // }
-
-      // setSpriteConfig(currentConfig);
-      // animateSprite();
     </script>
   </body>
 </html>

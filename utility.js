@@ -60,6 +60,10 @@ function deleteProgressAndExit(exit = true) {
 
   localStorage.removeItem("selectedRelicName");
 
+  localStorage.removeItem("comingFromBoss");
+  localStorage.removeItem("selectedRelic1");
+  localStorage.removeItem("selectedRelic2");
+
   localStorage.setItem("weaponRemoved", "false");
 
   for (let key of [...Object.keys(localStorage)]) {

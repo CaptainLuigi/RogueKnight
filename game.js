@@ -233,27 +233,30 @@ async function enemyDeathEvent(deadEnemy) {
       window.location.href = "winscreen.html";
     } else if (globalSettings.difficulty === 10) {
       SoundManager.fadeOutBattleMusic();
-      await wait(1500);
+      await wait(500);
       localStorage.removeItem("selectedFightIndex");
+      globalSettings.redirectToChest = true;
+      triggerPostBattleScreen();
 
-      const actTransition = document.getElementById("actTransition");
-      actTransition.classList.remove("hidden");
+      // const actTransition = document.getElementById("actTransition");
+      // actTransition.classList.remove("hidden");
 
-      await wait(50);
+      // await wait(50);
 
-      playerSprite = actTransition.querySelector(".sprite");
+      // playerSprite = actTransition.querySelector(".sprite");
 
-      if (playerSprite) {
-        resetToIdleAnimation();
-      }
+      // if (playerSprite) {
+      //   resetToIdleAnimation();
+      // }
 
-      document.getElementById("act2").addEventListener("click", () => {
-        globalSettings.currentAct = 2;
-        updatePlayerGold(100);
-        player.heal(player.maxHealth);
-        player.savePlayerToStorage();
-        window.location.href = "map.html";
-      });
+      // document.getElementById("act2").addEventListener("click", () => {
+      //   globalSettings.currentAct = 2;
+      updatePlayerGold(100);
+      player.heal(player.maxHealth);
+      updateHealthBar(player);
+      player.savePlayerToStorage();
+      //   window.location.href = "map.html";
+      // });
     } else {
       triggerPostBattleScreen();
     }
@@ -399,8 +402,8 @@ async function executeAttack(weapon, enemyIndex) {
     return;
   }
 
-  if (player.isAttacking) return;
-  player.isAttacking = true;
+  if (player.isActing) return;
+  player.isActing = true;
 
   let attackCount = 1;
   if (player.equippedRelics.includes("Double Strike") && weapon.damage > 0) {
@@ -459,9 +462,9 @@ async function executeAttack(weapon, enemyIndex) {
   let overallDamageTaken = 0;
 
   for (let n = 0; n < attackCount; n++) {
-    // repeat the attack
-    triggerAttackAnimation();
-    // await wait(200);
+    if (weapon.damage > 0) {
+      triggerAttackAnimation();
+    }
 
     for (let i = 0; i < damages.length; i++) {
       const targetIndex = startIndex - i;
@@ -568,6 +571,7 @@ async function executeAttack(weapon, enemyIndex) {
   updateHealthBar(player);
 
   player.isAttacking = false;
+  player.isActing = false;
 }
 
 function selectEnemy(enemyNode) {
@@ -815,9 +819,16 @@ async function triggerPostBattleScreen() {
   document
     .getElementById("close-post-battle")
     .addEventListener("click", function () {
-      if (globalSettings.redirectToChest) {
+      if (globalSettings.redirectToChest && globalSettings.difficulty !== 10) {
         globalSettings.redirectToChest = false;
         localStorage.setItem("comingFromElite", "true");
+        window.location.href = "chest.html";
+      } else if (
+        globalSettings.redirectToChest &&
+        globalSettings.difficulty === 10
+      ) {
+        globalSettings.redirectToChest = false;
+        localStorage.setItem("comingFromBoss", "true");
         window.location.href = "chest.html";
       } else {
         localStorage.removeItem("selectedFightIndex");
