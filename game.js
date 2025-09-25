@@ -303,7 +303,7 @@ function useWeapon(weaponIndex) {
     return;
   }
 
-  if (weapon.drawAmountOnUse > 0) player.drawExtraCards(weapon.drawAmountOnUse);
+  // if (weapon.drawAmountOnUse > 0) player.drawExtraCards(weapon.drawAmountOnUse);
 
   const needsTargeting =
     weapon.requiresTargeting || player.canTargetAnyEnemy(weapon);
@@ -332,7 +332,7 @@ function useWeapon(weaponIndex) {
   } else {
     // Non-targeting weapon, execute immediately
     executeAttack(weapon, weapon.minRange).then(() => {
-      if (weapon.energyGainOnUse > 0) player.addEnergy(weapon.energyGainOnUse);
+      // if (weapon.energyGainOnUse > 0) player.addEnergy(weapon.energyGainOnUse);
       updateEnergyDisplay();
     });
   }
@@ -493,6 +493,15 @@ async function executeAttack(weapon, enemyIndex) {
         weapon.applyPoisonToEnemy(enemy, player.poisonModifier);
       }
 
+      if (weapon.drawAmountOnUse > 0) {
+        player.drawExtraCards(weapon.drawAmountOnUse, true);
+      }
+
+      if (weapon.energyGainOnUse > 0) {
+        player.addEnergy(weapon.energyGainOnUse);
+        updateEnergyDisplay();
+      }
+
       if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
         console.log("Sharp focus activated");
         sharpFocus(player);
@@ -514,6 +523,22 @@ async function executeAttack(weapon, enemyIndex) {
       }
     }
 
+    if (weapon.damage <= 0) {
+      if (weapon.strength > 0) {
+        player.increaseStrength(weapon.strength);
+        player.updateStrengthDisplay();
+      }
+
+      if (weapon.drawAmountOnUse > 0) {
+        player.drawExtraCards(weapon.drawAmountOnUse);
+      }
+
+      if (weapon.energyGainOnUse > 0) {
+        player.addEnergy(weapon.energyGainOnUse);
+        updateEnergyDisplay();
+      }
+    }
+
     if (n === 0) {
       player.useEnergy(weapon.energy);
       updateHealthBar(player);
@@ -530,6 +555,8 @@ async function executeAttack(weapon, enemyIndex) {
 
   damages = damages.reverse();
 
+  displayWeapons(player, player.hand);
+
   setIdleTimeout();
 
   // Lifesteal from total damage
@@ -538,6 +565,7 @@ async function executeAttack(weapon, enemyIndex) {
   healing += weapon.calculateHealing(damages);
 
   player.heal(healing);
+  updateHealthBar(player);
 
   player.isAttacking = false;
 }
@@ -766,6 +794,7 @@ async function triggerPostBattleScreen() {
   SoundManager.play("LevelVictory");
 
   player.strength = 0;
+  player.weak = 0;
 
   const endFightEvent = new CustomEvent("EndFight", {
     detail: {

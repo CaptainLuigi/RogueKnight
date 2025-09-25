@@ -484,7 +484,14 @@ const relicList = [
     "Double Strike",
     "Assets/doubleStrike.png",
     doubleStrike,
-    "All your attacks hit twice, but weapon damage is reduced by 40%.",
+    "Your weapons attack twice, but weapon damage is reduced by 40%.",
+    "boss"
+  ),
+  new Relics(
+    "Critikris",
+    "Assets/critikris.png",
+    critikris,
+    "Your weapons always hit a critial hit.",
     "boss"
   ),
 ].reduce((o, r) => {
@@ -786,6 +793,10 @@ function pacifistAmulet(player) {
 
 function whetstone(player) {
   player.increaseWeaponCritChance(15);
+}
+
+function critikris(player) {
+  player.increaseWeaponCritChance(100);
 }
 
 function criticalSurge(player) {

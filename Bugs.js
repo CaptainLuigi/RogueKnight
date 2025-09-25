@@ -35,8 +35,6 @@ waffen machen prozentual schaden evtl implementieren
 
 more players with different starting weapons
 
-aliensrock überarbeiten -> waffen die alle treffen keinen gegner auswählen, wenn nur ein gegner übrig -> keinen gegner auswählen
-
 Lexikon mit Waffen, Relics und Gegnern
 
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
@@ -52,11 +50,18 @@ hover elemente für mobile anpassen
 
 enemy intent nicht sichtbar solange enemy poison damage nimmt
 
+custom start
+
 Boss Relic idea:
 Waffen greifen doppelt an mit halben damage
 waffen critten immer
+waffen 1 günstiger, nicht von 1 auf 0 reduzierbar
 
 bei double strike relic:
 wenn der erste hit gegner tötet, trifft der nächste hit den nächsten gegner
-wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt
+wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt (nicht nachstellbar)
+
+manchmal attack animation wenn blocking (wenn zwei mal shield hintereinander, zweites mal shielden mit attack animation? manchmal)
+
+relic tooltip zindex hochstellen
 */

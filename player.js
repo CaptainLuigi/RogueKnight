@@ -178,7 +178,7 @@ class Player extends HealthEntity {
     }
   }
 
-  drawExtraCards(amount) {
+  drawExtraCards(amount, ignoreHandFilter = false) {
     const hardcodeHandSize = 11;
 
     let spaceLeft = hardcodeHandSize - this.#hand.length;
@@ -193,18 +193,24 @@ class Player extends HealthEntity {
         this.#resetDrawPile();
       }
 
-      const availableWeapons = this.#drawPile.filter(
-        (w) => !this.#hand.includes(w)
-      );
+      let availableWeapons;
+      if (ignoreHandFilter) {
+        availableWeapons = [...this.#drawPile];
+      } else {
+        availableWeapons = this.#drawPile.filter(
+          (w) => !this.#hand.includes(w)
+        );
+      }
 
       if (availableWeapons.length === 0) {
         break;
       }
 
       const randomIndex = Math.floor(Math.random() * availableWeapons.length);
-      const weaponToDraw = availableWeapons[randomIndex];
+      const weaponToDraw = this.#drawPile[randomIndex];
 
       const drawPileIndex = this.#drawPile.indexOf(weaponToDraw);
+
       if (drawPileIndex !== -1) {
         this.#drawPile.splice(drawPileIndex, 1);
         this.#hand.push(weaponToDraw);
@@ -623,6 +629,9 @@ class Player extends HealthEntity {
       // this.addWeapon(new SmallHealthPotion());
       // this.addWeapon(new RagingDagger());
       // this.addWeapon(new SpikedShield());
+      // this.addWeapon(new BerserkersBrew());
+      // this.addWeapon(new SwiftSword());
+      // this.addWeapon(new Macuahuitl());
 
       // this.addWeapon(new DevWeapon());
 
