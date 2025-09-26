@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Encyclopedia</title>
+    <link rel="stylesheet" href="styleenzyclopedia.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="saveGame.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="utility.js"></script>
+    <script src="player.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div>
+      <img id="openBook" src="Assets/openBook.png" />
+      <div id="bookContent">
+        <div id="firstPage">
+          <h1>Enzyclopedia</h1>
+
+          <img id="knightImage" src="Assets/Knight_1/IdleImage.png" /><br />
+          <span>
+            Everything you need to know about weapons, enemies and relics.
+          </span>
+        </div>
+        <div id="secondPage">
+          <button id="showWeapons">
+            <img src="Assets/sword.png" />
+          </button>
+          Weapons
+          <button id="showEnemies">
+            <img src="Assets/Transperent/Icon5.png" />
+          </button>
+          Enemies
+          <button id="showRelics">
+            <img src="Assets/monsteraLeaf.png" />
+          </button>
+          Relics
+        </div>
+      </div>
+    </div>
+
+    <button
+      onclick="window.location.href='index.html'"
+      class="backToMenu orange-btn"
+    >
+      Back
+    </button>
+  </body>
+</html>

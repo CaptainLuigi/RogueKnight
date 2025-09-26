@@ -58,4 +58,6 @@ wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt
 waffen aus der hand ryceln?
 
 zindex in vielen fällen nicht notwendig, ggf rausnehmen
+
+enzyclopedia
 */

@@ -94,6 +94,26 @@ body {
     z-index: 1500;
 }
 
+#enzyclopedia {
+    position: fixed;
+    bottom: 2vh;
+    right: 13vw;
+}
+
+#enzyclopedia button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+#enzyclopedia img {
+    background: transparent;
+    display: block;
+    height: 5vw;
+    width: 5vw;
+}
+
 #patchnotes button:hover {
     cursor: pointer;
 }
@@ -101,7 +121,7 @@ body {
 #switchToMobile {
     position: fixed;
     bottom: 2vh;
-    right: 14vw;
+    right: 47vw;
 }
 
 #switchToMobile button {
