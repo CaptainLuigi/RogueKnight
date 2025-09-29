@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Encyclopedia</title>
-    <link rel="stylesheet" href="styleenzyclopedia.css" />
-    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <link rel="stylesheet" href="styleencyclopedia.css" />
     <script src="saveGame.js"></script>
     <script src="baseClasses.js"></script>
     <script src="utility.js"></script>
     <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="enemie.js"></script>
+    <script src="relics.js"></script>
   </head>
   <body>
     <div>
@@ -24,7 +26,7 @@
       <img id="openBook" src="Assets/openBook.png" />
       <div id="bookContent">
         <div id="firstPage">
-          <h1>Enzyclopedia</h1>
+          <h1>Encyclopedia</h1>
 
           <img id="knightImage" src="Assets/Knight_1/IdleImage.png" /><br />
           <span>
@@ -45,7 +47,38 @@
           </button>
           Relics
         </div>
+
+        <div id="weaponsContainer" style="display: none">
+          <div id="weaponsPage"></div>
+        </div>
+
+        <div id="weaponInfoPage" style="display: none">
+          <div id="weaponInfoLeft">
+            <h1 id="weaponName"></h1>
+            <div id="weaponImage"></div>
+          </div>
+          <div id="weaponInfoRight">
+            <div id="weaponInfoTooltip"></div>
+            <div id="weaponLevelButtons">
+              <button class="orange-btn" data-level="1">Level 1</button>
+              <button class="orange-btn" data-level="2">Level 2</button>
+              <button class="orange-btn" data-level="3">Level 3</button>
+            </div>
+            <button id="backToWeapons" class="orange-btn">Back</button>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div id="weaponsPagination">
+      <button id="prevWeaponPage" class="orange-btn">Previous</button>
+      <button id="nextWeaponPage" class="orange-btn">Next</button>
+    </div>
+
+    <div>
+      <button id="backToSummary" class="orange-btn" style="display: none">
+        Back to Summary
+      </button>
     </div>
 
     <button
@@ -54,5 +87,7 @@
     >
       Back
     </button>
+
+    <script src="encyclopedia.js"></script>
   </body>
 </html>

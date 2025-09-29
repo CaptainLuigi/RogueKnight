@@ -94,20 +94,20 @@ body {
     z-index: 1500;
 }
 
-#enzyclopedia {
+#encyclopedia {
     position: fixed;
     bottom: 2vh;
     right: 13vw;
 }
 
-#enzyclopedia button {
+#encyclopedia button {
     background: transparent;
     border: none;
     padding: 0;
     cursor: pointer;
 }
 
-#enzyclopedia img {
+#encyclopedia img {
     background: transparent;
     display: block;
     height: 5vw;

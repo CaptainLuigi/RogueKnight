@@ -24,6 +24,7 @@ class Weapons {
   #soundCategory;
   #strength = 0;
   #selfDamage = 0;
+  #rarity;
 
   constructor(
     name,
@@ -49,7 +50,8 @@ class Weapons {
     drawAmountOnUse = 0,
     soundCategory = null,
     strength = 0,
-    selfDamage = 0
+    selfDamage = 0,
+    rarity
   ) {
     this.loadFromWeaponInfo({
       name,
@@ -76,6 +78,7 @@ class Weapons {
       soundCategory,
       strength,
       selfDamage,
+      rarity,
     });
   }
 
@@ -183,6 +186,10 @@ class Weapons {
 
   get selfDamage() {
     return this.#selfDamage;
+  }
+
+  get rarity() {
+    return this.#rarity;
   }
 
   set canHeal(value) {
@@ -354,6 +361,7 @@ class Weapons {
     this.#soundCategory = info.soundCategory;
     this.#strength = info.strength;
     this.#selfDamage = info.selfDamage;
+    this.#rarity = info.rarity;
 
     let effectsLeft = info.effectsLeft;
     if (!Array.isArray(effectsLeft)) {
@@ -462,7 +470,10 @@ class SmallHealthPotion extends Weapons {
       true,
       0,
       0,
-      "HealSound"
+      "HealSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -509,7 +520,10 @@ class BigHealthPotion extends Weapons {
       true,
       0,
       0,
-      "HealSound"
+      "HealSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -555,7 +569,10 @@ class BasicSword extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -600,7 +617,10 @@ class BasicAxe extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -645,7 +665,10 @@ class BasicSpear extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -700,7 +723,10 @@ class BasicBow extends Weapons {
       false,
       0,
       0,
-      "BowSound"
+      "BowSound",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -745,7 +771,10 @@ class PoisonArrow extends Weapons {
       false,
       0,
       0,
-      "BowSound"
+      "BowSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -792,7 +821,10 @@ class VampiricDagger extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -836,7 +868,10 @@ class Bomb extends Weapons {
       false,
       0,
       0,
-      "BombSound"
+      "BombSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -881,7 +916,10 @@ class Herosword extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -926,7 +964,10 @@ class Dagger extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -971,7 +1012,10 @@ class PoisonDagger extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1016,7 +1060,10 @@ class Spearblade extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1061,7 +1108,10 @@ class Crossbow extends Weapons {
       false,
       0,
       0,
-      "BowSound"
+      "BowSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1106,7 +1156,10 @@ class ThorsHammer extends Weapons {
       false,
       0,
       0,
-      "Thunder"
+      "Thunder",
+      0,
+      0,
+      "legendary"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1151,7 +1204,10 @@ class Lightning extends Weapons {
       false,
       0,
       0,
-      "Lightning"
+      "Lightning",
+      0,
+      0,
+      "legendary"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1196,7 +1252,10 @@ class Stone extends Weapons {
       false,
       0,
       0,
-      "Stone"
+      "Stone",
+      0,
+      0,
+      "common"
     );
   }
 }
@@ -1225,7 +1284,10 @@ class BasicShield extends Weapons {
       false,
       0,
       0,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1266,7 +1328,10 @@ class MasterShield extends Weapons {
       false,
       0,
       0,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1307,7 +1372,10 @@ class SpikedShield extends Weapons {
       false,
       0,
       0,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1354,7 +1422,10 @@ class TowerShield extends Weapons {
       false,
       0,
       0,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1395,7 +1466,10 @@ class SurvivalPotion extends Weapons {
       true,
       0,
       0,
-      "HealSound"
+      "HealSound",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1441,7 +1515,10 @@ class PoisonPotion extends Weapons {
       false,
       0,
       0,
-      "PotionSound"
+      "PotionSound",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1482,7 +1559,10 @@ class LightningShield extends Weapons {
       false,
       0,
       0,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "legendary"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1531,7 +1611,10 @@ class GoldSword extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "rare"
     );
   }
   loadFromWeaponInfo(info) {
@@ -1586,7 +1669,10 @@ class GoldShield extends Weapons {
       false,
       0,
       0,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "rare"
     );
   }
   loadFromWeaponInfo(info) {
@@ -1633,7 +1719,8 @@ class ChannelEnergy extends Weapons {
       0,
       "ChargeSound",
       0,
-      5
+      5,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1677,7 +1764,10 @@ class Restock extends Weapons {
       false,
       0,
       2,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1718,7 +1808,10 @@ class SwiftSword extends Weapons {
       false,
       0,
       1,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1764,7 +1857,10 @@ class SwiftShield extends Weapons {
       false,
       0,
       1,
-      "ShieldSound"
+      "ShieldSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1809,7 +1905,8 @@ class BattleFocus extends Weapons {
       1,
       "ChargeSound",
       0,
-      5
+      5,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1856,7 +1953,10 @@ class ThrowingKnife extends Weapons {
       false,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1886,7 +1986,7 @@ class BigBlade extends Weapons {
       50,
       30,
       3,
-      "Can only target the first enemy, click to instantly use weapon and gain 1 energy.",
+      "Can only target the first enemy, click to instantly use weapon. Gain one Energy on attack.",
       "Assets/blade.png",
       false,
       0,
@@ -1900,7 +2000,10 @@ class BigBlade extends Weapons {
       false,
       1,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1945,7 +2048,10 @@ class Hammer extends Weapons {
       false,
       0,
       0,
-      "HammerSound"
+      "HammerSound",
+      0,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -1990,7 +2096,10 @@ class Macuahuitl extends Weapons {
       false,
       2,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2033,7 +2142,10 @@ class BrokenBlade extends Weapons {
       true,
       0,
       0,
-      "SwordSlash"
+      "SwordSlash",
+      0,
+      0,
+      "common"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2082,7 +2194,9 @@ class RageAxe extends Weapons {
       0,
       0,
       "SwordSlash",
-      5
+      5,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2131,7 +2245,8 @@ class BerserkersBrew extends Weapons {
       0,
       "ChargeSound",
       10,
-      10
+      10,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2174,7 +2289,9 @@ class RagingDagger extends Weapons {
       0,
       0,
       "SwordSlash",
-      10
+      10,
+      0,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2218,7 +2335,8 @@ class BerserkersSpear extends Weapons {
       0,
       "SwordSlash",
       5,
-      10
+      10,
+      "uncommon"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2270,7 +2388,8 @@ class Leechfang extends Weapons {
       0,
       "SwordSlash",
       0,
-      15
+      15,
+      "rare"
     );
   }
   applyUpgrades(weaponInfo) {
@@ -2319,7 +2438,8 @@ class MagicWand extends Weapons {
       0,
       "MagicSound",
       0,
-      0
+      0,
+      "legendary"
     );
   }
 
@@ -2621,7 +2741,8 @@ function generateWeaponInfo(
   display,
   tooltipElement,
   weaponPrice,
-  showUpgradePreview = false
+  showUpgradePreview = false,
+  isStaticTooltip = false
 ) {
   if (displayParent && !display) {
     display = document.createElement("div");
@@ -2633,7 +2754,6 @@ function generateWeaponInfo(
   displayParent = display.parentNode;
   display.innerHTML = "";
 
-  // Create an image element for the weapon
   const weaponImage = document.createElement("img");
   weaponImage.src = weapon.sprite;
   weaponImage.alt = weapon.name;
@@ -2642,7 +2762,6 @@ function generateWeaponInfo(
 
   var getTooltip = () => {
     if (showUpgradePreview && weapon.level < 3) {
-      // Clone and upgrade
       const upgradedWeapon = new weapon.__proto__.constructor();
       upgradedWeapon.loadFromWeaponInfo(weapon.getWeaponInfo());
       upgradedWeapon.upgrade();
@@ -2650,6 +2769,7 @@ function generateWeaponInfo(
       const statBlock = (w) => {
         let html = `<div class="tooltip-block">`;
         html += `<strong>${w.name}</strong> <br>`;
+        html += `<strong>Rarity:</strong> ${w.rarity} <br>`;
         html += `<strong>Level:</strong> ${w.level}<br>`;
         html += `<strong>Energy Cost:</strong> ${w.energy}<br>`;
         html += `<strong>Range:</strong> ${w.range}<br>`;
@@ -2690,9 +2810,9 @@ function generateWeaponInfo(
     `;
     }
 
-    // Fallback: Standard tooltip
     let tooltipString = `          
       <strong>${weapon.name}</strong>  <br>
+      <strong>Rarity:</strong> ${weapon.rarity} <br>
       <strong>Level:</strong> ${weapon.level} <br>
       <strong>Energy Cost:</strong> ${weapon.energy} <br>
       <strong>Range:</strong> ${weapon.range} <br>`;
@@ -2713,7 +2833,6 @@ function generateWeaponInfo(
         modifierDisplay += ` (${percentBuff}%)`;
       }
 
-      // Only calculate and show finalDamage if there are modifiers
       if (flatBuff !== 0 || percentBuff !== 0) {
         const finalDamage = Math.max(
           1,
@@ -2742,7 +2861,6 @@ function generateWeaponInfo(
         modifierDisplay += ` (${percentBuff}%)`;
       }
 
-      // Only calculate and show finalCritDamage if there are modifiers
       if (flatBuff !== 0 || percentBuff !== 0) {
         const finalCritDamage = Math.max(
           1,
@@ -2822,7 +2940,6 @@ function generateWeaponInfo(
         modifierDisplay = ` (${flatBuff >= 0 ? "+" : ""}${flatBuff})`;
       }
 
-      // Only calculate and show finalBlock if there's a modifier
       if (flatBuff !== 0) {
         const finalBlock = weapon.blockAmount + flatBuff;
         tooltipString += `<strong>Block:</strong> ${weapon.blockAmount}${modifierDisplay} → ${finalBlock}<br>`;
@@ -2856,18 +2973,33 @@ function generateWeaponInfo(
     return tooltipString;
   };
 
+  // if (returnTooltip) {
+  //   return getTooltip();
+  // }
+
+  // if (!display) {
+  //   display = document.createElement("div");
+  //   displayParent.appendChild(display);
+  // }
+
+  // displayParent = display.parentNode;
+  // display.innerHTML = "";
+
   if (!tooltipElement) {
-    // Create a tooltip for the weapon
     tooltipElement = document.createElement("div");
 
-    // Append the tooltip to the weapon element
     display.appendChild(tooltipElement);
   }
 
-  display.addEventListener("mouseenter", function () {
+  if (isStaticTooltip) {
     tooltipElement.classList.add("visible");
     tooltipElement.innerHTML = getTooltip();
-  });
+  } else {
+    display.addEventListener("mouseenter", function () {
+      tooltipElement.classList.add("visible");
+      tooltipElement.innerHTML = getTooltip();
+    });
+  }
 
   tooltipElement.classList.add("tooltip");
 
@@ -2893,14 +3025,41 @@ function applyBlock(weapon, blockModifier) {
 
 function getRandomWeapons(randomWeapons, lvl2Prop, lvl3Prop) {
   let baseWeapon;
-  let newRandomIndex;
-
   const availableWeapons = getAvailableWeapons();
 
+  const rarityWeights = {
+    common: 0.6,
+    uncommon: 0.3,
+    rare: 0.1,
+  };
+
+  const buckets = {
+    common: availableWeapons.filter((w) => w.rarity === "common"),
+    uncommon: availableWeapons.filter((w) => w.rarity === "uncommon"),
+    rare: availableWeapons.filter((w) => w.rarity === "rare"),
+  };
+
+  let chosenRarity;
+  const roll = Math.random();
+  if (roll < rarityWeights.common) {
+    chosenRarity = "common";
+  } else if (roll < rarityWeights.common + rarityWeights.uncommon) {
+    chosenRarity = "uncommon";
+  } else {
+    chosenRarity = "rare";
+  }
+
+  let newRandomIndex;
   do {
-    newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
-    baseWeapon = availableWeapons[newRandomIndex];
-  } while (randomWeapons.some((w) => w.name == baseWeapon.name));
+    const chosenBucket = buckets[chosenRarity];
+    if (chosenBucket.length === 0) {
+      baseWeapon =
+        availableWeapons[Math.floor(Math.random() * availableWeapons.length)];
+    } else {
+      newRandomIndex = Math.floor(Math.random() * chosenBucket.length);
+      baseWeapon = chosenBucket[newRandomIndex];
+    }
+  } while (randomWeapons.some((w) => w.name === baseWeapon.name));
 
   const weaponInfo = baseWeapon.getWeaponInfo();
 
@@ -2922,3 +3081,35 @@ function getRandomWeapons(randomWeapons, lvl2Prop, lvl3Prop) {
 
   return newWeapon;
 }
+
+// function getRandomWeapons(randomWeapons, lvl2Prop, lvl3Prop) {
+//   let baseWeapon;
+//   let newRandomIndex;
+
+//   const availableWeapons = getAvailableWeapons();
+
+//   do {
+//     newRandomIndex = Math.floor(Math.random() * availableWeapons.length);
+//     baseWeapon = availableWeapons[newRandomIndex];
+//   } while (randomWeapons.some((w) => w.name == baseWeapon.name));
+
+//   const weaponInfo = baseWeapon.getWeaponInfo();
+
+//   const levelRoll = Math.random();
+//   if (levelRoll < lvl3Prop) {
+//     weaponInfo.level = 3;
+//   } else if (levelRoll < lvl2Prop + lvl3Prop) {
+//     weaponInfo.level = 2;
+//   } else {
+//     weaponInfo.level = 1;
+//   }
+
+//   const WeaponClass = Object.getPrototypeOf(baseWeapon).constructor;
+//   const newWeapon = new WeaponClass();
+
+//   newWeapon.loadFromWeaponInfo(weaponInfo);
+//   newWeapon.applyUpgrades(weaponInfo);
+//   newWeapon.loadFromWeaponInfo(weaponInfo);
+
+//   return newWeapon;
+// }

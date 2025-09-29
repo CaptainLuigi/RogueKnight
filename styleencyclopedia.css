@@ -1,0 +1,238 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+}
+
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    /* margin-left: 2.5%; */
+    position: absolute;
+}
+
+#openBook {
+    width: 70%;
+    height: auto;
+    position: absolute;
+    left: 15%;
+    image-rendering: pixelated;
+}
+
+#bookContent {
+    position: absolute;
+    left: 16%;
+    width: 65%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 3%;
+    padding-left: 4%;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+#firstPage, #secondPage {
+    width: 45%;
+    text-align: center;
+    font-size: 2rem;
+}
+
+#knightImage {
+    width: 20vw;
+    height: 20vw;
+     image-rendering: pixelated;
+}
+
+#secondPage img {
+    background: transparent;
+   
+    height: 8vw;
+    width: 8vw;
+    image-rendering: pixelated;
+}
+
+#secondPage button {
+    background: transparent;
+    cursor: pointer;
+    border: 0.25vw solid black;
+    border-radius: 0.5vw;
+}
+
+#secondPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.column {
+    width: 48%;
+}
+
+#weaponsPage {
+    display: flex;
+    justify-content: space-between;
+}
+
+.weaponItem {
+    text-align: center;
+   
+}
+
+.weaponItem img {
+    width: 9vw;
+    height: 9vw;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+#weaponsContainer {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-left: 2%;
+}
+
+#weaponsPage {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    gap: 6vw;
+    margin-left: -1vw;
+}
+
+.sidePage {
+    width: 48%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.weaponGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
+    grid-template-rows: repeat(5, auto);
+    gap: 1vw;
+    flex-grow: 1;
+}
+
+.weaponItem {
+    text-align: center;
+    cursor: pointer;
+}
+
+.weaponItem img {
+    width: 6vw;
+    height: 6vw;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+#weaponsPagination {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 5%;
+    flex-direction: column;
+    gap: 1vw;
+    transform: translateY(-50%);
+}
+
+#backToSummary {
+    position: absolute;
+    top: 15vh;
+    left: 2%;
+}
+
+#nextWeaponPage, #prevWeaponPage {
+    width: 8vw;
+}
+
+#weaponInfoPage {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+
+#weaponInfoLeft, #weaponInfoRight {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#weaponInfoLeft #weaponImage {
+    width: 25vw;
+    height: 25vw;
+    image-rendering: pixelated;
+    margin-top: 5vh;
+}
+
+#weaponTooltip {
+    width: 100%;
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 2vw;
+}
+
+#weaponLevelButtons {
+    display: flex;
+    gap: 1vw;
+    margin-bottom: 2vw;
+}
+
+#weaponInfoTooltip {
+    display: block;
+    min-width: 20vw;
+    max-width: 25vw;
+    min-height: 30vh;
+}
+
+#weaponInfoTooltip {
+   font-size: 2rem;
+}
+
+#weaponImage .weapon-image {
+    height: 100%;
+    width: 100%;
+}
+
+.backToMenu {
+    position: absolute;
+    top: 2vh;
+    left: 2%;
+}
+
+.orange-btn {
+    font-family: 'Pirata_One';
+    font-size: 1.5rem;
+    color: black;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.5vw;
+}
+
+p {
+    font-size: 1.5rem;
+}
