@@ -161,7 +161,11 @@ const backToWeaponsBtn = document.getElementById("backToWeapons");
 
 function showWeaponInfo(weapon) {
   weaponsContainer.style.display = "none";
+  backToSummaryBtn.style.display = "none";
+  prevBtn.style.display = "none";
+  nextBtn.style.display = "none";
   weaponInfoPage.style.display = "flex";
+  // next, prev button none, back to summary none
 
   displayWeaponLevel(weapon, 1);
 
@@ -211,4 +215,178 @@ function displayWeaponLevel(weapon, level) {
 backToWeaponsBtn.onclick = () => {
   weaponInfoPage.style.display = "none";
   weaponsContainer.style.display = "flex";
+  backToSummaryBtn.style.display = "flex";
+  prevBtn.style.display = "flex";
+  nextBtn.style.display = "flex";
+};
+
+// Enemy logic
+
+const dummyTemplate = document.createElement("div");
+dummyTemplate.classList.add("sprite-enemie"); // match the expected root
+dummyTemplate.innerHTML = `
+  <div class="enemy-status-container">
+    <div class="enemy-block hidden">0</div>
+    <div class="poison-status-enemy hidden"></div>
+    <div class="enemy-buff hidden"></div>
+  </div>
+
+  <div class="health-bar-container-enemy">
+    <div class="health-bar-enemy" style="width: 100%; background-color: rgb(76, 175, 80);"></div>
+    <span>0 / 0</span>
+  </div>
+
+  <img class="enemy-icon" src="" alt="">
+
+  <div class="enemy-intent">
+    <img src="">
+  </div>
+`;
+
+Enemy.setTemplateNode(dummyTemplate);
+
+const allEnemies = Object.values(enemyClassMapping)
+  .map((EnemyClass) => new EnemyClass())
+  .filter((e) => e.fightType);
+
+const enemiesByAct = {};
+
+allEnemies.forEach((e) => {
+  const act = e.fightType.match(/\d$/)[0];
+  if (!enemiesByAct[act]) enemiesByAct[act] = [];
+  enemiesByAct[act].push(e);
+});
+
+Object.values(enemiesByAct).forEach((enemyArray) => {
+  enemyArray.sort((a, b) => a.name.localeCompare(b.name));
+});
+
+const sortedActs = Object.keys(enemiesByAct).sort();
+
+const showEnemiesBtn = document.getElementById("showEnemies");
+const enemiesContainer = document.getElementById("enemiesContainer");
+const enemiesPage = document.getElementById("enemiesPage");
+const prevEnemyBtn = document.getElementById("prevEnemyPage");
+const nextEnemyBtn = document.getElementById("nextEnemyPage");
+const backToEnemySummaryBtn = document.getElementById("backToEnemySummary");
+
+let currentActPage = 0;
+
+function renderEnemiesByAct(actIndex) {
+  enemiesPage.innerHTML = "";
+  const act = sortedActs[actIndex];
+  const enemiesOfAct = enemiesByAct[act];
+
+  const leftEnemies = enemiesOfAct.slice(0, 9);
+  const rightEnemies = enemiesOfAct.slice(9, 18);
+
+  function createSide(enemiesSide) {
+    const sideDiv = document.createElement("div");
+    sideDiv.classList.add("sidePage");
+
+    // Act label
+    const actLabel = document.createElement("h1");
+    actLabel.textContent = `Act: ${act}`;
+    actLabel.style.textAlign = "center";
+    sideDiv.appendChild(actLabel);
+
+    // Grid for enemies
+    const gridDiv = document.createElement("div");
+    gridDiv.classList.add("enemyGrid");
+
+    enemiesSide.forEach((enemy) => {
+      const enemyDiv = document.createElement("div");
+      enemyDiv.classList.add("enemyItem");
+
+      const img = document.createElement("img");
+      img.src = enemy.icon;
+      img.alt = enemy.name;
+
+      const nameP = document.createElement("p");
+      nameP.textContent = enemy.name;
+
+      enemyDiv.appendChild(img);
+      enemyDiv.appendChild(nameP);
+
+      enemyDiv.onclick = () => showEnemyInfo(enemy);
+      gridDiv.appendChild(enemyDiv);
+    });
+
+    sideDiv.appendChild(gridDiv);
+    return sideDiv;
+  }
+
+  enemiesPage.appendChild(createSide(leftEnemies));
+  enemiesPage.appendChild(createSide(rightEnemies));
+}
+
+function updateEnemyPaginationButtons() {
+  prevEnemyBtn.style.display = currentActPage === 0 ? "none" : "flex";
+  nextEnemyBtn.style.display =
+    currentActPage >= sortedActs.length - 1 ? "none" : "flex";
+}
+
+showEnemiesBtn.addEventListener("click", () => {
+  document.getElementById("firstPage").style.display = "none";
+  document.getElementById("secondPage").style.display = "none";
+  enemiesContainer.style.display = "flex";
+  document.getElementById("enemiesPagination").style.display = "flex";
+  backToEnemySummaryBtn.style.display = "flex";
+
+  currentActPage = 0;
+  renderEnemiesByAct(currentActPage);
+  updateEnemyPaginationButtons();
+});
+
+nextEnemyBtn.addEventListener("click", () => {
+  if (currentActPage < sortedActs.length - 1) {
+    currentActPage++;
+    renderEnemiesByAct(currentActPage);
+    updateEnemyPaginationButtons();
+  }
+});
+
+prevEnemyBtn.addEventListener("click", () => {
+  if (currentActPage > 0) {
+    currentActPage--;
+    renderEnemiesByAct(currentActPage);
+    updateEnemyPaginationButtons();
+  }
+});
+
+backToEnemySummaryBtn.addEventListener("click", () => {
+  enemiesContainer.style.display = "none";
+  document.getElementById("enemiesPagination").style.display = "none";
+  backToEnemySummaryBtn.style.display = "none";
+
+  document.getElementById("firstPage").style.display = "block";
+  document.getElementById("secondPage").style.display = "flex";
+});
+
+const enemyInfoPage = document.getElementById("enemyInfoPage");
+const enemyInfoName = document.getElementById("enemyName");
+const enemyInfoImage = document.getElementById("enemyImage");
+const enemyDescription = document.getElementById("enemyDescription");
+const backToEnemiesBtn = document.getElementById("backToEnemies");
+
+function showEnemyInfo(enemy) {
+  enemiesContainer.style.display = "none";
+  backToEnemySummaryBtn.style.display = "none";
+  prevEnemyBtn.style.display = "none";
+  nextEnemyBtn.style.display = "none";
+
+  enemyInfoPage.style.display = "flex";
+
+  enemyInfoName.textContent = enemy.name;
+  enemyInfoImage.innerHTML = `<img src="${enemy.icon}"/>`;
+  enemyDescription.textContent =
+    enemy.description || "No description available";
+}
+
+backToEnemiesBtn.onclick = () => {
+  enemyInfoPage.style.display = "none";
+  enemiesContainer.style.display = "flex";
+  backToEnemySummaryBtn.style.display = "flex";
+  prevEnemyBtn.style.display = "flex";
+  nextEnemyBtn.style.display = "flex";
 };

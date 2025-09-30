@@ -2,6 +2,11 @@
     font-family: 'Pirata_One';
     src: url(Assets/PirataOne-Regular.ttf) format('truetype');
 }
+
+html {
+    font-size: 1vw;
+}
+
 body {
     font-family: 'Pirata_One';
     position: relative;
@@ -9,7 +14,6 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
-
 }
 
 #StartscreenBackground {
@@ -36,7 +40,7 @@ body {
     height: auto;
     display: flex;
     justify-content: space-between;
-    padding-top: 3%;
+    padding-top: 2%;
     padding-left: 4%;
     z-index: 1;
     box-sizing: border-box;
@@ -155,12 +159,14 @@ body {
 
 #backToSummary {
     position: absolute;
+    font-size: 1.5rem;
     top: 15vh;
     left: 2%;
 }
 
 #nextWeaponPage, #prevWeaponPage {
     width: 8vw;
+    font-size: 1.5rem;
 }
 
 #weaponInfoPage {
@@ -177,6 +183,11 @@ body {
     align-items: center;
 }
 
+#weaponInfoRight {
+    height: 37vw;
+    justify-content: flex-start;
+}
+
 #weaponInfoLeft #weaponImage {
     width: 25vw;
     height: 25vw;
@@ -184,44 +195,43 @@ body {
     margin-top: 5vh;
 }
 
-#weaponTooltip {
-    width: 100%;
-    text-align: left;
-    font-size: 1.5rem;
-    margin-bottom: 2vw;
-}
-
 #weaponLevelButtons {
     display: flex;
-    gap: 1vw;
-    margin-bottom: 2vw;
+    gap: 0.5vw;
+    margin-top: auto;
+}
+
+#weaponLevelButtons button {
+    font-size: 1.25rem;
 }
 
 #weaponInfoTooltip {
-    display: block;
-    min-width: 20vw;
-    max-width: 25vw;
-    min-height: 30vh;
+    width: 23vw;
+    text-align: left;
+    font-size: 1.5rem;
 }
 
-#weaponInfoTooltip {
-   font-size: 2rem;
+#backToWeapons {
+    margin-top: 0.5vw;
+    font-size: 1.25rem;
 }
 
 #weaponImage .weapon-image {
     height: 100%;
     width: 100%;
+    image-rendering: pixelated;
 }
 
 .backToMenu {
     position: absolute;
+    font-size: 1.5rem;
     top: 2vh;
     left: 2%;
 }
 
 .orange-btn {
     font-family: 'Pirata_One';
-    font-size: 1.5rem;
+    
     color: black;
     border: 0.2vw solid black;
     border-radius: 0.5vw;
@@ -234,5 +244,5 @@ body {
 }
 
 p {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }

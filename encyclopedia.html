@@ -67,6 +67,34 @@
             <button id="backToWeapons" class="orange-btn">Back</button>
           </div>
         </div>
+
+        <div id="enemiesContainer" style="display: none">
+          <div id="enemiesPage"></div>
+        </div>
+
+        <div id="enemyInfoPage" style="display: none">
+          <div id="enemyInfoLeft">
+            <h1 id="enemyName"></h1>
+            <div id="enemyImage"></div>
+          </div>
+          <div id="enemyInfoRight">
+            <div id="enemyDescription"></div>
+            <button id="backToEnemies" class="orange-btn">Back</button>
+          </div>
+        </div>
+
+        <div id="enemiesPagination" style="display: none">
+          <button id="prevEnemyPage" class="orange-btn">Previous</button>
+          <button id="nextEnemyPage" class="orange-btn">Next</button>
+        </div>
+
+        <button
+          id="backToEnemySummary"
+          class="orange-btn"
+          style="display: none"
+        >
+          Back to Summary
+        </button>
       </div>
     </div>
 
@@ -85,9 +113,8 @@
       onclick="window.location.href='index.html'"
       class="backToMenu orange-btn"
     >
-      Back
+      Back to Menu
     </button>
-
     <script src="encyclopedia.js"></script>
   </body>
 </html>
