@@ -60,4 +60,8 @@ waffen aus der hand ryceln?
 zindex in vielen fällen nicht notwendig, ggf rausnehmen
 
 enzyclopedia
+
+waffen tooltip bei leave weapon behind event anzeigen
+
+wenn gegner mit double strike/triple strike während dem angriff sterben, gehen die restlichen hits trotzdem durch
 */

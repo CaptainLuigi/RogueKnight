@@ -13,7 +13,7 @@
     <script src="enemie.js"></script>
     <script src="relics.js"></script>
   </head>
-  <body>
+  <body class="overview">
     <div>
       <img
         id="StartscreenBackground"
@@ -38,7 +38,7 @@
             <img src="Assets/sword.png" />
           </button>
           Weapons
-          <button id="showEnemies">
+          <button id="showEnemies" onclick="showEnemiesPage()">
             <img src="Assets/Transperent/Icon5.png" />
           </button>
           Enemies
@@ -82,19 +82,6 @@
             <button id="backToEnemies" class="orange-btn">Back</button>
           </div>
         </div>
-
-        <div id="enemiesPagination" style="display: none">
-          <button id="prevEnemyPage" class="orange-btn">Previous</button>
-          <button id="nextEnemyPage" class="orange-btn">Next</button>
-        </div>
-
-        <button
-          id="backToEnemySummary"
-          class="orange-btn"
-          style="display: none"
-        >
-          Back to Summary
-        </button>
       </div>
     </div>
 
@@ -104,9 +91,7 @@
     </div>
 
     <div>
-      <button id="backToSummary" class="orange-btn" style="display: none">
-        Back to Summary
-      </button>
+      <button id="backToSummary" class="orange-btn">Back to Summary</button>
     </div>
 
     <button
@@ -115,6 +100,7 @@
     >
       Back to Menu
     </button>
+    <div id="enemies"></div>
     <script src="encyclopedia.js"></script>
   </body>
 </html>

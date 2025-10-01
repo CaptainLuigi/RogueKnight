@@ -1,13 +1,15 @@
 class Enemy extends HealthEntity {
-  static #templateNode;
-  static #enemyDisplay;
+  static #templateNode = null;
+  static #enemyDisplay = null;
   static initialize() {
     //Zuweisung enemyDisplay entspricht dem Element, das alle angezeigten Gegner beeinhaltet (Node)
     this.#enemyDisplay = document.getElementById("enemies");
     //Zuweisung der Vorlage der Gegner
     this.#templateNode = this.#enemyDisplay.firstElementChild;
     //Entfernt die Vorlage der Gegner (damit keine leere Vorlage mit dabei ist)
-    this.#templateNode.remove();
+    if (this.#templateNode) {
+      this.#templateNode.remove();
+    }
   }
   #health;
   #name;
@@ -195,9 +197,14 @@ class Enemy extends HealthEntity {
     this.#maxHealth = maxHealth;
     this.#icon = icon;
     this.#display = Enemy.#templateNode.cloneNode(true);
-    let image = this.#display.querySelector(".enemy-icon");
-    image.src = icon;
-    image.alt = name;
+    const image = this.#display.querySelector(".enemy-icon");
+    if (image) {
+      image.src = icon;
+      image.alt = name;
+    }
+    // let image = this.#display.querySelector(".enemy-icon");
+    // image.src = icon;
+    // image.alt = name;
     this.#ranged = ranged;
     this.#lifesteal = lifesteal;
     this.#blockAmount = blockAmount;
@@ -223,8 +230,12 @@ class Enemy extends HealthEntity {
       tripleStrike: 1,
     };
 
+    // this.#display = Enemy.#templateNode.cloneNode(true);
+
     this.updateDisplay();
-    Enemy.#enemyDisplay.appendChild(this.#display);
+    if (Enemy.#enemyDisplay) {
+      Enemy.#enemyDisplay.appendChild(this.#display);
+    }
     enemies.push(this);
 
     if (this.canAttack) {
@@ -1137,7 +1148,7 @@ class EvilKnight extends Enemy {
       return;
     }
 
-    const summonedMinion = new MinonKnightSummon();
+    const summonedMinion = new MinionKnightSummon();
 
     enemies.pop();
 
@@ -1229,7 +1240,24 @@ class Gnome extends Enemy {
 
 class MinionKnightSummon extends Enemy {
   constructor() {
-    super("Minion Knight", 250, 5, "Assets/minionKnight.png", true, 0, 20);
+    super(
+      "Minion Knight",
+      250,
+      5,
+      "Assets/minionKnight.png",
+      true,
+      0,
+      20,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "summon1"
+    );
     this.isSummoned = true;
   }
 }
@@ -1440,7 +1468,24 @@ class SkeletonSummon extends Enemy {
     const randomHealth = getRandomIntInclusive(45, 65);
     const randomAttackPower = getRandomIntInclusive(3, 7);
     const randomShieldAmount = getRandomIntInclusive(5, 15);
-    super("Skeleton", 50, 5, "Assets/skeleton.png", true, 0, 10);
+    super(
+      "Skeleton",
+      50,
+      5,
+      "Assets/skeleton.png",
+      true,
+      0,
+      10,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "summon1"
+    );
     this.isSummoned = true;
   }
 }
@@ -1486,7 +1531,7 @@ class TrainingDummy extends Enemy {
       1,
       0,
       0,
-      "tutorial"
+      "tutorial1"
     );
     this.display.classList.add("bigEnemy");
   }
@@ -1756,7 +1801,11 @@ class RatSummon extends Enemy {
       0,
       0,
       0,
-      false
+      false,
+      0,
+      0,
+      0,
+      "summon2"
     );
     this.isSummoned = true;
     this.display.classList.add("dark-cave-effect");
@@ -1808,7 +1857,11 @@ class SpiderSummon extends Enemy {
       0,
       0,
       0,
-      false
+      false,
+      0,
+      0,
+      0,
+      "summon2"
     );
     this.setActionWeights({
       block: 30,
@@ -2060,6 +2113,7 @@ class HappyImp extends Enemy {
 }
 
 const enemyClassMapping = {
+  Shroom,
   Snail,
   SadShroom,
   BiteShroom,

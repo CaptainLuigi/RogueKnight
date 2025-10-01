@@ -1,3 +1,29 @@
+const bookSections = ["overview", "weapon", "enemy", "relic"];
+
+let sectionNextPage;
+let sectionPreviousPage;
+let isLastPage = false;
+let isFirstPage = false;
+
+function showBookSection(section) {
+  sectionNextPage = null;
+  sectionPreviousPage = null;
+  isLastPage = false;
+  isFirstPage = false;
+  for (let entry of bookSections) {
+    document.body.classList.remove(entry);
+  }
+  document.body.classList.add(section);
+}
+
+function goToNextPage() {
+  sectionNextPage();
+}
+
+function goToPreviousPage() {
+  sectionPreviousPage();
+}
+
 const weapons = Object.values(weaponClassMapping)
   .map((weaponClass) => new weaponClass())
   .filter((w) => w.rarity !== undefined && w.rarity !== null);
@@ -245,70 +271,79 @@ dummyTemplate.innerHTML = `
 
 Enemy.setTemplateNode(dummyTemplate);
 
-const allEnemies = Object.values(enemyClassMapping)
-  .map((EnemyClass) => new EnemyClass())
-  .filter((e) => e.fightType);
+let allEnemies = [];
+const enemiesByFightType = {};
+let sortedFightTypes = [];
+let currentFightTypeIndex = 0;
 
-const enemiesByAct = {};
+document.addEventListener("DOMContentLoaded", () => {
+  allEnemies = Object.values(enemyClassMapping).filter((EnemyClass) => {
+    const temp = new EnemyClass();
+    return temp.fightType;
+  });
 
-allEnemies.forEach((e) => {
-  const act = e.fightType.match(/\d$/)[0];
-  if (!enemiesByAct[act]) enemiesByAct[act] = [];
-  enemiesByAct[act].push(e);
+  allEnemies.forEach((EnemyClass) => {
+    const enemy = new EnemyClass();
+    const fightType = enemy.fightType;
+    if (!enemiesByFightType[fightType]) enemiesByFightType[fightType] = [];
+    enemiesByFightType[fightType].push(EnemyClass);
+  });
+
+  // sort alphabetically inside each fightType group
+  Object.values(enemiesByFightType).forEach((enemyArray) => {
+    enemyArray.sort((A, B) => {
+      const a = new A();
+      const b = new B();
+      return a.name.localeCompare(b.name);
+    });
+  });
+
+  sortedFightTypes = Object.keys(enemiesByFightType).sort((a, b) => {
+    const typeOrder = { normal: 0, elite: 1, event: 2, boss: 3 };
+    const matchA = a.match(/([a-z]+)(\d+)/i);
+    const matchB = b.match(/([a-z]+)(\d+)/i);
+    const [typeA, numA] = matchA ? [matchA[1], parseInt(matchA[2])] : ["", 0];
+    const [typeB, numB] = matchB ? [matchB[1], parseInt(matchB[2])] : ["", 0];
+    return numA === numB ? typeOrder[typeA] - typeOrder[typeB] : numA - numB;
+  });
 });
 
-Object.values(enemiesByAct).forEach((enemyArray) => {
-  enemyArray.sort((a, b) => a.name.localeCompare(b.name));
-});
-
-const sortedActs = Object.keys(enemiesByAct).sort();
-
-const showEnemiesBtn = document.getElementById("showEnemies");
-const enemiesContainer = document.getElementById("enemiesContainer");
-const enemiesPage = document.getElementById("enemiesPage");
-const prevEnemyBtn = document.getElementById("prevEnemyPage");
-const nextEnemyBtn = document.getElementById("nextEnemyPage");
-const backToEnemySummaryBtn = document.getElementById("backToEnemySummary");
-
-let currentActPage = 0;
-
-function renderEnemiesByAct(actIndex) {
+function renderEnemiesByFightType(index) {
   enemiesPage.innerHTML = "";
-  const act = sortedActs[actIndex];
-  const enemiesOfAct = enemiesByAct[act];
+  const fightType = sortedFightTypes[index];
+  const enemiesList = enemiesByFightType[fightType] || [];
 
-  const leftEnemies = enemiesOfAct.slice(0, 9);
-  const rightEnemies = enemiesOfAct.slice(9, 18);
+  const leftEnemies = enemiesList.slice(0, 9);
+  const rightEnemies = enemiesList.slice(9, 18);
 
   function createSide(enemiesSide) {
     const sideDiv = document.createElement("div");
     sideDiv.classList.add("sidePage");
 
-    // Act label
-    const actLabel = document.createElement("h1");
-    actLabel.textContent = `Act: ${act}`;
-    actLabel.style.textAlign = "center";
-    sideDiv.appendChild(actLabel);
+    const label = document.createElement("h1");
+    label.textContent = fightType.tpUpperCase();
+    label.style.textAlign = "center";
+    sideDiv.appendChild(label);
 
-    // Grid for enemies
     const gridDiv = document.createElement("div");
     gridDiv.classList.add("enemyGrid");
 
-    enemiesSide.forEach((enemy) => {
+    enemiesSide.forEach((EnemyClass) => {
+      const enemy = new EnemyClass();
       const enemyDiv = document.createElement("div");
       enemyDiv.classList.add("enemyItem");
 
       const img = document.createElement("img");
       img.src = enemy.icon;
-      img.alt = enemy.name;
+      img.classList.add("encyclopedia-enemy-icon");
+      enemyDiv.appendChild(img);
 
       const nameP = document.createElement("p");
       nameP.textContent = enemy.name;
-
-      enemyDiv.appendChild(img);
       enemyDiv.appendChild(nameP);
 
       enemyDiv.onclick = () => showEnemyInfo(enemy);
+
       gridDiv.appendChild(enemyDiv);
     });
 
@@ -316,52 +351,58 @@ function renderEnemiesByAct(actIndex) {
     return sideDiv;
   }
 
-  enemiesPage.appendChild(createSide(leftEnemies));
-  enemiesPage.appendChild(createSide(rightEnemies));
+  if (leftEnemies.length > 0) enemiesPage.appendChild(createSide(leftEnemies));
+  if (rightEnemies.length > 0)
+    enemiesPage.appendChild(createSide(rightEnemies));
 }
 
 function updateEnemyPaginationButtons() {
-  prevEnemyBtn.style.display = currentActPage === 0 ? "none" : "flex";
+  prevEnemyBtn.style.display = currentFightTypeIndex === 0 ? "none" : "flex";
   nextEnemyBtn.style.display =
-    currentActPage >= sortedActs.length - 1 ? "none" : "flex";
+    currentFightTypeIndex >= sortedFightTypes.length - 1 ? "none" : "flex";
 }
 
-showEnemiesBtn.addEventListener("click", () => {
+function showEnemiesPage() {
+  showBookSection(bookSections[2]);
+
+  sectionNextPage = nextEnemyPage;
+  sectionPreviousPage = previousEnemyPage;
+
   document.getElementById("firstPage").style.display = "none";
   document.getElementById("secondPage").style.display = "none";
   enemiesContainer.style.display = "flex";
   document.getElementById("enemiesPagination").style.display = "flex";
   backToEnemySummaryBtn.style.display = "flex";
 
-  currentActPage = 0;
-  renderEnemiesByAct(currentActPage);
+  currentFightTypeIndex = 0;
+  renderEnemiesByAct(currentFightTypeIndex);
   updateEnemyPaginationButtons();
-});
+}
 
-nextEnemyBtn.addEventListener("click", () => {
-  if (currentActPage < sortedActs.length - 1) {
-    currentActPage++;
-    renderEnemiesByAct(currentActPage);
+function nextEnemyPage() {
+  if (currentFightTypeIndex < sortedFightTypes.length - 1) {
+    currentFightTypeIndex++;
+    renderEnemiesByAct(currentFightTypeIndex);
     updateEnemyPaginationButtons();
   }
-});
+}
 
-prevEnemyBtn.addEventListener("click", () => {
-  if (currentActPage > 0) {
-    currentActPage--;
-    renderEnemiesByAct(currentActPage);
+function previousEnemyPage() {
+  if (currentFightTypeIndex > 0) {
+    currentFightTypeIndex--;
+    renderEnemiesByAct(currentFightTypeIndex);
     updateEnemyPaginationButtons();
   }
-});
+}
 
-backToEnemySummaryBtn.addEventListener("click", () => {
+function backToEnemySummary() {
   enemiesContainer.style.display = "none";
   document.getElementById("enemiesPagination").style.display = "none";
   backToEnemySummaryBtn.style.display = "none";
 
   document.getElementById("firstPage").style.display = "block";
   document.getElementById("secondPage").style.display = "flex";
-});
+}
 
 const enemyInfoPage = document.getElementById("enemyInfoPage");
 const enemyInfoName = document.getElementById("enemyName");
