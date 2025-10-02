@@ -34,11 +34,11 @@
           </span>
         </div>
         <div id="secondPage">
-          <button id="showWeapons">
+          <button id="showWeapons" onclick="enterWeaponSection()">
             <img src="Assets/sword.png" />
           </button>
           Weapons
-          <button id="showEnemies" onclick="showEnemiesPage()">
+          <button id="showEnemies" onclick="enterEnemySection()">
             <img src="Assets/Transperent/Icon5.png" />
           </button>
           Enemies
@@ -48,11 +48,11 @@
           Relics
         </div>
 
-        <div id="weaponsContainer" style="display: none">
+        <div id="weaponsContainer">
           <div id="weaponsPage"></div>
         </div>
 
-        <div id="weaponInfoPage" style="display: none">
+        <div id="weaponInfoPage">
           <div id="weaponInfoLeft">
             <h1 id="weaponName"></h1>
             <div id="weaponImage"></div>
@@ -64,30 +64,50 @@
               <button class="orange-btn" data-level="2">Level 2</button>
               <button class="orange-btn" data-level="3">Level 3</button>
             </div>
-            <button id="backToWeapons" class="orange-btn">Back</button>
+            <button
+              id="backToWeapons"
+              class="orange-btn"
+              onclick="enterWeaponSection()"
+            >
+              Back
+            </button>
           </div>
         </div>
 
-        <div id="enemiesContainer" style="display: none">
+        <div id="enemiesContainer">
           <div id="enemiesPage"></div>
         </div>
 
-        <div id="enemyInfoPage" style="display: none">
+        <div id="enemyInfoPage">
           <div id="enemyInfoLeft">
             <h1 id="enemyName"></h1>
             <div id="enemyImage"></div>
           </div>
           <div id="enemyInfoRight">
             <div id="enemyDescription"></div>
-            <button id="backToEnemies" class="orange-btn">Back</button>
+            <button
+              id="backToEnemies"
+              class="orange-btn"
+              onclick="enterEnemySection()"
+            >
+              Back
+            </button>
           </div>
         </div>
       </div>
     </div>
 
     <div id="weaponsPagination">
-      <button id="prevWeaponPage" class="orange-btn">Previous</button>
-      <button id="nextWeaponPage" class="orange-btn">Next</button>
+      <button
+        id="prevWeaponPage"
+        class="orange-btn"
+        onclick="goToPreviousPage()"
+      >
+        Previous
+      </button>
+      <button id="nextWeaponPage" class="orange-btn" onclick="goToNextPage()">
+        Next
+      </button>
     </div>
 
     <div>

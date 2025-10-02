@@ -16,27 +16,25 @@ body {
     height: 100%;
 }
 
-#weaponsContainer,
-#weaponInfoPage, 
-#enemiesContainer, 
-#enemyInfoPage, 
+body:not(.weapon) #weaponsContainer,
+body:not(.weaponInfo) #weaponInfoPage, 
+body:not(.enemy) #enemiesContainer, 
+body:not(.enemyInfo) #enemyInfoPage, 
 #weaponsPagination, 
-#backToSummary, 
-#firstPage, 
-#secondPage {
+body.overview #backToSummary, 
+body:not(.overview) #firstPage, 
+body:not(.overview) #secondPage {
     display: none;
 }
 
-body:not(.overview) #backToSummary {
-    display: unset;
-}
-
-.overview #firstPage {
-    display: unset;
-}
-.overview #secondPage {
+.enemy #weaponsPagination, 
+.weapon #weaponsPagination, 
+.relic #weaponsPagination
+  {
     display: flex;
 }
+
+
 
 #StartscreenBackground {
     width: 100%;
@@ -96,6 +94,7 @@ body:not(.overview) #backToSummary {
 }
 
 #secondPage {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
@@ -122,6 +121,7 @@ body:not(.overview) #backToSummary {
     image-rendering: pixelated;
 }
 
+#enemiesContainer,
 #weaponsContainer {
     position: relative;
     display: flex;
@@ -130,6 +130,7 @@ body:not(.overview) #backToSummary {
     margin-left: 2%;
 }
 
+#enemiesPage,
 #weaponsPage {
     display: flex;
     justify-content: space-between;

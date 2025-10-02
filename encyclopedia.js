@@ -1,4 +1,12 @@
-const bookSections = ["overview", "weapon", "enemy", "relic"];
+const bookSections = {
+  overview: "overview",
+  weapon: "weapon",
+  weaponInfo: "weaponInfo",
+  enemy: "enemy",
+  enemyInfo: "enemyInfo",
+  relic: "relic",
+  relicInfo: "relicInfo",
+};
 
 let sectionNextPage;
 let sectionPreviousPage;
@@ -9,19 +17,39 @@ function showBookSection(section) {
   sectionNextPage = null;
   sectionPreviousPage = null;
   isLastPage = false;
-  isFirstPage = false;
-  for (let entry of bookSections) {
+  isFirstPage = true;
+  adjustPageNavigationButtons();
+  for (let entry of Object.values(bookSections)) {
     document.body.classList.remove(entry);
   }
   document.body.classList.add(section);
 }
 
+function adjustPageNavigationButtons() {
+  const prevBtn = document.getElementById("prevWeaponPage");
+  const nextBtn = document.getElementById("nextWeaponPage");
+
+  if (isFirstPage) {
+    prevBtn.style.display = "none";
+  } else {
+    prevBtn.style.display = "flex";
+  }
+
+  if (isLastPage) {
+    nextBtn.style.display = "none";
+  } else {
+    nextBtn.style.display = "flex";
+  }
+}
+
 function goToNextPage() {
   sectionNextPage();
+  adjustPageNavigationButtons();
 }
 
 function goToPreviousPage() {
   sectionPreviousPage();
+  adjustPageNavigationButtons();
 }
 
 const weapons = Object.values(weaponClassMapping)
@@ -125,57 +153,39 @@ function renderWeaponsByRarity(rarityIndex) {
 let currentRarityPage = 0;
 const backToSummaryBtn = document.getElementById("backToSummary");
 
-showWeaponsBtn.addEventListener("click", () => {
-  document.getElementById("firstPage").style.display = "none";
-  document.getElementById("secondPage").style.display = "none";
-  weaponsContainer.style.display = "flex";
-  document.getElementById("weaponsPagination").style.display = "flex";
-  backToSummaryBtn.style.display = "flex";
-  currentRarityPage = 0;
+function enterWeaponSection() {
+  showBookSection(bookSections.weapon);
+
+  sectionNextPage = nextWeaponPage;
+  sectionPreviousPage = prevWeaponPage;
   renderWeaponsByRarity(currentRarityPage);
   updatePaginationButtons();
-});
+  adjustPageNavigationButtons();
+}
 
-nextBtn.addEventListener("click", () => {
+function nextWeaponPage() {
   if (currentRarityPage < sortedRarities.length - 1) {
     currentRarityPage++;
     renderWeaponsByRarity(currentRarityPage);
     updatePaginationButtons();
   }
-});
+}
 
-prevBtn.addEventListener("click", () => {
+function prevWeaponPage() {
   if (currentRarityPage > 0) {
     currentRarityPage--;
     renderWeaponsByRarity(currentRarityPage);
     updatePaginationButtons();
   }
-});
+}
 
 function updatePaginationButtons() {
-  const prevBtn = document.getElementById("prevWeaponPage");
-  const nextBtn = document.getElementById("nextWeaponPage");
-
-  if (currentRarityPage === 0) {
-    prevBtn.style.display = "none";
-  } else {
-    prevBtn.style.display = "flex";
-  }
-
-  if (currentRarityPage >= sortedRarities.length - 1) {
-    nextBtn.style.display = "none";
-  } else {
-    nextBtn.style.display = "flex";
-  }
+  isFirstPage = currentRarityPage === 0;
+  isLastPage = currentRarityPage >= sortedRarities.length - 1;
 }
 
 backToSummaryBtn.addEventListener("click", () => {
-  weaponsContainer.style.display = "none";
-  document.getElementById("weaponsPagination").style.display = "none";
-  backToSummaryBtn.style.display = "none";
-
-  document.getElementById("firstPage").style.display = "block";
-  document.getElementById("secondPage").style.display = "flex";
+  showBookSection(bookSections.overview);
 });
 
 const weaponInfoPage = document.getElementById("weaponInfoPage");
@@ -186,13 +196,7 @@ const levelButtons = document.querySelectorAll("#weaponLevelButtons button");
 const backToWeaponsBtn = document.getElementById("backToWeapons");
 
 function showWeaponInfo(weapon) {
-  weaponsContainer.style.display = "none";
-  backToSummaryBtn.style.display = "none";
-  prevBtn.style.display = "none";
-  nextBtn.style.display = "none";
-  weaponInfoPage.style.display = "flex";
-  // next, prev button none, back to summary none
-
+  showBookSection(bookSections.weaponInfo);
   displayWeaponLevel(weapon, 1);
 
   levelButtons.forEach((btn) => {
@@ -237,14 +241,6 @@ function displayWeaponLevel(weapon, level) {
 
   weapon.loadFromWeaponInfo(weaponInfo);
 }
-
-backToWeaponsBtn.onclick = () => {
-  weaponInfoPage.style.display = "none";
-  weaponsContainer.style.display = "flex";
-  backToSummaryBtn.style.display = "flex";
-  prevBtn.style.display = "flex";
-  nextBtn.style.display = "flex";
-};
 
 // Enemy logic
 
@@ -357,26 +353,19 @@ function renderEnemiesByFightType(index) {
 }
 
 function updateEnemyPaginationButtons() {
-  prevEnemyBtn.style.display = currentFightTypeIndex === 0 ? "none" : "flex";
-  nextEnemyBtn.style.display =
-    currentFightTypeIndex >= sortedFightTypes.length - 1 ? "none" : "flex";
+  isFirstPage = currentFightTypeIndex === 0;
+  isLastPage = currentFightTypeIndex >= sortedFightTypes.length - 1;
 }
 
-function showEnemiesPage() {
-  showBookSection(bookSections[2]);
+function enterEnemySection() {
+  showBookSection(bookSections.enemy);
 
   sectionNextPage = nextEnemyPage;
   sectionPreviousPage = previousEnemyPage;
-
-  document.getElementById("firstPage").style.display = "none";
-  document.getElementById("secondPage").style.display = "none";
-  enemiesContainer.style.display = "flex";
-  document.getElementById("enemiesPagination").style.display = "flex";
-  backToEnemySummaryBtn.style.display = "flex";
-
   currentFightTypeIndex = 0;
   renderEnemiesByAct(currentFightTypeIndex);
   updateEnemyPaginationButtons();
+  adjustPageNavigationButtons();
 }
 
 function nextEnemyPage() {
@@ -395,15 +384,6 @@ function previousEnemyPage() {
   }
 }
 
-function backToEnemySummary() {
-  enemiesContainer.style.display = "none";
-  document.getElementById("enemiesPagination").style.display = "none";
-  backToEnemySummaryBtn.style.display = "none";
-
-  document.getElementById("firstPage").style.display = "block";
-  document.getElementById("secondPage").style.display = "flex";
-}
-
 const enemyInfoPage = document.getElementById("enemyInfoPage");
 const enemyInfoName = document.getElementById("enemyName");
 const enemyInfoImage = document.getElementById("enemyImage");
@@ -411,23 +391,10 @@ const enemyDescription = document.getElementById("enemyDescription");
 const backToEnemiesBtn = document.getElementById("backToEnemies");
 
 function showEnemyInfo(enemy) {
-  enemiesContainer.style.display = "none";
-  backToEnemySummaryBtn.style.display = "none";
-  prevEnemyBtn.style.display = "none";
-  nextEnemyBtn.style.display = "none";
-
-  enemyInfoPage.style.display = "flex";
+  showBookSection(bookSections.enemyInfo);
 
   enemyInfoName.textContent = enemy.name;
   enemyInfoImage.innerHTML = `<img src="${enemy.icon}"/>`;
   enemyDescription.textContent =
     enemy.description || "No description available";
 }
-
-backToEnemiesBtn.onclick = () => {
-  enemyInfoPage.style.display = "none";
-  enemiesContainer.style.display = "flex";
-  backToEnemySummaryBtn.style.display = "flex";
-  prevEnemyBtn.style.display = "flex";
-  nextEnemyBtn.style.display = "flex";
-};
