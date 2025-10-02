@@ -16,14 +16,15 @@ body {
     height: 100%;
 }
 
-body:not(.weapon) #weaponsContainer,
+body:not(.weapon) #weaponsPage,
 body:not(.weaponInfo) #weaponInfoPage, 
-body:not(.enemy) #enemiesContainer, 
+body:not(.enemy) #enemiesPage, 
 body:not(.enemyInfo) #enemyInfoPage, 
+body:not(.relic) #relicsPage, 
+body:not(.relicInfo) #relicInfoPage, 
 #weaponsPagination, 
 body.overview #backToSummary, 
-body:not(.overview) #firstPage, 
-body:not(.overview) #secondPage {
+body:not(.overview) #overviewPage{
     display: none;
 }
 
@@ -41,7 +42,6 @@ body:not(.overview) #secondPage {
     height: 100vh;
     display: block;
     object-fit: cover;
-    /* margin-left: 2.5%; */
     position: absolute;
 }
 
@@ -67,7 +67,6 @@ body:not(.overview) #secondPage {
 }
 
 #firstPage, #secondPage {
-    width: 45%;
     text-align: center;
     font-size: 2rem;
 }
@@ -104,16 +103,15 @@ body:not(.overview) #secondPage {
     width: 48%;
 }
 
-#weaponsPage {
-    display: flex;
-    justify-content: space-between;
-}
-
+.relicItem,
+.enemyItem,
 .weaponItem {
     text-align: center;
    
 }
 
+.relicItem img,
+.enemyItem img,
 .weaponItem img {
     width: 9vw;
     height: 9vw;
@@ -121,6 +119,7 @@ body:not(.overview) #secondPage {
     image-rendering: pixelated;
 }
 
+#relicsContainer,
 #enemiesContainer,
 #weaponsContainer {
     position: relative;
@@ -130,24 +129,15 @@ body:not(.overview) #secondPage {
     margin-left: 2%;
 }
 
-#enemiesPage,
-#weaponsPage {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-    gap: 6vw;
-    margin-left: -1vw;
-}
-
 .sidePage {
-    width: 48%;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
 
+.relicGrid,
+.enemyGrid,
 .weaponGrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -157,11 +147,15 @@ body:not(.overview) #secondPage {
     flex-grow: 1;
 }
 
+.relicItem,
+.enemyItem,
 .weaponItem {
     text-align: center;
     cursor: pointer;
 }
 
+.relicItem img,
+.enemyItem img,
 .weaponItem img {
     width: 6vw;
     height: 6vw;
@@ -169,7 +163,7 @@ body:not(.overview) #secondPage {
     image-rendering: pixelated;
 }
 
-#weaponsPagination, #enemiesPagination {
+#weaponsPagination, #enemiesPagination, #relicsPagination {
     display: none;
     position: fixed;
     top: 50%;
@@ -191,26 +185,42 @@ body:not(.overview) #secondPage {
     font-size: 1.5rem;
 }
 
-#weaponInfoPage {
-    display: flex;
-    justify-content: space-between;
+.bookPage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
     height: 100%;
+    gap: 6vw
 }
 
 #weaponInfoLeft, #weaponInfoRight {
-    width: 48%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
+#enemyInfoLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#enemyInfoRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vw;
+}
+
 
 #weaponInfoRight {
     height: 37vw;
     justify-content: flex-start;
 }
 
-#weaponInfoLeft #weaponImage {
+#weaponInfoLeft #weaponImage, #enemyInfoLeft img {
     width: 25vw;
     height: 25vw;
     image-rendering: pixelated;
@@ -233,11 +243,15 @@ body:not(.overview) #secondPage {
     font-size: 1.5rem;
 }
 
+#backToRelics,
+#backToEnemies,
 #backToWeapons {
     margin-top: 0.5vw;
     font-size: 1.25rem;
 }
 
+#relicImage .relic-image,
+#enemyImage .enemy-image,
 #weaponImage .weapon-image {
     height: 100%;
     width: 100%;
@@ -275,24 +289,8 @@ p {
     display: none !important;
 }
 
-.enemyGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1vw;
-    margin-bottom: 2vw;
+#enemyDescription {
+    width: 25vw;
+    height: 65vh;
+    font-size: 1.5rem;
 }
-
-.enemyItem {
-    text-align: center;
-    cursor: pointer;
-}
-
-.encyclopedia-enemy-icon {
-    width: 6vw;
-    height: 6vw;
-    object-fit: contain;
-    image-rendering: pixelated;
-    display: block;
-    margin: 0 auto;
-}
-

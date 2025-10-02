@@ -25,34 +25,34 @@
     <div>
       <img id="openBook" src="Assets/openBook.png" />
       <div id="bookContent">
-        <div id="firstPage">
-          <h1>Encyclopedia</h1>
+        <div id="overviewPage" class="bookPage">
+          <div id="firstPage">
+            <h1>Encyclopedia</h1>
 
-          <img id="knightImage" src="Assets/Knight_1/IdleImage.png" /><br />
-          <span>
-            Everything you need to know about weapons, enemies and relics.
-          </span>
-        </div>
-        <div id="secondPage">
-          <button id="showWeapons" onclick="enterWeaponSection()">
-            <img src="Assets/sword.png" />
-          </button>
-          Weapons
-          <button id="showEnemies" onclick="enterEnemySection()">
-            <img src="Assets/Transperent/Icon5.png" />
-          </button>
-          Enemies
-          <button id="showRelics">
-            <img src="Assets/monsteraLeaf.png" />
-          </button>
-          Relics
-        </div>
-
-        <div id="weaponsContainer">
-          <div id="weaponsPage"></div>
+            <img id="knightImage" src="Assets/Knight_1/IdleImage.png" /><br />
+            <span>
+              Everything you need to know about weapons, enemies and relics.
+            </span>
+          </div>
+          <div id="secondPage">
+            <button id="showWeapons" onclick="enterWeaponSection()">
+              <img src="Assets/sword.png" />
+            </button>
+            Weapons
+            <button id="showEnemies" onclick="enterEnemySection()">
+              <img src="Assets/Transperent/Icon5.png" />
+            </button>
+            Enemies
+            <button id="showRelics">
+              <img src="Assets/monsteraLeaf.png" />
+            </button>
+            Relics
+          </div>
         </div>
 
-        <div id="weaponInfoPage">
+        <div id="weaponsPage" class="bookPage"></div>
+
+        <div id="weaponInfoPage" class="bookPage">
           <div id="weaponInfoLeft">
             <h1 id="weaponName"></h1>
             <div id="weaponImage"></div>
@@ -74,11 +74,9 @@
           </div>
         </div>
 
-        <div id="enemiesContainer">
-          <div id="enemiesPage"></div>
-        </div>
+        <div id="enemiesPage" class="bookPage"></div>
 
-        <div id="enemyInfoPage">
+        <div id="enemyInfoPage" class="bookPage">
           <div id="enemyInfoLeft">
             <h1 id="enemyName"></h1>
             <div id="enemyImage"></div>
@@ -89,6 +87,25 @@
               id="backToEnemies"
               class="orange-btn"
               onclick="enterEnemySection()"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div id="relicsPage" class="bookPage"></div>
+
+        <div id="relicInfoPage" class="bookPage">
+          <div id="relicInfoLeft">
+            <h1 id="relicName"></h1>
+            <div id="relicImage"></div>
+          </div>
+          <div id="relicInfoRight">
+            <div id="relicDescription"></div>
+            <button
+              id="backToRelics"
+              class="orange-btn"
+              onclick="enterRelicSection()"
             >
               Back
             </button>

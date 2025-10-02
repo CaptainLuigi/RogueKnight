@@ -35,6 +35,8 @@ class Enemy extends HealthEntity {
   #possibleActions = [];
   #actionWeights;
   #fightType;
+  #details;
+  #summonType = null;
 
   get icon() {
     return this.#icon;
@@ -159,6 +161,36 @@ class Enemy extends HealthEntity {
     return this.#fightType;
   }
 
+  get details() {
+    return this.#details;
+  }
+
+  get description() {
+    let desc = `${this.#name}<br><br>`;
+    desc += `Max Health: ${this.#maxHealth}<br>`;
+    desc += `Attack Power: ${this.#baseAttackPower}<br>`;
+
+    if (this.#doubleStrike > 0)
+      desc += `Double Strike Power: ${this.#doubleStrike}<br>`;
+    if (this.#tripleStrike > 0)
+      desc += `Triple Strike Power: ${this.#tripleStrike}<br>`;
+    if (this.#lifesteal > 0) desc += `Max Lifesteal: ${this.#lifesteal}<br>`;
+    if (this.#blockAmount > 0)
+      desc += `Shield Amount: ${this.#blockAmount}<br>`;
+    if (this.#shieldAll > 0)
+      desc += `Shields all allies: ${this.#shieldAll}<br>`;
+    if (this.#healAll > 0) desc += `Heals all allies: ${this.#healAll}<br>`;
+    if (this.#buffAll > 0) desc += `Buffs all allies: ${this.#buffAll}<br>`;
+    if (this.#poison > 0) desc += `Poison Amount: ${this.#poison}<br>`;
+    if (this.#weakenPlayer > 0)
+      desc += `Weakens player: ${this.#weakenPlayer}<br>`;
+    if (this.#canSummon) {
+      desc += `Can summon: ${this.#summonType}<br>`;
+    }
+    desc += `<br><br>${this.#details}`;
+    return desc.trim();
+  }
+
   static setTemplateNode(node) {
     Enemy.#templateNode = node;
   }
@@ -187,7 +219,9 @@ class Enemy extends HealthEntity {
     weakenPlayer = 0,
     doubleStrike = 0,
     tripleStrike = 0,
-    fightType
+    fightType,
+    details,
+    summonType = null
   ) {
     super();
     this.#health = maxHealth;
@@ -217,6 +251,8 @@ class Enemy extends HealthEntity {
     this.#doubleStrike = doubleStrike;
     this.#tripleStrike = tripleStrike;
     this.#fightType = fightType;
+    this.#details = details;
+    this.#summonType = summonType;
     this.#actionWeights = {
       attack: 1,
       block: 1,
@@ -895,7 +931,8 @@ class Shroom extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "One of the first enemies implemented. These enemies are always accompanied by a Sad Shroom."
     );
   }
 }
@@ -918,7 +955,8 @@ class Snail extends Enemy {
       0,
       3,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "This is the most basic enemy in terms of stats. Most things are balanced around the Snails stats."
     );
 
     this.setActionWeights({
@@ -947,7 +985,8 @@ class SadShroom extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "This enemy always hides behind other enemies to avoid the player."
     );
   }
 }
@@ -970,7 +1009,8 @@ class BiteShroom extends Enemy {
       0,
       0,
       4,
-      "normal1"
+      "Act 1 - normal",
+      "Currently unused enemy with an above average attack power. When implemented keep your defenses in mind."
     );
 
     this.setActionWeights({
@@ -999,7 +1039,8 @@ class Scorpion extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "One of the more annoying enemies in Act 1. Despite having low attack, you are pretty much guaranteed to take damage because of the poison they apply to you."
     );
   }
 }
@@ -1022,7 +1063,8 @@ class BitingPlant extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "A tough enemy with above average health and attack power, also with the ability to lifesteal. Fortunately you will only encounter three of them at the same time."
     );
   }
 }
@@ -1045,7 +1087,8 @@ class SlimeHive extends Enemy {
       0,
       0,
       3,
-      "elite1"
+      "Act 1 - elite",
+      "The Slime Hive elite fight is one of the toughest fights in Act 1. This enemy holds the first line to shield the other Tree Slimes from incoming attacks."
     );
 
     this.setActionWeights({
@@ -1075,7 +1118,8 @@ class Mantis extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "The Mantis is one of the more basic enemies, having only attack and block as actions."
     );
   }
 }
@@ -1098,7 +1142,8 @@ class Hornet extends Enemy {
       0,
       7,
       4,
-      "elite1"
+      "Act 1 - elite",
+      "The Hornet elite fight is either really easy or very tough, depending on how fast you can kill these glas-cannons."
     );
 
     this.setActionWeights({
@@ -1129,7 +1174,9 @@ class EvilKnight extends Enemy {
       0,
       15,
       12,
-      "boss1"
+      "Act 1 - boss",
+      "A mighty Knight that guards the entrance of the mystical caves. You might have to be lucky to survive his devastating strikes.",
+      "Minion Knight"
     );
 
     this.setActionWeights({
@@ -1179,7 +1226,8 @@ class HermitShroom extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "Currently unused enemy, that is suppose to be only a blocker to protect enemies behind it from the player attacks."
     );
   }
 }
@@ -1202,7 +1250,8 @@ class Succubus extends Enemy {
       2,
       8,
       6,
-      "event1"
+      "Act 1 - event",
+      "You can only encounter this enemy via an event. This was the first enemy to use lifesteal, that shaped other enemies and even some weapons the player can use."
     );
     this.setActionWeights({
       block: 40,
@@ -1233,7 +1282,8 @@ class Gnome extends Enemy {
       0,
       0,
       0,
-      "normal1"
+      "Act 1 - normal",
+      "By themselves, these enemies are not that dangerous, but watch out, they might get buffed by a druid."
     );
   }
 }
@@ -1256,7 +1306,7 @@ class MinionKnightSummon extends Enemy {
       0,
       0,
       0,
-      "summon1"
+      "Act 1 - summon"
     );
     this.isSummoned = true;
   }
@@ -1280,7 +1330,8 @@ class MinionKnight extends Enemy {
       0,
       0,
       0,
-      "boss1"
+      "Act 1 - boss",
+      "These enemies accompany the final boss of the forest. It looks like the Evil Knight has an infinite supply of them..."
     );
   }
 }
@@ -1303,7 +1354,8 @@ class TreeSlime extends Enemy {
       0,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "These enemies try to overrun you by their sheer numbers. Maybe try to focus them first, before finishing the Slimie Hive in front of them."
     );
   }
 }
@@ -1326,7 +1378,8 @@ class Amalgam extends Enemy {
       0,
       2,
       1,
-      "elite1"
+      "Act 1 - elite",
+      "Nobody knows what the Amalgam is suppose to be. But its high health stat makes it a good target for the Master Mage and the Druid to buff it."
     );
     this.setActionWeights({
       block: 50,
@@ -1356,7 +1409,8 @@ class Cleric extends Enemy {
       3,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "The Cleric is a team-player by healing allies and weakening the foe. Unfortunately he plays for the other team."
     );
     this.setActionWeights({
       block: 45,
@@ -1387,7 +1441,8 @@ class Druid extends Enemy {
       0,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "Druid's main focus lies in buffing his allies, which can get out of hand very quickly. Try to finifh him off as soon as possible."
     );
     this.setActionWeights({
       block: 45,
@@ -1417,7 +1472,8 @@ class CrystalMage extends Enemy {
       0,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "The Crystal Mages ability to give his allies extra block can drag out a fight. But alone is the Crystal Mage not the most dangerous enemy."
     );
     this.setActionWeights({
       block: 45,
@@ -1449,7 +1505,8 @@ class MasterMage extends Enemy {
       2,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "After perfecting all kinds of magic, this enemy is the most versatile, having the ability to give block to allies, healing or buffing them. If that wasn't enough, he is also able to weaken the player."
     );
     this.setActionWeights({
       block: 50,
@@ -1484,7 +1541,7 @@ class SkeletonSummon extends Enemy {
       0,
       0,
       0,
-      "summon1"
+      "Act 1 - summon"
     );
     this.isSummoned = true;
   }
@@ -1508,7 +1565,8 @@ class Skeleton extends Enemy {
       0,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "This undead enemy was summened by the Necromancer. Skeletons are usually more annoying than dangerous."
     );
   }
 }
@@ -1531,7 +1589,8 @@ class TrainingDummy extends Enemy {
       1,
       0,
       0,
-      "tutorial1"
+      "Tutorial - normal",
+      "Just a Training Dummy with different kinds of actions to prepare you for the real fight."
     );
     this.display.classList.add("bigEnemy");
   }
@@ -1555,7 +1614,9 @@ class Necromancer extends Enemy {
       0,
       0,
       0,
-      "elite1"
+      "Act 1 - elite",
+      "Using the dark arts, this enemy summons Skeletons to help fighting. At his own, the Necromancer is pretty weak, so strike him down when there is no Skelton supporting him.",
+      "Skeleton"
     );
     this.setActionWeights({
       block: 35,
@@ -1604,7 +1665,9 @@ class SpiderBoss extends Enemy {
       5,
       0,
       0,
-      "boss2"
+      "Act 2 - boss",
+      "Deep in the caves you encounter this enemy. She can summon Spiders and weakens you, so watch out and be strong.",
+      "Spider"
     );
     this.setActionWeights({
       block: 50,
@@ -1654,7 +1717,9 @@ class RatKing extends Enemy {
       0,
       0,
       0,
-      "boss2"
+      "Act 2 - boss",
+      "The king of rats is an unnaturally big rat with an army of rats behind it. Even if you defeat the king, the fight might not be over.",
+      "Rat"
     );
     this.setActionWeights({
       block: 35,
@@ -1727,7 +1792,8 @@ class Centepede extends Enemy {
       0,
       0,
       0,
-      "normal2"
+      "Act 2 - normal",
+      "This is the basic enemy for the second Act. But despite beeing a basic enemy, its attacks are devastating."
     );
   }
 }
@@ -1752,7 +1818,8 @@ class Bat extends Enemy {
       0,
       0,
       0,
-      "normal2"
+      "Act 2 - normal",
+      "Living in the caves, these creatures welcome fresh blood so they can heal of attacks."
     );
   }
 }
@@ -1778,7 +1845,8 @@ class Rat extends Enemy {
       0,
       0,
       0,
-      "boss2"
+      "Act 2 - boss",
+      "You will encounter an endless amount of them in the final fight of the caves. Try to keep their numbers low."
     );
     this.display.classList.add("dark-cave-effect");
   }
@@ -1805,7 +1873,7 @@ class RatSummon extends Enemy {
       0,
       0,
       0,
-      "summon2"
+      "Act 2 - summon"
     );
     this.isSummoned = true;
     this.display.classList.add("dark-cave-effect");
@@ -1830,7 +1898,8 @@ class Spider extends Enemy {
       0,
       0,
       0,
-      "boss2"
+      "Act 2 - boss",
+      "This enemy was called by the Spider Boss and will try to poison you as much as possible. Sustain is your best friend against them."
     );
     this.setActionWeights({
       block: 30,
@@ -1861,7 +1930,7 @@ class SpiderSummon extends Enemy {
       0,
       0,
       0,
-      "summon2"
+      "Act 2 - summon"
     );
     this.setActionWeights({
       block: 30,
@@ -1893,7 +1962,8 @@ class Imp extends Enemy {
       0,
       0,
       0,
-      "elite2"
+      "Act 2 - elite",
+      "Never beeing alone and beeing able to buff each other makes the fight agains the Imps a very hard battle."
     );
   }
 }
@@ -1918,7 +1988,8 @@ class FatImp extends Enemy {
       0,
       0,
       0,
-      "elite2"
+      "Act 2 - elite",
+      "This lazy enemy sits in the frontline to block attacks and heal its allies. After some buffs, even this enemy can be dangerous."
     );
   }
 }
@@ -1928,7 +1999,7 @@ class SmallGolem extends Enemy {
     const randomAttackPower = getRandomIntInclusive(8, 13);
     const randomShieldAmount = getRandomIntInclusive(20, 35);
     super(
-      "Small Golem",
+      "Golem small",
       250,
       15,
       "Assets/stoneGolem.png",
@@ -1943,7 +2014,8 @@ class SmallGolem extends Enemy {
       0,
       0,
       0,
-      "elite2"
+      "Act 2 - elite",
+      "Small Golems are the last phase of the Golem fight, but even then, they are pretty tough."
     );
     this.display.classList.add("dark-cave-effect");
   }
@@ -1954,7 +2026,7 @@ class MediumGolem extends Enemy {
     const randomAttackPower = getRandomIntInclusive(13, 18);
     const randomShieldAmount = getRandomIntInclusive(45, 60);
     super(
-      "Medium Golem",
+      "Golem medium",
       500,
       20,
       "Assets/stoneGolem.png",
@@ -1969,7 +2041,8 @@ class MediumGolem extends Enemy {
       0,
       15,
       0,
-      "elite2"
+      "Act 2 - elite",
+      "Big Golems split into two medium Golems when they die. If you see them, you are half way through the fight."
     );
     this.setActionWeights({
       block: 45,
@@ -2009,7 +2082,7 @@ class MediumGolem extends Enemy {
 class BigGolem extends Enemy {
   constructor() {
     super(
-      "Big Golem",
+      "Golem big",
       1000,
       40,
       "Assets/stoneGolem.png",
@@ -2024,7 +2097,8 @@ class BigGolem extends Enemy {
       0,
       25,
       20,
-      "elite2"
+      "Act 2 - elite",
+      "The mighty Golem is a meneace in the dark parts of the cave. You have to kill every part of it to really finish the fight."
     );
     this.setActionWeights({
       block: 40,
@@ -2062,6 +2136,15 @@ class BigGolem extends Enemy {
 }
 
 class Mimic extends Enemy {
+  #fightType = "Act 1 - event";
+  get fightType() {
+    return this.#fightType;
+  }
+
+  set fightType(value) {
+    this.#fightType = value;
+  }
+
   constructor() {
     const attackPower = 15 * globalSettings.currentAct;
     const health = 500 * globalSettings.currentAct;
@@ -2082,7 +2165,8 @@ class Mimic extends Enemy {
       weaken,
       0,
       0,
-      "event1"
+      "Act 1 - event",
+      "The Mimic camouflages itself as a chest, and when you least expect it, you have to fight. This is the only enemy that appears in Act 1 and Act 2."
     );
   }
 }
@@ -2107,7 +2191,8 @@ class HappyImp extends Enemy {
       0,
       0,
       0,
-      "normal2"
+      "Act 2 - normal",
+      "The Happy Imp is just glad its not alone and it wants to keep it that way. It tries its hardest to keep its friends alive."
     );
   }
 }
@@ -2132,6 +2217,7 @@ const enemyClassMapping = {
   Cleric,
   Druid,
   CrystalMage,
+  MasterMage,
   Skeleton,
   TrainingDummy,
   Necromancer,

@@ -273,34 +273,48 @@ let sortedFightTypes = [];
 let currentFightTypeIndex = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
-  allEnemies = Object.values(enemyClassMapping).filter((EnemyClass) => {
-    const temp = new EnemyClass();
-    return temp.fightType;
-  });
+  let activeAct = globalSettings.currentAct;
+  globalSettings.currentAct = 1;
+  allEnemies = Object.values(enemyClassMapping)
+    .map((EnemyClass) => {
+      return new EnemyClass();
+    })
+    .filter((enemyInstance) => {
+      return enemyInstance.fightType;
+    });
+  globalSettings.currentAct = 2;
+  let actTwoMimic = new Mimic();
+  actTwoMimic.fightType = "Act 2 - event";
+  allEnemies.push(actTwoMimic);
+  globalSettings.currentAct = activeAct;
 
-  allEnemies.forEach((EnemyClass) => {
-    const enemy = new EnemyClass();
+  allEnemies.forEach((enemy) => {
     const fightType = enemy.fightType;
     if (!enemiesByFightType[fightType]) enemiesByFightType[fightType] = [];
-    enemiesByFightType[fightType].push(EnemyClass);
+    enemiesByFightType[fightType].push(enemy);
   });
 
   // sort alphabetically inside each fightType group
   Object.values(enemiesByFightType).forEach((enemyArray) => {
-    enemyArray.sort((A, B) => {
-      const a = new A();
-      const b = new B();
+    enemyArray.sort((a, b) => {
       return a.name.localeCompare(b.name);
     });
   });
 
   sortedFightTypes = Object.keys(enemiesByFightType).sort((a, b) => {
     const typeOrder = { normal: 0, elite: 1, event: 2, boss: 3 };
-    const matchA = a.match(/([a-z]+)(\d+)/i);
-    const matchB = b.match(/([a-z]+)(\d+)/i);
-    const [typeA, numA] = matchA ? [matchA[1], parseInt(matchA[2])] : ["", 0];
-    const [typeB, numB] = matchB ? [matchB[1], parseInt(matchB[2])] : ["", 0];
-    return numA === numB ? typeOrder[typeA] - typeOrder[typeB] : numA - numB;
+    let regex = /(\w+( \d+)?)\W+(\w+)/i;
+    const matchA = a.match(regex);
+    const matchB = b.match(regex);
+    const [actA, typeA] = matchA
+      ? [matchA[1], matchA[3].toLowerCase()]
+      : ["", ""];
+    const [actB, typeB] = matchB
+      ? [matchB[1], matchB[3].toLowerCase()]
+      : ["", ""];
+    return actA === actB
+      ? typeOrder[typeA] - typeOrder[typeB]
+      : actA.localeCompare(actB);
   });
 });
 
@@ -317,15 +331,14 @@ function renderEnemiesByFightType(index) {
     sideDiv.classList.add("sidePage");
 
     const label = document.createElement("h1");
-    label.textContent = fightType.tpUpperCase();
+    label.textContent = fightType.toUpperCase();
     label.style.textAlign = "center";
     sideDiv.appendChild(label);
 
     const gridDiv = document.createElement("div");
     gridDiv.classList.add("enemyGrid");
 
-    enemiesSide.forEach((EnemyClass) => {
-      const enemy = new EnemyClass();
+    enemiesSide.forEach((enemy) => {
       const enemyDiv = document.createElement("div");
       enemyDiv.classList.add("enemyItem");
 
@@ -362,8 +375,7 @@ function enterEnemySection() {
 
   sectionNextPage = nextEnemyPage;
   sectionPreviousPage = previousEnemyPage;
-  currentFightTypeIndex = 0;
-  renderEnemiesByAct(currentFightTypeIndex);
+  renderEnemiesByFightType(currentFightTypeIndex);
   updateEnemyPaginationButtons();
   adjustPageNavigationButtons();
 }
@@ -371,7 +383,7 @@ function enterEnemySection() {
 function nextEnemyPage() {
   if (currentFightTypeIndex < sortedFightTypes.length - 1) {
     currentFightTypeIndex++;
-    renderEnemiesByAct(currentFightTypeIndex);
+    renderEnemiesByFightType(currentFightTypeIndex);
     updateEnemyPaginationButtons();
   }
 }
@@ -379,7 +391,7 @@ function nextEnemyPage() {
 function previousEnemyPage() {
   if (currentFightTypeIndex > 0) {
     currentFightTypeIndex--;
-    renderEnemiesByAct(currentFightTypeIndex);
+    renderEnemiesByFightType(currentFightTypeIndex);
     updateEnemyPaginationButtons();
   }
 }
@@ -395,6 +407,117 @@ function showEnemyInfo(enemy) {
 
   enemyInfoName.textContent = enemy.name;
   enemyInfoImage.innerHTML = `<img src="${enemy.icon}"/>`;
-  enemyDescription.textContent =
-    enemy.description || "No description available";
+  enemyDescription.innerHTML = enemy.description || "No description available";
 }
+
+// relic logic
+
+let relicNextPage;
+let relicPreviousPage;
+const relicsPage = document.getElementById("relicsPage");
+const backToRelicsBtn = document.getElementById("backToRelics");
+const relicInfoPage = document.getElementById("relicInfoPage");
+const relicInfoName = document.getElementById("relicName");
+const relicInfoImage = document.getElementById("relicImage");
+const relicDescription = document.getElementById("relicDescription");
+const backToRelicsSummaryBtn = document.getElementById("backToRelicsSummary");
+
+let relicsByGroup = {};
+let sortedRelicGroups = [];
+let currentRelicGroupIndex = 0;
+
+Object.values(relicList).forEach((relic) => {
+  const group = relic.relicGroup;
+  if (!relicsByGroup[group]) relicsByGroup[group] = [];
+  relicsByGroup[group].push(relic);
+});
+
+Object.values(relicsByGroup).forEach((relicArray) => {
+  relicArray.sort((a, b) => a.name.localeCompare(b.name));
+});
+
+sortedRelicGroups = ["chest", "elite", "event", "boss"].filter(
+  (g) => relicsByGroup[g]
+);
+
+function renderRelicsByGroup(index) {
+  relicsPage.innerHTML = "";
+  const group = sortedRelicGroups[index];
+  const relicsList = relicsByGroup[group] || [];
+
+  const leftRelics = relicsList.slice(0, 9);
+  const rightRelics = relicsList.slice(9, 18);
+
+  function createSide(relicsSide) {
+    const sideDiv = document.createElement("div");
+    sideDiv.classList.add("sidePage");
+
+    const label = document.createElement("h1");
+    label.textContent = group.toUpperCase();
+    label.style.textAlign = "center";
+    sideDiv.appendChild(label);
+
+    const gridDiv = document.createElement("div");
+    gridDiv.classList.add("relicGrid");
+
+    relicsSide.forEach((relic) => {
+      const relicDiv = document.createElement("div");
+      relicDiv.classList.add("relicItem");
+
+      const img = document.createElement("img");
+      img.src = relic.icon;
+      img.classList.add("encyclopedia-relic-icon");
+      relicDiv.appendChild(img);
+
+      const nameP = document.createElement("p");
+      nameP.textContent = relic.name;
+      relicDiv.appendChild(nameP);
+
+      relicDiv.onclick = () => showRelicInfo(relic);
+
+      gridDiv.appendChild(relicDiv);
+    });
+
+    sideDiv.appendChild(gridDiv);
+    return sideDiv;
+  }
+
+  if (leftRelics.lenght > 0) relicsPage.appendChild(createSide(leftRelics));
+  if (rightRelics.lenght > 0) relicsPage.appendChild(createSide(rightRelics));
+}
+
+function updateRelicPaginationButtons() {
+  isFirstPage = currentRelicGroupIndex === 0;
+  isLastPage = currentRelicGroupIndex >= sortedRelicGroups.length - 1;
+}
+
+function enterRelicSection() {
+  showBookSection(bookSections.relic);
+
+  sectionNextPage = nextRelicPage;
+  sectionPreviousPage = previousRelicPage;
+  renderRelicsByGroup(currentRelicGroupIndex);
+  updateRelicPaginationButtons();
+  adjustPageNavigationButtons();
+}
+
+function nextRelicPage() {
+  if (currentRelicGroupIndex < sortedRelicGroups.length - 1) {
+    currentRelicGroupIndex++;
+    renderRelicsByGroup(currentRelicGroupIndex);
+    updateRelicPaginationButtons();
+  }
+}
+
+function showRelicInfo(relic) {
+  showBookSection(bookSections.relicInfo);
+
+  relicInfoName.textContent = relic.name;
+  relicInfoImage.innerHTML = `<img src="${relic.icon}"/>`;
+  relicDescription.innerHTML =
+    relic.relicDescription || "no description available";
+}
+
+// backToRelicsSummaryBtn.addEventListener("click", () => {
+//   showBookSection(bookSections.overview);
+// });
