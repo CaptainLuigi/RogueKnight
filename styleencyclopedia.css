@@ -154,6 +154,12 @@ body:not(.overview) #overviewPage{
     cursor: pointer;
 }
 
+.relicItem p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .relicItem img,
 .enemyItem img,
 .weaponItem img {
@@ -220,11 +226,37 @@ body:not(.overview) #overviewPage{
     justify-content: flex-start;
 }
 
-#weaponInfoLeft #weaponImage, #enemyInfoLeft img {
+#weaponInfoLeft #weaponImage, #enemyInfoLeft img, #relicInfoLeft img {
     width: 25vw;
     height: 25vw;
     image-rendering: pixelated;
     margin-top: 5vh;
+}
+
+#relicInfoLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#relicInfoRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vw;
+    margin-top: 5vh;
+}
+
+#relicDescription, #relicInfoText {
+    width: 23vw;
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+#relicInfoText {
+    margin-top: 10vh;
 }
 
 #weaponLevelButtons {
@@ -248,6 +280,10 @@ body:not(.overview) #overviewPage{
 #backToWeapons {
     margin-top: 0.5vw;
     font-size: 1.25rem;
+}
+
+#backToRelics {
+    margin-top: auto;
 }
 
 #relicImage .relic-image,

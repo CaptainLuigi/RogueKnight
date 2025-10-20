@@ -412,31 +412,39 @@ function showEnemyInfo(enemy) {
 
 // relic logic
 
-let relicNextPage;
-let relicPreviousPage;
 const relicsPage = document.getElementById("relicsPage");
-const backToRelicsBtn = document.getElementById("backToRelics");
 const relicInfoPage = document.getElementById("relicInfoPage");
 const relicInfoName = document.getElementById("relicName");
 const relicInfoImage = document.getElementById("relicImage");
 const relicDescription = document.getElementById("relicDescription");
-const backToRelicsSummaryBtn = document.getElementById("backToRelicsSummary");
+const backToRelicsBtn = document.getElementById("backToRelics");
+const showRelicsBtn = document.getElementById("showRelics");
 
 let relicsByGroup = {};
 let sortedRelicGroups = [];
 let currentRelicGroupIndex = 0;
 
+// --- build relic groups ---
 Object.values(relicList).forEach((relic) => {
-  const group = relic.relicGroup;
+  let group = relic.relicGroup?.toLowerCase() || "misc";
+
+  // Handle custom/unknown relic groups
+  if (!["chest", "elite", "event", "boss", "curse", "misc"].includes(group)) {
+    // Add all unique/unrecognized relics to event group
+    group = "event";
+  }
+
   if (!relicsByGroup[group]) relicsByGroup[group] = [];
   relicsByGroup[group].push(relic);
 });
 
+// sort alphabetically within each group
 Object.values(relicsByGroup).forEach((relicArray) => {
   relicArray.sort((a, b) => a.name.localeCompare(b.name));
 });
 
-sortedRelicGroups = ["chest", "elite", "event", "boss"].filter(
+// order groups in a consistent way
+sortedRelicGroups = ["chest", "elite", "event", "boss", "curse", "misc"].filter(
   (g) => relicsByGroup[g]
 );
 
@@ -482,8 +490,8 @@ function renderRelicsByGroup(index) {
     return sideDiv;
   }
 
-  if (leftRelics.lenght > 0) relicsPage.appendChild(createSide(leftRelics));
-  if (rightRelics.lenght > 0) relicsPage.appendChild(createSide(rightRelics));
+  if (leftRelics.length > 0) relicsPage.appendChild(createSide(leftRelics));
+  if (rightRelics.length > 0) relicsPage.appendChild(createSide(rightRelics));
 }
 
 function updateRelicPaginationButtons() {
@@ -496,6 +504,7 @@ function enterRelicSection() {
 
   sectionNextPage = nextRelicPage;
   sectionPreviousPage = previousRelicPage;
+
   renderRelicsByGroup(currentRelicGroupIndex);
   updateRelicPaginationButtons();
   adjustPageNavigationButtons();
@@ -509,15 +518,26 @@ function nextRelicPage() {
   }
 }
 
+function previousRelicPage() {
+  if (currentRelicGroupIndex > 0) {
+    currentRelicGroupIndex--;
+    renderRelicsByGroup(currentRelicGroupIndex);
+    updateRelicPaginationButtons();
+  }
+}
+
 function showRelicInfo(relic) {
   showBookSection(bookSections.relicInfo);
 
   relicInfoName.textContent = relic.name;
-  relicInfoImage.innerHTML = `<img src="${relic.icon}"/>`;
+  relicInfoImage.innerHTML = `<img src="${relic.icon}" />`;
   relicDescription.innerHTML =
-    relic.relicDescription || "no description available";
+    relic.relicDescription || "No description available.";
+
+  const relicInfoTextDiv = document.getElementById("relicInfoText");
+  relicInfoTextDiv.innerHTML = relic.relicInfoText || "";
 }
 
-// backToRelicsSummaryBtn.addEventListener("click", () => {
-//   showBookSection(bookSections.overview);
-// });
+// wire up the relic button
+showRelicsBtn.addEventListener("click", enterRelicSection);
+backToRelicsBtn.addEventListener("click", enterRelicSection);

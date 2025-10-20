@@ -35,8 +35,6 @@ waffen machen prozentual schaden evtl implementieren
 
 more players with different starting weapons
 
-Lexikon mit Waffen, Relics und Gegnern
-
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
 upgrade weapon options remove, wenn alle waffen max lvl
@@ -58,8 +56,6 @@ wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt
 waffen aus der hand ryceln?
 
 zindex in vielen fällen nicht notwendig, ggf rausnehmen
-
-enzyclopedia
 
 waffen tooltip bei leave weapon behind event anzeigen
 

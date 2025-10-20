@@ -5,6 +5,7 @@ class Relics {
   #relicDescription;
   #relicGroup;
   #relicPrice;
+  #relicInfoText;
 
   get icon() {
     return this.#icon;
@@ -26,13 +27,18 @@ class Relics {
     return this.#relicPrice;
   }
 
+  get relicInfoText() {
+    return this.#relicInfoText;
+  }
+
   constructor(
     name,
     icon,
     relicFunction,
     relicDescription,
     relicGroup,
-    relicPrice
+    relicPrice,
+    relicInfoText
   ) {
     this.#name = name;
     this.#icon = icon;
@@ -40,6 +46,7 @@ class Relics {
     this.#relicDescription = relicDescription;
     this.#relicGroup = relicGroup;
     this.#relicPrice = relicPrice;
+    this.#relicInfoText = relicInfoText;
   }
 
   equipRelic(player) {
@@ -68,9 +75,18 @@ class ActiveRelics extends Relics {
     relicFunction,
     relicDescription,
     relicGroup,
-    relicPrice
+    relicPrice,
+    relicInfoText
   ) {
-    super(name, icon, relicFunction, relicDescription, relicGroup, relicPrice);
+    super(
+      name,
+      icon,
+      relicFunction,
+      relicDescription,
+      relicGroup,
+      relicPrice,
+      relicInfoText
+    );
   }
   markEquipped() {}
 }
@@ -82,7 +98,8 @@ const relicList = [
     grindingMonstera,
     "Get +1 max HP for every non-summon enemy killed.",
     "elite",
-    125
+    125,
+    "This relic is inspired by the Grinding Monstera relic from Peglin. It's a nod to the youtuber TimeToGrind."
   ),
   new ActiveRelics(
     "Executioner's Mark",
@@ -90,7 +107,8 @@ const relicList = [
     executionersMark,
     "Whenever an enemy is killed, draw one.",
     "chest",
-    100
+    100,
+    "Executioner's Mark is a great relic when you play a lot of weapons during your turn and need more carddraw."
   ),
   new ActiveRelics(
     "Spirit Totem",
@@ -98,7 +116,8 @@ const relicList = [
     spiritTotem,
     "Whenever an enemy dies during your turn, get 1 Energy.",
     "chest",
-    125
+    125,
+    "Keep your turn going with this relic by killing enemies and getting energy from it."
   ),
   new ActiveRelics(
     "Sanguine Blessing",
@@ -106,7 +125,8 @@ const relicList = [
     sanguineBlessing,
     "Heal 3 HP for every enemy killed.",
     "chest",
-    100
+    100,
+    "One of the best sustain relics in the game, that keeps your HP steady."
   ),
 
   new Relics(
@@ -114,7 +134,9 @@ const relicList = [
     "Assets/souleater.png",
     souleater,
     "All weapons get +5% lifesteal.",
-    "succubus"
+    "succubus",
+    0,
+    "Probably the best healing relic in the game, that can be obtained by defeating the succubus."
   ),
   new Relics(
     "Beefy Steak",
@@ -122,7 +144,8 @@ const relicList = [
     beefySteak,
     "Get +20 max HP.",
     "chest",
-    75
+    75,
+    "Very simple relic, that is just nice to get."
   ),
   new Relics(
     "Whetstone",
@@ -130,7 +153,8 @@ const relicList = [
     whetstone,
     "All weapons get +15 critical chance.",
     "chest",
-    100
+    100,
+    "When going for crit synergy, this relic is a must have. Because most weapons have higher crit damage than normal damage, this relic is technically also a damage increase."
   ),
   new Relics(
     "Scroll of Knowledge",
@@ -138,7 +162,8 @@ const relicList = [
     scrollOfKnowledge,
     "Hand size increased by 1.",
     "chest",
-    75
+    75,
+    "A very uncomplicated yet useful relic when you often run out of things in your hand."
   ),
   new Relics(
     "Bramble Mantle",
@@ -146,7 +171,8 @@ const relicList = [
     brambleMantle,
     "Whenever an enemy attacks you, deal 15 damage back.",
     "chest",
-    75
+    75,
+    "Punish enemies for attacking you with this relic. It has one of the more unique effects, that fit perfectly into a defense based build."
   ),
   new Relics(
     "Relic of Vigor",
@@ -154,7 +180,8 @@ const relicList = [
     relicOfVigor,
     "All weapons get +15 damage.",
     "chest",
-    100
+    100,
+    "Just very basic and plain more damage. Simple but effective."
   ),
   new Relics(
     "Defender's Seal",
@@ -162,7 +189,8 @@ const relicList = [
     defendersSeal,
     "When blocking, increase the block by 5.",
     "chest",
-    100
+    100,
+    "Incredibly powerful defensive relic that doubles the block you get from the starting level 1 shields."
   ),
   new Relics(
     "Critical Surge",
@@ -170,7 +198,8 @@ const relicList = [
     criticalSurge,
     "All weapons get +25 critical damage.",
     "chest",
-    100
+    100,
+    "When going for heavy crit synergy, increased critical damage is very useful. Try to take weapons with high crit chance."
   ),
   new Relics(
     "Omnipotence",
@@ -178,7 +207,8 @@ const relicList = [
     omnipotence,
     "Max Energy is increased by 3, but -70% max HP.",
     "elite",
-    175
+    175,
+    "At launch, this relic made actions cost 0 energy, but was nerfed because goining infinite with this was just too easy. Nontheless it's still a high risk, high reward relic."
   ),
   new Relics(
     "Cursed Gauntlet",
@@ -186,7 +216,8 @@ const relicList = [
     cursedGauntlet,
     "Max Energy reduced by 1, but all attacks deal +25 damage, +50 critical damage and shields get +10 block.",
     "elite",
-    125
+    125,
+    "This relic fits the best in builds with low energy weapons, that profit the most from the stat increases."
   ),
   new Relics(
     "Pacifist Amulett",
@@ -194,7 +225,8 @@ const relicList = [
     pacifistAmulet,
     "Max Energy is increased by 1, but weapons deal -10 damage and -20 critical damage.",
     "elite",
-    125
+    125,
+    "When taking this relic, try to focus on higher cost weapons, that don't suffer that much from the damage decrease."
   ),
   new ActiveRelics(
     "Overcharged Core",
@@ -202,7 +234,8 @@ const relicList = [
     overchargedCore,
     "Max Energy is increased by 1, but deals 3 unblockable damage to you at the end of your turn.",
     "elite",
-    125
+    125,
+    "Very useful relic, but don't forget to heal from time to time."
   ),
 
   new Relics(
@@ -211,7 +244,8 @@ const relicList = [
     tinktureOfSuffering,
     "When applying poison, increase the amount by 10.",
     "chest",
-    100
+    100,
+    "Finding synergies for weapons and relics is the core part of the game, so if you want to lean into poison, this is the best relic for you."
   ),
   new ActiveRelics(
     "Golden Sigil",
@@ -219,7 +253,8 @@ const relicList = [
     goldenSigil,
     "Get 25 Gold at the end of combat.",
     "chest",
-    75
+    75,
+    "This nondescript relic seems underwhelming at first, but if you get it early in the run, it makes you a lot of gold."
   ),
   new Relics(
     "Back to Basics",
@@ -227,7 +262,8 @@ const relicList = [
     backToBasics,
     "Max Energy is increased by 1, but you can't crit.",
     "elite",
-    125
+    125,
+    "When going for weapons with high normal damage, this relic is for you. But keep in mind that some relics can't trigger when you have this relic."
   ),
   new ActiveRelics(
     "Stonewall Totem",
@@ -235,7 +271,8 @@ const relicList = [
     stonewallTotem,
     "At the end of your turn, add 10 block.",
     "chest",
-    100
+    100,
+    "Getting unconditional block is always good, so you can focus your energy to attack the enemy."
   ),
   new Relics(
     "AliensRock",
@@ -243,7 +280,8 @@ const relicList = [
     aliensRock,
     "All weapons can target any enemy. Click weapon first, then the enemy you want to hit.",
     "elite",
-    125
+    125,
+    "AliensRock is a reference to one of my favourite youtubers. With this relic you can focus the enemy you want."
   ),
   new Relics(
     "Sharp Focus",
@@ -251,7 +289,8 @@ const relicList = [
     () => {},
     "When hitting a crit, gain 1 Energy.",
     "elite",
-    125
+    125,
+    "A very impactful relic with a lot of synergies with weapons and other relics. Focus on crit chance to trigger this relic as often as possible."
   ),
   new ActiveRelics(
     "Fist of Bulwark",
@@ -259,7 +298,8 @@ const relicList = [
     fistOfBulwark,
     "When you attack, also gain 5 block.",
     "chest",
-    100
+    100,
+    "With this relic you can turn attacks also into defense. Most effective when using a lot of low energy weapons."
   ),
   new Relics(
     "Titan's Reflection",
@@ -267,7 +307,8 @@ const relicList = [
     () => {},
     "Whenever an enemy attacks you, deal damage back equal to 3 times the remaining block after the attack.",
     "chest",
-    100
+    100,
+    "Focusing on defense often leaves the offense behind. Titan's Reflection can turn that into a lot of damage."
   ),
   new ActiveRelics(
     "Adrenal Surge",
@@ -275,7 +316,8 @@ const relicList = [
     adrenalSurge,
     "Get +1 Energy at the start of your turn if you have 30% or less health.",
     "elite",
-    125
+    125,
+    "One of the more conditional energy increase relics."
   ),
   new Relics(
     "Death's Bargain",
@@ -283,7 +325,8 @@ const relicList = [
     () => {},
     "Saves you once from death and then heals you for 10%.",
     "elite",
-    125
+    125,
+    "With this very unique relic effect you can cheat death once."
   ),
   new ActiveRelics(
     "Curse of Continuity",
@@ -291,7 +334,8 @@ const relicList = [
     curseOfContinuity,
     "Carry over up to 3 unused Energy to the next turn. Each carried over Energy does 1 damage to you at the end of your turn.",
     "elite",
-    150
+    150,
+    "You can use this relic to stack up energy to use on a later round. Works best if you can get some additional energy."
   ),
   new Relics(
     "Bloodforge",
@@ -299,7 +343,8 @@ const relicList = [
     () => {},
     "Whenever you add something to your deck, upgrade it and lose 5 HP.",
     "event",
-    0
+    0,
+    "This relic is originally from peglin. It immediately upgrades new weapons at the cost of some HP."
   ),
   new Relics(
     "Death's Pact",
@@ -307,21 +352,26 @@ const relicList = [
     () => {},
     "Halfes incoming damage from enemies.",
     "unfindable",
-    0
+    0,
+    "This relic is only obtained by triggering the Death's Bargain. If you make it out the fight alive, future hits don't hit that hard."
   ),
   new ActiveRelics(
     "Gambler's Die",
     "Assets/dice.png",
     gamblersDie,
     "50% chance each turn to gain 2 Energy or lose 1.",
-    "event"
+    "event",
+    0,
+    "In RogueLikes there is always luck involved. Even getting this relic requires luck."
   ),
   new Relics(
     "Infernal Ingot",
     "Assets/infernalIngot.png",
     infernalIngot,
     "All weapons get +10% lifesteal but lose half your max HP.",
-    "event"
+    "event",
+    0,
+    "Another relic taken from peglin. With this relic, you pretty much never need to heal."
   ),
   new Relics(
     "Blood Pact",
@@ -329,7 +379,8 @@ const relicList = [
     bloodPact,
     "Weapons deal +25% damage and critical damage, but you can't heal after battle.",
     "elite",
-    150
+    150,
+    "Very few relics have a percentage based damage increase. This makes this relic immensely powerful, you just need to find another way to heal."
   ),
   new ActiveRelics(
     "Vengeful Echo",
@@ -337,7 +388,8 @@ const relicList = [
     vengefulEcho,
     "Deal 10 damage to all enemies at the end of your turn.",
     "chest",
-    75
+    75,
+    "This straightforward relic can wreck up a lot of damage over the course of the game."
   ),
   new ActiveRelics(
     "Curse of the plague",
@@ -345,7 +397,8 @@ const relicList = [
     curseOfThePlague,
     "Apply 5 poison to all enemies at the end of your turn.",
     "chest",
-    100
+    100,
+    "Especially in poison focused runs, this relic can be very helpful."
   ),
   new Relics(
     "Alchemist’s Needle",
@@ -353,7 +406,8 @@ const relicList = [
     () => {},
     "Whenever an enemy takes damage from a weapon, apply 5 poison to that enemy.",
     "chest",
-    100
+    100,
+    "Get damage through and also poison enemies. Extra helpful if you have poison synergy."
   ),
   new ActiveRelics(
     "Berserkers Rush",
@@ -361,7 +415,8 @@ const relicList = [
     berserkersRush,
     "Get 5 Strength at the end of your turn if you are at or below 35HP.",
     "chest",
-    100
+    100,
+    "The rage fills you when you are low and increases your damage."
   ),
   new ActiveRelics(
     "Enthusiastic Start",
@@ -369,21 +424,26 @@ const relicList = [
     enthusiasticStart,
     "Start each battle with 10 Strength.",
     "chest",
-    100
+    100,
+    "Just a nice basic damage increase for normal and critcal damage."
   ),
   new Relics(
     "Burden of the Strong",
     "Assets/burdenOfTheStrong.png",
     burdenOfTheStrong,
     "Curse: Decrease Hand size by 1.",
-    "curse"
+    "curse",
+    0,
+    "This curse is used to balance a special event. Fewer weapons in hand means fewer options."
   ),
   new Relics(
     "Contract with Dave",
     "Assets/davesContract.png",
     () => {},
     "The promise that he will pay you back.",
-    "dave"
+    "dave",
+    0,
+    "You get this relic by lending Dave some gold. If you are lucky, you encounter him later on your journey."
   ),
   new ActiveRelics(
     "Woundmark",
@@ -391,14 +451,17 @@ const relicList = [
     woundmark,
     "Elites take 10% damage of their max HP at the start of the fight.",
     "chest",
-    100
+    100,
+    "This makes elite fights a little bit easier. And who doesn't like easier fights?"
   ),
   new Relics(
     "Zen Barrier",
     "Assets/zenBarrier.png",
     () => {},
     "Whenever an enemy attacks you and you have no cards in hand, take no damage.",
-    "event"
+    "event",
+    0,
+    "This relic could be broken or straight up useless, it depends on your build and how you can work around it."
   ),
   new Relics(
     "Steady Ground",
@@ -406,7 +469,8 @@ const relicList = [
     () => {},
     "You can't take more than 15 damage from a single enemy hit.",
     "elite",
-    150
+    150,
+    "Steady Ground prevents enemies from hitting you with big attacks, so you don't have to worry as much about your defense."
   ),
   new Relics(
     "Cloak of Protection",
@@ -414,7 +478,8 @@ const relicList = [
     cloakOfProtection,
     "Reduces all incomming damage by 1.",
     "chest",
-    100
+    100,
+    "Reducing every instance of damage you take is quite useful. It doesn' matter if the damage comes from an event, an enemy or even another relic."
   ),
   new Relics(
     "Blood Ink",
@@ -422,7 +487,8 @@ const relicList = [
     () => {},
     "Whenever you take self damage, draw 1.",
     "chest",
-    100
+    100,
+    "With this relic, taking self damage has an upside."
   ),
   new ActiveRelics(
     "Rage Reward",
@@ -430,7 +496,8 @@ const relicList = [
     rageReward,
     "Whenever you attack, get 1 Strength.",
     "elite",
-    150
+    150,
+    "This relic almost always applies. Especially in long fights, your damage can increase a lot."
   ),
   new Relics(
     "Enrage",
@@ -438,7 +505,8 @@ const relicList = [
     () => {},
     "Whenever you take self damage, get 3 Strength.",
     "chest",
-    100
+    100,
+    "Self damage is mostly connected to increasing your damage. Why don't you double down with this relic?"
   ),
   new Relics(
     "Critterbite",
@@ -446,7 +514,8 @@ const relicList = [
     () => {},
     "Whenever you hit a crit, apply 5 Poison to the first enemy.",
     "chest",
-    100
+    100,
+    "Poison weapons already favour crits, so with Critterbite, you have another way to apply poison."
   ),
   new ActiveRelics(
     "Untouched Heart",
@@ -454,7 +523,8 @@ const relicList = [
     untouchedHeart,
     "Get +5 max HP if you finish a fight full life.",
     "chest",
-    100
+    100,
+    "Untouched Heart is undeniably a win more relic. It could be also good if you focus on healing and defense."
   ),
   new ActiveRelics(
     "Eternal Bloom",
@@ -462,7 +532,8 @@ const relicList = [
     eternalBloom,
     "Heal 10 HP at the end of combat.",
     "chest",
-    75
+    75,
+    "Using this relic, you don't have to spent that much gold on healing and focus on upgrading your deck."
   ),
   new ActiveRelics(
     "Reservoir Lotus",
@@ -470,7 +541,8 @@ const relicList = [
     reservoirLotus,
     "Heal 5 HP for each unspent Energy at the end of your turn.",
     "chest",
-    100
+    100,
+    "A very niche usecase. Maybe it's sometimes helpful to drag out a fight to heal a bit?"
   ),
   new Relics(
     "Alchemist Shield",
@@ -478,28 +550,35 @@ const relicList = [
     () => {},
     "You can block Poison.",
     "chest",
-    100
+    100,
+    "This is the only way to block poison completely. That can be convenient in later fights."
   ),
   new Relics(
     "Double Strike",
     "Assets/doubleStrike.png",
     doubleStrike,
     "Your weapons attack twice, but weapon damage is reduced by 40%.",
-    "boss"
+    "boss",
+    0,
+    "Powerful relic, that doubles all attack triggers and also has a small damage increase of it's own."
   ),
   new Relics(
     "Critikris",
     "Assets/critikris.png",
     critikris,
     "Your weapons always hit a critial hit.",
-    "boss"
+    "boss",
+    0,
+    "Crit synergies were never easier with this relic. Guaranteeing a crit often means more damage and possibly other positive effects."
   ),
   new Relics(
     "Champion's Might",
     "Assets/championsMight.png",
     championsMight,
     "Reduce Energy cost for weapons by one, can't reduce to 0. Weapon damage is reduced by 25%.",
-    "boss"
+    "boss",
+    0,
+    "Make your heavy hitting weapons cheaper. Focusing on high energy weapons is the best way to use this relic."
   ),
 ].reduce((o, r) => {
   o[r.name] = r;
