@@ -1227,7 +1227,7 @@ class HermitShroom extends Enemy {
       0,
       0,
       "Act 1 - normal",
-      "Currently unused enemy, that is suppose to be only a blocker to protect enemies behind it from the player attacks."
+      "Currently unused enemy, that is suppose to be only a blocker to protect enemies behind it from the players attacks."
     );
   }
 }
@@ -1379,7 +1379,7 @@ class Amalgam extends Enemy {
       2,
       1,
       "Act 1 - elite",
-      "Nobody knows what the Amalgam is suppose to be. But its high health stat makes it a good target for the Master Mage and the Druid to buff it."
+      "Nobody knows what the Amalgam is suppose to be. But its high health stat makes it a good target for the Master Mage and the Druid to buff."
     );
     this.setActionWeights({
       block: 50,
@@ -1442,7 +1442,7 @@ class Druid extends Enemy {
       0,
       0,
       "Act 1 - elite",
-      "Druid's main focus lies in buffing his allies, which can get out of hand very quickly. Try to finifh him off as soon as possible."
+      "Druid's main focus lies in buffing his allies, which can get out of hand very quickly. Try to finish him off as soon as possible."
     );
     this.setActionWeights({
       block: 45,
@@ -1956,7 +1956,7 @@ class Imp extends Enemy {
       0,
       0,
       0,
-      4,
+      2,
       0,
       false,
       0,

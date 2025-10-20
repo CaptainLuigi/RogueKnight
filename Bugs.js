@@ -59,5 +59,9 @@ zindex in vielen fällen nicht notwendig, ggf rausnehmen
 
 waffen tooltip bei leave weapon behind event anzeigen
 
+anzeige welcher gegner getroffen werden kann überprüfen -> wenn gegner angreift links und rechts gelbe striche sichtbar
+
+nicht alle relics werden im lexikon angezeigt, zu viele relics
+
 wenn gegner mit double strike/triple strike während dem angriff sterben, gehen die restlichen hits trotzdem durch
 */

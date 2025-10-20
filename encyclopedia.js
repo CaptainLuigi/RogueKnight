@@ -423,6 +423,9 @@ const showRelicsBtn = document.getElementById("showRelics");
 let relicsByGroup = {};
 let sortedRelicGroups = [];
 let currentRelicGroupIndex = 0;
+let currentRelicGroupPage = 0;
+const RELICS_PER_PAGE = 18;
+let relicPages = [];
 
 // --- build relic groups ---
 Object.values(relicList).forEach((relic) => {
@@ -448,13 +451,26 @@ sortedRelicGroups = ["chest", "elite", "event", "boss", "curse", "misc"].filter(
   (g) => relicsByGroup[g]
 );
 
+sortedRelicGroups.forEach((relicGroup) => {
+  let numberRelicsPerGroup = relicsByGroup[relicGroup].length;
+  let neededPages = numberRelicsPerGroup / RELICS_PER_PAGE;
+  for (let i = 0; i < neededPages; i++) {
+    relicPages.push({ group: relicGroup, startIndex: i * RELICS_PER_PAGE });
+  }
+});
+
 function renderRelicsByGroup(index) {
   relicsPage.innerHTML = "";
-  const group = sortedRelicGroups[index];
+  let currentPage = relicPages[index];
+  const group = currentPage.group;
   const relicsList = relicsByGroup[group] || [];
 
-  const leftRelics = relicsList.slice(0, 9);
-  const rightRelics = relicsList.slice(9, 18);
+  const start = currentPage.startIndex;
+  const end = start + RELICS_PER_PAGE;
+  const relicsPageItems = relicsList.slice(start, end);
+
+  const leftRelics = relicsPageItems.slice(0, 9);
+  const rightRelics = relicsPageItems.slice(9, 18);
 
   function createSide(relicsSide) {
     const sideDiv = document.createElement("div");
@@ -492,11 +508,59 @@ function renderRelicsByGroup(index) {
 
   if (leftRelics.length > 0) relicsPage.appendChild(createSide(leftRelics));
   if (rightRelics.length > 0) relicsPage.appendChild(createSide(rightRelics));
+
+  updateRelicPaginationButtons();
 }
+
+// function renderRelicsByGroup(index) {
+//   relicsPage.innerHTML = "";
+//   const group = sortedRelicGroups[index];
+//   const relicsList = relicsByGroup[group] || [];
+
+//   const leftRelics = relicsList.slice(0, 9);
+//   const rightRelics = relicsList.slice(9, 18);
+
+//   function createSide(relicsSide) {
+//     const sideDiv = document.createElement("div");
+//     sideDiv.classList.add("sidePage");
+
+//     const label = document.createElement("h1");
+//     label.textContent = group.toUpperCase();
+//     label.style.textAlign = "center";
+//     sideDiv.appendChild(label);
+
+//     const gridDiv = document.createElement("div");
+//     gridDiv.classList.add("relicGrid");
+
+//     relicsSide.forEach((relic) => {
+//       const relicDiv = document.createElement("div");
+//       relicDiv.classList.add("relicItem");
+
+//       const img = document.createElement("img");
+//       img.src = relic.icon;
+//       img.classList.add("encyclopedia-relic-icon");
+//       relicDiv.appendChild(img);
+
+//       const nameP = document.createElement("p");
+//       nameP.textContent = relic.name;
+//       relicDiv.appendChild(nameP);
+
+//       relicDiv.onclick = () => showRelicInfo(relic);
+
+//       gridDiv.appendChild(relicDiv);
+//     });
+
+//     sideDiv.appendChild(gridDiv);
+//     return sideDiv;
+//   }
+
+//   if (leftRelics.length > 0) relicsPage.appendChild(createSide(leftRelics));
+//   if (rightRelics.length > 0) relicsPage.appendChild(createSide(rightRelics));
+// }
 
 function updateRelicPaginationButtons() {
   isFirstPage = currentRelicGroupIndex === 0;
-  isLastPage = currentRelicGroupIndex >= sortedRelicGroups.length - 1;
+  isLastPage = currentRelicGroupIndex >= relicPages.length - 1;
 }
 
 function enterRelicSection() {
@@ -511,7 +575,7 @@ function enterRelicSection() {
 }
 
 function nextRelicPage() {
-  if (currentRelicGroupIndex < sortedRelicGroups.length - 1) {
+  if (currentRelicGroupIndex < relicPages.length - 1) {
     currentRelicGroupIndex++;
     renderRelicsByGroup(currentRelicGroupIndex);
     updateRelicPaginationButtons();

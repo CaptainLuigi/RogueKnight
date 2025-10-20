@@ -1,0 +1,47 @@
+const starterDecks = [
+  {
+    name: "True Knight",
+    weapons: [
+      new BasicSword(),
+      new BasicSword(),
+      new BasicSpear(),
+      new BasicBow(),
+      new BasicAxe(),
+      new BasicShield(),
+      new BasicShield(),
+      new BasicShield(),
+      new BasicShield(),
+    ],
+    relics: ["Scroll of Knowledge"],
+  },
+  {
+    name: "Poison Knight",
+    weapons: [
+      new BasicSword(),
+      new BasicSword(),
+      new BrokenBlade(),
+      new PoisonArrow(),
+      new PoisonDagger(),
+      new BasicShield(),
+      new BasicShield(),
+      new BasicShield(),
+      new BasicShield(),
+    ],
+    relics: ["Curse of the plague"],
+  },
+  {
+    name: "Tank Knight",
+    weapons: [
+      new BasicSword(),
+      new BasicSword(),
+      new BasicSword(),
+      new BasicSword(),
+      new Hammer(),
+      new TowerShield(),
+      new TowerShield(),
+      new TowerShield(),
+      new TowerShield(),
+    ],
+    relics: ["Bramble Mantle"],
+  },
+];
