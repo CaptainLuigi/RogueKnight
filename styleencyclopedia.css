@@ -1,0 +1,332 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+html {
+    font-size: 1vw;
+}
+
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body:not(.weapon) #weaponsPage,
+body:not(.weaponInfo) #weaponInfoPage, 
+body:not(.enemy) #enemiesPage, 
+body:not(.enemyInfo) #enemyInfoPage, 
+body:not(.relic) #relicsPage, 
+body:not(.relicInfo) #relicInfoPage, 
+#weaponsPagination, 
+body.overview #backToSummary, 
+body:not(.overview) #overviewPage{
+    display: none;
+}
+
+.enemy #weaponsPagination, 
+.weapon #weaponsPagination, 
+.relic #weaponsPagination
+  {
+    display: flex;
+}
+
+
+
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+}
+
+#openBook {
+    width: 70%;
+    height: auto;
+    position: absolute;
+    left: 15%;
+    image-rendering: pixelated;
+}
+
+#bookContent {
+    position: absolute;
+    left: 16%;
+    width: 65%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2%;
+    padding-left: 4%;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+#firstPage, #secondPage {
+    text-align: center;
+    font-size: 2rem;
+}
+
+#knightImage {
+    width: 20vw;
+    height: 20vw;
+     image-rendering: pixelated;
+}
+
+#secondPage img {
+    background: transparent;
+   
+    height: 8vw;
+    width: 8vw;
+    image-rendering: pixelated;
+}
+
+#secondPage button {
+    background: transparent;
+    cursor: pointer;
+    border: 0.25vw solid black;
+    border-radius: 0.5vw;
+}
+
+#secondPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.column {
+    width: 48%;
+}
+
+.relicItem,
+.enemyItem,
+.weaponItem {
+    text-align: center;
+   
+}
+
+.relicItem img,
+.enemyItem img,
+.weaponItem img {
+    width: 9vw;
+    height: 9vw;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+#relicsContainer,
+#enemiesContainer,
+#weaponsContainer {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-left: 2%;
+}
+
+.sidePage {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.relicGrid,
+.enemyGrid,
+.weaponGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
+    grid-template-rows: repeat(5, auto);
+    gap: 1vw;
+    flex-grow: 1;
+}
+
+.relicItem,
+.enemyItem,
+.weaponItem {
+    text-align: center;
+    cursor: pointer;
+}
+
+.relicItem p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.relicItem img,
+.enemyItem img,
+.weaponItem img {
+    width: 6vw;
+    height: 6vw;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+#weaponsPagination, #enemiesPagination, #relicsPagination {
+    display: none;
+    position: fixed;
+    top: 50%;
+    right: 5%;
+    flex-direction: column;
+    gap: 1vw;
+    transform: translateY(-50%);
+}
+
+#backToSummary {
+    position: absolute;
+    font-size: 1.5rem;
+    top: 15vh;
+    left: 2%;
+}
+
+#nextWeaponPage, #prevWeaponPage, #nextEnemyPage, #prevEnemyPage {
+    width: 8vw;
+    font-size: 1.5rem;
+}
+
+.bookPage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    gap: 6vw
+}
+
+#weaponInfoLeft, #weaponInfoRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#enemyInfoLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#enemyInfoRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vw;
+}
+
+
+#weaponInfoRight {
+    height: 37vw;
+    justify-content: flex-start;
+}
+
+#weaponInfoLeft #weaponImage, #enemyInfoLeft img, #relicInfoLeft img {
+    width: 25vw;
+    height: 25vw;
+    image-rendering: pixelated;
+    margin-top: 5vh;
+}
+
+#relicInfoLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#relicInfoRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1vw;
+    margin-top: 5vh;
+}
+
+#relicDescription, #relicInfoText {
+    width: 23vw;
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+#relicInfoText {
+    margin-top: 10vh;
+}
+
+#weaponLevelButtons {
+    display: flex;
+    gap: 0.5vw;
+    margin-top: auto;
+}
+
+#weaponLevelButtons button {
+    font-size: 1.25rem;
+}
+
+#weaponInfoTooltip {
+    width: 23vw;
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+#backToRelics,
+#backToEnemies,
+#backToWeapons {
+    margin-top: 0.5vw;
+    font-size: 1.25rem;
+}
+
+#backToRelics {
+    margin-top: auto;
+}
+
+#relicImage .relic-image,
+#enemyImage .enemy-image,
+#weaponImage .weapon-image {
+    height: 100%;
+    width: 100%;
+    image-rendering: pixelated;
+}
+
+.backToMenu {
+    position: absolute;
+    font-size: 1.5rem;
+    top: 2vh;
+    left: 2%;
+}
+
+.orange-btn {
+    font-family: 'Pirata_One';
+    
+    color: black;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.5vw;
+}
+
+p {
+    font-size: 1.25rem;
+}
+
+.enemy-status-container,
+.health-bar-container-enemy,
+.enemy-intent {
+    display: none !important;
+}
+
+#enemyDescription {
+    width: 25vw;
+    height: 65vh;
+    font-size: 1.5rem;
+}

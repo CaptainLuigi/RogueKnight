@@ -10,6 +10,9 @@
     <script src="baseClasses.js"></script>
     <script src="utility.js"></script>
     <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="relics.js"></script>
+    <script src="starterDecks.js"></script>
     <script src="music.js"></script>
   </head>
   <body>
@@ -45,9 +48,6 @@
         step="0.01"
         value="0.5"
       />
-      <!-- <button id="fullScreenBtn" onclick="enterDocumentFullscreen()">
-        Enter Fullscreen
-      </button> -->
       <button onclick="closePauseMenu()">Close</button>
     </div>
 
@@ -71,12 +71,24 @@
       </button>
     </div>
 
+    <div id="deck-selection-modal" class="hidden">
+      <h2>Select your Starter Deck</h2>
+      <div id="starter-deck-container"></div>
+      <button id="confirm-deck" disabled>Confirm</button>
+    </div>
+
     <div class="sprite"></div>
 
-    <div id="version">Version 1.5</div>
+    <div id="version">Version 1.7</div>
 
     <div id="switchToMobile" class="hidden">
       <button onclick="window.location.href='iframeIndex.html'">Mobile</button>
+    </div>
+
+    <div id="encyclopedia">
+      <button onclick="window.location.href='encyclopedia.html'">
+        <img src="Assets/book.png" />
+      </button>
     </div>
 
     <div id="patchnotes">
@@ -106,12 +118,11 @@
       window.addEventListener("resize", updateSpriteScale);
       updateSpriteScale();
 
-      // Define the run animation configuration (same style as player.js)
       const runConfig = {
         image: "Assets/Knight_1/Run.png",
         totalFrames: 7,
-        frameWidth: 200, // width of each frame in the sprite sheet
-        backgroundSize: "1400px 200px", // full sprite sheet size
+        frameWidth: 200,
+        backgroundSize: "1400px 200px",
         frameDelay: 100,
       };
 
@@ -165,8 +176,8 @@
         idleInterval = setInterval(animateSprite, idleConfig.frameDelay);
       }
 
-      // Start running animation
       triggerRunAnimation();
     </script>
+    <script src="index.js"></script>
   </body>
 </html>

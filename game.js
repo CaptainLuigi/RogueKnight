@@ -799,6 +799,7 @@ async function triggerPostBattleScreen() {
 
   player.strength = 0;
   player.weak = 0;
+  player.updateStrengthDisplay();
 
   const endFightEvent = new CustomEvent("EndFight", {
     detail: {

@@ -277,8 +277,10 @@ function displayShopRelics() {
     savedRelicNames = [];
 
     relicButtons.forEach(() => {
-      let randomIndex = Math.floor(Math.random() * availableRelics.length);
-      let randomRelic = availableRelics.splice(randomIndex, 1)[0];
+      let randomRelic = getWeightedRandomRelic(availableRelics);
+      availableRelics = availableRelics.filter(
+        (r) => r.name !== randomRelic.name
+      );
       savedRelicNames.push(randomRelic.name);
     });
 
@@ -331,6 +333,33 @@ function displayShopRelics() {
 
     button.setAttribute("data-relic-id", relic.name);
   });
+}
+
+function getWeightedRandomRelic(availableRelics) {
+  const groupWeights = {
+    chest: 0.8,
+    elite: 0.2,
+  };
+
+  const buckets = {
+    chest: availableRelics.filter((r) => r.relicGroup === "chest"),
+    elite: availableRelics.filter((r) => r.relicGroup === "elite"),
+  };
+
+  const roll = Math.random();
+  let chosenGroup;
+  if (roll < groupWeights.chest) {
+    chosenGroup = "chest";
+  } else {
+    chosenGroup = "elite";
+  }
+
+  const chosenBucket = buckets[chosenGroup];
+  if (chosenBucket.length === 0) {
+    return availableRelics[Math.floor(Math.random() * availableRelics.length)];
+  }
+
+  return chosenBucket[Math.floor(Math.random() * chosenBucket.length)];
 }
 
 // Function to filter available relics (chest or elite group, not already found)

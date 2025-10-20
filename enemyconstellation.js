@@ -67,7 +67,7 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 10,
     difficultyTo: 10,
-    enemies: [MinonKnight, MasterMage, EvilKnight],
+    enemies: [MinionKnight, MasterMage, EvilKnight],
   },
   {
     difficultyFrom: 11,

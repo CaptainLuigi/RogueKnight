@@ -94,6 +94,26 @@ body {
     z-index: 1500;
 }
 
+#encyclopedia {
+    position: fixed;
+    bottom: 2vh;
+    right: 13vw;
+}
+
+#encyclopedia button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+#encyclopedia img {
+    background: transparent;
+    display: block;
+    height: 5vw;
+    width: 5vw;
+}
+
 #patchnotes button:hover {
     cursor: pointer;
 }
@@ -101,7 +121,7 @@ body {
 #switchToMobile {
     position: fixed;
     bottom: 2vh;
-    right: 14vw;
+    right: 47vw;
 }
 
 #switchToMobile button {
@@ -113,4 +133,85 @@ body {
     border-radius: 0.5vw;
     font-size: 2rem;
     z-index: 1500;
+}
+
+#deck-selection-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1009;
+    padding: 2vw;
+    box-sizing: border-box;
+}
+
+#starter-deck-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15vw, 1fr));
+    gap: 2vw;
+    max-width: 35vw;
+    width: 100%;
+    margin: 2vw 0;
+}
+
+.starter-deck {
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.2vw solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.starter-deck:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.starter-deck h3 {
+    margin-bottom: 1vw;
+    font-size: 1.5rem;
+}
+
+.starter-deck button {
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 0.5vw;
+    padding: 1vw 1.5vw;
+    margin: 0.5vw;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.starter-deck button:hover {
+    background: #666;
+}
+
+#confirm-deck {
+    background: #4caf50;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 0.5vw;
+    padding: 1vw 1.5vw;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#confirm-deck:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+#confirm-deck:hover:not(:disabled) {
+    background: #45a049;
 }
