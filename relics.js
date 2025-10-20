@@ -366,7 +366,7 @@ const relicList = [
   ),
   new Relics(
     "Infernal Ingot",
-    "Assets/infernalIngot.png",
+    "Assets/InfernalIngot.png",
     infernalIngot,
     "All weapons get +10% lifesteal but lose half your max HP.",
     "event",
