@@ -533,7 +533,7 @@ const relicList = [
     "Heal 10 HP at the end of combat.",
     "chest",
     75,
-    "Using this relic, you don't have to spent that much gold on healing and focus on upgrading your deck."
+    "Using this relic, you don't have to spent that much gold on healing and can focus on upgrading your deck."
   ),
   new ActiveRelics(
     "Reservoir Lotus",
