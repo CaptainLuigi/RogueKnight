@@ -227,6 +227,7 @@ async function enemyDeathEvent(deadEnemy) {
     // await wait(1000);
 
     if (globalSettings.difficulty === 0 || globalSettings.difficulty === 20) {
+      unlockCharacter();
       SoundManager.fadeOutBattleMusic();
       await wait(1500);
       localStorage.removeItem("selectedFightIndex");
@@ -237,29 +238,31 @@ async function enemyDeathEvent(deadEnemy) {
       localStorage.removeItem("selectedFightIndex");
       globalSettings.redirectToChest = true;
       triggerPostBattleScreen();
-
-      // const actTransition = document.getElementById("actTransition");
-      // actTransition.classList.remove("hidden");
-
-      // await wait(50);
-
-      // playerSprite = actTransition.querySelector(".sprite");
-
-      // if (playerSprite) {
-      //   resetToIdleAnimation();
-      // }
-
-      // document.getElementById("act2").addEventListener("click", () => {
-      //   globalSettings.currentAct = 2;
       updatePlayerGold(100);
       player.heal(player.maxHealth);
       updateHealthBar(player);
       player.savePlayerToStorage();
-      //   window.location.href = "map.html";
-      // });
     } else {
       triggerPostBattleScreen();
     }
+  }
+}
+
+function unlockCharacter() {
+  const unlockedDecks = loadUnlockedDecks();
+  const playerState = loadData("playerState");
+  if (!playerState) return;
+
+  const currentDeck = playerState.currentDeckIndex ?? 0;
+  const nextDeckIndex = currentDeck + 1;
+
+  if (
+    nextDeckIndex < starterDecks.length &&
+    !unlockedDecks.includes(nextDeckIndex)
+  ) {
+    unlockedDecks.push(nextDeckIndex);
+    saveUnlockedDecks(unlockedDecks);
+    displayTurnMessage("You unlocked a new Character!");
   }
 }
 
@@ -391,6 +394,19 @@ function setActiveWeapon(weaponIndex) {
   }
 }
 
+function raiseEvent(eventName, eventParameters) {
+  let detail = {
+    ...eventParameters,
+    eventQueue: Promise.resolve(),
+  };
+  const attackEvent = new CustomEvent("Attack", {
+    detail,
+  });
+
+  window.dispatchEvent(attackEvent);
+  return detail.eventQueue;
+}
+
 /**
  *
  * @param {Weapons} weapon used weapon
@@ -410,17 +426,6 @@ async function executeAttack(weapon, enemyIndex) {
     attackCount = 2;
   }
 
-  // Call the damage calculation function
-  let { startIndex, isCritical, damages } = weapon.calculateDamage(
-    enemyIndex,
-    player.damageModifier,
-    player.critChanceModifier,
-    player.critDamageModifier,
-    player.poisonModifier
-  );
-  damages = damages.reverse();
-  startIndex += damages.length - 1;
-
   applyBlock(weapon, player.blockModifier);
 
   const soundCategory = weapon.soundCategory;
@@ -428,46 +433,50 @@ async function executeAttack(weapon, enemyIndex) {
     SoundManager.play(soundCategory);
   }
 
-  if (weapon.selfDamage > 0) {
-    player.takeDamage(weapon.selfDamage);
-    if (player.equippedRelics.includes("Blood Ink")) {
-      player.drawExtraCards(1);
-    }
-    if (player.equippedRelics.includes("Enrage")) {
-      player.increaseStrength(3);
-      player.updateStrengthDisplay();
-    }
-  }
-
-  if (weapon.damage > 0) {
-    const attackEvent = new CustomEvent("Attack", {
-      detail: {
-        player: player,
-        enemies: enemies,
-        eventQueue: Promise.resolve(),
-      },
-    });
-
-    window.dispatchEvent(attackEvent);
-  }
-
-  if (weapon.damage > 0 && weapon.blockAmount === 0) {
-    triggerAttackAnimation();
-    await wait(200);
-  } else {
-    triggerBlockAnimation();
-    await wait(300);
-  }
-
   let overallDamageTaken = 0;
+  let healing = 0;
 
   for (let n = 0; n < attackCount; n++) {
+    // Call the damage calculation function
+    let { startIndex, isCritical, damages } = weapon.calculateDamage(
+      enemyIndex,
+      player.damageModifier,
+      player.critChanceModifier,
+      player.critDamageModifier,
+      player.poisonModifier
+    );
+    damages = damages.reverse();
+    startIndex += damages.length - 1;
+
+    if (weapon.selfDamage > 0) {
+      await player.takeDamage(weapon.selfDamage);
+      await raiseEvent("SelfDamage", {
+        player: player,
+        selfDamage: weapon.selfDamage,
+      });
+    }
+
     if (weapon.damage > 0) {
+      await raiseEvent("Attack", {
+        player: player,
+        enemies: enemies,
+        isCritical,
+      });
+    }
+
+    if (weapon.blockAmount > 0 || weapon.damage <= 0) {
+      triggerBlockAnimation();
+      await wait(300);
+    } else if (weapon.damage > 0) {
       triggerAttackAnimation();
+      await wait(200);
     }
 
     for (let i = 0; i < damages.length; i++) {
       const targetIndex = startIndex - i;
+      if (targetIndex >= enemies.length) {
+        continue;
+      }
       const enemy = enemies[targetIndex];
 
       const enemyDamage = damages[i];
@@ -476,11 +485,6 @@ async function executeAttack(weapon, enemyIndex) {
       enemy.displayDamage(damageTaken, isCritical);
 
       overallDamageTaken += damageTaken;
-
-      if (weapon.strength > 0) {
-        player.increaseStrength(weapon.strength);
-        player.updateStrengthDisplay();
-      }
 
       if (damageTaken > 0 && player.lifestealModifier > 0) {
         const healAmount = (damageTaken * player.lifestealModifier) / 100;
@@ -496,26 +500,6 @@ async function executeAttack(weapon, enemyIndex) {
         weapon.applyPoisonToEnemy(enemy, player.poisonModifier);
       }
 
-      if (weapon.drawAmountOnUse > 0) {
-        player.drawExtraCards(weapon.drawAmountOnUse, true);
-      }
-
-      if (weapon.energyGainOnUse > 0) {
-        player.addEnergy(weapon.energyGainOnUse);
-        updateEnergyDisplay();
-      }
-
-      if (isCritical && player.equippedRelics.includes("Sharp Focus")) {
-        console.log("Sharp focus activated");
-        sharpFocus(player);
-      }
-
-      if (isCritical && player.equippedRelics.includes("Critterbite")) {
-        const firstEnemy = enemies[0];
-        firstEnemy.addPoisonFromPlayer(5 + player.poisonModifier);
-        firstEnemy.updatePoisonDisplay();
-      }
-
       if (
         damageTaken > 0 &&
         !enemy.isDead() &&
@@ -526,46 +510,44 @@ async function executeAttack(weapon, enemyIndex) {
       }
     }
 
-    if (weapon.damage <= 0) {
-      if (weapon.strength > 0) {
-        player.increaseStrength(weapon.strength);
-        player.updateStrengthDisplay();
-      }
+    if (weapon.drawAmountOnUse > 0) {
+      player.drawExtraCards(weapon.drawAmountOnUse, true);
+    }
 
-      if (weapon.drawAmountOnUse > 0) {
-        player.drawExtraCards(weapon.drawAmountOnUse);
-      }
+    if (weapon.energyGainOnUse > 0) {
+      player.addEnergy(weapon.energyGainOnUse);
+      updateEnergyDisplay();
+    }
 
-      if (weapon.energyGainOnUse > 0) {
-        player.addEnergy(weapon.energyGainOnUse);
-        updateEnergyDisplay();
-      }
+    if (weapon.strength > 0) {
+      player.increaseStrength(weapon.strength);
+      player.updateStrengthDisplay();
     }
 
     if (n === 0) {
       player.useEnergy(weapon.energy);
-      updateHealthBar(player);
-      updateEnergyDisplay();
-      setActiveWeapon(-1);
-      player.removeUsed();
-      displayWeapons(player, player.hand);
     }
+    updateHealthBar(player);
+    updateEnergyDisplay();
 
-    if (attackCount > 1 && n === 0) {
+    if (n < attackCount - 1) {
       await wait(650);
     }
+    damages = damages.reverse();
+    healing += weapon.calculateHealing(damages);
   }
 
-  damages = damages.reverse();
+  setActiveWeapon(-1);
+  player.removeUsed();
+  displayWeapons(player, player.hand);
 
   displayWeapons(player, player.hand);
 
   setIdleTimeout();
 
   // Lifesteal from total damage
-  let healing = 0;
+
   healing += (overallDamageTaken * player.lifestealModifier) / 100;
-  healing += weapon.calculateHealing(damages);
 
   player.heal(healing);
   updateHealthBar(player);

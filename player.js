@@ -39,6 +39,7 @@ class Player extends HealthEntity {
     this.#maxEnergy = maxEnergy;
     this.#equippedRelics = this.equippedRelics ?? [];
 
+    this.currentDeckIndex = 0;
     this.drawHand();
   }
 
@@ -630,19 +631,6 @@ class Player extends HealthEntity {
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
       this.addWeapon(new BasicShield());
-      // this.addWeapon(new PoisonPotion());
-      // this.addWeapon(new VampiricDagger());
-      // this.addWeapon(new SmallHealthPotion());
-      // this.addWeapon(new RagingDagger());
-      // this.addWeapon(new SpikedShield());
-      // this.addWeapon(new BerserkersBrew());
-      // this.addWeapon(new SwiftSword());
-      // this.addWeapon(new Macuahuitl());
-
-      // this.addWeapon(new DevWeapon());
-      // this.addWeapon(new DevWeapon());
-      // this.addWeapon(new DevWeapon());
-      // this.addWeapon(new DevWeapon());
       // this.addWeapon(new DevWeapon());
 
       // this.addWeapon(new DevBow());
@@ -673,6 +661,8 @@ class Player extends HealthEntity {
       this.#foundRelics = state.foundRelics ?? [];
       this.#equippedRelics = state.equippedRelics;
       this.maxHandSize = state.maxHandSize;
+
+      this.currentDeckIndex = state.currentDeckIndex ?? 0;
     }
     this.restoreEnergy(this.#maxEnergy);
     this.drawHand();
@@ -701,6 +691,7 @@ class Player extends HealthEntity {
       poisonModifier: this.#poisonModifier,
       critsDisabled: this.#critsDisabled,
       canTargetAnyEnemy: this.#canTargetAnyEnemy,
+      currentDeckIndex: this.currentDeckIndex ?? 0,
     };
     let deck = [];
     for (let weapon of this.#deck) {
