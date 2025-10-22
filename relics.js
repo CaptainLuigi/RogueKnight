@@ -283,10 +283,10 @@ const relicList = [
     125,
     "AliensRock is a reference to one of my favourite youtubers. With this relic you can focus the enemy you want."
   ),
-  new Relics(
+  new ActiveRelics(
     "Sharp Focus",
     "Assets/sharpFocus.png",
-    () => {},
+    sharpFocus,
     "When hitting a crit, gain 1 Energy.",
     "elite",
     125,
@@ -481,10 +481,10 @@ const relicList = [
     100,
     "Reducing every instance of damage you take is quite useful. It doesn' matter if the damage comes from an event, an enemy or even another relic."
   ),
-  new Relics(
+  new ActiveRelics(
     "Blood Ink",
     "Assets/bloodInk.png",
-    () => {},
+    bloodInk,
     "Whenever you take self damage, draw 1.",
     "chest",
     100,
@@ -499,19 +499,19 @@ const relicList = [
     150,
     "This relic almost always applies. Especially in long fights, your damage can increase a lot."
   ),
-  new Relics(
+  new ActiveRelics(
     "Enrage",
     "Assets/enrage.png",
-    () => {},
+    enrage,
     "Whenever you take self damage, get 3 Strength.",
     "chest",
     100,
     "Self damage is mostly connected to increasing your damage. Why don't you double down with this relic?"
   ),
-  new Relics(
+  new ActiveRelics(
     "Critterbite",
     "Assets/critterbite.png",
-    () => {},
+    critterbite,
     "Whenever you hit a crit, apply 5 Poison to the first enemy.",
     "chest",
     100,
@@ -699,6 +699,21 @@ function stonewallTotem(player, relicObject) {
       blockCircle.classList.remove("hidden");
 
       await wait(300);
+    });
+  });
+}
+
+function bloodInk(player, relicObject) {
+  window.addEventListener("SelfDamage", (event) => {
+    player.drawExtraCards(1);
+  });
+}
+
+function enrage(player, relicObject) {
+  window.addEventListener("SelfDamage", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+      player.increaseStrength(3);
+      player.updateStrengthDisplay();
     });
   });
 }
@@ -930,9 +945,27 @@ function aliensRock(player) {
   player.setTargetAnyEnemy(true);
 }
 
-function sharpFocus(player) {
-  player.addEnergy(1);
-  updateEnergyDisplay(player);
+function sharpFocus(player, relicObject) {
+  window.addEventListener("Attack", (event) => {
+    if (event.detail.isCritical) {
+      event.detail.eventQueue = event.detail.eventQueue.then(() => {
+        player.addEnergy(1);
+        updateEnergyDisplay(player);
+      });
+    }
+  });
+}
+
+function critterbite(player, relicObject) {
+  window.addEventListener("Attack", (event) => {
+    if (event.detail.isCritical) {
+      event.detail.eventQueue = event.detail.eventQueue.then(() => {
+        const firstEnemy = enemies[0];
+        firstEnemy.addPoisonFromPlayer(5 + player.poisonModifier);
+        firstEnemy.updatePoisonDisplay();
+      });
+    }
+  });
 }
 
 function deathsBargain(player) {

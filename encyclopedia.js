@@ -63,6 +63,9 @@ const weaponsContainer = document.getElementById("weaponsContainer");
 const weaponsPage = document.getElementById("weaponsPage");
 const prevBtn = document.getElementById("prevWeaponPage");
 const nextBtn = document.getElementById("nextWeaponPage");
+let weaponPages = [];
+let currentWeaponPageIndex = 0;
+const WEAPONS_PER_PAGE = 18;
 
 const weaponsByRarity = {};
 
@@ -79,47 +82,19 @@ const sortedRarities = Object.keys(weaponsByRarity).sort((a, b) => a - b);
 
 const itemsPerPage = 18;
 
-function renderWeaponsPage(page) {
+function renderWeaponsByPage(index) {
   weaponsPage.innerHTML = "";
 
-  const start = page * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageWeapons = weapons.slice(start, end);
-
-  // Split into two columns
-  const half = Math.ceil(pageWeapons.length / 2);
-  const leftColumn = pageWeapons.slice(0, half);
-  const rightColumn = pageWeapons.slice(half);
-
-  const leftDiv = document.createElement("div");
-  leftDiv.classList.add("column");
-  leftColumn.forEach((w) => {
-    const weaponDiv = document.createElement("div");
-    weaponDiv.classList.add("weaponItem");
-    weaponDiv.innerHTML = `<img src="${w.sprite}"/><p>${w.name}</p>`;
-    leftDiv.appendChild(weaponDiv);
-  });
-
-  const rightDiv = document.createElement("div");
-  rightDiv.classList.add("column");
-  rightColumn.forEach((w) => {
-    const weaponDiv = document.createElement("div");
-    weaponDiv.classList.add("weaponItem");
-    weaponDiv.innerHTML = `<img src="${w.sprite}"/><p>${w.name}</p>`;
-    rightDiv.appendChild(weaponDiv);
-  });
-
-  weaponsPage.appendChild(leftDiv);
-  weaponsPage.appendChild(rightDiv);
-}
-
-function renderWeaponsByRarity(rarityIndex) {
-  weaponsPage.innerHTML = "";
-  const rarity = sortedRarities[rarityIndex];
+  const currentPage = weaponPages[index];
+  const rarity = currentPage.rarity;
   const weaponsOfRarity = weaponsByRarity[rarity];
 
-  const leftWeapons = weaponsOfRarity.slice(0, 9);
-  const rightWeapons = weaponsOfRarity.slice(9, 18);
+  const start = currentPage.startIndex;
+  const end = start + WEAPONS_PER_PAGE;
+  const weaponsToShow = weaponsOfRarity.slice(start, end);
+
+  const leftWeapons = weaponsToShow.slice(0, 9);
+  const rightWeapons = weaponsToShow.slice(9, 18);
 
   function createSide(weaponsSide) {
     const sideDiv = document.createElement("div");
@@ -137,7 +112,6 @@ function renderWeaponsByRarity(rarityIndex) {
       const weaponDiv = document.createElement("div");
       weaponDiv.classList.add("weaponItem");
       weaponDiv.innerHTML = `<img src="${w.sprite}"/><p>${w.name}</p>`;
-
       weaponDiv.onclick = () => showWeaponInfo(w);
       gridDiv.appendChild(weaponDiv);
     });
@@ -146,9 +120,22 @@ function renderWeaponsByRarity(rarityIndex) {
     return sideDiv;
   }
 
-  weaponsPage.appendChild(createSide(leftWeapons));
-  weaponsPage.appendChild(createSide(rightWeapons));
+  if (leftWeapons.length > 0) weaponsPage.appendChild(createSide(leftWeapons));
+  if (rightWeapons.length > 0)
+    weaponsPage.appendChild(createSide(rightWeapons));
+
+  updateWeaponPaginationButtons();
 }
+
+sortedRarities.forEach((rarity) => {
+  const weaponsOfRarity = weaponsByRarity[rarity];
+  const totalWeapons = weaponsOfRarity.length;
+  const neededPages = Math.ceil(totalWeapons / WEAPONS_PER_PAGE);
+
+  for (let i = 0; i < neededPages; i++) {
+    weaponPages.push({ rarity, startIndex: i * WEAPONS_PER_PAGE });
+  }
+});
 
 let currentRarityPage = 0;
 const backToSummaryBtn = document.getElementById("backToSummary");
@@ -158,30 +145,31 @@ function enterWeaponSection() {
 
   sectionNextPage = nextWeaponPage;
   sectionPreviousPage = prevWeaponPage;
-  renderWeaponsByRarity(currentRarityPage);
-  updatePaginationButtons();
+
+  renderWeaponsByPage(currentRarityPage);
+  updateWeaponPaginationButtons();
   adjustPageNavigationButtons();
 }
 
+function updateWeaponPaginationButtons() {
+  isFirstPage = currentWeaponPageIndex === 0;
+  isLastPage = currentWeaponPageIndex >= weaponPages.length - 1;
+}
+
 function nextWeaponPage() {
-  if (currentRarityPage < sortedRarities.length - 1) {
-    currentRarityPage++;
-    renderWeaponsByRarity(currentRarityPage);
-    updatePaginationButtons();
+  if (currentWeaponPageIndex < weaponPages.length - 1) {
+    currentWeaponPageIndex++;
+    renderWeaponsByPage(currentWeaponPageIndex);
+    updateWeaponPaginationButtons();
   }
 }
 
 function prevWeaponPage() {
-  if (currentRarityPage > 0) {
-    currentRarityPage--;
-    renderWeaponsByRarity(currentRarityPage);
-    updatePaginationButtons();
+  if (currentWeaponPageIndex > 0) {
+    currentWeaponPageIndex--;
+    renderWeaponsByPage(currentWeaponPageIndex);
+    updateWeaponPaginationButtons();
   }
-}
-
-function updatePaginationButtons() {
-  isFirstPage = currentRarityPage === 0;
-  isLastPage = currentRarityPage >= sortedRarities.length - 1;
 }
 
 backToSummaryBtn.addEventListener("click", () => {
@@ -511,52 +499,6 @@ function renderRelicsByGroup(index) {
 
   updateRelicPaginationButtons();
 }
-
-// function renderRelicsByGroup(index) {
-//   relicsPage.innerHTML = "";
-//   const group = sortedRelicGroups[index];
-//   const relicsList = relicsByGroup[group] || [];
-
-//   const leftRelics = relicsList.slice(0, 9);
-//   const rightRelics = relicsList.slice(9, 18);
-
-//   function createSide(relicsSide) {
-//     const sideDiv = document.createElement("div");
-//     sideDiv.classList.add("sidePage");
-
-//     const label = document.createElement("h1");
-//     label.textContent = group.toUpperCase();
-//     label.style.textAlign = "center";
-//     sideDiv.appendChild(label);
-
-//     const gridDiv = document.createElement("div");
-//     gridDiv.classList.add("relicGrid");
-
-//     relicsSide.forEach((relic) => {
-//       const relicDiv = document.createElement("div");
-//       relicDiv.classList.add("relicItem");
-
-//       const img = document.createElement("img");
-//       img.src = relic.icon;
-//       img.classList.add("encyclopedia-relic-icon");
-//       relicDiv.appendChild(img);
-
-//       const nameP = document.createElement("p");
-//       nameP.textContent = relic.name;
-//       relicDiv.appendChild(nameP);
-
-//       relicDiv.onclick = () => showRelicInfo(relic);
-
-//       gridDiv.appendChild(relicDiv);
-//     });
-
-//     sideDiv.appendChild(gridDiv);
-//     return sideDiv;
-//   }
-
-//   if (leftRelics.length > 0) relicsPage.appendChild(createSide(leftRelics));
-//   if (rightRelics.length > 0) relicsPage.appendChild(createSide(rightRelics));
-// }
 
 function updateRelicPaginationButtons() {
   isFirstPage = currentRelicGroupIndex === 0;
