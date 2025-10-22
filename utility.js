@@ -149,22 +149,22 @@ function saveUnlockedDecks(unlockedDecks) {
 }
 
 // einkommentieren nachdem custom knight getestet wurde
-// function loadUnlockedDecks() {
-//   const data = localStorage.getItem("unlockedDecks");
-//   return data ? JSON.parse(data) : [0];
-// }
+function loadUnlockedDecks() {
+  const data = localStorage.getItem("unlockedDecks");
+  return data ? JSON.parse(data) : [0];
+}
 
 // entfernen wenn custom knight getestet wurde
-function loadUnlockedDecks() {
-  const saved = JSON.parse(localStorage.getItem("unlockedCharacters")) || [];
+// function loadUnlockedDecks() {
+//   const saved = JSON.parse(localStorage.getItem("unlockedCharacters")) || [];
 
-  if (!saved.includes("Custom Knight")) saved.push("Custom Knight");
+//   if (!saved.includes("Custom Knight")) saved.push("Custom Knight");
 
-  return starterDecks
-    .map((deck, index) => deck.name)
-    .map((name, i) => (saved.includes(name) ? i : null))
-    .filter((i) => i !== null);
-}
+//   return starterDecks
+//     .map((deck, index) => deck.name)
+//     .map((name, i) => (saved.includes(name) ? i : null))
+//     .filter((i) => i !== null);
+// }
 
 function setupLongPressHover(
   element,

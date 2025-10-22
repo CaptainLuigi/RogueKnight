@@ -16,6 +16,8 @@ document.querySelector(".start-button").addEventListener("click", () => {
   if (savedState) {
     window.location.href = "map.html";
   } else {
+    selectedDeckIndex = null;
+    confirmButton.disabled = true;
     deckModal.classList.remove("hidden");
     renderStarterDecks();
   }
@@ -87,6 +89,37 @@ function renderStarterDecks() {
 function viewDeckWeapons(index) {
   const deck = starterDecks[index];
 
+  // Check if it's the Custom Knight
+  if (deck.name === "Custom Knight") {
+    // Show Custom Knight data from current selection
+    const maxHP =
+      parseInt(document.getElementById("custom-maxhp").value) || 100;
+    const gold = parseInt(document.getElementById("custom-gold").value) || 150;
+
+    document.getElementById("deck-details-name").textContent = "Custom Knight";
+    document.getElementById("deck-details-hp").textContent = maxHP;
+    document.getElementById("deck-details-gold").textContent = gold;
+
+    // Relics
+    const relicNames = Array.from(customSelectedRelics);
+    document.getElementById("deck-details-relics").textContent =
+      relicNames.length > 0 ? relicNames.join(", ") : "None";
+
+    // Weapons
+    const weaponsList = document.getElementById("deck-details-weapons");
+    weaponsList.innerHTML = "";
+
+    Object.values(customSelectedWeapons).forEach(({ weapon, count }) => {
+      const li = document.createElement("li");
+      li.textContent = `${weapon.name} x${count}`;
+      weaponsList.appendChild(li);
+    });
+
+    document.getElementById("deck-details").classList.remove("hidden");
+    return;
+  }
+
+  // --- For all other characters, keep original behavior ---
   document.getElementById("deck-details-name").textContent = deck.name;
   document.getElementById("deck-details-hp").textContent = deck.maxHP ?? 100;
   document.getElementById("deck-details-gold").textContent = deck.gold ?? 150;
@@ -140,21 +173,44 @@ confirmButton.addEventListener("click", () => {
   if (selectedDeckIndex === null) return;
 
   const deckData = starterDecks[selectedDeckIndex];
+  let deck, relics, maxHP, gold, playerName;
 
-  const deck = deckData.weapons;
-  const relics = deckData.relics ?? [];
-  const maxHP = deckData.maxHP ?? 100;
-  const gold = deckData.gold ?? 150;
+  if (deckData.name === "Custom Knight") {
+    // Custom deck
+    playerName = "Custom Knight";
+    deck = [];
+    relics = Array.from(customSelectedRelics);
+    maxHP = parseInt(document.getElementById("custom-maxhp").value) || 100;
+    gold = parseInt(document.getElementById("custom-gold").value) || 150;
 
-  const player = new Player("Player", maxHP, maxHP, deck, 3, 3);
+    player = new Player(playerName, maxHP, maxHP, [], 3, 3);
+    player.gold = gold;
+    globalSettings.playerGold = gold;
 
-  player.gold = gold;
-  globalSettings.playerGold = gold;
+    // Add selected weapons & relics
+    for (let name in customSelectedWeapons) {
+      for (let i = 0; i < customSelectedWeapons[name].count; i++) {
+        player.addWeapon(customSelectedWeapons[name].weapon);
+      }
+    }
 
-  relics.forEach((r) => player.foundRelic(r, true));
+    relics.forEach((rName) => player.foundRelic(rName, true)); // ✅ keep only one
+  } else {
+    // Normal starter deck
+    playerName = deckData.name;
+    deck = deckData.weapons;
+    relics = deckData.relics ?? [];
+    maxHP = deckData.maxHP ?? 100;
+    gold = deckData.gold ?? 150;
+
+    player = new Player(playerName, maxHP, maxHP, deck, 3, 3);
+    player.gold = gold;
+    globalSettings.playerGold = gold;
+
+    relics.forEach((r) => player.foundRelic(r, true)); // ✅ keep only one
+  }
 
   player.currentDeckIndex = selectedDeckIndex;
-
   player.savePlayerToStorage();
 
   window.location.href = "map.html";
@@ -256,20 +312,22 @@ function openCustomDeckModal() {
 }
 
 document.getElementById("confirm-custom-deck").addEventListener("click", () => {
-  const maxHP = parseInt(document.getElementById("custom-maxhp").value) || 100;
-  const gold = parseInt(document.getElementById("custom-gold").value) || 150;
+  // Close the custom deck modal
+  customModal.classList.add("hidden");
 
-  const player = new Player("Custom Knight", maxHP, maxHP, [], 3, 3);
-  player.gold = gold;
-  globalSettings.playerGold = gold;
+  // Pretend as if the "Custom Knight" deck was selected
+  const customIndex = starterDecks.findIndex((d) => d.name === "Custom Knight");
+  selectedDeckIndex = customIndex;
+  confirmButton.disabled = false;
 
-  for (let name in customSelectedWeapons)
-    for (let i = 0; i < customSelectedWeapons[name].count; i++)
-      player.addWeapon(customSelectedWeapons[name].weapon);
-  customSelectedRelics.forEach((rName) => player.foundRelic(rName, true));
-
-  player.savePlayerToStorage();
-  window.location.href = "map.html";
+  // Highlight Custom Knight as selected
+  document.querySelectorAll(".starter-deck").forEach((deck, i) => {
+    if (i === customIndex) {
+      deck.classList.add("selected-deck");
+    } else {
+      deck.classList.remove("selected-deck");
+    }
+  });
 });
 
 function createPreviewElement(div) {

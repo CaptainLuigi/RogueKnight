@@ -470,10 +470,11 @@ input[type="number"] {
     font-family: 'Pirata_One';
     border: 0.2vw solid black;
     border-radius: 0.5vw;
-    font-size: 1rem;
-    height: 8vw;
-    width: 10vw;
+    font-size: 1.5rem;
+    height: 8vh;
+    width: 8vw;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .remove-btn {
