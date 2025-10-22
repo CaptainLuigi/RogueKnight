@@ -160,37 +160,94 @@ confirmButton.addEventListener("click", () => {
   window.location.href = "map.html";
 });
 
-function populateWeaponDropdown() {
-  const weaponsSelect = document.getElementById("custom-weapons");
-  weaponsSelect.innerHTML = "";
+function populateWeaponsContainer() {
+  const container = document.getElementById("custom-weapons-container");
+  container.innerHTML = "";
 
-  const availableWeapons = getAvailableWeapons();
+  const allWeapons = Object.values(weaponClassMapping)
+    .map((WeaponClass) => new WeaponClass())
+    .filter((w) => w.rarity !== undefined && w.rarity !== null)
+    .sort((a, b) => a.name.localeCompare(b.name));
 
-  availableWeapons.forEach((weapon) => {
-    const option = document.createElement("option");
-    option.value = weapon.constructor.name;
-    option.textContent = weapon.name || weapon.constructor.name;
-    weaponsSelect.appendChild(option);
+  allWeapons.forEach((weapon) => {
+    const btn = document.createElement("button");
+    btn.classList.add("weapon-btn");
+
+    // Create icon image
+    if (weapon.sprite) {
+      const img = document.createElement("img");
+      img.src = weapon.sprite; // should be a valid URL or path
+      img.alt = weapon.name;
+      img.classList.add("weapon-icon");
+      img.style.width = "2vw"; // adjust size
+      img.style.height = "2vw";
+      img.style.marginRight = "1vw";
+      btn.appendChild(img);
+    }
+
+    // Add weapon name
+    const span = document.createElement("span");
+    span.textContent = weapon.name;
+    btn.appendChild(span);
+
+    btn.addEventListener("click", () => addWeaponToCustomDeck(weapon));
+    container.appendChild(btn);
   });
 }
 
-function populateRelicDropdown() {
-  const relicsSelect = document.getElementById("custom-relics");
-  relicsSelect.innerHTML = "";
+function populateRelicsContainer() {
+  const container = document.getElementById("custom-relics-container");
+  container.innerHTML = "";
 
   Object.values(relicList)
     .sort((a, b) => a.name.localeCompare(b.name))
     .forEach((relic) => {
-      const option = document.createElement("option");
-      option.value = relic.name;
-      option.textContent = relic.name;
-      relicsSelect.appendChild(option);
+      const btn = document.createElement("button");
+      btn.classList.add("relic-btn");
+
+      // Create icon image
+      if (relic.icon) {
+        const img = document.createElement("img");
+        img.src = relic.icon; // should be a valid URL or path
+        img.alt = relic.name;
+        img.classList.add("relic-icon");
+        img.style.width = "2vw";
+        img.style.height = "2vw";
+        img.style.marginRight = "1vw";
+        btn.appendChild(img);
+      }
+
+      // Add relic name
+      const span = document.createElement("span");
+      span.textContent = relic.name;
+      btn.appendChild(span);
+
+      btn.addEventListener("click", () => addRelicToCustomDeck(relic));
+      container.appendChild(btn);
     });
 }
 
+const customSelectedWeapons = {};
+const customSelectedRelics = new Set();
+
+function addWeaponToCustomDeck(weapon) {
+  let key = weapon.name;
+  if (!customSelectedWeapons[key])
+    customSelectedWeapons[key] = { weapon, count: 0 };
+  customSelectedWeapons[key].count++;
+  updateCustomDeckPreview();
+}
+
+function addRelicToCustomDeck(relic) {
+  if (!customSelectedRelics.has(relic.name)) {
+    customSelectedRelics.add(relic.name);
+    updateCustomDeckPreview();
+  }
+}
+
 function openCustomDeckModal() {
-  populateWeaponDropdown();
-  populateRelicDropdown();
+  populateWeaponsContainer();
+  populateRelicsContainer();
 
   document.getElementById("custom-maxhp").value = 100;
   document.getElementById("custom-gold").value = 150;
@@ -202,37 +259,83 @@ document.getElementById("confirm-custom-deck").addEventListener("click", () => {
   const maxHP = parseInt(document.getElementById("custom-maxhp").value) || 100;
   const gold = parseInt(document.getElementById("custom-gold").value) || 150;
 
-  // Weapons
-  const selectedWeaponsNames = Array.from(
-    document.getElementById("custom-weapons").selectedOptions
-  ).map((o) => o.value);
-
-  const weapons = selectedWeaponsNames
-    .map((name) => {
-      const weapon = getAvailableWeapons().find(
-        (w) => w.constructor.name === name
-      );
-      return weapon
-        ? Object.assign(Object.create(Object.getPrototypeOf(weapon)), weapon)
-        : null;
-    })
-    .filter(Boolean); // remove nulls
-
-  // Player creation
-  const player = new Player("Custom Knight", maxHP, maxHP, weapons, 3, 3);
+  const player = new Player("Custom Knight", maxHP, maxHP, [], 3, 3);
   player.gold = gold;
   globalSettings.playerGold = gold;
 
-  // Relics
-  const selectedRelics = Array.from(
-    document.getElementById("custom-relics").selectedOptions
-  ).map((o) => o.value);
-
-  selectedRelics.forEach((rName) => {
-    const relicObj = relicList.find((rel) => rel.name === rName);
-    if (relicObj) player.foundRelic(relicObj, true);
-  });
+  for (let name in customSelectedWeapons)
+    for (let i = 0; i < customSelectedWeapons[name].count; i++)
+      player.addWeapon(customSelectedWeapons[name].weapon);
+  customSelectedRelics.forEach((rName) => player.foundRelic(rName, true));
 
   player.savePlayerToStorage();
   window.location.href = "map.html";
 });
+
+function createPreviewElement(div) {
+  if (!div) {
+    div = document.querySelector("#template-nodes > .selected-preview-element");
+    div = div.cloneNode(true);
+  }
+  const removeBtn = div.querySelector(".remove-btn");
+  const img = div.querySelector(".element-img");
+  const span = div.querySelector(".element-desc");
+  return [div, img, span, removeBtn];
+}
+
+function updateCustomDeckPreview() {
+  const weaponsItems = document.querySelector("#custom-selected-weapons");
+  const relicsItems = document.querySelector("#custom-selected-relics");
+
+  // Weapons
+  Object.values(customSelectedWeapons).forEach((weaponData) => {
+    let { weapon, count } = weaponData;
+    let [div, img, span, removeBtn] = createPreviewElement(weaponData.div);
+    if (!weaponData.div) {
+      weaponData.div = div;
+
+      removeBtn.addEventListener("click", function () {
+        weaponData.count--;
+        if (weaponData.count <= 0) {
+          delete customSelectedWeapons[weapon.name];
+          div.remove();
+        }
+        updateCustomDeckPreview();
+      });
+    }
+
+    if (weapon.sprite) {
+      img.src = weapon.sprite;
+      img.alt = weapon.name;
+    }
+
+    span.textContent = `${weapon.name} `;
+    span.innerHTML += `x&nbsp;${count}`;
+
+    weaponsItems.appendChild(div);
+  });
+
+  // Relics
+  customSelectedRelics.forEach((relicName) => {
+    let [div, img, span, removeBtn] = createPreviewElement(
+      document.querySelector(`[relicname = "${relicName}"]`)
+    );
+
+    const relic = relicList[relicName];
+    if (relic && relic.icon) {
+      img.src = relic.icon;
+      img.alt = relic.name;
+    }
+
+    span.textContent = relicName;
+    div.setAttribute("relicname", relicName);
+
+    removeBtn.addEventListener("click", () => {
+      div.remove();
+      customSelectedRelics.delete(relicName);
+      updateCustomDeckPreview();
+    });
+
+    relicsItems.appendChild(div);
+  });
+}

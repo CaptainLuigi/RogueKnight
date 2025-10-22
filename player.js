@@ -335,10 +335,7 @@ class Player extends HealthEntity {
   addWeapon(weapon) {
     this.#deck.push(weapon);
 
-    if (
-      player.equippedRelics.includes("Champion's Might") &&
-      weapon.damage > 0
-    ) {
+    if (this.equippedRelics.includes("Champion's Might") && weapon.damage > 0) {
       weapon.energy = Math.max(1, weapon.energy - 1);
     }
 
@@ -346,7 +343,7 @@ class Player extends HealthEntity {
       if (weapon.level < 3) {
         weapon.upgrade();
         this.takeDamage(5);
-        updateHealthBar(player);
+        updateHealthBar(this);
       }
     }
     this.savePlayerToStorage();

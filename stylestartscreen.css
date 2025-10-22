@@ -333,3 +333,200 @@ body {
     border: 0.2vw solid black;
     border-radius: 0.5vw;
 }
+
+#custom-deck-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1500;
+    overflow-y: hidden;
+    padding: 2vw;
+    box-sizing: border-box;
+}
+
+#label-wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: antiquewhite;
+    padding: 1.5vw;
+    border-radius: 0.5vw;
+    box-sizing: border-box;
+    flex: 1 1 45%;
+    margin: 1vw 0;
+    max-height: 90vh;  
+    overflow: hidden;  /* keep modal scroll hidden */
+    min-height: 0;     /* crucial for inner scroll containers */
+}
+
+#label-wrapper, #preview-deck {
+    background-color: antiquewhite;
+    padding: 1.5vw;
+    border-radius: 0.5vw;
+    box-sizing: border-box;
+    flex: 1 1 45%;
+    margin: 1vw 0;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+#custom-deck-modal .flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    max-height: 90vh;
+    flex-wrap: wrap;
+    gap: 2vw;
+}
+
+.weapon-btn, .relic-btn {
+    font-family: 'Pirata_One';
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 10vw;
+    height: 3vw;
+    margin: 0.5vw;
+    padding: 0.5vw;
+    font-size: 1rem;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.weapon-btn:hover, .relic-btn:hover {
+    background-color: #e0d4b0;
+}
+
+.weapon-btn img, .relic-btn img {
+    width: 4vw;
+    height: 4vw;
+    margin-right: 1vw;
+    object-fit: contain;
+}
+
+.scrollable-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    min-height: 0;
+    max-height: 25vh;
+}
+
+#label-wrapper label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5vw;
+    font-size: 1rem;
+}
+
+#preview-deck {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    font-size: 1rem;
+    width: 25vw;
+    background-color: antiquewhite;
+    padding: 1vw;
+    border-radius: 0.5vw;
+    overflow-y: auto;
+}
+
+#custom-selected-weapons {
+    margin-bottom: 2vh;
+}
+
+.inline-inputs {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 0;
+}
+
+.inline-inputs label {
+    flex: 1;
+}
+
+input[type="number"] {
+    padding: 0.5vw;
+    font-size: 1rem;
+    border-radius: 0.5vw;
+    border: 0.2vw solid black;
+}
+
+#custom-maxhp, #custom-gold {
+    font-family: 'Pirata_One';
+}
+
+#confirm-custom-deck {
+    font-family: 'Pirata_One';
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    font-size: 1rem;
+    height: 8vw;
+    width: 10vw;
+    cursor: pointer;
+}
+
+.remove-btn {
+    font-family: 'Pirata_One';
+    background-color: rgba(240, 26, 14);  
+    height: 2vw;
+    width: 2vw; 
+    font-size: 2rem;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-header {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.items-container {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    grid-auto-rows: calc(3vw + 4rem);
+    justify-content: space-between;
+    row-gap: 2vw;
+}
+
+#template-nodes, #template-nodes * {
+    display: none !important;
+    z-index: -1 !important;
+}
+
+#custom-selected-weapons:has(div) p,
+#custom-selected-relics:has(div) p {
+    display: none;
+}
+
+.selected-preview-element {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.element-img {
+    width: 4vw;
+    height: 4vw;
+    image-rendering: pixelated;
+}
+
+.element-desc {
+    text-align: center;
+
+}

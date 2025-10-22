@@ -87,6 +87,23 @@ const starterDecks = [
     relics: ["Enrage"],
   },
   {
+    name: "Medic",
+    maxHP: 110,
+    gold: 130,
+    weapons: [
+      new Dagger(),
+      new Dagger(),
+      new Dagger(),
+      new ThrowingKnife(),
+      new BigHealthPotion(),
+      new Leechfang(),
+      new BasicShield(),
+      new BasicShield(),
+      new BasicShield(),
+    ],
+    relics: ["Untouched Heart"],
+  },
+  {
     name: "Golden Knight",
     maxHP: 80,
     gold: 200,
@@ -102,11 +119,11 @@ const starterDecks = [
     ],
     relics: ["Golden Sigil"],
   },
-  // {
-  //   name: "Custom Knight",
-  //   maxHP: 100,
-  //   gold: 150,
-  //   weapons: [],
-  //   relics: [],
-  // },
+  {
+    name: "Custom Knight",
+    maxHP: 100,
+    gold: 150,
+    weapons: [],
+    relics: [],
+  },
 ];

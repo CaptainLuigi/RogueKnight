@@ -62,4 +62,6 @@ waffen tooltip bei leave weapon behind event anzeigen
 anzeige welcher gegner getroffen werden kann überprüfen -> wenn gegner angreift links und rechts gelbe striche sichtbar
 
 wenn gegner mit double strike/triple strike während dem angriff sterben, gehen die restlichen hits trotzdem durch
+
+view current deck scrollable machen
 */
