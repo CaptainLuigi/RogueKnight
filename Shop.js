@@ -412,6 +412,8 @@ function generateRelicInfo(player, relic, index, button, relicInfo) {
   relicImage.src = relic.icon;
   relicImage.alt = relic.name;
 
+  preventMobileImgDownload(relicImage);
+
   // Add the image and tooltip to the button
   button.appendChild(relicImage);
   button.appendChild(tooltip);

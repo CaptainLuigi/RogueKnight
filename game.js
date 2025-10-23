@@ -60,16 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   SoundManager.preloadAll();
 
-  player.hand.forEach((weapon, index) => {
-    const weaponNode = document.querySelector(`[index="${index}"]`);
-
-    setupLongPressHover(weaponNode, {
-      onTap: () => useWeapon(index),
-      onHover: () => weaponHover(weaponNode),
-      onClear: () => clearSelection(),
-    });
-  });
-
   document.getElementById("start-fight-btn").addEventListener("click", () => {
     // Unlock all sounds by playing silently once
     for (const key in SoundManager.sounds) {
@@ -483,6 +473,7 @@ async function executeAttack(weapon, enemyIndex) {
 
       const damageTaken = enemy.takeDamage(enemyDamage);
       enemy.displayDamage(damageTaken, isCritical);
+      damages[i] = damageTaken;
 
       overallDamageTaken += damageTaken;
 
@@ -491,10 +482,10 @@ async function executeAttack(weapon, enemyIndex) {
         player.heal(healAmount);
       }
 
-      if (damageTaken > 0 && weapon.calculateHealing) {
-        const healAmount = weapon.calculateHealing([damageTaken]);
-        player.heal(healAmount);
-      }
+      // if (damageTaken > 0 && weapon.calculateHealing) {
+      //   const healAmount = weapon.calculateHealing([damageTaken]);
+      //   player.heal(healAmount);
+      // }
 
       if (weapon.poisonAmount > 0) {
         weapon.applyPoisonToEnemy(enemy, player.poisonModifier);

@@ -33,8 +33,6 @@ tooltip im fight inhalt centern
 
 waffen machen prozentual schaden evtl implementieren
 
-more players with different starting weapons
-
 wenn beim final boss im browser zurück -> softlock / nichts mehr auf map auswählbar
 
 upgrade weapon options remove, wenn alle waffen max lvl
@@ -42,16 +40,7 @@ upgrade weapon options remove, wenn alle waffen max lvl
 wenn gestorben und beim deathscreen im browser zurück gegangen wird -> volle Leben und Kampf ist noch vor dem ersten Fight 
 (wenn dieser Kampf gewonnen wird, muss man danach den allerersten Fight machen)
 
-hover elemente für mobile anpassen
-
 enemy intent nicht sichtbar solange enemy poison damage nimmt
-
-custom start
-
-
-bei double strike relic:
-wenn der erste hit gegner tötet, trifft der nächste hit den nächsten gegner
-wenn speer ersten gegner mit ersten hit tötet breakt das game, targeting breakt (nicht nachstellbar)
 
 waffen aus der hand ryceln?
 
@@ -64,4 +53,10 @@ anzeige welcher gegner getroffen werden kann überprüfen -> wenn gegner angreif
 wenn gegner mit double strike/triple strike während dem angriff sterben, gehen die restlichen hits trotzdem durch
 
 view current deck scrollable machen
+
+relic container scrollable machen
+
+fallback relic pile of gold einfügen (falls nicht genügend relics für chest oder shop vorhanden)
+
+schadensanzeige stackt überhalb von player
 */

@@ -2758,6 +2758,7 @@ function generateWeaponInfo(
   weaponImage.src = weapon.sprite;
   weaponImage.alt = weapon.name;
   weaponImage.classList.add("weapon-image", `level-${weapon.level}`);
+  preventMobileImgDownload(weaponImage);
   display.appendChild(weaponImage);
 
   var getTooltip = () => {
