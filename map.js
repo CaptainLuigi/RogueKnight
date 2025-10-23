@@ -216,6 +216,10 @@ function setButtonData(button, data) {
   }
 
   button.innerHTML = imageTag;
+
+  let img = button.querySelector("img");
+
+  preventMobileImgDownload(img);
 }
 
 function getLocationType(index) {
@@ -354,16 +358,16 @@ function triggerRandomEvent() {
     { type: "gambling", action: showEvent },
     { type: "rest", action: showEvent },
     { type: "lightning", action: showEvent },
-    { type: "succubus", action: showEvent },
+    // { type: "succubus", action: showEvent },
     { type: "stoned", action: showEvent },
     { type: "poisonWeapon", action: showEvent },
     { type: "weaponLifesteal", action: showEvent },
-    { type: "bloodforge", action: showEvent },
-    { type: "dieGambling", action: showEvent },
+    // { type: "bloodforge", action: showEvent },
+    // { type: "dieGambling", action: showEvent },
   ];
 
   const act2Events = [
-    { type: "infernalIngot", action: showEvent },
+    // { type: "infernalIngot", action: showEvent },
     { type: "upgradeAll", action: showEvent },
     { type: "lowerEnergyCost", action: showEvent },
     { type: "goldenStatue", action: showEvent },
@@ -392,6 +396,27 @@ function triggerRandomEvent() {
   }
 
   if (
+    !player.equippedRelics.includes("Souleater") &&
+    globalSettings.currentAct === 1
+  ) {
+    allEvents.push({ type: "succubus", action: showEvent });
+  }
+
+  if (
+    !player.equippedRelics.includes("Gambler's Die") &&
+    globalSettings.currentAct === 1
+  ) {
+    allEvents.push({ type: "dieGambling", action: showEvent });
+  }
+
+  if (
+    !player.equippedRelics.includes("Bloodforge") &&
+    globalSettings.currentAct === 1
+  ) {
+    allEvents.push({ type: "bloodforge", action: showEvent });
+  }
+
+  if (
     player.health <= (player.maxHealth / 100) * 20 &&
     globalSettings.currentAct === 1
   ) {
@@ -409,7 +434,18 @@ function triggerRandomEvent() {
     allEvents.push({ type: "reunionDave", action: showEvent });
   }
 
-  if (globalSettings.playerGold >= 150 && globalSettings.currentAct === 2) {
+  if (
+    !player.equippedRelics.includes("Infernal Ingot") &&
+    globalSettings.currentAct === 2
+  ) {
+    allEvents.push({ type: "infernalIngot", action: showEvent });
+  }
+
+  if (
+    globalSettings.playerGold >= 150 &&
+    globalSettings.currentAct === 2 &&
+    !player.equippedRelics.includes("Zen Barrier")
+  ) {
     allEvents.push({ type: "zenRelic", action: showEvent });
   }
 

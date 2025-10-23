@@ -232,6 +232,9 @@ function populateWeaponsContainer() {
     // Create icon image
     if (weapon.sprite) {
       const img = document.createElement("img");
+
+      preventMobileImgDownload(img);
+
       img.src = weapon.sprite; // should be a valid URL or path
       img.alt = weapon.name;
       img.classList.add("weapon-icon");
@@ -264,6 +267,9 @@ function populateRelicsContainer() {
       // Create icon image
       if (relic.icon) {
         const img = document.createElement("img");
+
+        preventMobileImgDownload(img);
+
         img.src = relic.icon; // should be a valid URL or path
         img.alt = relic.name;
         img.classList.add("relic-icon");
