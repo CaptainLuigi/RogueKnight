@@ -1059,16 +1059,104 @@ function createRelicElement(relic) {
   return relicWrapper;
 }
 
+// function displayEquippedRelics() {
+//   const relicContainer = document.getElementById("equipped-relic-container");
+
+//   relicContainer.innerHTML = "";
+
+//   player.equippedRelics.forEach((relicName) => {
+//     const relic = relicList[relicName];
+//     if (relic) {
+//       const relicElement = createRelicElement(relic);
+//       relicContainer.appendChild(relicElement);
+//     }
+//   });
+// }
+
 function displayEquippedRelics() {
   const relicContainer = document.getElementById("equipped-relic-container");
-
   relicContainer.innerHTML = "";
 
-  player.equippedRelics.forEach((relicName) => {
+  // Two columns
+  const column1 = document.createElement("div");
+  const column2 = document.createElement("div");
+
+  column1.style.display = "flex";
+  column1.style.flexDirection = "column";
+  column1.style.gap = "0.5vw";
+  column2.style.display = "flex";
+  column2.style.flexDirection = "column";
+  column2.style.gap = "0.5vw";
+
+  // Make relic container a flex container
+  relicContainer.style.display = "flex";
+  relicContainer.style.gap = "0.5vw";
+  relicContainer.style.overflowY = "auto";
+  relicContainer.style.maxHeight = "80vh"; // scrollable if too tall
+  relicContainer.style.padding = "0.5vw";
+
+  relicContainer.appendChild(column1);
+  relicContainer.appendChild(column2);
+
+  player.equippedRelics.forEach((relicName, index) => {
     const relic = relicList[relicName];
-    if (relic) {
-      const relicElement = createRelicElement(relic);
-      relicContainer.appendChild(relicElement);
+    if (!relic) return;
+
+    const relicWrapper = document.createElement("div");
+    relicWrapper.className = "relic-wrapper";
+    relicWrapper.style.position = "relative";
+
+    const img = document.createElement("img");
+    img.src = relic.icon || "placeholder.png";
+    img.alt = relicName;
+    img.className = "relic-image";
+    img.style.width = "2.5vw";
+    img.style.height = "2.5vw";
+    img.style.objectFit = "contain";
+    img.style.border = "0.2vw solid black";
+    img.style.borderRadius = "0.25vw";
+    img.style.padding = "0.25vw";
+    img.style.imageRendering = "pixelated";
+
+    relicWrapper.appendChild(img);
+
+    // Tooltip
+    const tooltip = document.createElement("div");
+    tooltip.className = "relicTooltip";
+    tooltip.style.position = "absolute";
+    tooltip.style.backgroundColor = "rgba(0,0,0,0.85)";
+    tooltip.style.color = "white";
+    tooltip.style.padding = "0.5vw";
+    tooltip.style.borderRadius = "0.5vw";
+    tooltip.style.fontSize = "1.25rem";
+    tooltip.style.maxWidth = "20.5vw";
+    tooltip.style.whiteSpace = "normal";
+    tooltip.style.display = "none";
+    tooltip.style.zIndex = "10000";
+
+    tooltip.innerHTML = `<strong>${relic.name || relicName}</strong><br>${
+      relic.relicDescription || "No description available."
+    }`;
+
+    document.body.appendChild(tooltip);
+
+    img.addEventListener("mouseenter", (e) => {
+      const rect = img.getBoundingClientRect();
+      tooltip.style.left = `${rect.right + 5}px`;
+      tooltip.style.top = `${rect.top}px`;
+      tooltip.style.display = "block";
+    });
+
+    img.addEventListener("mouseleave", () => {
+      tooltip.style.display = "none";
+    });
+
+    // Alternating layout: top-bottom left-right
+    // Even index → column1, odd index → column2
+    if (index % 2 === 0) {
+      column1.appendChild(relicWrapper);
+    } else {
+      column2.appendChild(relicWrapper);
     }
   });
 }

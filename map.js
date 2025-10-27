@@ -356,7 +356,7 @@ function triggerRandomEvent() {
     { type: "thorsHammer", action: showEvent },
     { type: "foundGold", action: showEvent },
     { type: "gambling", action: showEvent },
-    { type: "rest", action: showEvent },
+    // { type: "rest", action: showEvent },
     { type: "lightning", action: showEvent },
     // { type: "succubus", action: showEvent },
     { type: "stoned", action: showEvent },
@@ -400,6 +400,13 @@ function triggerRandomEvent() {
     globalSettings.currentAct === 1
   ) {
     allEvents.push({ type: "succubus", action: showEvent });
+  }
+
+  if (
+    player.health <= player.maxHealth - 10 &&
+    globalSettings.currentAct === 1
+  ) {
+    allEvents.push({ type: "rest", action: showEvent });
   }
 
   if (
