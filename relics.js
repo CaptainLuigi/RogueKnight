@@ -553,15 +553,15 @@ const relicList = [
     100,
     "This is the only way to block poison completely. That can be convenient in later fights."
   ),
-  // new ActiveRelics(
-  //   "Pile of Gold",
-  //   "Assets/goldCoins2.gif",
-  //   goldPile,
-  //   "Get 50 Gold on pickup.",
-  //   "placeholder",
-  //   0,
-  //   "You get this relic if no other relic is available."
-  // ),
+  new Relics(
+    "Pile of Gold",
+    "Assets/goldCoins2.gif",
+    () => {},
+    "Get 50 Gold on pickup.",
+    "fallback",
+    0,
+    "You get this relic if no other relic is available."
+  ),
   new Relics(
     "Double Strike",
     "Assets/doubleStrike.png",
@@ -645,10 +645,6 @@ function reservoirLotus(player, relicObject) {
 
     relicObject.bonusEnergy = unusedEnergy;
   });
-}
-
-function goldPile(player, relicObject) {
-  updatePlayerGold(50);
 }
 
 function berserkersRush(player, relicObject) {

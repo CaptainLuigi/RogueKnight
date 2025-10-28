@@ -261,23 +261,61 @@
   let r1 = localStorage.getItem("selectedRelic1");
   let r2 = localStorage.getItem("selectedRelic2");
 
-  if (!r1 || !r2) {
-    let availableRelics = relicNames.filter(name => {
-      const relic = relicList[name];
-      return relic.relicGroup === chestRelicGroup
-          && !player.foundRelics.includes(name)
-          && (!player.equippedRelics || !player.equippedRelics.includes(name));
-    });
 
-    if (availableRelics.length > 0) {
-      r1 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
-      localStorage.setItem("selectedRelic1", r1);
-    }
-    if (availableRelics.length > 0) {
-      r2 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
-      localStorage.setItem("selectedRelic2", r2);
-    }
+  if (!r1 || !r2) {
+  let availableRelics = relicNames.filter(name => {
+    const relic = relicList[name];
+    return relic.relicGroup === chestRelicGroup
+        && !player.foundRelics.includes(name)
+        && (!player.equippedRelics || !player.equippedRelics.includes(name));
+  });
+
+  // Pick up to two relics from available
+  if (availableRelics.length > 0) {
+    r1 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+    localStorage.setItem("selectedRelic1", r1);
   }
+
+  if (availableRelics.length > 0) {
+    r2 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+    localStorage.setItem("selectedRelic2", r2);
+  }
+
+  // Fallback logic
+  const fallbackName = "Pile of Gold";
+
+  if (!r1 && !r2) {
+    // No relics left → only fallback relic
+    r1 = fallbackName;
+    localStorage.setItem("selectedRelic1", r1);
+  } else if ((r1 && !r2) || (!r1 && r2)) {
+    // Only one relic → add fallback as second option
+    if (!r1) r1 = fallbackName;
+    else r2 = fallbackName;
+
+    localStorage.setItem("selectedRelic1", r1);
+    localStorage.setItem("selectedRelic2", r2);
+  }
+}
+
+
+  // if (!r1 || !r2) {
+  //   let availableRelics = relicNames.filter(name => {
+  //     const relic = relicList[name];
+  //     return relic.relicGroup === chestRelicGroup
+  //         && !player.foundRelics.includes(name)
+  //         && (!player.equippedRelics || !player.equippedRelics.includes(name));
+  //   });
+
+  //   if (availableRelics.length > 0) {
+  //     r1 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+  //     localStorage.setItem("selectedRelic1", r1);
+  //   }
+  //   if (availableRelics.length > 0) {
+  //     r2 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+  //     localStorage.setItem("selectedRelic2", r2);
+  //   }
+  // }
 
   relicContainer.innerHTML = "";
   [r1, r2].forEach(name => {
@@ -332,6 +370,10 @@
   player.foundRelic(selectedRelicName, true);
   selectedRelic.equipRelic(player);
   displayEquippedRelics();
+
+  if (selectedRelicName === "Pile of Gold") {
+    updatePlayerGold(50)
+  }
 
   relicChoices.forEach(name => {
     if (name && name !== selectedRelicName) player.foundRelic(name, false);

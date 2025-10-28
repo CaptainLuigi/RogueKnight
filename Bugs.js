@@ -55,4 +55,6 @@ wenn gegner mit double strike/triple strike während dem angriff sterben, gehen 
 fallback relic pile of gold einfügen (falls nicht genügend relics für chest oder shop vorhanden)
 
 schadensanzeige stackt überhalb von player
+
+selfdamage relics triggern nicht
 */

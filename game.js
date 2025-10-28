@@ -389,11 +389,8 @@ function raiseEvent(eventName, eventParameters) {
     ...eventParameters,
     eventQueue: Promise.resolve(),
   };
-  const attackEvent = new CustomEvent("Attack", {
-    detail,
-  });
-
-  window.dispatchEvent(attackEvent);
+  const customEvent = new CustomEvent(eventName, { detail });
+  window.dispatchEvent(customEvent);
   return detail.eventQueue;
 }
 
