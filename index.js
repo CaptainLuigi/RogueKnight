@@ -91,7 +91,6 @@ function viewDeckWeapons(index) {
 
   // Check if it's the Custom Knight
   if (deck.name === "Custom Knight") {
-    // Show Custom Knight data from current selection
     const maxHP =
       parseInt(document.getElementById("custom-maxhp").value) || 100;
     const gold = parseInt(document.getElementById("custom-gold").value) || 150;
@@ -100,18 +99,45 @@ function viewDeckWeapons(index) {
     document.getElementById("deck-details-hp").textContent = maxHP;
     document.getElementById("deck-details-gold").textContent = gold;
 
-    // Relics
-    const relicNames = Array.from(customSelectedRelics);
-    document.getElementById("deck-details-relics").textContent =
-      relicNames.length > 0 ? relicNames.join(", ") : "None";
+    // --- Relics as <li> like weapons ---
+    const relicsList = document.getElementById("deck-details-relics");
+    relicsList.innerHTML = "";
 
-    // Weapons
+    relicsList.style.columns = "2";
+    relicsList.style.columnGap = "10vw";
+
+    Array.from(customSelectedRelics).forEach((rName) => {
+      const li = document.createElement("li");
+      const relic = relicList[rName];
+
+      if (relic && relic.icon) {
+        const img = document.createElement("img");
+        img.src = relic.icon;
+        img.alt = rName;
+        img.classList.add("deck-details-img");
+        li.appendChild(img);
+      }
+
+      li.append(` ${rName}`);
+      relicsList.appendChild(li);
+    });
+
+    // --- Weapons ---
     const weaponsList = document.getElementById("deck-details-weapons");
     weaponsList.innerHTML = "";
 
     Object.values(customSelectedWeapons).forEach(({ weapon, count }) => {
       const li = document.createElement("li");
-      li.textContent = `${weapon.name} x${count}`;
+
+      if (weapon.sprite) {
+        const img = document.createElement("img");
+        img.src = weapon.sprite;
+        img.alt = weapon.name;
+        img.classList.add("deck-details-img");
+        li.appendChild(img);
+      }
+
+      li.append(` ${weapon.name} x${count}`);
       weaponsList.appendChild(li);
     });
 
@@ -119,18 +145,42 @@ function viewDeckWeapons(index) {
     return;
   }
 
-  // --- For all other characters, keep original behavior ---
+  // --- For all other characters ---
   document.getElementById("deck-details-name").textContent = deck.name;
   document.getElementById("deck-details-hp").textContent = deck.maxHP ?? 100;
   document.getElementById("deck-details-gold").textContent = deck.gold ?? 150;
-  document.getElementById("deck-details-relics").textContent =
-    (deck.relics ?? []).join(", ") || "None";
+
+  const relicsList = document.getElementById("deck-details-relics");
+  relicsList.innerHTML = "";
+  (deck.relics ?? []).forEach((rName) => {
+    const li = document.createElement("li");
+    const relic = relicList[rName];
+
+    if (relic && relic.icon) {
+      const img = document.createElement("img");
+      img.src = relic.icon;
+      img.alt = rName;
+      img.classList.add("deck-details-img");
+      li.appendChild(img);
+    }
+
+    li.append(` ${rName}`);
+    relicsList.appendChild(li);
+  });
 
   const weaponsList = document.getElementById("deck-details-weapons");
   weaponsList.innerHTML = "";
   deck.weapons.forEach((w) => {
     const li = document.createElement("li");
-    li.textContent = w.name || w.constructor.name;
+
+    if (w.sprite) {
+      const img = document.createElement("img");
+      img.src = w.sprite;
+      img.classList.add("deck-details-img");
+      li.appendChild(img);
+    }
+
+    li.append(` ${w.name || w.constructor.name}`);
     weaponsList.appendChild(li);
   });
 

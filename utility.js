@@ -126,6 +126,10 @@ function applyActVisuals() {
   });
 }
 
+function updatePlayerGold(goldAmount) {
+  globalSettings.playerGold += goldAmount;
+}
+
 function openMap() {
   document.getElementById("mapFrame").src = "map.html?viewonly=true";
   document.getElementById("mapOverlay").style.display = "block";

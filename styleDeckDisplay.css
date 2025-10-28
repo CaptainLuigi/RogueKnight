@@ -38,6 +38,9 @@ html {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    max-height: 40vh;
+    overflow-y: auto;
+    scrollbar-width: none;
 }
 
 #weapon-list .weapon {
@@ -106,7 +109,7 @@ html {
 .tooltip {
     display: none;
     position: fixed; 
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 0.5vw;
     border-radius: 0.5vw;
@@ -122,7 +125,7 @@ html {
 .relicTooltip {
     display: none;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 0.5vw;
     border-radius: 0.5vw;
@@ -200,13 +203,17 @@ html {
 
 #equipped-relic-container {
     position: absolute;
-    top: 7.5vh;
+    top: 8.5vh;
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(10, 1fr);
     gap: 0.5vw;
     padding: 0.5vw;
     z-index: 1100;
+}
+
+#equipped-relic-container::-webkit-scrollbar {
+    display: none;
 }
 
 #equipped-relic-container img {
@@ -323,7 +330,7 @@ html {
 }
 
 .tooltip-block {
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     padding: 0.5vw;
     border-radius: 0.25vw;
     min-width: 8.5vw;

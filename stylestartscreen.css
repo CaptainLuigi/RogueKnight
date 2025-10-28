@@ -100,18 +100,25 @@ body {
     right: 13vw;
 }
 
-#encyclopedia button {
+#encyclopedia button, #achievements button {
     background: transparent;
     border: none;
     padding: 0;
     cursor: pointer;
 }
 
-#encyclopedia img {
+#encyclopedia img, #achievements img {
     background: transparent;
     display: block;
     height: 5vw;
     width: 5vw;
+    image-rendering: pixelated;
+}
+
+#achievements {
+    position: fixed;
+    bottom: 2vh;
+    right: 20vw;
 }
 
 #patchnotes button:hover {
@@ -221,10 +228,8 @@ body {
 }
 
 #deck-details {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 10vh;
     border: 0.2vw solid #e64a19;
     background-color: #222;
     color: #fff;
@@ -238,8 +243,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     gap: 0.5vw;
+
+    overflow-y: auto;
+    box-sizing: border-box;
 }
 
 #deck-details h3 {
@@ -265,6 +273,8 @@ body {
 }
 
 #deck-details p {
+    display: flex;
+    align-items: center;
     margin: 0;
 }
 
@@ -530,4 +540,10 @@ input[type="number"] {
 .element-desc {
     text-align: center;
 
+}
+
+.deck-details-img {
+    width: 2vw;
+    height: 2vw;
+    image-rendering: pixelated;
 }

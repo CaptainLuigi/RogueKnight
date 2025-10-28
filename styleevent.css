@@ -182,6 +182,7 @@ button#randomWeapon2 {
 
 #randomWeapon1 .weapon .tooltip,
 #randomWeapon2 .weapon .tooltip {
+    position: absolute;
     top: -150%;
 }
 
