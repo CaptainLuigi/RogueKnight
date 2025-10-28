@@ -100,18 +100,25 @@ body {
     right: 13vw;
 }
 
-#encyclopedia button {
+#encyclopedia button, #achievements button {
     background: transparent;
     border: none;
     padding: 0;
     cursor: pointer;
 }
 
-#encyclopedia img {
+#encyclopedia img, #achievements img {
     background: transparent;
     display: block;
     height: 5vw;
     width: 5vw;
+    image-rendering: pixelated;
+}
+
+#achievements {
+    position: fixed;
+    bottom: 2vh;
+    right: 20vw;
 }
 
 #patchnotes button:hover {

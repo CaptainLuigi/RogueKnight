@@ -109,7 +109,7 @@ html {
 .tooltip {
     display: none;
     position: fixed; 
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 0.5vw;
     border-radius: 0.5vw;
@@ -125,7 +125,7 @@ html {
 .relicTooltip {
     display: none;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     color: white;
     padding: 0.5vw;
     border-radius: 0.5vw;
@@ -330,7 +330,7 @@ html {
 }
 
 .tooltip-block {
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.75);
     padding: 0.5vw;
     border-radius: 0.25vw;
     min-width: 8.5vw;

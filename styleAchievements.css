@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+html, body {
+    font-family: 'Pirata_One';
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    font-size: 1vw;
+}
+
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+}
+
+.backToMenu {
+    position: absolute;
+    font-size: 1.5rem;
+    top: 2vh;
+    left: 2%;
+}
+
+.orange-btn {
+    font-family: 'Pirata_One';
+    
+    color: black;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.5vw;
+}
+
+#Title {
+    position: absolute;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4.5rem;
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
+}

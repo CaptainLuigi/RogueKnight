@@ -1120,7 +1120,7 @@ function displayEquippedRelics() {
     const tooltip = document.createElement("div");
     tooltip.className = "relicTooltip";
     tooltip.style.position = "absolute";
-    tooltip.style.backgroundColor = "rgba(0,0,0,0.85)";
+    tooltip.style.backgroundColor = "rgba(0,0,0,0.75)";
     tooltip.style.color = "white";
     tooltip.style.padding = "0.5vw";
     tooltip.style.borderRadius = "0.5vw";
