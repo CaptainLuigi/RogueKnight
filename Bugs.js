@@ -56,5 +56,4 @@ fallback relic pile of gold einfügen (falls nicht genügend relics für chest o
 
 schadensanzeige stackt überhalb von player
 
-selfdamage relics triggern nicht
 */

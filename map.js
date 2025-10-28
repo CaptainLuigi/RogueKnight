@@ -356,18 +356,13 @@ function triggerRandomEvent() {
     { type: "thorsHammer", action: showEvent },
     { type: "foundGold", action: showEvent },
     { type: "gambling", action: showEvent },
-    // { type: "rest", action: showEvent },
     { type: "lightning", action: showEvent },
-    // { type: "succubus", action: showEvent },
     { type: "stoned", action: showEvent },
     { type: "poisonWeapon", action: showEvent },
     { type: "weaponLifesteal", action: showEvent },
-    // { type: "bloodforge", action: showEvent },
-    // { type: "dieGambling", action: showEvent },
   ];
 
   const act2Events = [
-    // { type: "infernalIngot", action: showEvent },
     { type: "upgradeAll", action: showEvent },
     { type: "lowerEnergyCost", action: showEvent },
     { type: "goldenStatue", action: showEvent },
