@@ -162,21 +162,32 @@ class Player extends HealthEntity {
   drawHand() {
     this.removeUsed();
     let toBeDrawn = this.maxHandSize - this.#hand.length;
-    if (this.#drawPile.length == 0) {
-      this.#resetDrawPile();
-    }
-    if (this.#deck.length <= this.maxHandSize) {
-      this.#hand.push(...this.#drawPile);
-      this.#drawPile = [];
-      return;
-    }
+
     for (let i = 0; i < toBeDrawn; i++) {
-      let weapon = this.#drawPile.shift();
-      this.#hand.push(weapon);
       if (this.#drawPile.length == 0) {
         this.#resetDrawPile();
+        if (this.#drawPile.length == 0) {
+          break;
+        }
       }
+      let weapon = this.#drawPile.shift();
+      this.#hand.push(weapon);
     }
+    // if (this.#drawPile.length == 0) {
+    //   this.#resetDrawPile();
+    // }
+    // if (this.#deck.length <= this.maxHandSize) {
+    //   this.#hand.push(...this.#drawPile);
+    //   this.#drawPile = [];
+    //   return;
+    // }
+    // for (let i = 0; i < toBeDrawn; i++) {
+    //   let weapon = this.#drawPile.shift();
+    //   this.#hand.push(weapon);
+    //   if (this.#drawPile.length == 0) {
+    //     this.#resetDrawPile();
+    //   }
+    // }
   }
 
   drawExtraCards(amount, ignoreHandFilter = false) {

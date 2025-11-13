@@ -28,6 +28,15 @@ class Achievements {
     this.#unlocked = unlocked;
     this.#achievementFunction = achievementFunction;
   }
+
+  unlock() {
+    this.#unlocked = true;
+
+    const saved =
+      JSON.parse(localStorage.getItem("achievementsUnlocked")) || {};
+    saved[this.#name] = true;
+    localStorage.setItem("achievementsUnlocked", JSON.stringify(saved));
+  }
 }
 
 const achievementList = [
@@ -42,101 +51,101 @@ const achievementList = [
     "First Blood",
     "Defeat your first enemy",
     "Assets/Transperent/Icon1.png",
-    false,
-    firstBlood
+    false
+    // firstBlood
   ),
 
   new Achievements(
     "True Ending",
     "Win a run with the True Knight",
     "Assets/Knight_1/IdleImage.png",
-    false,
-    trueEnding
+    false
+    // trueEnding
   ),
   new Achievements(
     "Defense Master",
     "Win a run with the Tank Knight",
     "Assets/masterShield.png",
-    false,
-    defenseMaster
+    false
+    // defenseMaster
   ),
   new Achievements(
     "Poison Scientist",
     "Win a run with the Poison Knight",
     "Assets/poisonPotion.png",
-    false,
-    poisonScientist
+    false
+    // poisonScientist
   ),
   new Achievements(
     "Spread the Word",
     "Win a run with the Holy Knight",
     "Assets/pacifistAmulet.png",
-    false,
-    spreadTheWord
+    false
+    // spreadTheWord
   ),
   new Achievements(
     "Don't calm down",
     "Win a run with the Berserker",
     "Assets/enrage.png",
-    false,
-    dontCalmDown
+    false
+    // dontCalmDown
   ),
   new Achievements(
     "The Doctor",
     "Win a run with the Medic",
     "Assets/bigHealthPotion.png",
-    false,
-    theDoctor
+    false
+    // theDoctor
   ),
   new Achievements(
     "Shiny!",
     "Win a run with the Golden Knight",
     "Assets/goldSword.png",
-    false,
-    shiny
+    false
+    // shiny
   ),
   new Achievements(
     "The easy one",
     "Win a run with the Custom Knight",
     "Assets/blackHole.png",
-    false,
-    theEasyOne
+    false
+    // theEasyOne
   ),
   new Achievements(
     "Master Adventurer",
     "Unlock all characters",
     "",
-    false,
-    masterAdventurer
+    false
+    // masterAdventurer
   ),
 
   new Achievements(
     "The better knight",
     "Defeat the Evil Knight",
     "Assets/evilKnight2.png",
-    false,
-    theBetterKnight
+    false
+    // theBetterKnight
   ),
   new Achievements(
     "Ratvolution",
     "Defeat the Rat King",
     "Assets/ratKing.png",
-    false,
-    ratvolution
+    false
+    // ratvolution
   ),
   new Achievements(
     "No spider dance",
     "Defeat the Spider Boss",
     "Assets/spiderBoss.png",
-    false,
-    noSpiderDance
+    false
+    // noSpiderDance
   ),
   new Achievements(
     "Unfortunate Circumstance",
     "Die during an event",
-    "Assets/DeadPicture.png",
-    false,
-    unfortunateCircumstance
+    "Assets/Knight_1/DeadPicture.png",
+    false
+    // unfortunateCircumstance
   ),
   new Achievements(
     "Not even close",
@@ -149,15 +158,15 @@ const achievementList = [
     "Unlimited Power!",
     "Have 9 or more Energy",
     "Assets/channelEnergy.png",
-    false,
-    unlimitedPower
+    false
+    // unlimitedPower
   ),
   new Achievements(
     "Money Hoarder",
     "Have 500 or more Gold",
     "Assets/goldCoins2.gif",
-    false,
-    moneyHoarder
+    false
+    // moneyHoarder
   ),
   new Achievements(
     "The Plague is back",
@@ -170,7 +179,108 @@ const achievementList = [
     "Do you even lift?",
     "Get to 50 Strength",
     "Assets/bicepsEmoji.png",
-    false,
-    doYouEvenLift
+    false
+    // doYouEvenLift
   ),
 ];
+
+const savedAchievements =
+  JSON.parse(localStorage.getItem("achievementsUnlocked")) || {};
+
+achievementList.forEach((a) => {
+  if (savedAchievements[a.name]) {
+    a.unlock();
+  }
+});
+
+window.addEventListener("EndFight", async () => {
+  await notEvenClose();
+});
+
+window.addEventListener("WinTutorial", async () => {
+  await alwaysPrepared();
+});
+
+window.addEventListener("PoisonToEnemy", async () => {
+  await thePlagueIsBack();
+});
+
+function notEvenClose() {
+  if (player.health === 1) {
+    const achievement = achievementList.find(
+      (a) => a.name === "Not even close"
+    );
+    if (achievement && !achievement.unlocked) {
+      achievement.unlock();
+      displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+    }
+  }
+}
+
+function alwaysPrepared() {
+  const achievement = achievementList.find((a) => a.name === "Always prepared");
+  if (achievement && !achievement.unlocked) {
+    achievement.unlock();
+    displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+  }
+}
+
+function thePlagueIsBack() {
+  const achievement = achievementList.find(
+    (a) => a.name === "The Plague is back"
+  );
+  if (achievement && !achievement.unlocked) {
+    achievement.unlock();
+    displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+  }
+}
+
+function detectRatKingFightEnd1() {
+  let ratKingKilled = false;
+  window.addEventListener("RatKingDeath", () => {
+    ratKingKilled = true;
+  });
+  window.addEventListener("EndFight", () => {
+    if (ratKingKilled) {
+      const achievement = achievementList.find((a) => a.name === "Ratvolution");
+      if (achievement && !achievement.unlocked) {
+        achievement.unlock();
+        displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+      }
+    }
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  detectRatKingFightEnd1();
+
+  const container = document.getElementById("achievementsContainer");
+
+  achievementList.forEach((achievement) => {
+    const card = document.createElement("div");
+    card.classList.add("achievement-card");
+    if (!achievement.unlocked) {
+      card.classList.add("locked");
+    }
+
+    const icon = document.createElement("img");
+    icon.src = achievement.icon;
+    icon.classList.add("achievement-icon");
+
+    const textDiv = document.createElement("div");
+    textDiv.classList.add("achievement-text");
+
+    const name = document.createElement("h2");
+    name.textContent = achievement.name;
+
+    const description = document.createElement("p");
+    description.textContent = achievement.description;
+
+    textDiv.appendChild(name);
+    textDiv.appendChild(description);
+
+    card.appendChild(icon);
+    card.appendChild(textDiv);
+    container.appendChild(card);
+  });
+});

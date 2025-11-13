@@ -650,6 +650,10 @@ class Enemy extends HealthEntity {
     } else {
       poisonElement.classList.add("hidden");
     }
+
+    raiseEvent("PoisonToEnemy", {
+      enemy: this,
+    });
   }
 
   updateIntentElement() {
@@ -1747,6 +1751,7 @@ class RatKing extends Enemy {
   }
 
   async enemyDeath() {
+    raiseEvent("RatKingDeath");
     this.spawnRatsOnDeath();
     await super.enemyDeath();
   }

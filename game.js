@@ -204,10 +204,9 @@ function fillEnemyArray(currentDifficulty) {
 let isPlayerTurn = true; // Flag to track if it's the player's turn
 
 async function enemyDeathEvent(deadEnemy) {
-  const event = new CustomEvent("EnemyDeath", {
-    detail: { enemy: deadEnemy },
+  await raiseEvent("EnemyDeath", {
+    enemy: deadEnemy,
   });
-  window.dispatchEvent(event);
 
   setEnemyIndices();
 
@@ -216,7 +215,14 @@ async function enemyDeathEvent(deadEnemy) {
 
     // await wait(1000);
 
-    if (globalSettings.difficulty === 0 || globalSettings.difficulty === 20) {
+    if (globalSettings.difficulty === 0) {
+      raiseEvent("WinTutorial");
+
+      SoundManager.fadeOutBattleMusic();
+      await wait(1500);
+      localStorage.removeItem("selectedFightIndex");
+      window.location.href = "winscreen.html";
+    } else if (globalSettings.difficulty === 20) {
       unlockCharacter();
       SoundManager.fadeOutBattleMusic();
       await wait(1500);
@@ -382,16 +388,6 @@ function setActiveWeapon(weaponIndex) {
 
     executeAttack(player.hand[weaponIndex], targetIndex);
   }
-}
-
-function raiseEvent(eventName, eventParameters) {
-  let detail = {
-    ...eventParameters,
-    eventQueue: Promise.resolve(),
-  };
-  const customEvent = new CustomEvent(eventName, { detail });
-  window.dispatchEvent(customEvent);
-  return detail.eventQueue;
 }
 
 /**

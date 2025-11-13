@@ -59,4 +59,6 @@ schadensanzeige stackt überhalb von player
 disable end turn button nach elite
 
 nach boss fight wird erst gehealed bevor untouched heart getriggert wird
+
+raiseevent anstatt new customevent
 */

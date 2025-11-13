@@ -35,6 +35,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+function displayTurnMessage(message) {
+  const turnMessage = document.getElementById("turn-message");
+
+  if (!turnMessage) {
+    console.error("Turn message element not found!");
+    return;
+  }
+
+  console.log("Displaying turn message:", message);
+  turnMessage.textContent = message;
+  turnMessage.style.display = "block"; // Show the message
+
+  // Hide the message after 2 seconds (you can adjust this delay)
+  setTimeout(() => {
+    turnMessage.style.display = "none"; // Hide the message
+  }, 2000);
+}
+
+function raiseEvent(eventName, eventParameters) {
+  let detail = {
+    ...eventParameters,
+    eventQueue: Promise.resolve(),
+  };
+  const customEvent = new CustomEvent(eventName, { detail });
+  window.dispatchEvent(customEvent);
+  return detail.eventQueue;
+}
+
 function closePauseMenu() {
   document.getElementById("pause-menu").classList.add("hidden");
 }
