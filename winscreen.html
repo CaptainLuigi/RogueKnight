@@ -25,6 +25,8 @@
     <script>
       let playerSprite;
       document.addEventListener("DOMContentLoaded", () => {
+        raiseEvent("Winscreen");
+
         playerSprite = document.querySelector(".sprite");
 
         const DESIGN_WIDTH = 1920;

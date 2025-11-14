@@ -46,8 +46,6 @@ waffen aus der hand ryceln?
 
 zindex in vielen fällen nicht notwendig, ggf rausnehmen
 
-waffen tooltip bei leave weapon behind event anzeigen
-
 anzeige welcher gegner getroffen werden kann überprüfen -> wenn gegner angreift links und rechts gelbe striche sichtbar
 
 wenn gegner mit double strike/triple strike während dem angriff sterben, gehen die restlichen hits trotzdem durch
@@ -60,5 +58,13 @@ disable end turn button nach elite
 
 nach boss fight wird erst gehealed bevor untouched heart getriggert wird
 
-raiseevent anstatt new customevent
+nach elite fight keine chest mehr 
+
+nach boss kein wechsel zu 2. act, startet wieder in act 1, dann wenn nächste chest -> boss relic und übergang act 2
+
+true ending achievement funktioniert nicht
+
+ratvolution achievement funktioniert nicht
+
+größeren bizeps emoji für achievement heraussuchen
 */

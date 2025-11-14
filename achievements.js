@@ -51,16 +51,16 @@ const achievementList = [
     "First Blood",
     "Defeat your first enemy",
     "Assets/Transperent/Icon1.png",
-    false
-    // firstBlood
+    false,
+    firstBlood
   ),
 
   new Achievements(
     "True Ending",
     "Win a run with the True Knight",
     "Assets/Knight_1/IdleImage.png",
-    false
-    // trueEnding
+    false,
+    trueEnding
   ),
   new Achievements(
     "Defense Master",
@@ -171,7 +171,7 @@ const achievementList = [
   new Achievements(
     "The Plague is back",
     "Apply 100 Poison to a single enemy",
-    "Assets/skullEmoji.png",
+    "Assets/skullEmojiBig.png",
     false,
     thePlagueIsBack
   ),
@@ -205,33 +205,55 @@ window.addEventListener("PoisonToEnemy", async () => {
   await thePlagueIsBack();
 });
 
+window.addEventListener("EnemyDeath", async () => {
+  await firstBlood();
+});
+
+window.addEventListener("Winscreen", async () => {
+  await trueEnding();
+  // await defenseMaster();
+  // await poisonScientist();
+  // await spreadTheWord();
+  // await dontCalmDont();
+  // await theDoctor();
+  // await shiny();
+  // await theEasyOne();
+  // await masterAdventurer();
+});
+
+function unlockAchievement(name) {
+  const achievement = achievementList.find((a) => a.name === name);
+  if (achievement && !achievement.unlocked) {
+    achievement.unlock();
+    SoundManager.play("Purchase");
+    displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+  }
+}
+
 function notEvenClose() {
   if (player.health === 1) {
-    const achievement = achievementList.find(
-      (a) => a.name === "Not even close"
-    );
-    if (achievement && !achievement.unlocked) {
-      achievement.unlock();
-      displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
-    }
+    unlockAchievement("Not even close");
   }
 }
 
 function alwaysPrepared() {
-  const achievement = achievementList.find((a) => a.name === "Always prepared");
-  if (achievement && !achievement.unlocked) {
-    achievement.unlock();
-    displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
-  }
+  unlockAchievement("Always prepared");
 }
 
 function thePlagueIsBack() {
-  const achievement = achievementList.find(
-    (a) => a.name === "The Plague is back"
-  );
-  if (achievement && !achievement.unlocked) {
-    achievement.unlock();
-    displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+  unlockAchievement("The Plague is back");
+}
+
+function firstBlood() {
+  if (globalSettings.difficulty === 1) {
+    unlockAchievement("First Blood");
+  }
+}
+
+function trueEnding() {
+  const playerState = loadData("playerState");
+  if (playerState.currentDeckIndex == 0) {
+    unlockAchievement("True Ending");
   }
 }
 
@@ -242,11 +264,7 @@ function detectRatKingFightEnd1() {
   });
   window.addEventListener("EndFight", () => {
     if (ratKingKilled) {
-      const achievement = achievementList.find((a) => a.name === "Ratvolution");
-      if (achievement && !achievement.unlocked) {
-        achievement.unlock();
-        displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
-      }
+      unlockAchievement("Ratvolution");
     }
   });
 }

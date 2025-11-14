@@ -80,15 +80,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("battle-overlay").style.display = "none";
     SoundManager.playBattleMusic();
 
-    const startFightEvent = new CustomEvent("StartFight", {
-      detail: {
-        player: player,
-        enemies: enemies,
-        eventQueue: Promise.resolve(),
-      },
+    raiseEvent("StartFight", {
+      player: player,
+      enemies: enemies,
     });
-
-    window.dispatchEvent(startFightEvent);
 
     if (player.equippedRelics.includes("Blood Pact")) {
       const healButton = document.getElementById("heal-btn");
@@ -668,14 +663,9 @@ async function endTurn() {
   // Refill the player's energy and update energy display
   refillEnergy();
 
-  const startSecondTurnEvent = new CustomEvent("StartSecondTurn", {
-    detail: {
-      player: player,
-      eventQueue: Promise.resolve(),
-    },
+  raiseEvent("StartSecondTurn", {
+    player: player,
   });
-
-  window.dispatchEvent(startSecondTurnEvent);
 
   updateEnergyDisplay();
 }
@@ -767,14 +757,9 @@ async function triggerPostBattleScreen() {
   player.weak = 0;
   player.updateStrengthDisplay();
 
-  const endFightEvent = new CustomEvent("EndFight", {
-    detail: {
-      player: player,
-      eventQueue: Promise.resolve(),
-    },
+  raiseEvent("EndFight", {
+    player: player,
   });
-
-  window.dispatchEvent(endFightEvent);
 
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");
