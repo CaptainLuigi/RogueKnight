@@ -223,7 +223,12 @@ window.addEventListener("Winscreen", async () => {
 
 function unlockAchievement(name) {
   const achievement = achievementList.find((a) => a.name === name);
-  if (achievement && !achievement.unlocked) {
+  const playerState = loadData("playerState");
+  if (
+    achievement &&
+    !achievement.unlocked &&
+    playerState.currentDeckIndex !== 7
+  ) {
     achievement.unlock();
     SoundManager.play("Purchase");
     displayTurnMessage(`Achievement unlocked: ${achievement.name}`);

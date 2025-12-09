@@ -56,6 +56,7 @@
         value="0.5"
       />
       <button id="deleteCharacter">Delete Progress</button>
+      <button id="deleteAchievements">Delete Achievements</button>
       <button onclick="closePauseMenu()">Close</button>
     </div>
 
@@ -69,6 +70,17 @@
         <div class="modal-buttons">
           <button id="confirm-delete">Delete</button>
           <button id="cancel-delete">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="delete-achievements-confirmation-modal" class="hidden">
+      <div class="modal-content">
+        <h1>Are you sure?</h1>
+        <p>This will reset your achievement progress.</p>
+        <div class="modal-buttons">
+          <button id="confirm-achievements-delete">Reset</button>
+          <button id="cancel-achievements-delete">Cancel</button>
         </div>
       </div>
     </div>
@@ -114,6 +126,7 @@
       <div class="flex-row">
         <div id="label-wrapper">
           <h1>Customize your Knight</h1>
+          <h2>Achievements are disabled for this Character</h2>
           <div class="inline-inputs">
             <label>
               Max HP:

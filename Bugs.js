@@ -50,8 +50,6 @@ anzeige welcher gegner getroffen werden kann überprüfen -> wenn gegner angreif
 
 wenn gegner mit double strike/triple strike während dem angriff sterben, gehen die restlichen hits trotzdem durch
 
-fallback relic pile of gold einfügen (falls nicht genügend relics für chest oder shop vorhanden)
-
 schadensanzeige stackt überhalb von player
 
 disable end turn button nach elite

@@ -3,9 +3,19 @@ const deckContainer = document.getElementById("starter-deck-container");
 const confirmButton = document.getElementById("confirm-deck");
 const backButton = document.getElementById("back-to-menu");
 const deleteButton = document.getElementById("deleteCharacter");
+const deleteAchievements = document.getElementById("deleteAchievements");
 const deleteModal = document.getElementById("delete-confirmation-modal");
+const deleteAchievementsModal = document.getElementById(
+  "delete-achievements-confirmation-modal"
+);
 const confirmDelete = document.getElementById("confirm-delete");
+const confirmAchievementsDelete = document.getElementById(
+  "confirm-achievements-delete"
+);
 const cancelDelete = document.getElementById("cancel-delete");
+const cancelAchievementsDelete = document.getElementById(
+  "cancel-achievements-delete"
+);
 const customModal = document.getElementById("custom-deck-modal");
 
 let selectedDeckIndex = null;
@@ -31,14 +41,28 @@ deleteButton.addEventListener("click", () => {
   deleteModal.classList.remove("hidden");
 });
 
+deleteAchievements.addEventListener("click", () => {
+  deleteAchievementsModal.classList.remove("hidden");
+});
+
 cancelDelete.addEventListener("click", () => {
   deleteModal.classList.add("hidden");
   closePauseMenu();
 });
 
+cancelAchievementsDelete.addEventListener("click", () => {
+  deleteAchievementsModal.classList.add("hidden");
+});
+
 confirmDelete.addEventListener("click", () => {
   saveUnlockedDecks([0]);
   deleteModal.classList.add("hidden");
+  closePauseMenu();
+});
+
+confirmAchievementsDelete.addEventListener("click", () => {
+  resetAchievementProgress();
+  deleteAchievementsModal.classList.add("hidden");
   closePauseMenu();
 });
 
@@ -215,6 +239,12 @@ function resetPlayerProgress() {
 
   const unlocked = ["True Knight"];
   localStorage.setItem("unlockedCharacters", JSON.stringify(unlocked));
+
+  location.reload();
+}
+
+function resetAchievementProgress() {
+  localStorage.removeItem("achievementsUnlocked");
 
   location.reload();
 }

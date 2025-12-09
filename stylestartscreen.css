@@ -305,7 +305,8 @@ body {
     transform: none;
 }
 
-#delete-confirmation-modal {
+#delete-confirmation-modal, 
+#delete-achievements-confirmation-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -318,7 +319,8 @@ body {
     z-index: 1009;
 }
 
-#delete-confirmation-modal .modal-content {
+#delete-confirmation-modal .modal-content,
+#delete-achievements-confirmation-modal .modal-content {
     background: antiquewhite;
     padding: 2rem;
     border-radius: 0.5vw;
@@ -328,13 +330,15 @@ body {
     border: 0.2vw solid black;
 }
 
-#delete-confirmation-modal .modal-buttons {
+#delete-confirmation-modal .modal-buttons,
+#delete-achievements-confirmation-modal .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 5vw;
 }
 
-#delete-confirmation-modal .modal-buttons button {
+#delete-confirmation-modal .modal-buttons button,
+#delete-achievements-confirmation-modal .modal-buttons button {
     font-family: 'Pirata_One';
     margin: 0;
     padding: 0.5rem 1rem;
@@ -546,4 +550,8 @@ input[type="number"] {
     width: 2vw;
     height: 2vw;
     image-rendering: pixelated;
+}
+
+h2 {
+    margin-top: 0;
 }
