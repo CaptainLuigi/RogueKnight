@@ -2,9 +2,9 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 
 player.loadPlayerFromStorage();
 
-function updatePlayerGold(goldAmount) {
-  globalSettings.playerGold += goldAmount;
-}
+// function updatePlayerGold(goldAmount) {
+//   globalSettings.playerGold += goldAmount;
+// }
 
 let playerSprite;
 let isDuplicateMode = false;
@@ -1358,15 +1358,15 @@ function returnToMap() {
   window.location.href = "map.html";
 }
 
-function updatePlayerGold(goldAmount) {
-  globalSettings.playerGold += goldAmount;
-  console.log(`Player now has ${globalSettings.playerGold} gold`);
+// function updatePlayerGold(goldAmount) {
+//   globalSettings.playerGold += goldAmount;
+//   console.log(`Player now has ${globalSettings.playerGold} gold`);
 
-  const goldDisplay = document.getElementById("playerGold");
-  if (goldDisplay) {
-    goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
-  }
-}
+//   const goldDisplay = document.getElementById("playerGold");
+//   if (goldDisplay) {
+//     goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
+//   }
+// }
 
 function randomWeaponIndex() {
   let index = Math.floor(Math.random() * player.deck.length);

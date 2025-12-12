@@ -558,6 +558,10 @@ class Player extends HealthEntity {
         weakElement.classList.add("hidden");
       }
     }
+
+    raiseEvent("StrengthToPlayer", {
+      amount: this.#strength,
+    });
   }
 
   heal(amount) {

@@ -156,6 +156,16 @@ function applyActVisuals() {
 
 function updatePlayerGold(goldAmount) {
   globalSettings.playerGold += goldAmount;
+  console.log(`Player now has ${globalSettings.playerGold} gold`);
+
+  const goldDisplay = document.getElementById("playerGold");
+  if (goldDisplay) {
+    goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
+  }
+
+  raiseEvent("PlayerGold", {
+    amount: globalSettings.playerGold,
+  });
 }
 
 function openMap() {

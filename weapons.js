@@ -2550,6 +2550,61 @@ class DevSword extends Weapons {
   }
 }
 
+class DevPoison extends Weapons {
+  constructor() {
+    super(
+      "Dev Poison",
+      1,
+      "Melee",
+      1,
+      1,
+      0,
+      0,
+      "Poison",
+      "Assets/poisonDagger.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      150
+    );
+  }
+}
+
+class DevStrength extends Weapons {
+  constructor() {
+    super(
+      "Dev Strength",
+      1,
+      "Utility",
+      0,
+      0,
+      0,
+      0,
+      "Strength",
+      "Assets/berserkersBrew.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      60
+    );
+  }
+}
+
 // class WrappedWeapon extends Weapons {
 //   #wrappedWeapon;
 
@@ -2671,6 +2726,8 @@ const weaponClassMapping = {
   DevShield,
   DevBow,
   DevSword,
+  DevPoison,
+  DevStrength,
 };
 
 function createWeaponInstanceFromInfo(info) {

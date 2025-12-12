@@ -707,6 +707,10 @@ function updateEnergyDisplay() {
       energyTooltip.remove();
     }
   });
+
+  raiseEvent("currentEnergy", {
+    amount: player.energy,
+  });
 }
 
 // Function to display the "Your Turn Again" message
@@ -728,15 +732,15 @@ function displayTurnMessage(message) {
   }, 2000);
 }
 
-function updatePlayerGold(goldAmount) {
-  globalSettings.playerGold += goldAmount;
-  console.log(`Player now has ${globalSettings.playerGold} gold.`);
+// function updatePlayerGold(goldAmount) {
+//   globalSettings.playerGold += goldAmount;
+//   console.log(`Player now has ${globalSettings.playerGold} gold.`);
 
-  const goldDisplay = document.getElementById("playerGold");
-  if (goldDisplay) {
-    goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
-  }
-}
+//   const goldDisplay = document.getElementById("playerGold");
+//   if (goldDisplay) {
+//     goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
+//   }
+// }
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("current-deck").addEventListener("click", () => {

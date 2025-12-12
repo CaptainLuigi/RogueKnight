@@ -2,15 +2,15 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 
 let sprite;
 
-function updatePlayerGold(goldAmount) {
-  globalSettings.playerGold += goldAmount;
-  console.log(`Player now has ${globalSettings.playerGold} gold.`);
+// function updatePlayerGold(goldAmount) {
+//   globalSettings.playerGold += goldAmount;
+//   console.log(`Player now has ${globalSettings.playerGold} gold.`);
 
-  const goldDisplay = document.getElementById("playerGold");
-  if (goldDisplay) {
-    goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
-  }
-}
+//   const goldDisplay = document.getElementById("playerGold");
+//   if (goldDisplay) {
+//     goldDisplay.textContent = `Gold: ${globalSettings.playerGold}`;
+//   }
+// }
 
 let shopWeapons = [];
 

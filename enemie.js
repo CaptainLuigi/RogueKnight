@@ -653,6 +653,7 @@ class Enemy extends HealthEntity {
 
     raiseEvent("PoisonToEnemy", {
       enemy: this,
+      amount: this.#poisonFromPlayer,
     });
   }
 

@@ -60,7 +60,9 @@ nach elite fight keine chest mehr
 
 nach boss kein wechsel zu 2. act, startet wieder in act 1, dann wenn nächste chest -> boss relic und übergang act 2
 
-true ending achievement funktioniert nicht
+untouched heart trigger nach kampf mehrmals
+
+manche character achievements funktionieren nicht
 
 ratvolution achievement funktioniert nicht
 

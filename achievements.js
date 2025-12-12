@@ -66,57 +66,57 @@ const achievementList = [
     "Defense Master",
     "Win a run with the Tank Knight",
     "Assets/masterShield.png",
-    false
-    // defenseMaster
+    false,
+    defenseMaster
   ),
   new Achievements(
     "Poison Scientist",
     "Win a run with the Poison Knight",
     "Assets/poisonPotion.png",
-    false
-    // poisonScientist
+    false,
+    poisonScientist
   ),
   new Achievements(
     "Spread the Word",
     "Win a run with the Holy Knight",
     "Assets/pacifistAmulet.png",
-    false
-    // spreadTheWord
+    false,
+    spreadTheWord
   ),
   new Achievements(
     "Don't calm down",
     "Win a run with the Berserker",
     "Assets/enrage.png",
-    false
-    // dontCalmDown
+    false,
+    dontCalmDown
   ),
   new Achievements(
     "The Doctor",
     "Win a run with the Medic",
     "Assets/bigHealthPotion.png",
-    false
-    // theDoctor
+    false,
+    theDoctor
   ),
   new Achievements(
     "Shiny!",
     "Win a run with the Golden Knight",
     "Assets/goldSword.png",
-    false
-    // shiny
+    false,
+    shiny
   ),
   new Achievements(
     "The easy one",
     "Win a run with the Custom Knight",
     "Assets/blackHole.png",
-    false
-    // theEasyOne
+    false,
+    theEasyOne
   ),
   new Achievements(
     "Master Adventurer",
     "Unlock all characters",
     "",
-    false
-    // masterAdventurer
+    false,
+    masterAdventurer
   ),
 
   new Achievements(
@@ -158,15 +158,15 @@ const achievementList = [
     "Unlimited Power!",
     "Have 9 or more Energy",
     "Assets/channelEnergy.png",
-    false
-    // unlimitedPower
+    false,
+    unlimitedPower
   ),
   new Achievements(
     "Money Hoarder",
     "Have 500 or more Gold",
     "Assets/goldCoins2.gif",
-    false
-    // moneyHoarder
+    false,
+    moneyHoarder
   ),
   new Achievements(
     "The Plague is back",
@@ -179,8 +179,8 @@ const achievementList = [
     "Do you even lift?",
     "Get to 50 Strength",
     "Assets/bicepsEmoji.png",
-    false
-    // doYouEvenLift
+    false,
+    doYouEvenLift
   ),
 ];
 
@@ -201,8 +201,36 @@ window.addEventListener("WinTutorial", async () => {
   await alwaysPrepared();
 });
 
-window.addEventListener("PoisonToEnemy", async () => {
-  await thePlagueIsBack();
+window.addEventListener("PoisonToEnemy", async (e) => {
+  const amount = e.detail.amount;
+
+  if (amount >= 100) {
+    await thePlagueIsBack();
+  }
+});
+
+window.addEventListener("StrengthToPlayer", async (e) => {
+  const amount = e.detail.amount;
+
+  if (amount >= 50) {
+    await doYouEvenLift();
+  }
+});
+
+window.addEventListener("currentEnergy", async (e) => {
+  const amount = e.detail.amount;
+
+  if (amount >= 9) {
+    await unlimitedPower();
+  }
+});
+
+window.addEventListener("PlayerGold", async (e) => {
+  const amount = e.detail.amount;
+
+  if (amount >= 500) {
+    await moneyHoarder();
+  }
 });
 
 window.addEventListener("EnemyDeath", async () => {
@@ -211,14 +239,14 @@ window.addEventListener("EnemyDeath", async () => {
 
 window.addEventListener("Winscreen", async () => {
   await trueEnding();
-  // await defenseMaster();
-  // await poisonScientist();
-  // await spreadTheWord();
-  // await dontCalmDont();
-  // await theDoctor();
-  // await shiny();
-  // await theEasyOne();
-  // await masterAdventurer();
+  await defenseMaster();
+  await poisonScientist();
+  await spreadTheWord();
+  await dontCalmDont();
+  await theDoctor();
+  await shiny();
+  await theEasyOne();
+  await masterAdventurer();
 });
 
 function unlockAchievement(name) {
@@ -249,6 +277,18 @@ function thePlagueIsBack() {
   unlockAchievement("The Plague is back");
 }
 
+function doYouEvenLift() {
+  unlockAchievement("Do you even lift?");
+}
+
+function unlimitedPower() {
+  unlockAchievement("Unlimited Power!");
+}
+
+function moneyHoarder() {
+  unlockAchievement("Money Hoarder");
+}
+
 function firstBlood() {
   if (globalSettings.difficulty === 1) {
     unlockAchievement("First Blood");
@@ -257,8 +297,64 @@ function firstBlood() {
 
 function trueEnding() {
   const playerState = loadData("playerState");
-  if (playerState.currentDeckIndex == 0) {
+  if (playerState.name == "True Knight") {
     unlockAchievement("True Ending");
+  }
+}
+
+function defenseMaster() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Tank Knight") {
+    unlockAchievement("Defense Master");
+  }
+}
+
+function poisonScientist() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Poison Knight") {
+    unlockAchievement("Poison Scientist");
+  }
+}
+
+function spreadTheWord() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Holy Knight") {
+    unlockAchievement("Spread the Word");
+  }
+}
+
+function dontCalmDown() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Berserker") {
+    unlockAchievement("Don't calm down");
+  }
+}
+
+function theDoctor() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Medic") {
+    unlockAchievement("The Doctor");
+  }
+}
+
+function shiny() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Golden Knight") {
+    unlockAchievement("Shiny!");
+  }
+}
+
+function theEasyOne() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Custom Knight") {
+    unlockAchievement("The easy one");
+  }
+}
+
+function masterAdventurer() {
+  const playerState = loadData("playerState");
+  if (playerState.name == "Custom Knight") {
+    unlockAchievement("Master Adventurer");
   }
 }
 
