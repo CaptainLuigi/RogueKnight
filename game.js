@@ -230,8 +230,8 @@ async function enemyDeathEvent(deadEnemy) {
       globalSettings.redirectToChest = true;
       triggerPostBattleScreen();
       updatePlayerGold(100);
-      player.heal(player.maxHealth);
-      updateHealthBar(player);
+      // player.heal(player.maxHealth);
+      // updateHealthBar(player);
       player.savePlayerToStorage();
     } else {
       triggerPostBattleScreen();

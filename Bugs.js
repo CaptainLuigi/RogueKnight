@@ -54,8 +54,6 @@ schadensanzeige stackt überhalb von player
 
 disable end turn button nach elite
 
-nach boss fight wird erst gehealed bevor untouched heart getriggert wird
-
 nach elite fight keine chest mehr 
 
 nach boss kein wechsel zu 2. act, startet wieder in act 1, dann wenn nächste chest -> boss relic und übergang act 2

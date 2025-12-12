@@ -428,6 +428,9 @@ function returnToMap() {
     if (playerSprite) resetToIdleAnimation();
 
     document.getElementById("act2").addEventListener("click", () => {
+      player.heal(player.maxHealth);
+      updateHealthBar(player);
+      player.savePlayerToStorage();
       globalSettings.currentAct = 2;
       localStorage.setItem("currentAct", "2");
       localStorage.removeItem("comingFromBoss")
