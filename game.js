@@ -4,8 +4,13 @@ let playerSprite;
 
 let postBattleTriggered = false;
 
+let startSecondTurnOccured = false;
+
+let playerTookDamageThisFight = false;
+
 document.addEventListener("DOMContentLoaded", function () {
   postBattleTriggered = false;
+  playerTookDamageThisFight = false;
   initializeHealthBars(player);
   updateEnergyDisplay();
 
@@ -222,12 +227,18 @@ async function enemyDeathEvent(deadEnemy) {
       localStorage.removeItem("selectedFightIndex");
       window.location.href = "winscreen.html";
     } else if (globalSettings.difficulty === 20) {
+      if (!playerTookDamageThisFight) {
+        unlockAchievement("Flawless victory");
+      }
       unlockCharacter();
       SoundManager.fadeOutBattleMusic();
       await wait(1500);
       localStorage.removeItem("selectedFightIndex");
       window.location.href = "winscreen.html";
     } else if (globalSettings.difficulty === 10) {
+      if (!playerTookDamageThisFight) {
+        unlockAchievement("Flawless victory");
+      }
       SoundManager.fadeOutBattleMusic();
       await wait(500);
       localStorage.removeItem("selectedFightIndex");
@@ -671,6 +682,10 @@ async function endTurn() {
     player: player,
   });
 
+  window.addEventListener("StartSecondTurn", () => {
+    startSecondTurnOccured = true;
+  });
+
   updateEnergyDisplay();
 }
 
@@ -756,6 +771,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function updateHealBtn() {
+  const healBtn = document.getElementById("heal-btn");
+  const healAmount = Math.floor(player.maxHealth * 0.3);
+  healBtn.textContent = `Heal 30% (${healAmount} HP, 30 Gold)`;
+}
+
 async function triggerPostBattleScreen() {
   SoundManager.fadeOutBattleMusic();
   await wait(1000);
@@ -771,6 +792,8 @@ async function triggerPostBattleScreen() {
 
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");
+
+  updateHealBtn();
 
   displayRandomWeapons();
 

@@ -58,8 +58,6 @@ enemy status tooltip höherer z index
 
 eternal bloom soll nach untouched heart triggern
 
-ratvolution achievement funktioniert nicht
-
 redirect to chest funktioniert nach kampf nicht immer
 
 größeren bizeps emoji für achievement heraussuchen

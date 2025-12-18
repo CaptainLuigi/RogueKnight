@@ -1215,6 +1215,11 @@ class EvilKnight extends Enemy {
   async enemyDeath() {
     unlockAchievement("The better knight");
     await super.enemyDeath();
+
+    if (!startSecondTurnOccured) {
+      unlockAchievement("Overwhelming power");
+    }
+    startSecondTurnOccured = false;
   }
 }
 
@@ -1711,6 +1716,12 @@ class SpiderBoss extends Enemy {
   async enemyDeath() {
     unlockAchievement("No spider dance");
     await super.enemyDeath();
+
+    if (!startSecondTurnOccured) {
+      unlockAchievement("Overwhelming power");
+    }
+
+    startSecondTurnOccured = false;
   }
 }
 
@@ -1765,6 +1776,12 @@ class RatKing extends Enemy {
     unlockAchievement("Ratvolution");
     this.spawnRatsOnDeath();
     await super.enemyDeath();
+
+    if (!startSecondTurnOccured) {
+      unlockAchievement("Overwhelming power");
+    }
+
+    startSecondTurnOccured = false;
   }
 
   spawnRatsOnDeath() {

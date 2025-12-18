@@ -141,6 +141,18 @@ const achievementList = [
     // noSpiderDance
   ),
   new Achievements(
+    "Flawless victory",
+    "Defeat a boss without taking damage",
+    "Assets/championsMight.png",
+    false
+  ),
+  new Achievements(
+    "Overwhelming power",
+    "Defeat a boss in the first turn",
+    "Assets/overwhelmingPower.png",
+    false
+  ),
+  new Achievements(
     "Unfortunate Circumstance",
     "Die during an event",
     "Assets/Knight_1/DeadPicture.png",
@@ -177,10 +189,22 @@ const achievementList = [
   ),
   new Achievements(
     "Do you even lift?",
-    "Get to 50 Strength",
+    "Have 50 or more Strength",
     "Assets/bicepsEmoji.png",
     false,
     doYouEvenLift
+  ),
+  new Achievements(
+    "Absolut unit",
+    "Have 200 or more max HP",
+    "Assets/pixelSteak.png",
+    false
+  ),
+  new Achievements(
+    "The bastard is back",
+    "Meet again with Dave",
+    "Assets/dave.png",
+    false
   ),
 ];
 
@@ -270,15 +294,19 @@ async function unlockAchievement(name) {
     displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
 
     await new Promise((res) => setTimeout(res, 50));
+
+    await wait(1500);
   }
 }
 
-function unlockAchievementCustom(name) {
+async function unlockAchievementCustom(name) {
   const achievement = achievementList.find((a) => a.name === name);
   if (achievement && !achievement.unlocked) {
     achievement.unlock();
     SoundManager.play("Purchase");
     displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+
+    await wait(1500);
   }
 }
 

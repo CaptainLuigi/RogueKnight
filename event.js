@@ -469,6 +469,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document
       .getElementById("takeReward")
       .addEventListener("click", function () {
+        unlockAchievement("The bastard is back");
         updatePlayerGold(250);
         player.removeRelic("Contract with Dave");
         player.savePlayerToStorage();

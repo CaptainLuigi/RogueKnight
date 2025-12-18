@@ -262,6 +262,10 @@ class Player extends HealthEntity {
   increaseMaxHealth(amount, addToCurrentHealth) {
     this.#maxHealth += amount;
     if (addToCurrentHealth) this.heal(amount);
+    if (this.#maxHealth >= 200) {
+      unlockAchievement("Absolut unit");
+    }
+    updateHealBtn();
   }
 
   decreaseMaxHealth(amount) {
@@ -393,6 +397,10 @@ class Player extends HealthEntity {
       : amount;
 
     const finalDamage = Math.max(0, reduceAmount);
+
+    if (finalDamage > 0) {
+      playerTookDamageThisFight = true;
+    }
 
     this.#health -= finalDamage;
 
