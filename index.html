@@ -14,6 +14,7 @@
     <script src="relics.js"></script>
     <script src="starterDecks.js"></script>
     <script src="music.js"></script>
+    <script src="achievements.js"></script>
   </head>
   <body>
     <div id="template-nodes">
@@ -126,7 +127,7 @@
       <div class="flex-row">
         <div id="label-wrapper">
           <h1>Customize your Knight</h1>
-          <h2>Achievements are disabled for this Character</h2>
+          <h2>most Achievements are disabled for this Character</h2>
           <div class="inline-inputs">
             <label>
               Max HP:
@@ -292,5 +293,10 @@
       triggerRunAnimation();
     </script>
     <script src="index.js"></script>
+    <script>
+      window.addEventListener("load", () => {
+        masterAdventurer();
+      });
+    </script>
   </body>
 </html>

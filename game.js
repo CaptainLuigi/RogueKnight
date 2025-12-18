@@ -2,7 +2,10 @@ let player = new Player("Knight", 100, 100, [], 3, 3);
 
 let playerSprite;
 
+let postBattleTriggered = false;
+
 document.addEventListener("DOMContentLoaded", function () {
+  postBattleTriggered = false;
   initializeHealthBars(player);
   updateEnergyDisplay();
 
@@ -205,7 +208,8 @@ async function enemyDeathEvent(deadEnemy) {
 
   setEnemyIndices();
 
-  if (enemies.every((enemy) => enemy.isDead())) {
+  if (enemies.every((enemy) => enemy.isDead()) && !postBattleTriggered) {
+    postBattleTriggered = true;
     disableGameInteractions(); // Disable game interactions after the battle
 
     // await wait(1000);

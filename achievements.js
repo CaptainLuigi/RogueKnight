@@ -114,7 +114,7 @@ const achievementList = [
   new Achievements(
     "Master Adventurer",
     "Unlock all characters",
-    "",
+    "Assets/cup.png",
     false,
     masterAdventurer
   ),
@@ -250,14 +250,14 @@ window.addEventListener("Winscreen", async () => {
   await defenseMaster();
   await poisonScientist();
   await spreadTheWord();
-  await dontCalmDont();
+  await dontCalmDown();
   await theDoctor();
   await shiny();
   await theEasyOne();
   await masterAdventurer();
 });
 
-function unlockAchievement(name) {
+async function unlockAchievement(name) {
   const achievement = achievementList.find((a) => a.name === name);
   const playerState = loadData("playerState");
   if (
@@ -265,6 +265,17 @@ function unlockAchievement(name) {
     !achievement.unlocked &&
     playerState.currentDeckIndex !== 7
   ) {
+    achievement.unlock();
+    SoundManager.play("Purchase");
+    displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
+
+    await new Promise((res) => setTimeout(res, 50));
+  }
+}
+
+function unlockAchievementCustom(name) {
+  const achievement = achievementList.find((a) => a.name === name);
+  if (achievement && !achievement.unlocked) {
     achievement.unlock();
     SoundManager.play("Purchase");
     displayTurnMessage(`Achievement unlocked: ${achievement.name}`);
@@ -359,32 +370,26 @@ function shiny() {
 function theEasyOne() {
   const playerState = loadData("playerState");
   if (playerState.name == "Custom Knight") {
-    unlockAchievement("The easy one");
+    unlockAchievementCustom("The easy one");
   }
 }
 
 function masterAdventurer() {
-  const playerState = loadData("playerState");
-  if (playerState.name == "Custom Knight") {
-    unlockAchievement("Master Adventurer");
+  const unlockedDecks = loadUnlockedDecks() || [];
+  console.log("Unlocked decks:", unlockedDecks);
+  console.log("Starter decks count:", starterDecks.length);
+
+  const allUnlocked = starterDecks.every((_, index) =>
+    unlockedDecks.includes(index)
+  );
+  console.log("All unlocked?", allUnlocked);
+
+  if (allUnlocked) {
+    unlockAchievementCustom("Master Adventurer");
   }
 }
 
-function detectRatKingFightEnd1() {
-  let ratKingKilled = false;
-  window.addEventListener("RatKingDeath", () => {
-    ratKingKilled = true;
-  });
-  window.addEventListener("EndFight", () => {
-    if (ratKingKilled) {
-      unlockAchievement("Ratvolution");
-    }
-  });
-}
-
 window.addEventListener("DOMContentLoaded", () => {
-  detectRatKingFightEnd1();
-
   const container = document.getElementById("achievementsContainer");
 
   achievementList.forEach((achievement) => {

@@ -1211,6 +1211,11 @@ class EvilKnight extends Enemy {
     summonedMinion.randomizeAction();
     summonedMinion.displayIntent();
   }
+
+  async enemyDeath() {
+    unlockAchievement("The better knight");
+    await super.enemyDeath();
+  }
 }
 
 class HermitShroom extends Enemy {
@@ -1702,6 +1707,11 @@ class SpiderBoss extends Enemy {
     summonedSkeleton.randomizeAction();
     summonedSkeleton.displayIntent();
   }
+
+  async enemyDeath() {
+    unlockAchievement("No spider dance");
+    await super.enemyDeath();
+  }
 }
 
 class RatKing extends Enemy {
@@ -1752,7 +1762,7 @@ class RatKing extends Enemy {
   }
 
   async enemyDeath() {
-    raiseEvent("RatKingDeath");
+    unlockAchievement("Ratvolution");
     this.spawnRatsOnDeath();
     await super.enemyDeath();
   }
