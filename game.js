@@ -778,14 +778,18 @@ async function triggerPostBattleScreen() {
       if (globalSettings.redirectToChest && globalSettings.difficulty !== 10) {
         globalSettings.redirectToChest = false;
         localStorage.setItem("comingFromElite", "true");
-        window.location.href = "chest.html";
+        setTimeout(() => {
+          window.location.href = "chest.html";
+        }, 0);
       } else if (
         globalSettings.redirectToChest &&
         globalSettings.difficulty === 10
       ) {
         globalSettings.redirectToChest = false;
         localStorage.setItem("comingFromBoss", "true");
-        window.location.href = "chest.html";
+        setTimeout(() => {
+          window.location.href = "chest.html";
+        }, 0);
       } else {
         localStorage.removeItem("selectedFightIndex");
         returnToMap();

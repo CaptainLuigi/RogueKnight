@@ -144,8 +144,8 @@ const achievementList = [
     "Unfortunate Circumstance",
     "Die during an event",
     "Assets/Knight_1/DeadPicture.png",
-    false
-    // unfortunateCircumstance
+    false,
+    unfortunateCircumstance
   ),
   new Achievements(
     "Not even close",
@@ -237,6 +237,14 @@ window.addEventListener("EnemyDeath", async () => {
   await firstBlood();
 });
 
+window.addEventListener("PlayerDeath", async (e) => {
+  const currentPage = window.location.pathname.split("/").pop();
+
+  if (currentPage === "event.html") {
+    await unfortunateCircumstance();
+  }
+});
+
 window.addEventListener("Winscreen", async () => {
   await trueEnding();
   await defenseMaster();
@@ -293,6 +301,10 @@ function firstBlood() {
   if (globalSettings.difficulty === 1) {
     unlockAchievement("First Blood");
   }
+}
+
+function unfortunateCircumstance() {
+  unlockAchievement("Unfortunate Circumstance");
 }
 
 function trueEnding() {

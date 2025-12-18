@@ -410,7 +410,7 @@ class Player extends HealthEntity {
         await wait(300);
         triggerDeathAnimation();
         SoundManager.fadeOutBattleMusic();
-
+        raiseEvent("PlayerDeath");
         await wait(2000);
         globalSettings.relicGroup = "chest";
         globalSettings.redirectToChest = false;
