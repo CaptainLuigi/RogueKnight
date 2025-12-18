@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Encyclopedia</title>
+    <link rel="stylesheet" href="styleencyclopedia.css" />
+    <script src="saveGame.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="utility.js"></script>
+    <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="enemie.js"></script>
+    <script src="relics.js"></script>
+  </head>
+  <body class="overview">
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div>
+      <img id="openBook" src="Assets/openBook.png" />
+      <div id="bookContent">
+        <div id="overviewPage" class="bookPage">
+          <div id="firstPage">
+            <h1>Encyclopedia</h1>
+
+            <img id="knightImage" src="Assets/Knight_1/IdleImage.png" /><br />
+            <span>
+              Everything you need to know about weapons, enemies and relics.
+            </span>
+          </div>
+          <div id="secondPage">
+            <button id="showWeapons" onclick="enterWeaponSection()">
+              <img src="Assets/sword.png" />
+            </button>
+            Weapons
+            <button id="showEnemies" onclick="enterEnemySection()">
+              <img src="Assets/Transperent/Icon5.png" />
+            </button>
+            Enemies
+            <button id="showRelics">
+              <img src="Assets/monsteraLeaf.png" />
+            </button>
+            Relics
+          </div>
+        </div>
+
+        <div id="weaponsPage" class="bookPage"></div>
+
+        <div id="weaponInfoPage" class="bookPage">
+          <div id="weaponInfoLeft">
+            <h1 id="weaponName"></h1>
+            <div id="weaponImage"></div>
+          </div>
+          <div id="weaponInfoRight">
+            <div id="weaponInfoTooltip"></div>
+            <div id="weaponLevelButtons">
+              <button class="orange-btn" data-level="1">Level 1</button>
+              <button class="orange-btn" data-level="2">Level 2</button>
+              <button class="orange-btn" data-level="3">Level 3</button>
+            </div>
+            <button
+              id="backToWeapons"
+              class="orange-btn"
+              onclick="enterWeaponSection()"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div id="enemiesPage" class="bookPage"></div>
+
+        <div id="enemyInfoPage" class="bookPage">
+          <div id="enemyInfoLeft">
+            <h1 id="enemyName"></h1>
+            <div id="enemyImage"></div>
+          </div>
+          <div id="enemyInfoRight">
+            <div id="enemyDescription"></div>
+            <button
+              id="backToEnemies"
+              class="orange-btn"
+              onclick="enterEnemySection()"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div id="relicsPage" class="bookPage"></div>
+
+        <div id="relicInfoPage" class="bookPage">
+          <div id="relicInfoLeft">
+            <h1 id="relicName"></h1>
+            <div id="relicImage"></div>
+          </div>
+          <div id="relicInfoRight">
+            <div id="relicDescription"></div>
+            <div id="relicInfoText"></div>
+            <button
+              id="backToRelics"
+              class="orange-btn"
+              onclick="enterRelicSection()"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="weaponsPagination">
+      <button
+        id="prevWeaponPage"
+        class="orange-btn"
+        onclick="goToPreviousPage()"
+      >
+        Previous
+      </button>
+      <button id="nextWeaponPage" class="orange-btn" onclick="goToNextPage()">
+        Next
+      </button>
+    </div>
+
+    <div>
+      <button id="backToSummary" class="orange-btn">Back to Summary</button>
+    </div>
+
+    <button
+      onclick="window.location.href='index.html'"
+      class="backToMenu orange-btn"
+    >
+      Back to Menu
+    </button>
+    <div id="enemies"></div>
+    <script src="encyclopedia.js"></script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+html, body {
+    font-family: 'Pirata_One';
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    font-size: 1vw;
+}
+
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+}
+
+.backToMenu {
+    position: absolute;
+    font-size: 1.5rem;
+    top: 2vh;
+    left: 2%;
+}
+
+.orange-btn {
+    font-family: 'Pirata_One';
+    
+    color: black;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    background-color: #ff5722;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.5vw;
+}
+
+#Title {
+    position: absolute;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4.5rem;
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
+}
+
+.achievements-container {
+    scrollbar-width: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr));
+    gap: 2vw;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 2vw;
+    margin: 0 auto;
+    width: 80%;
+    background: none;
+    border-radius: 0.5vw;
+
+    position: absolute;
+    top: 20vh;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+}
+
+.achievement-card {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 0.5vw;
+    padding: 1vw 1.5vw;
+    width: 90%;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.achievement-card.locked {
+    filter: brightness(50%);
+}
+
+.achievement-icon {
+    width: 6vw;
+    height: 6vw;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+p {
+    font-size: 1.5vw;
+}
+

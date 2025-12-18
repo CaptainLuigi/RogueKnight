@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    background-color: black;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.winscreen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4vw;
+}
+
+.flex-fill {
+    flex: 1 1 0;
+}
+
+#sprite-wrapper {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+span {
+    display: block;
+    color: gold;
+    font-size: 10rem;
+}
+
+
+button {
+    position: relative;
+    padding: 0.5vw 1vw;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background-color: gold;
+    color: white;
+    border: 0.15vw solid black;
+    border-radius: 0.25vw;
+    font-family: 'Pirata_one';
+    bottom: 5vh;
+}
+
+button:hover {
+    background-color: darkgoldenrod;
+}
+
+.sprite {
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    background-size: 800px 200px; 
+    image-rendering: pixelated;
+    position: relative;
+    left: 5vw;
+}

@@ -1,0 +1,557 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+body {
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+}
+
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    /* margin-left: 2.5%; */
+    position: absolute;
+}
+
+.flex-container {   
+    width: 100%;
+    flex-direction: column;
+    z-index: 1;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#Title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    text-shadow: 0.2vw 0.2vw 0.3vw rgba(255, 255, 255, 1);
+}
+
+
+.start-button {
+    color: black;
+    background-color: #1D9208;
+    width: 15vw;
+    height: 3vw;
+    font-family: 'Pirata_One';
+    cursor: pointer;
+    text-align: center;
+    font-size: 2rem;
+    margin: 1vh 0;
+    border-radius: 0.5vw;
+    border: 0.2vw solid black;
+}
+
+.start-button:hover {
+    color: orange;
+}
+
+.sprite {
+    width: 200px;
+    height: 200px;
+    background-image: url(Assets/Knight_1/Idlenew.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    image-rendering: pixelated;
+    transform-origin: top left;
+}
+
+#version {
+    position: fixed;
+    bottom: 2vh;
+    left: 2vw;
+    font-size: 1.5rem;
+    color: white;
+    z-index: 1000;
+}
+
+#patchnotes {
+    position: fixed;
+    bottom: 2vh;
+    right: 2vw;
+}
+
+#patchnotes button {
+    font-family: 'Pirata_One';
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 0.5vw 0.75vw;
+    border-radius: 0.5vw;
+    font-size: 2rem;
+    z-index: 1500;
+}
+
+#encyclopedia {
+    position: fixed;
+    bottom: 2vh;
+    right: 13vw;
+}
+
+#encyclopedia button, #achievements button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+#encyclopedia img, #achievements img {
+    background: transparent;
+    display: block;
+    height: 5vw;
+    width: 5vw;
+    image-rendering: pixelated;
+}
+
+#achievements {
+    position: fixed;
+    bottom: 2vh;
+    right: 20vw;
+}
+
+#patchnotes button:hover {
+    cursor: pointer;
+}
+
+#switchToMobile {
+    position: fixed;
+    bottom: 2vh;
+    right: 47vw;
+}
+
+#switchToMobile button {
+    font-family: 'Pirata_One';
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 0.5vw 0.75vw;
+    border-radius: 0.5vw;
+    font-size: 2rem;
+    z-index: 1500;
+}
+
+#deck-selection-modal {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1009;
+    padding: 2vw;
+    box-sizing: border-box;
+}
+
+#starter-deck-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15vw, 1fr));
+    justify-content: center;
+    justify-items: center;
+    gap: 2vw;
+    max-width: 70vw;
+    margin: 0vw 2vw 2vw;
+}
+
+.starter-deck {
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.2vw solid #e64a19;
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.starter-deck:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.starter-deck h3 {
+    margin-bottom: 1vw;
+    font-size: 1.5rem;
+}
+
+.starter-deck button {
+    font-family: 'Pirata_One';
+    font-size: 1rem;
+    background: #444;
+    color: white;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    padding: 1vw 1.5vw;
+    margin: 0.5vw;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.starter-deck button:hover {
+    background: #666;
+}
+
+#confirm-deck {
+    font-family: 'Pirata_One';
+    background: #1D9208;
+    color: white;
+    font-size: 1.5rem;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    padding: 1vw 1.5vw;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#confirm-deck:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+#confirm-deck:hover:not(:disabled) {
+    background: #45a049;
+}
+
+#deck-details {
+    position: fixed;
+    top: 10vh;
+    border: 0.2vw solid #e64a19;
+    background-color: #222;
+    color: #fff;
+    padding: 1vw;
+    width: 50vw;
+    max-height: 80vh;
+    align-items: center;
+    margin-top: 1vw;
+    border-radius: 0.5vw;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    gap: 0.5vw;
+
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#deck-details h3 {
+    margin: 0 0 0.5vw 0;
+}
+
+#deck-details ul {
+    margin-top: 0;
+    padding-left: 2vw;
+}
+
+#deck-details button {
+    font-family: 'Pirata_One';
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+}
+
+#deck-details-weapons {
+    columns: 2;
+    column-gap: 10vw;
+}
+
+#deck-details p {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.starter-deck button {
+    margin-right: 1vw;
+    margin-top: 0.5vw;
+}
+
+.starter-deck.selected-deck {
+    background: rgba(69, 160, 73, 0.5);
+    transform: scale(1.08);
+}
+
+.locked-deck {
+    opacity: 0.5;
+    border-color: #555;
+}
+
+.locked-deck button {
+    cursor: not-allowed;
+    background: #333;
+}
+
+#deck-selection-modal #back-to-menu {
+    position: absolute;
+    top: 2vh;
+    left: 1.5vw;  
+    transform: none;
+}
+
+#delete-confirmation-modal, 
+#delete-achievements-confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1009;
+}
+
+#delete-confirmation-modal .modal-content,
+#delete-achievements-confirmation-modal .modal-content {
+    background: antiquewhite;
+    padding: 2rem;
+    border-radius: 0.5vw;
+    text-align: center;
+    max-width: 65vw;
+    font-size: 1.5rem;
+    border: 0.2vw solid black;
+}
+
+#delete-confirmation-modal .modal-buttons,
+#delete-achievements-confirmation-modal .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
+}
+
+#delete-confirmation-modal .modal-buttons button,
+#delete-achievements-confirmation-modal .modal-buttons button {
+    font-family: 'Pirata_One';
+    margin: 0;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+}
+
+#custom-deck-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1500;
+    overflow-y: hidden;
+    padding: 2vw;
+    box-sizing: border-box;
+}
+
+#label-wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: antiquewhite;
+    padding: 1.5vw;
+    border-radius: 0.5vw;
+    box-sizing: border-box;
+    flex: 1 1 45%;
+    margin: 1vw 0;
+    max-height: 90vh;  
+    overflow: hidden;  /* keep modal scroll hidden */
+    min-height: 0;     /* crucial for inner scroll containers */
+}
+
+#label-wrapper, #preview-deck {
+    background-color: antiquewhite;
+    padding: 1.5vw;
+    border-radius: 0.5vw;
+    box-sizing: border-box;
+    flex: 1 1 45%;
+    margin: 1vw 0;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+#custom-deck-modal .flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    max-height: 90vh;
+    flex-wrap: wrap;
+    gap: 2vw;
+}
+
+.weapon-btn, .relic-btn {
+    font-family: 'Pirata_One';
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 10vw;
+    height: 3vw;
+    margin: 0.5vw;
+    padding: 0.5vw;
+    font-size: 1rem;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.weapon-btn:hover, .relic-btn:hover {
+    background-color: #e0d4b0;
+}
+
+.weapon-btn img, .relic-btn img {
+    width: 4vw;
+    height: 4vw;
+    margin-right: 1vw;
+    object-fit: contain;
+}
+
+.scrollable-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    min-height: 0;
+    max-height: 25vh;
+}
+
+#label-wrapper label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5vw;
+    font-size: 1rem;
+}
+
+#preview-deck {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    font-size: 1rem;
+    width: 25vw;
+    background-color: antiquewhite;
+    padding: 1vw;
+    border-radius: 0.5vw;
+    overflow-y: auto;
+}
+
+#custom-selected-weapons {
+    margin-bottom: 2vh;
+}
+
+.inline-inputs {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 0;
+}
+
+.inline-inputs label {
+    flex: 1;
+}
+
+input[type="number"] {
+    padding: 0.5vw;
+    font-size: 1rem;
+    border-radius: 0.5vw;
+    border: 0.2vw solid black;
+}
+
+#custom-maxhp, #custom-gold {
+    font-family: 'Pirata_One';
+}
+
+#confirm-custom-deck {
+    font-family: 'Pirata_One';
+    border: 0.2vw solid black;
+    border-radius: 0.5vw;
+    font-size: 1.5rem;
+    height: 8vh;
+    width: 8vw;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.remove-btn {
+    font-family: 'Pirata_One';
+    background-color: rgba(240, 26, 14);  
+    height: 2vw;
+    width: 2vw; 
+    font-size: 2rem;
+    border: 0.2vw solid black;
+    border-radius: 0.5vw; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-header {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.items-container {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+    grid-auto-rows: calc(3vw + 4rem);
+    justify-content: space-between;
+    row-gap: 2vw;
+}
+
+#template-nodes, #template-nodes * {
+    display: none !important;
+    z-index: -1 !important;
+}
+
+#custom-selected-weapons:has(div) p,
+#custom-selected-relics:has(div) p {
+    display: none;
+}
+
+.selected-preview-element {
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+.element-img {
+    width: 4vw;
+    height: 4vw;
+    image-rendering: pixelated;
+}
+
+.element-desc {
+    text-align: center;
+
+}
+
+.deck-details-img {
+    width: 2vw;
+    height: 2vw;
+    image-rendering: pixelated;
+}
+
+h2 {
+    margin-top: 0;
+}

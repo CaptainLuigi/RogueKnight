@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chest</title>
+    <link rel="stylesheet" href="styleChest.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="utility.js"></script>
+    <script src="weapons.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="player.js"></script>
+    <script src="relics.js"></script>
+    <script src="music.js"></script>
+    <script src="achievements.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button onclick="closePauseMenu()">Close</button>
+    </div>
+
+    <button id="chest-button">
+      <img id="Chest" src="Assets/Chest.png" alt="Chest" />
+    </button>
+
+    <div id="playerGold">Gold:</div>
+
+    <div class="sprite-player"></div>
+
+    <div id="relic-container"></div>
+
+    <div id="equipped-relic-container"></div>
+
+    <button id="addToDeck">Add</button>
+    <button id="skip">Skip</button>
+
+    <div id="actTransition" class="hidden flex-fill">
+      <span> You have beaten the forest boss!<br /> </span>
+
+      <div id="sprite-wrapper-transition" class="flex-fill">
+        <div class="sprite"></div>
+      </div>
+
+      <button id="act2" class="orange-btn">Go to the caves</button>
+    </div>
+
+    <button id="current-deck" class="orange-btn">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
+      </div>
+    </div>
+
+    <button
+      class="orange-btn absolute-button"
+      onclick="openMap()"
+      style="
+        position: absolute;
+        bottom: 2vh;
+        left: 89%;
+        z-index: 1001;
+        width: 6.5vw;
+        height: 5.5vh;
+      "
+      ;
+    >
+      View Map
+    </button>
+    <div
+      id="mapOverlay">
+      <iframe
+        id="mapFrame"
+        src="map.html"
+        style="
+          width: 80%;
+          height: 80%;
+          margin: 5% auto;
+          display: block;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
+          z-index: 1501;
+        "
+      >
+      </iframe>
+      <button
+        class="orange-btn absolute-button"
+        onclick="closeMap()"
+        style="
+          position: absolute;
+          bottom: 2vh;
+          left: 89%;
+          z-index: 1001;
+          width: 6.5vw;
+          height: 5.5vh;
+        "
+      >
+        Close Map
+      </button>
+
+    <script>
+      let player = new Player("Knight", 100, 100, [], 3, 3);
+      player.loadPlayerFromStorage();
+
+      function isMimicEncounter() {
+        const chance = 0.05;
+        return Math.random() < chance;
+      }
+
+       let transitionSprite;
+      document.addEventListener("DOMContentLoaded", function () {
+        displayEquippedRelics();
+
+        applyActVisuals();
+
+        transitionSprite = document.querySelector(".sprite");
+
+        const DESIGN_WIDTH = 1920;
+
+        function updateSpriteScale() {
+          const scale = (window.innerWidth / DESIGN_WIDTH) * 2;
+          transitionSprite.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener("resize", updateSpriteScale);
+        updateSpriteScale();
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        applyActVisuals();
+
+        displayEquippedRelics();
+        document
+          .getElementById("current-deck")
+          .addEventListener("click", () => {
+            player.showDeck();
+          });
+
+        document
+          .getElementById("close-deck-btn")
+          .addEventListener("click", () => {
+            document
+              .getElementById("weapon-deck-screen")
+              .classList.add("hidden");
+          });
+
+        const goldDisplay = document.getElementById("playerGold");
+        goldDisplay.textContent = "Gold: " + globalSettings.playerGold;
+
+        document
+          .getElementById("chest-button")
+          .addEventListener("click", openChest);
+        document
+          .getElementById("addToDeck")
+          .addEventListener("click", addRelicToDeck);
+        document.getElementById("skip").addEventListener("click", skipRelic);
+
+        const savedRelicName = localStorage.getItem("selectedRelicName");
+        if (savedRelicName) {
+          const savedRelic = relicList[savedRelicName];
+          if (savedRelic) {
+            displaySavedRelic(savedRelic);
+
+            const chestButton = document.getElementById("chest-button");
+            chestButton.disabled = true;
+            chestButton.style.cursor = "default";
+          }
+        }
+      });
+
+      function wait(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+      let playerSprite = document.querySelector(".sprite-player");
+
+      const DESIGN_WIDTH = 1920;
+
+      function updateSpriteScale() {
+        const scale = window.innerWidth / DESIGN_WIDTH;
+        playerSprite.style.transform = `scale(${scale})`;
+      }
+
+      window.addEventListener("resize", updateSpriteScale);
+      updateSpriteScale();
+
+      resetToIdleAnimation();
+
+      /**
+       * Function to open the chest and reveal a random relic.
+       */
+      function openChest() {
+  SoundManager.play("OpenChest");
+  console.log("Chest opened!");
+
+  const chestButton = document.getElementById("chest-button");
+  chestButton.disabled = true;
+  chestButton.style.cursor = "default";
+
+  const comingFromElite = localStorage.getItem("comingFromElite") === "true";
+  const comingFromBoss = localStorage.getItem("comingFromBoss") === "true";
+  localStorage.removeItem("comingFromElite");
+
+  if (!comingFromElite && !comingFromBoss && isMimicEncounter()) {
+    globalSettings.difficulty = 100;
+    globalSettings.relicGroup = "chest";
+    globalSettings.redirectToChest = true;
+    window.location.href = "Tutorial.html";
+    return;
+  }
+
+  const relicContainer = document.getElementById("relic-container");
+  if (!relicContainer) {
+    console.error("Relic container not found!");
+    return;
+  }
+
+  document.getElementById("addToDeck").style.display = "none";
+  document.getElementById("skip").style.display = "none";
+
+  let chestRelicGroup;
+
+  if (comingFromBoss) {
+    chestRelicGroup = "boss";
+  } else {
+    chestRelicGroup = globalSettings.relicGroup;
+  }
+
+  // Generate relics if not saved
+  let r1 = localStorage.getItem("selectedRelic1");
+  let r2 = localStorage.getItem("selectedRelic2");
+
+
+  if (!r1 || !r2) {
+  let availableRelics = relicNames.filter(name => {
+    const relic = relicList[name];
+    return relic.relicGroup === chestRelicGroup
+        && !player.foundRelics.includes(name)
+        && (!player.equippedRelics || !player.equippedRelics.includes(name));
+  });
+
+  // Pick up to two relics from available
+  if (availableRelics.length > 0) {
+    r1 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+    localStorage.setItem("selectedRelic1", r1);
+  }
+
+  if (availableRelics.length > 0) {
+    r2 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+    localStorage.setItem("selectedRelic2", r2);
+  }
+
+  // Fallback logic
+  const fallbackName = "Pile of Gold";
+
+  if (!r1 && !r2) {
+    // No relics left → only fallback relic
+    r1 = fallbackName;
+    localStorage.setItem("selectedRelic1", r1);
+  } else if ((r1 && !r2) || (!r1 && r2)) {
+    // Only one relic → add fallback as second option
+    if (!r1) r1 = fallbackName;
+    else r2 = fallbackName;
+
+    localStorage.setItem("selectedRelic1", r1);
+    localStorage.setItem("selectedRelic2", r2);
+  }
+}
+
+
+  // if (!r1 || !r2) {
+  //   let availableRelics = relicNames.filter(name => {
+  //     const relic = relicList[name];
+  //     return relic.relicGroup === chestRelicGroup
+  //         && !player.foundRelics.includes(name)
+  //         && (!player.equippedRelics || !player.equippedRelics.includes(name));
+  //   });
+
+  //   if (availableRelics.length > 0) {
+  //     r1 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+  //     localStorage.setItem("selectedRelic1", r1);
+  //   }
+  //   if (availableRelics.length > 0) {
+  //     r2 = availableRelics.splice(Math.floor(Math.random() * availableRelics.length), 1)[0];
+  //     localStorage.setItem("selectedRelic2", r2);
+  //   }
+  // }
+
+  relicContainer.innerHTML = "";
+  [r1, r2].forEach(name => {
+    if (!name) return;
+    const relic = relicList[name];
+    const relicElement = createRelicElement(relic);
+    relicElement.setAttribute("data-relic-name", name);
+    relicElement.addEventListener("click", () => selectRelic(name));
+    relicContainer.appendChild(relicElement);
+  });
+}
+
+    function selectRelic(relicName) {
+  const relicContainer = document.getElementById("relic-container");
+  relicContainer.querySelectorAll(".selected-relic").forEach(el => el.classList.remove("selected-relic"));
+
+  const selectedEl = [...relicContainer.children].find(el => el.getAttribute("data-relic-name") === relicName);
+  if (selectedEl) selectedEl.classList.add("selected-relic");
+
+  relicContainer.setAttribute("data-selected-relic", relicName);
+
+  document.getElementById("addToDeck").style.display = "block";
+  document.getElementById("skip").style.display = "block";
+}
+
+     function displaySavedRelic(savedRelic) {
+  const relicContainer = document.getElementById("relic-container");
+  if (!savedRelic) return;
+
+  const relicElement = createRelicElement(savedRelic);
+  relicContainer.appendChild(relicElement);
+  relicContainer.setAttribute("data-selected-relic", savedRelic.name);
+
+  document.getElementById("addToDeck").style.display = "block";
+  document.getElementById("skip").style.display = "block";
+}
+
+      /**
+       * Function to add the selected relic to the player's inventory and update equippedRelics.
+       */
+   async function addRelicToDeck() {
+  SoundManager.play("EquipRelic");
+  await wait(850);
+
+  const relicContainer = document.getElementById("relic-container");
+  const selectedRelicName = relicContainer.getAttribute("data-selected-relic");
+  if (!selectedRelicName) return console.warn("No relic selected.");
+
+  const relicChoices = [localStorage.getItem("selectedRelic1"), localStorage.getItem("selectedRelic2")];
+
+  const selectedRelic = relicList[selectedRelicName];
+  player.foundRelic(selectedRelicName, true);
+  selectedRelic.equipRelic(player);
+  displayEquippedRelics();
+
+  if (selectedRelicName === "Pile of Gold") {
+    updatePlayerGold(50)
+  }
+
+  relicChoices.forEach(name => {
+    if (name && name !== selectedRelicName) player.foundRelic(name, false);
+  });
+
+  if (player.maxHealth <= 0 || player.health <= 0) {
+    window.location.href = "deathscreen.html";
+    await wait(500);
+  }
+
+  player.savePlayerToStorage();
+
+  localStorage.removeItem("selectedRelic1");
+  localStorage.removeItem("selectedRelic2");
+
+  returnToMap();
+}
+      /**
+       * Function to skip selecting a relic and go to map.html.
+       */
+function skipRelic() {
+  const relicChoices = [localStorage.getItem("selectedRelic1"), localStorage.getItem("selectedRelic2")];
+
+  relicChoices.forEach(name => {
+    if (name) player.foundRelic(name, false);
+  });
+
+  console.log("Relics skipped:", relicChoices);
+  console.log("Current foundRelics:", player.foundRelics);
+
+  player.savePlayerToStorage();
+
+  localStorage.removeItem("selectedRelic1");
+  localStorage.removeItem("selectedRelic2");
+
+  returnToMap();
+}
+
+function returnToMap() {
+  const comingFromBoss = localStorage.getItem("comingFromBoss") === "true";
+
+  localStorage.removeItem("selectedFightIndex");
+  globalSettings.eventResolved = true;
+
+  if (comingFromBoss) {
+    const actTransition = document.getElementById("actTransition");
+    actTransition.classList.remove("hidden");
+
+    clearInterval(idleInterval);
+
+    playerSprite = actTransition.querySelector(".sprite");
+    if (playerSprite) resetToIdleAnimation();
+
+    document.getElementById("act2").addEventListener("click", () => {
+      player.heal(player.maxHealth);
+      updateHealthBar(player);
+      player.savePlayerToStorage();
+      globalSettings.currentAct = 2;
+      localStorage.setItem("currentAct", "2");
+      localStorage.removeItem("comingFromBoss")
+      window.location.href = "map.html";
+    })
+  } else {
+    window.location.href = "map.html";
+  }
+
+}
+
+    </script>
+  </body>
+</html>

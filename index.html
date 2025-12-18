@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Startscreen</title>
+    <link rel="stylesheet" href="stylestartscreen.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="saveGame.js"></script>
+    <script src="baseClasses.js"></script>
+    <script src="utility.js"></script>
+    <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="relics.js"></script>
+    <script src="starterDecks.js"></script>
+    <script src="music.js"></script>
+    <script src="achievements.js"></script>
+  </head>
+  <body>
+    <div id="template-nodes">
+      <div class="selected-preview-element">
+        <img class="element-img" />
+        <span class="element-desc"></span>
+        <button class="remove-btn">-</button>
+      </div>
+    </div>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button id="deleteCharacter">Delete Progress</button>
+      <button id="deleteAchievements">Delete Achievements</button>
+      <button onclick="closePauseMenu()">Close</button>
+    </div>
+
+    <div id="delete-confirmation-modal" class="hidden">
+      <div class="modal-content">
+        <h1>Are you sure?</h1>
+        <p>
+          This will reset your character progress and lock all but the first
+          character.
+        </p>
+        <div class="modal-buttons">
+          <button id="confirm-delete">Delete</button>
+          <button id="cancel-delete">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="delete-achievements-confirmation-modal" class="hidden">
+      <div class="modal-content">
+        <h1>Are you sure?</h1>
+        <p>This will reset your achievement progress.</p>
+        <div class="modal-buttons">
+          <button id="confirm-achievements-delete">Reset</button>
+          <button id="cancel-achievements-delete">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <h1 id="Title">RogueKnight</h1>
+      <button class="start-button">Play</button>
+      <button
+        class="start-button"
+        onclick="globalSettings.setTutorial(); globalSettings.difficulty = 0; window.location.href='Tutorial.html'"
+      >
+        Tutorial
+      </button>
+
+      <button
+        class="start-button"
+        onclick="window.location.href='Credits.html'"
+      >
+        Credits
+      </button>
+    </div>
+
+    <div id="deck-selection-modal" class="hidden">
+      <button id="back-to-menu" class="orange-btn">Back</button>
+      <h1>Select your Character</h1>
+      <div id="starter-deck-container"></div>
+
+      <div id="deck-details" class="hidden">
+        <h3 id="deck-details-name"></h3>
+        <p><strong>Max HP: </strong><span id="deck-details-hp"></span></p>
+        <p><strong>Gold: </strong><span id="deck-details-gold"></span></p>
+        <p><strong>Relics: </strong></p>
+        <ul id="deck-details-relics"></ul>
+        <p><strong>Weapons: </strong></p>
+        <ul id="deck-details-weapons"></ul>
+        <button onclick="closeDeckDetails()">Close</button>
+      </div>
+
+      <button id="confirm-deck" disabled>Confirm</button>
+    </div>
+
+    <div id="custom-deck-modal" class="hidden">
+      <div class="flex-row">
+        <div id="label-wrapper">
+          <h1>Customize your Knight</h1>
+          <h2>most Achievements are disabled for this Character</h2>
+          <div class="inline-inputs">
+            <label>
+              Max HP:
+              <input
+                type="number"
+                id="custom-maxhp"
+                value="100"
+                min="1"
+                max="999"
+              />
+            </label>
+
+            <label>
+              Gold:
+              <input
+                type="number"
+                id="custom-gold"
+                value="150"
+                min="0"
+                max="999"
+              />
+            </label>
+          </div>
+
+          <div class="section">
+            <div class="preview-header">Weapons:</div>
+            <div
+              id="custom-weapons-container"
+              class="scrollable-container"
+            ></div>
+          </div>
+
+          <div class="section">
+            <div class="preview-header">Relics:</div>
+            <div
+              id="custom-relics-container"
+              class="scrollable-container"
+            ></div>
+          </div>
+        </div>
+
+        <div id="preview-deck">
+          <div class="preview-header">Weapons:</div>
+          <div id="custom-selected-weapons" class="items-container">
+            <p>None</p>
+          </div>
+
+          <div class="preview-header">Relics:</div>
+          <div id="custom-selected-relics" class="items-container">
+            <p>None</p>
+          </div>
+        </div>
+      </div>
+
+      <button id="confirm-custom-deck">Confirm</button>
+    </div>
+
+    <div class="sprite"></div>
+
+    <div id="version">Version 1.11</div>
+
+    <div id="switchToMobile" class="hidden">
+      <button onclick="window.location.href='iframeIndex.html'">Mobile</button>
+    </div>
+
+    <div id="achievements">
+      <button onclick="window.location.href='achievements.html'">
+        <img src="Assets/crown.png" />
+      </button>
+    </div>
+
+    <div id="encyclopedia">
+      <button onclick="window.location.href='encyclopedia.html'">
+        <img src="Assets/book.png" />
+      </button>
+    </div>
+
+    <div id="patchnotes">
+      <button onclick="window.location.href='patchnotes.html'">
+        Patchnotes
+      </button>
+    </div>
+
+    <script>
+      window.addEventListener("load", () => {
+        let isMobile = "ontouchstart" in window;
+        if (isMobile && window.top == window) {
+          document.getElementById("switchToMobile").classList.remove("hidden");
+        }
+      });
+
+      globalSettings.clearTutorial();
+      const playerSprite = document.querySelector(".sprite");
+
+      const DESIGN_WIDTH = 1920;
+
+      function updateSpriteScale() {
+        const scale = window.innerWidth / DESIGN_WIDTH;
+        playerSprite.style.transform = `scale(${scale})`;
+      }
+
+      window.addEventListener("resize", updateSpriteScale);
+      updateSpriteScale();
+
+      const runConfig = {
+        image: "Assets/Knight_1/Run.png",
+        totalFrames: 7,
+        frameWidth: 200,
+        backgroundSize: "1400px 200px",
+        frameDelay: 100,
+      };
+
+      let runFrame = 0;
+      let runInterval;
+      let spritePositionX = 0;
+      const spriteSpeed = 2;
+      const switchPoint2 = 45;
+
+      function animateRun() {
+        if (typeof playerSprite === "undefined") return;
+
+        runFrame = (runFrame + 1) % runConfig.totalFrames;
+        const frameX = runFrame * runConfig.frameWidth;
+        playerSprite.style.backgroundPositionX = `-${frameX}px`;
+
+        spritePositionX += spriteSpeed;
+        playerSprite.style.left = `${spritePositionX}%`;
+
+        if (spritePositionX >= switchPoint2) {
+          clearInterval(runInterval);
+          resetToIdleAnimation();
+        }
+      }
+
+      function triggerRunAnimation() {
+        clearInterval(runInterval);
+
+        playerSprite.style.backgroundImage = `url(${runConfig.image})`;
+        playerSprite.style.backgroundSize = runConfig.backgroundSize;
+
+        runFrame = 0;
+        playerSprite.style.backgroundPositionX = `0px`;
+
+        runInterval = setInterval(animateRun, runConfig.frameDelay);
+      }
+
+      function resetToIdleAnimation() {
+        playerSprite.style.backgroundImage = `url(${idleConfig.image})`;
+        playerSprite.style.backgroundSize = idleConfig.backgroundSize;
+
+        let frame = 0;
+
+        function animateSprite() {
+          frame = (frame + 1) % idleConfig.totalFrames;
+          const frameX = frame * idleConfig.frameWidth;
+          playerSprite.style.backgroundPositionX = `-${frameX}px`;
+        }
+
+        clearInterval(runInterval);
+        idleInterval = setInterval(animateSprite, idleConfig.frameDelay);
+      }
+
+      triggerRunAnimation();
+    </script>
+    <script src="index.js"></script>
+    <script>
+      window.addEventListener("load", () => {
+        masterAdventurer();
+      });
+    </script>
+  </body>
+</html>

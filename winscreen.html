@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Winscreen</title>
+    <link rel="stylesheet" href="styleWinScreen.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
+    <script src="relics.js"></script>
+    <script src="enemie.js"></script>
+    <script src="utility.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="achievements.js"></script>
+  </head>
+  <body>
+    <div class="winscreen-container flex-fill">
+      <span>You won!</span>
+      <div id="sprite-wrapper" class="flex-fill">
+        <div class="sprite"></div>
+      </div>
+
+      <button id="backToMenu">Back to menu</button>
+    </div>
+    <script>
+      let playerSprite;
+      document.addEventListener("DOMContentLoaded", () => {
+        raiseEvent("Winscreen");
+
+        playerSprite = document.querySelector(".sprite");
+
+        const DESIGN_WIDTH = 1920;
+
+        function updateSpriteScale() {
+          const scale = (window.innerWidth / DESIGN_WIDTH) * 2;
+          playerSprite.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener("resize", updateSpriteScale);
+        updateSpriteScale();
+
+        resetToIdleAnimation();
+
+        document.getElementById("backToMenu").addEventListener("click", () => {
+          deleteProgressAndExit(true);
+        });
+      });
+    </script>
+  </body>
+</html>

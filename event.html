@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event</title>
+    <link rel="stylesheet" href="styleevent.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+    <script src="baseClasses.js"></script>
+    <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="utility.js"></script>
+    <script src="enemie.js"></script>
+    <script src="relics.js"></script>
+    <script src="music.js"></script>
+    <script src="achievements.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="StartscreenBackground"
+        src="Assets/background_forest.png"
+        alt="ForestBackground"
+      />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button onclick="closePauseMenu()">Close</button>
+    </div>
+
+    <div id="playerGold">Gold:</div>
+
+    <div id="turn-message" style="display: none"></div>
+
+    <div class="player-wrapper">
+      
+      <div id="health-bar-container-player">
+        <div id="health-bar"></div>
+      </div>
+
+      <div class="sprite-wrapper">
+        <div class="sprite"></div>
+      </div>
+
+    </div>
+
+    <div id="equipped-relic-container"></div>
+
+    <button id="current-deck" class="orange-btn">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
+      </div>
+    </div>
+
+   
+
+    <!-- Thors Hammer -->
+
+    <div class="textbox hidden" id="thorsHammer">
+      <span>
+        After walking through the forest for a long amount of time, you came
+        across a small clearing in between the dark shadows of the giant
+        trees.<br />
+        On an altar was laying an ancient weapon of imense power, but no mortal
+        beeing was strong enough to lift it.<br /><br />
+        So far...<br /><br />
+        Trying to lift it would come with a price.<br />
+      </span>
+      <div>
+        <button class="thorsHammer-btn textbox-btn">Try to lift it</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="thorsHammerTaken">
+      <span>
+        You put your hands around the handle and pulled with all your
+        strength.<br />
+        The weapon wasn't moving, but you didn't care and kept trying as hard as
+        you could.<br />
+        Blood started running down your arms and just before you couldn't take
+        it any longer,<br />
+        the weapon moved and got lighter and lighter for you.<br /><br />
+        You looked down on your bloody hands.<br />
+        You got the legendary weapon.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- Found Gold -->
+
+    <div class="textbox hidden" id="foundGold">
+      <span>
+        You were walking through the forest, minding your own business and
+        always ready for an ambush.<br />
+        But after a while, something caught your eye.<br />
+        You came closer, with your sword in your hand.<br />
+        But then you realised, that it was an abandoned purse from a traveller
+        or adventurer before you.<br />
+      </span>
+      <div>
+        <button class="foundGold textbox-btn">Take the gold</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- Drop weapon -->
+
+    <div class="textbox hidden" id="dropWeapon">
+      <span>
+        You were walking through the forest, adrenaline still rushing through
+        your body from the last fight.<br />
+        Slowly you were getting calmer, as you heard something behind you.<br />
+        It was a mother bear with her two cubs.<br />
+        You had to retrieve slowly to avoid a fight, but two of your weapons
+        fell out of your backpack and you just had enough time to pick up one of
+        them.<br /><br />
+        Which weapon will you leave behind?<br />
+      </span>
+      <div>
+        <button id="randomWeapon1"></button>
+        <button id="randomWeapon2"></button>
+      </div>
+    </div>
+
+    <!-- Gambling -->
+
+    <div class="textbox hidden" id="gambling">
+      <span>
+        After a few hours into the forest you met a wandering trader.<br />
+        "Hello fine sir, I can't offer you my goods, I sold them all in the last
+        town,<br />
+        but what about a little gamble?", the man spoke.<br />
+        "Play with half your gold, and if you win the coinflip, you will gain
+        double the amount."<br />
+      </span>
+      <div>
+        <button class="acceptGamble textbox-btn">Let's gamble</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="gamblingLost">
+      <span>
+        Skillfully the trader snapped a coin in the air.<br />
+        You watched the coin with excitement, as it was flying through the
+        air.<br />
+        The coin landed back in the hands of the trader and...<br /><br />
+        You lost!<br /><br />
+        You knew you shouldn't be this greedy, but now it's too late.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="gamblingWon">
+      <span>
+        Skillfully the trader snapped a coin in the air.<br />
+        You watched the coin with excitement, as it was flying through the
+        air.<br />
+        The coin landed back in the hands of the trader and...<br /><br />
+        You won!<br /><br />
+        You knew it was risky, but fortunately luck was on your side, this time.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- die gambling -->
+    <div class="textbox hidden" id="dieGambling">
+      <span>
+        Deep in the woods, you encountered a hooded stranger by a crumbling
+        shrine.<br />
+        "I offer no goods," he said, revealing a faintly glowing relic, "but a
+        game of chance."<br />
+        "Wager 10 of your gold. Roll a six on this die and the relic is
+        yours."<br />
+        Do you want to test your luck?<br />
+      </span>
+      <div>
+        <button class="textbox-btn rollTheDie">Try it</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="rollTheDieLost">
+      <span>
+        You took the die, shook it for a few seconds in your hands, <br />
+        threw it on the gorund and watched it roll around until it stopped.<br /><br />
+        You lost!<br />
+        But do you want to try again?<br />
+      </span>
+      <div>
+        <button class="textbox-btn rollTheDie">Try again</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="rollTheDieWon">
+      <span>
+        You took the die, shook it for a few seconds in your hands, <br />
+        threw it on the gorund and watched it roll around until it stopped.<br /><br />
+        You won!<br />
+        Now you can claim your prize.<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="gamblingDieWon">Take the relic</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- rest -->
+
+    <div class="textbox hidden" id="rest">
+      <span>
+        Exhausted from the journey through the forest you sat down on a lonely
+        stump surrounded by giant trees.<br />
+        It was peacefull with a few sumbeams managing their way through dense
+        canopy.<br />
+        You decide to take a little nap and rest for a while.<br /><br />
+        Well rested you get on your way again.
+      </span>
+      <div>
+        <button class="textbox-btn" id="leaveRest">Leave</button>
+      </div>
+    </div>
+
+    <!-- upgrade Weapon -->
+
+    <div class="textbox hidden" id="upgradeWeapon">
+      <span>
+        As you were wandering through the forest, you saw a young lady beeing
+        harassed by some outlaws.<br />
+        Ready for battle, you approach the men, but at the sight of your
+        combat-ready stance, they flee.<br />
+        "You came at the right moment", the woman said,<br />
+        "but I'm not an ordinary human, I'm an elf and can make one of your
+        weapons stronger."<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="current-deck-upgrade">
+          Upgrade Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- ambush Gold -->
+
+    <div class="textbox hidden" id="ambushGold">
+      <span>
+        As you walk through the quiet forest, the peaceful atmosphere suddenly
+        shifts. A sharp pain strikes the back of your head, and everything goes
+        black.<br /><br />
+
+        You wake up moments later, your head pounding. The forest is still and
+        silent, but something feels wrong. As you gather your bearings, you
+        notice your pouch is lighter, your gold is gone!<br /><br />
+
+        But then, as your fingers brush the folds of your tunic, you feel
+        something — your hidden pocket. Reaching inside, you find a remaining
+        stash of gold, just enough to keep you going. It seems the thieves
+        missed this one small detail.
+      </span>
+      <div>
+        <button class="textbox-btn" id="ambushGold-leave">Leave</button>
+      </div>
+    </div>
+
+    <!-- hurt Ankle -->
+
+    <div class="textbox hidden" id="hurtAnkle">
+      <span>
+        You were moving swiftly through the rugged terrain of the forest when
+        suddenly,<br />
+        your foot caught on an unseen root. The world tilted as you stumbled
+        forward, your body crashing against the ground.<br />
+        A sharp pain shot through your ankle as you tried to stand up, the
+        weight of your steps causing more discomfort.<br /><br />
+        You grit your teeth, the pain radiating from your foot, but you gather
+        your strengh and push through.<br />
+        Still, you know you'll have to take it easy for a while.
+      </span>
+      <div>
+        <button class="textbox-btn" id="hurtAnkle-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- duplicate Weapon -->
+
+    <div class="textbox hidden" id="duplicateWeapon">
+      <span>
+        As you walk through the dense fog, the air around you shimmers with an
+        unnatural glow.<br />
+        A faint whisper calls your name, drawing you toward a figure cloaked in
+        silver mist. Its form shifts, never quite solid, never quite real.<br />
+        The creature tilts its head, eyes gleaming with ancient wisdom, and
+        gestures toward your weapons. Without a word, it reaches out, its
+        ethereal fingers hovering over them, waiting.<br />
+        A strange realization washes over you — you must choose.<br /><br />
+        Which of your weapons will be reflected in the mist?
+      </span>
+      <div>
+        <button class="textbox-btn" id="duplicateWeapon-btn">
+          Choose Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="duplicateWeapon2">
+      <span>
+        The air ripples, and before your eyes, an exact copy of your chosen
+        weapon materializes in your hands.<br />
+        You blink, and the figure is gone — vanished into the mist as if it had
+        never been there.<br /><br />
+        But the weight of the extra weapon in your grasp is proof that it was.
+      </span>
+      <button class="textbox-btn leave-btn">Leave</button>
+    </div>
+
+    <!-- lightning -->
+
+    <div class="textbox hidden" id="lightning">
+      <span>
+        The rain begins to fall, cold and relentless. Thunder rumbles in the
+        distance as you stand in the middle of a clearing, exposed beneath the
+        open sky.<br />
+        Lightning flashes — brief, blinding. In that instant, you see it:<br />
+        a lone tree, its branches trembling in the wind. The storm roars
+        overhead, the next strike drawing closer.<br />
+        You have a choice.<br />
+        Stay in the open, defenseless against the storm, or run to the tree —
+        risking that the next bolt may find you.
+      </span>
+      <div>
+        <button class="textbox-btn" id="takeLightning">Seek shelter</button>
+        <button class="textbox-btn leave-btn">Keep going</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="takeLightning2">
+      <span>
+        You reach the tree just as the storm roars. Then — A blinding flash. A
+        deafening crack splits the air, and a force hurls you into darkness.<br />
+        When you wake, the storm has passed. The tree is a smoldering ruin. Your
+        weapons are gone — vanished without a trace.<br />
+        But something remains.<br />
+        A strange warmth hums in your hands, flickers of light dancing between
+        your fingers. Something has changed.
+      </span>
+      <button class="textbox-btn leave-btn">Leave</button>
+    </div>
+
+    <!-- golden Statue -->
+
+    <div class="textbox hidden" id="goldenStatue">
+      <span>
+        As you move through the cave, a faint shimmer flickers between the
+        rocks.<br />
+        Pushing further towards the light, you find a golden statue, its surface
+        worn and ancient.<br />
+        You reach for it, but it's far too heavy to lift.<br />
+        A thought crosses your mind. You could break the statue, shattering gold
+        from its form — but the act feels... <br />wrong.<br />
+        The weight of it settles in your chest. This gold will come at a cost.
+      </span>
+      <div>
+        <button
+          class="textbox-btn"
+          id="smashStatue"
+          onclick="smashStatueAction();"
+        >
+          Break it
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- succubus -->
+
+    <div class="textbox hidden" id="succubus">
+      <span>
+        Soft laughter drifts through the air, smooth as silk. A woman stands
+        before you, radiant, her eyes alight with knowing mischief.<br />
+        She steps closer, her touch featherlight.<br />“Stay a while,” <br />she
+        murmurs, lips curling into a promise. The air thickens, heavy with the
+        scent of something sweet, something dangerous.<br />
+        A warning prickles at the edge of your mind — this beauty is not what
+        she seems.<br /><br />
+        Will you surrender to her embrace or pull away before it's too late?
+      </span>
+      <div>
+        <button class="textbox-btn" id="succubus1">Give in</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="succubus2">
+      <span>
+        Her fingers trace your skin, igniting a warmth that clouds your
+        thoughts.<br />
+        The world narrows to the curve of her smile, the whisper of her breath
+        against your ear. A sweet lethargy settles in, urging you to stay, to
+        fall deeper.<br />
+        Then — pain. <br />A sharp, searing pull, like your very essence is
+        being drained. You gasp, blinking through the haze, and see her now for
+        what she truly is.<br />
+        Her beauty twists, eyes darkening, fangs glinting in the dim light.<br />A
+        succubus. <br />She grins, no longer inviting but predatory. Clawed
+        hands reach for you again, but this time, you're ready. <br />The fight
+        begins.
+      </span>
+      <button class="textbox-btn" id="succubusFight">Fight</button>
+    </div>
+
+    <!-- stoned -->
+
+    <div class="textbox hidden" id="stoned">
+      <span>
+        The forest is quiet, the only sound your footsteps on the mossy
+        ground.<br />
+        Suddenly, a stone whizzes past your ear, followed by another. You spot
+        small, green figures darting between the trees — gremlins.<br />
+        They cackle as stones rain down around you. One lands at your feet,
+        inviting you to catch it. Another narrowly misses.<br />
+        Do you grab the stones to add to your deck or run, taking a hit to your
+        health as you flee? The choice is yours.
+      </span>
+      <div>
+        <button class="textbox-btn" id="getStoned">Catch some</button>
+        <button class="textbox-btn" id="leaveStoned">Flee</button>
+      </div>
+    </div>
+
+    <!-- poison Weapon -->
+
+    <div class="textbox hidden" id="poisonWeapon">
+      <span>
+        The air thickens as you enter the moor, fog clinging to your boots.<br />
+        A foul-smelling pool gurgles nearby, its surface swirling with sickly
+        green hues. You watch a branch dip into it — it sizzles, hissing as rot
+        spreads along the bark.<br />
+        Your fingers tighten around your weapon.<br />
+        What if you dipped it too? Would it carry the moor’s poison… or crumble
+        under its curse?<br />
+        Do you risk corrupting your weapon for extra power, or leave it clean
+        and safe?
+      </span>
+      <div>
+        <button class="textbox-btn" id="tryPoison">Choose a weapon</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="poisonSuccess">
+      <span>
+        You lower your weapon into the bubbling pool.<br />
+        At first, nothing — then the metal hisses, dark veins crawling across
+        its surface. A faint green glow pulses from the blade, and the air
+        around it thickens.<br />
+        You lift it out, heavier now, humming with toxic energy.<br />
+        Whatever you strike next… will feel the moor’s bite.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="poisonFail">
+      <span>
+        You dip your weapon into the moor, watching it vanish beneath the
+        surface.<br />
+        A moment passes… then a violent hiss. You yank it back, but the blade is
+        already crumbling, eaten away by the poison.<br />
+        Only a warped, brittle handle remains.<br />
+        The moor doesn’t bless — it devours.
+      </span>
+      <div>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- lower energy cost -->
+
+    <div class="textbox hidden" id="lowerEnergyCost">
+      <span>
+        Deep inside the caves, you find an ancient forge, its blue flames
+        crackling with magic. A cloaked figure stands before it, speaking in a
+        soft, commanding voice:<br />
+        "I am the Forgekeeper. I can reduce the energy cost of your weapon, but
+        it will drain a portion of your maximum life force. Will you pay the
+        price?"<br />
+        You glance at your weapon, considering the trade.<br />
+        Do you accept the Forgekeeper’s offer and sacrifice some health for
+        reduced energy cost? Or do you leave your weapon unchanged?
+      </span>
+      <div>
+        <button class="textbox-btn" id="acceptLowerCost">
+          Choose a Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- weapon lifesteal -->
+
+    <div class="textbox hidden" id="weaponLifesteal">
+      <span>
+        Deep within a forgotten cave, you stumble upon a crimson-lit altar
+        pulsing with ancient power.<br />
+        Carvings on the stone whisper promises of strength drawn from blood. A
+        disembodied voice echoes:<br />
+        "Offer your blood and place your weapon upon the altar. Let it drink,
+        and it shall feed you in return."<br />
+        You feel a strange pull.<br />
+        Will you offer some blood so a weapon will be blessed with lifesteal?
+      </span>
+      <div>
+        <button class="textbox-btn" id="acceptLifesteal">
+          Choose a Weapon
+        </button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- full heal -->
+
+    <div class="textbox hidden" id="fullHeal">
+      <span>
+        As you stumble forward through your journey, barely able to stand, a
+        soft glow catches your eye. The light flickers and dances around you
+        until a small, radiant fairy appears before you.<br />
+        "Ah, I see you're in quite a state, traveler," she says, her eyes filled
+        with sympathy. "I can heal you completely, return your strength to its
+        fullest."<br />
+        The fairy's wings flutter as she hovers closer, her tiny hands glowing
+        with magical energy. "In exchange for healing, your maximum health will
+        be slightly reduced.<br />
+        A small price for a second chance, don't you think?"
+      </span>
+      <div>
+        <button class="textbox-btn" id="fairyHeal">Heal full</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- bloodforge -->
+
+    <div class="textbox hidden" id="bloodforge">
+      <span>
+        Deep in the forest, you stumble upon a clearing where an ancient
+        pedestal holds a dark, blood-red shard.<br />
+        The air around it hums with eerie energy, and as you reach out, a sharp
+        pain grips your chest.<br />
+        A voice whispers in your mind: "Blood for power, life for might."<br />
+        The relic pulses, offering immense strength at the cost of your own
+        health.
+      </span>
+      <div>
+        <button class="textbox-btn" id="takeBloodforge">Take relic</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- Shop scounting -->
+
+    <div class="textbox hidden" id="shopScouting">
+      <span>
+        As you were wandering, you met another man carrying a huge backpack.<br />
+        "Hello, have me met before? I'm trying to find some good areas to open a
+        shop. In the meantime I can offer you a free sample!"<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="sampleUpgrade">Upgrade weapon</button>
+        <button class="textbox-btn" id="sampleRemove">Remove weapon</button>
+      </div>
+    </div>
+
+    <!-- infernal Ingot -->
+
+    <div class="textbox hidden" id="infernalIngot">
+      <span>
+        You barely notice an elogated figure lurking<br />
+        in the shadows... <br />
+        <br />
+        You hear an oddly alluring voice in your head,<br />
+        "Do you crave power, brave knight?<br /><br />
+        Would you like to make a deal?"<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="takeInfernalIngot">
+          Accept the offer
+        </button>
+        <button class="textbox-btn leave-btn">Run away</button>
+      </div>
+    </div>
+
+    <!-- contract dave -->
+
+    <div class="textbox hidden" id="dave">
+      <span>
+        You see a lonely man with a sad face sitting next to the track on a
+        rock.<br />
+        "Nobody wants to talk to me. I'm an outcast, because my mother is a
+        whore. My name is Dave, by the way.<br />
+        And now I can't even afford food to live.<br />
+        Can you help me out? I promise, I will pay you back!"
+      </span>
+      <div>
+        <button class="textbox-btn" id="helpDave">Give 50 Gold</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <!-- dave reunion -->
+
+    <div class="textbox hidden" id="reunionDave">
+      <span>
+        Suddenly, you hear a pickaxe working through stone.<br />
+        You follow the sound and cannot believe your eyes.<br />
+        It's Dave!<br />
+        Now he notices you. "Oh, hey! After our last encounter,<br />
+        I made a fortune mining rare ores in this cave.<br />
+        Thank's for helping me out, now I can pay you back."<br />
+      </span>
+      <div>
+        <button class="textbox-btn" id="takeReward">Take your reward</button>
+      </div>
+    </div>
+
+    <!-- upgrade and curse -->
+
+    <div class="textbox hidden" id="upgradeAll">
+      <span>
+        As you tread deeper into the cave, a mystic light swirls around you,<br />
+        guiding you to a strange glowing rock formation.<br />
+        Voices - whispers in a language just on the edge of comprehension.<br /><br />
+        "We can make all your weapons stronger...," the stones hum.<br />
+        "But you will be cursed for the rest of your journey."
+        <div>
+          <button class="textbox-btn" id="upgradeAndCurse">Upgrade all</button>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- heal or max HP -->
+
+    <div class="textbox hidden" id="healOrHp">
+      <span>
+        Futher inside the cave you come across a pink glowing stalactite<br />
+        and a purple glowing stalagmite.<br />
+        You feel like touching one of these mysterious stones, knowing deep
+        inside, <br />
+        that it will be helpful.<br />
+
+        <div>
+          <button class="textbox-btn" id="stalactite">Touch stalactite</button>
+          <button class="textbox-btn" id="stalagmite">Touch stalagmite</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- touch stalactite -->
+
+    <div class="textbox hidden" id="TouchedStalactite">
+      <span>
+        As you touch the stalactite, the whole room is filled<br />
+        with a pleasant pink glow and you feel well rested.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- touch stalagmite -->
+
+    <div class="textbox hidden" id="TouchedStalagmite">
+      <span>
+        As you touch the stalagmite, the whole room is filled<br />
+        with a warm purple glow and you feel your life force increasing.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- golem encounter -->
+
+    <div class="textbox hidden" id="golemEncounter">
+      <span>
+        After a while in the cave, you encounter a golem that<br />
+        seems kind of friendly.<br />
+        But that could change very soon, as the golem offered you some
+        stones.<br />
+        Do you take the stones and keep going, or do you risk denying the
+        friendship?<br />
+        <div>
+          <button class="textbox-btn" id="golemStones">Take the stones</button>
+          <button class="textbox-btn" id="noGolemStones">
+            Don't take them
+          </button>
+        </div>
+      </span>
+    </div>
+
+    <!-- ancient writing -->
+
+    <div class="textbox hidden" id="ancientWriting">
+      <span>
+        Looking at the walls of the old cave, you notice an ancient writing.<br />
+        As you try to wrap your head around what the puzzling symbols and glyphs
+        could mean,<br />
+        the writing begins to glow.<br />
+        Is the answer improving your melee weapons or thinning your deck?<br />
+        <div>
+          <button class="textbox-btn" id="meleeImprove">Improve melee</button>
+          <button class="textbox-btn" id="thinning">Thin to win</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- magic wand -->
+
+    <div class="textbox hidden" id="magicWand">
+      <span>
+        Deep inside the cave, you come across an ancient, sacred altar.<br />
+        On there, you see a mystical, old weapon.<br />
+        A magic wand that needs to be mastered to be effective in battle.<br />
+        <div>
+          <button class="textbox-btn" id="takeMagicWand">Take the wand</button>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- falling stones -->
+
+    <div class="textbox hidden" id="fallingStones">
+      <span>
+        You take a small rest in the cave, just as the earth begins to shake.<br />
+        An earthquake!<br />
+        You see stones falling everywhere from the ceiling, but there is no
+        clean way out.<br />
+        Do you dodge left, taking a small hit, that can not be healed,<br />
+        or do you dodge right, taking a bigger hit, that can be healed?<br />
+        <div>
+          <button class="textbox-btn" id="dodgeLeft">Dodge left</button>
+          <button class="textbox-btn" id="dodgeRight">Dodge right</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- offer Weapon -->
+
+    <div class="textbox hidden" id="offerWeapon">
+      <span>
+        In the dark, you see a glowing light and follow it to an altar from
+        another time.<br />
+        It seems you can lay down a weapon to sacrifice it, but for what
+        purpose?<br />
+        Then you realize, there are ancient symbols above:<br /><br />
+        <span id="elvish"
+          >Lay down your offer and get a reward depending on the quality</span
+        >
+      </span>
+      <div>
+        <button class="textbox-btn" id="offerSomething">Offer a weapon</button>
+        <button class="textbox-btn leave-btn">Leave</button>
+      </div>
+    </div>
+
+    <div class="textbox hidden" id="offerLvl1">
+      <span>
+        You take out one of your weapons and place it on the old structure.<br />
+        After you take a step back, the weapon vanishes without a sound.<br />
+        Nothing happens.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <div class="textbox hidden" id="offerLvl2">
+      <span>
+        You take out one of your weapons and place it on the old structure.<br />
+        After you take a step back, a flickering light appears and the weapon
+        vanishes.<br />
+        But something else happened, you recovered some of your strength.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <div class="textbox hidden" id="offerLvl3">
+      <span>
+        You take out one of your weapons and place it on the old structure.<br />
+        After you take a step back, a beam of light appears, so bright you have
+        to close your eyes.<br />
+        Then you open them again and the weapon is gone.<br />
+        Now you feel stronger than before, ready to take on the next enemy.<br />
+        <div>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+    <!-- zen relic -->
+
+    <div class="textbox hidden" id="zenRelic">
+      <span>
+        A sudden calm washes over you, and you are at peace with yourself.<br />
+        Warm light reaches you from candelabra, surrounding a little shrine.<br />
+        Without a care you step closer to see a scroll, promoting a life without
+        belongings.<br />
+        It seems like the right thing to do, but do you really want to donate
+        all your gold?<br />
+        <div>
+          <button class="textbox-btn" id="donateAll">Donate all</button>
+          <button class="textbox-btn leave-btn">Leave</button>
+        </div>
+      </span>
+    </div>
+
+     <button
+      class="orange-btn absolute-button"
+      onclick="openMap()"
+      style="
+        position: absolute;
+        bottom: 2vh;
+        left: 93%;
+        z-index: 1001;
+        width: 6.5vw;
+        height: 5.5vh;
+      "
+      ;
+    >
+      View Map
+    </button>
+    <div
+      id="mapOverlay">
+      <iframe
+        id="mapFrame"
+        src="map.html"
+        style="
+          width: 80%;
+          height: 80%;
+          margin: 5% auto;
+          display: block;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
+          z-index: 1501;
+        "
+      >
+      </iframe>
+      <button
+        class="orange-btn absolute-button"
+        onclick="closeMap()"
+        style="
+          position: absolute;
+          bottom: 2vh;
+          left: 93%;
+          z-index: 1001;
+          width: 6.5vw;
+          height: 5.5vh;
+        "
+      >
+        Close Map
+      </button>
+
+    <script>
+      window.addEventListener("DOMContentLoaded", () => {
+        applyActVisuals();
+      });
+    </script>
+
+    <script src="event.js"></script>
+  </body>
+</html>

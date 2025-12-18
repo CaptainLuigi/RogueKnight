@@ -1,0 +1,743 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+
+}
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+    image-rendering: pixelated;
+    z-index: 1;
+}
+
+.player-wrapper {
+    position: absolute;
+    left: 12vw;
+    bottom: 25vh;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.sprite-player {
+    width: 200px;
+    min-height: 160px;
+    height: 160px;
+    background-image: url(Assets/Knight_1/run.png);
+    background-repeat: no-repeat;
+    position: relative;
+    left: 2vw;
+    z-index: 2;
+    image-rendering: pixelated;
+    transform-origin: top left;
+    overflow: visible;
+    background-position-y: bottom;
+}
+
+.sprite-enemie {
+    --base-scale: 1;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    /* padding-bottom: 1vh; */
+    
+}
+
+@keyframes growShrink {
+    0% { transform: scale(var(--base-scale)); }
+    50% { transform: scale(calc(var(--base-scale) * 1.2)); }
+    100% { transform: scale(var(--base-scale)); }
+}
+
+.grow-shrink {
+    animation: growShrink 0.5s ease-in-out;
+}
+
+.sprite-enemie.death-smoke {
+    gap: 0;
+}
+
+
+.sprite-enemie.death-smoke .health-bar-container-enemy{
+visibility: hidden;
+height: 0;
+
+}
+
+.sprite-enemie.tempTargets,
+.biggestEnemy.tempTargets {
+    /* border-top: 0.5vw solid #ff08;
+    padding-top: 0;
+    border-radius: 0.25vw; */
+    border-top: none;
+    padding-top: 0;
+    box-shadow: 0 0.5vw 0 0 #ff08;
+}
+
+.sprite-enemie img{
+    width: 5vw;
+    height: 5vw;
+    object-fit: contain;
+    image-rendering: pixelated;
+    z-index: 10;
+    margin-top: 1vh;
+}
+
+
+
+/* .biggestEnemy.tempTargets {
+    border-top: 0.5vw solid #ff08;
+    padding-top: 0px;
+    border-radius: 0.25vw;
+} */
+
+.biggestEnemy .health-bar-container-enemy {
+    width: 16vw;
+}
+
+.biggestEnemy img {
+    width: 16vw;
+    height: auto;
+}
+
+.biggerEnemy img {
+    width: 10.5vw;
+    height: auto;
+}
+
+.bigEnemy img {
+    width: 7.5vw;
+    height: auto;
+}
+
+#health-bar-container-player {
+    width: 10.5vw;
+}
+
+.health-text {
+    color: white;
+    font-size: 1rem;
+    font-weight: lighter;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.health-bar-container-enemy, #health-bar-container-player {
+    height: 2vh;
+    background-color: #333;
+    border: 0.15vw solid #000;
+    border-radius: 0.25vw;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;  
+}
+
+.health-bar-container-enemy {
+    width: 8vw;
+    margin-top: 1vh; 
+}
+
+
+#health-bar, .health-bar-enemy {
+    height: 100%; /* The bar's height should fill the container */
+    background-color: #4caf50; /* Initial green color for the bar */
+    width: 100%; /* Default to full width */
+    transition: width 0.3s ease; /* Smooth transition for changes */
+    position: absolute;
+    left: 0;
+    z-index: -1 !important;
+}
+
+.health-bar-container-enemy span, #health-bar span {
+    color: white;
+    font-size: 1rem;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.death-smoke img{
+    animation: deathAnimation 1s ease-in-out forwards;
+}
+
+@keyframes deathAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(4);
+    }
+}
+
+.death-smoke-shrink {
+    animation: shrinkSmoke 1.5s ease-in-out forwards;
+}
+
+@keyframes shrinkSmoke {
+    0% {
+        width: calc(100% + 1vw);
+        margin-left: 0px;
+    }
+    66.66% {
+        width: calc(100% + 1vw);
+        margin-left: 0px;
+    }
+    100% {
+        margin-left: -0.75vw;
+        width: 0;
+    }
+}
+
+#weapons-container {
+    position: fixed; /* Fix position relative to the viewport */
+    bottom: 2vh; /* Distance from the bottom of the screen */
+    left: 50%; /* Align horizontally to the middle */
+    transform: translateX(-50%); /* Offset by half its width to center it */
+    display: flex;
+    gap: 0.75vw;
+    z-index: 999; /* Ensure it appears above other elements */
+    align-items: center;
+    flex-direction: row; /* Align items horizontally */
+    width: auto;
+    height: auto; /* Ensure the container's height is properly adjusted */
+    overflow: visible;
+    justify-content: center;
+}
+
+.weapon {
+    position: static; /* removes the positioning context */
+    image-rendering: pixelated;
+    cursor: pointer;
+}
+
+.weapon:hover {
+    z-index: 10;
+}
+
+.tooltip {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#weapon-deck-container .tooltip {
+    bottom: 110%;
+} 
+
+#upgrade-weapon-options .tooltip {
+    top: -8vh;
+}
+
+#weapon-purchase-options .tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 1vh;
+    pointer-events: none;
+}
+
+
+#weapons-container
+ {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.enemy-intent-tooltip {
+    position: absolute;
+    width: 15vw;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.poison-tooltip {
+    position: absolute;
+    width: 25vw;
+    text-align: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.strength-tooltip {
+    position: absolute;
+    width: 25vw;
+    text-align: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.weak-tooltip {
+    position: absolute;
+    width: 25vw;
+    text-align: center;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.block-tooltip {
+    position: absolute;
+    font-weight: normal;
+    width: 15vw;
+    text-align: center;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.buff-tooltip {
+    position: absolute;
+    font-weight: normal;
+    width: 15vw;
+    text-align: center;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.enemy-poison-tooltip {
+    position: absolute;
+    font-weight: normal;
+    width: 15vw;
+    text-align: center;
+    bottom: 140%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.energy-tooltip {
+    position: absolute;
+    font-weight: normal;
+    width: 15vw;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25vh;
+}
+
+#weapons-container .tooltip{
+    bottom: 450%;
+}
+
+.weapon-option .tooltip {
+    bottom: unset;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    right: -5vw;
+}
+
+#circle-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
+    margin-bottom: 1vh;
+}
+
+#energy-circle {
+    width: 2vw;  /* Small circle diameter */
+    height: 2vw; /* Small circle diameter */
+    background-color: #4caf50; /* Green color for the energy */
+    border-radius: 50%;  /* Make it circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;  /* Text color inside the circle */
+    font-size: 1.5rem;  /* Size of the text */
+    font-weight: bold;  /* Make the number bold */
+    border: 0.15vw solid black;
+    box-sizing: border-box;
+}
+
+#energy-text {
+    position: absolute;
+    font-size: 1.5rem;
+    color: black; 
+    font-weight: bold;
+}
+
+#block-container {
+    /* position: absolute; */
+    top: 44vh;
+    left: 25vw;
+    width: 2vw;
+    height: 2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+}
+
+#block-circle {
+    width: 2vw;  /* Small circle diameter */
+    height: 2vw; /* Small circle diameter */
+    background-color: #1834b3; /* Green color for the energy */
+    border-radius: 50%;  /* Make it circular */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;  /* Text color inside the circle */
+    font-size: 1.5rem;  /* Size of the text */
+    font-weight: bold;  /* Make the number bold */
+    border: 0.15vw solid black;
+    box-sizing: border-box;
+}
+
+#block-text {
+    position: absolute;
+    font-size: 1.5rem;
+    color: white; /* Color of the energy text */
+    font-weight: bold;
+}
+
+#enemies {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    width: 10.5vw;
+    height: 10.5vw;
+    position: absolute;
+    bottom: 25vh;
+    left: 40vw;
+    z-index: 3;
+    gap: 1vw;
+    transition: transform 1s ease-out;
+    image-rendering: pixelated;
+}
+
+#end-turn-btn {
+    position: absolute;
+    width: 6vw;
+    height: 5vh;
+    bottom: 2vh;
+    left: 85vw;
+    z-index: 1000;
+}
+
+.highlight {
+    border: 0.15vw solid #ffcc00;
+    background-color: rgba(255, 204, 0, 0.3);
+}
+
+#playerGold {
+    position: absolute;
+    top: 2vh;
+    left: 90vw;
+    color: gold;
+    z-index: 900;
+    font-size: 2.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#weapon-deck-container .weapon.used .weapon-image{
+    background-color: #d3d3d3;
+}
+
+#post-battle-screen {
+    position: fixed;
+    width: 60vw;
+    height: 80vh;
+    top: 10vh;
+    left: 65vw;
+    transform: translateX(-50%);
+    background-color: burlywood;
+    color: black;
+    text-align: center;
+    border-radius: 0.5vw;
+    border: 0.15vw solid black;
+    z-index: 1500;
+}
+
+.weapon-option {
+    margin: 0.5vw;
+    padding: 0.5vw;
+    background-color: darkgoldenrod;
+    border: 0.15vw solid black;
+    border-radius: 0.5vw;
+    position: relative;
+    cursor: pointer;
+}
+
+#weapon-purchase-options {
+    position: relative; 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5vw;
+    margin-bottom: 2vh;
+    min-height: 20vh;
+    max-height: 25vh;
+}
+
+.weapon-option img {
+    border: none;
+    height: 17vh;
+    width: 17vh;
+}
+
+#upgrade-weapon-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#upgrade-weapon-options {
+    display: none;
+    position: absolute;
+    top: 10vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: auto;
+    column-gap: 1vw;
+    background-color: peru;
+    border: 0.15vw solid black;
+    border-radius: 0.25vw;
+    z-index: 999;
+
+    max-height: 25vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+#headline-post-battle {
+    font-size: 4rem;
+    margin: 3vh;
+}
+
+#post-battle-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3vh;
+    margin-top: 1vh;
+}
+
+#post-battle-buttons button {
+    width: 15vw;
+    height: 8vh;
+    font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#upgrade-weapon-options .weapon-image {
+    background-color: #f0e68c;
+    height: 3vw;
+    width: 3vw;
+    margin-top: 0.5vh;
+}
+
+button:disabled {
+    background-color: darkgrey !important;
+}
+
+.enemy-intent {
+    display: block;
+    visibility: visible;
+    font-size: 1.5rem;
+    min-width: 1.5vw;
+    min-height: 1.5vw;
+    color: white;
+    z-index: 100;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    height: 5vh;
+}
+
+.enemy-intent img {
+    max-width: 1.5vw;
+    max-height: 1.5vw;
+    image-rendering: pixelated;
+}
+
+.enemy-block {
+    width: 2vw;  /* Small circle diameter */
+    height: 2vw; /* Small circle diameter */
+    background-color: #1834b3; /* Green color for the energy */
+    border-radius: 50%;  /* Make it circular */
+    display: flex;
+    left: 10%;
+    align-items: center;
+    color: white;  /* Text color inside the circle */
+    font-size: 1.25rem;  /* Size of the text */
+    font-weight: bold;  /* Make the number bold */
+    border: 0.15vw solid black;
+    box-sizing: border-box;
+    justify-content: center;
+    z-index: 1;
+}
+
+.enemy-buff {
+    position: relative;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+}
+
+.enemy-buff img {
+    max-width: 1.25vw;
+    max-height: 1.25vw;
+    image-rendering: pixelated;
+}
+
+#status-container {
+    display: flex;
+    gap: 1vw;
+    justify-content: center;
+    align-items: center;
+    width: 20vw;
+    color: white;
+    font-size: 1.5rem;
+    min-width: 1.5vw;
+    min-height: 1.5vw;
+    padding: 0.25vw 0.5vw;
+    z-index: 1000;
+    height: 5vh;
+    margin-top: 1vh;
+}
+
+#status-container img {
+    max-width: 1.5vw;
+    max-height: 1.5vw;
+}
+
+#poison-status, #strength-status, #weak-status {
+  position: static;
+  left: auto;
+  bottom: auto;
+  padding: 0;
+}
+
+#status-container:has(#poison-status:not(.hidden):only-child),
+#status-container:has(#strength-status:not(.hidden):only-child),
+#status-container:has(#weak-status:not(.hidden):only-child) {
+  justify-content: center;
+}
+
+.poison-status-enemy {
+    font-size: 1.25rem;
+    color: white;
+}
+
+.poison-status-enemy img {
+    max-width: 1.25vw;
+    max-height: 1.25vw;
+    image-rendering: pixelated;
+}
+
+.enemy-status-container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+#battle-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.overlay-content {
+    text-align: center;
+}
+
+#start-fight-btn {
+    font-size: 3rem;
+    padding: 0.5vw 0.5vw;
+    cursor: pointer;
+    font-family: 'Pirata_One';
+    border-radius: 0.5vw;
+    border: none;
+    background-color: #ff5722;
+    color: black;
+    border: 0.15vw solid black;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+#start-fight-btn:hover {
+    background-color: #e64a19;
+}
+
+#tutorial-intro-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.5vw;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25vw;
+}
+
+#tutorial-intro-overlay h2 {
+    font-size: 3rem;
+    text-align: center;
+}
+
+#tutorial-intro-overlay p {
+    text-align: center;
+}
+
+#tutorial-intro-overlay p,
+#tutorial-intro-overlay ul {
+    font-size: 1.75rem;
+}
+
+#continue-fight {
+    margin: 2rem auto 0 auto;
+}
+

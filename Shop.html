@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop</title>
+    <link rel="stylesheet" href="styleShop.css" />
+    <link rel="stylesheet" href="styleDeckDisplay.css" />
+
+    <script src="baseClasses.js"></script>
+    <script src="relics.js"></script>
+    <script src="player.js"></script>
+    <script src="weapons.js"></script>
+    <script src="saveGame.js"></script>
+    <script src="utility.js"></script>
+    <script src="music.js"></script>
+    <script src="achievements.js"></script>
+  </head>
+  <body>
+    <div>
+      <img
+        id="ShopBackground"
+        src="Assets/BrickWall.png"
+        alt="ShopBackground"
+      />
+    </div>
+    <div>
+      <img
+        id="WoodBackground"
+        src="Assets/wood-background.jpg"
+        alt="WoodBackground"
+      />
+    </div>
+
+    <div id="pause-menu-button" title="Menu">☰</div>
+
+    <div id="pause-menu" class="hidden">
+      <button onclick="saveAndExit()">Save & Back to Menu</button>
+      <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <div class="volume-info">Music Volume</div>
+      <input
+        type="range"
+        id="music-volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <div class="volume-info">SFX Volume</div>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.5"
+      />
+      <button onclick="closePauseMenu()">Close</button>
+    </div>
+
+    <img id="WoodFloor" src="Assets/wood-background.jpg" alt="WoodBackground" />
+
+    <div id="playerGold">Gold:</div>
+
+    <div id="turn-message" style="display: none"></div>
+
+    <button id="current-deck" class="orange-btn">Your Deck</button>
+    <div id="weapon-deck-screen" class="hidden">
+      <div id="weapon-deck-container">
+        <div id="weapon-list"></div>
+        <button id="close-deck-btn" class="orange-btn">Close</button>
+      </div>
+    </div>
+
+    <div id="equipped-relic-container"></div>
+
+    <div class="container-order">
+      <div class="Shop-weapon-container">
+        <div class="Shop-weapon"></div>
+        <div class="Shop-weapon"></div>
+        <div class="Shop-weapon"></div>
+        <div class="Shop-weapon"></div>
+        <div class="Shop-weapon"></div>
+      </div>
+      <div class="Shop-relic-container">
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+        <button class="Shop-relic"></button>
+      </div>
+    </div>
+    <div id="speech-bubble">
+      <span id="weapon-info"></span>
+    </div>
+    <div>
+      <button id="Shop-removal">Remove Weapon 20G</button>
+    </div>
+
+    <div id="Shopkeeper"></div>
+    <button id="close-post-battle">Leave Shop</button>
+
+    <button
+      class="orange-btn absolute-button"
+      onclick="openMap()"
+      style="
+        position: fixed;
+        bottom: 2vh;
+        left: 25%;
+        z-index: 1001;
+        width: 7vw;
+        height: 5.5vh;
+      "
+    >
+      View Map
+    </button>
+    <div id="mapOverlay">
+      <iframe
+        id="mapFrame"
+        src="map.html"
+        style="
+          width: 80%;
+          height: 80%;
+          margin: 5% auto;
+          display: block;
+          border: 0.2vw solid black;
+          border-radius: 0.5vw;
+          z-index: 3501;
+        "
+      >
+      </iframe>
+      <button
+        class="orange-btn absolute-button"
+        onclick="closeMap()"
+        style="
+          position: fixed;
+          bottom: 2vh;
+          left: 25%;
+          z-index: 1001;
+          width: 7vw;
+          height: 5.5vh;
+        "
+      >
+        Close Map
+      </button>
+    </div>
+
+    <script src="Shop.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        displayEquippedRelics();
+      });
+    </script>
+  </body>
+</html>

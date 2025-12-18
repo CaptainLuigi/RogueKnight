@@ -1,0 +1,191 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Elvish';
+    src: url(Assets/tngan.ttf) format('truetype');
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+
+}
+#StartscreenBackground {
+    width: 100%;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+    z-index: 1;
+}
+
+.textbox {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 55vh;
+    width: 39.5vw;
+    background-color: black;
+    color: white;
+    padding: 1vw;
+    border-radius: 0.5vw;
+    z-index: 1500;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.textbox-btn {
+    font-family: 'Pirata_one';
+    width: 12vw;
+    height: 5.5vh;
+    font-size: 1.5rem;
+    padding: 0.5vw 1vw;
+    border: none;
+    background-color: antiquewhite;
+    cursor: pointer;
+    border-radius: 0.25vw;
+    margin-top: 3vh;
+}
+
+.hidden {
+    display: none;
+}
+
+.player-wrapper{
+    position: absolute;
+    left: 12vw;
+    bottom: 25vh;
+    z-index: 1000;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.sprite {
+    width: 200px;
+    min-height: 160px;
+    height: 160px;
+    background-image: url(Assets/Knight_1/run.png);
+    background-repeat: no-repeat;
+    position: relative;
+    left: 2vw;
+    z-index: 2;
+    image-rendering: pixelated;
+    transform-origin: top left;
+    overflow: visible;
+    background-position-y: bottom;
+}
+
+#playerGold {
+    position: absolute;
+    top: 2vh;
+    left: 90%;
+    color: gold;
+    z-index: 1100;
+    font-size: 2.5rem;
+}
+
+#health-bar-container-player {
+    width: 10.5vw;
+    height: 2vh;
+    background-color: #333;
+    border: 0.15vw solid #000;
+    border-radius: 0.25vw;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;  
+}
+
+.health-text {
+    color: white;
+    font-size: 1rem;
+    font-weight: lighter;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#health-bar span {
+    color: white;
+    font-size: 1rem;
+    font-weight: lighter;
+    text-align: center;
+}
+
+#health-bar {
+    height: 100%; /* The bar's height should fill the container */
+    background-color: #4caf50; /* Initial green color for the bar */
+    width: 100%; /* Default to full width */
+    transition: width 0.3s ease; /* Smooth transition for changes */
+    position: absolute;
+    left: 0;
+    z-index: -1 !important;
+}
+
+.tooltip {
+    font-family: 'Pirata_One';
+    top: -80%; /* Vertically center it */
+    left: 50%; /* Horizontally center it */
+    transform: translate(-50%, -50%); /* Ensure the tooltip is perfectly centered */
+    transition: opacity 0.3s ease; /* Smooth fade-in for tooltip */
+}
+
+#weapon-deck-screen[isupgrademode] .tooltip {
+    top: -120%;
+}
+
+.orange-btn {
+    width: 15.5vw;
+    height: 8vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body.upgrade-mode .weapon {
+    cursor: pointer;
+}
+
+button#randomWeapon1 .weapon img,
+button#randomWeapon2 .weapon img {
+    width: 5vw;
+    height: 5vw;
+    image-rendering: pixelated;
+    cursor: pointer;
+    padding: 0.5vw;
+    border: none;
+}
+
+button#randomWeapon1,
+button#randomWeapon2 {
+    background-color: antiquewhite;
+    border-radius: 0.25vw;
+    margin-top: 5.5vh;
+}
+
+#randomWeapon1 .weapon,
+#randomWeapon2 .weapon {
+  position: relative;
+}
+
+#randomWeapon1 .weapon .tooltip,
+#randomWeapon2 .weapon .tooltip {
+    position: absolute;
+    top: -150%;
+}
+
+#elvish {
+    font-family: 'Elvish';
+}

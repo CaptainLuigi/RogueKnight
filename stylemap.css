@@ -1,0 +1,179 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+}
+
+body {
+  display: grid;
+  grid-template-areas: "main";
+  height: fit-content;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body > * {
+  grid-area: main;
+}
+
+#StartscreenBackground {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    object-fit: cover;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+#Map {
+    width: 95%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    margin-left: 2.5%;
+    position: absolute;
+    z-index: 10; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#navigation-positioner {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 14vh 1fr 14vh;
+  grid-template-columns: 14vw 1fr 13vw;
+  grid-template-areas: 
+    "a a a"
+    "b map c"
+    "d d d";
+
+    gap: 1vh;
+    padding: 1vh;
+}
+
+/* @media (max-width: 1440px) {
+    #navigation-positioner {
+      grid-template-rows: 21% 1fr 20%;
+      grid-template-columns: 15% 1fr 12%;
+    }
+} */
+
+.navigation-container {
+  grid-area: map;
+  z-index: 15;
+  display: flex;
+  justify-content: space-around;
+}
+
+.navigation-container > div {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3vw;
+    height: 3vw;
+    background-color: transparent;
+    z-index: 15;
+    border: none;
+}
+
+.navigation-container .navigation img {
+  width: 3vw;
+  height: auto;
+}
+
+.navigation-container #bossfight img {
+  width: 5vw;
+  height: auto;
+  object-fit: contain;
+}
+
+.navigation-container .navigation img:hover{
+  width: 150%;
+  height: auto;
+}
+
+.navigation-container #bossfight img:hover {
+  width: 300%;
+  height: auto;
+
+}
+
+.navigation-container > div:nth-child(2n+1) {
+  justify-content: space-evenly;
+  width: 100%;
+  overflow: hidden;
+}
+
+.navigation :hover {
+    cursor: pointer;
+}
+
+.next {
+    height: 4vw;
+    width: 4vw;
+    background-color: green;
+    border-radius: 50%;
+}
+
+/* @media (max-width: 1440px) {
+    .next {
+      height: 70px;
+      width: 70px;
+    }
+} */
+
+.current-location {
+  height: 4vw;
+  width: 4vw;
+  background-color: darkorchid;
+  border-radius: 50%;
+}
+
+/* @media (max-width: 1440px) {
+  .current-location {
+    height: 70px;
+    width: 70px;
+  }
+} */
+
+#playerGold {
+  position: absolute;
+  top: 2vh;
+  left: 90%;
+  color: gold;
+  z-index: 1100;
+  font-size: 2.5rem;
+}
+
+.tooltip {
+  transition: opacity 0.3s ease;
+  bottom: 110%; /* Position it above the weapon */
+  left: 50%; /* Align it horizontally centered */
+  transform: translateX(-50%); /* Center it relative to the weapon */
+
+}
+
+#reset-save-btn {
+  position: absolute;
+  top: 2vh;
+  z-index: 9999;
+}

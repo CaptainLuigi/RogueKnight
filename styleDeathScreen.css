@@ -1,0 +1,48 @@
+@font-face {
+    font-family: 'Pirata_One';
+    src: url(Assets/PirataOne-Regular.ttf) format('truetype');
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Pirata_One';
+    position: relative;
+    overflow: hidden;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+span {
+    color: red;
+    font-size: 10rem;
+    margin-bottom: 2vh;
+}
+
+#deadPlayer {
+    display: block;
+    width: 21vw;
+    height: auto;
+    max-width: 21vw;
+    margin: 0 auto;
+    image-rendering: pixelated;
+}
+
+button {
+    margin-top: 4.5vh;
+    padding: 0.5vw 1vw;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    border: 0.2vw solid black;
+    border-radius: 0.25vw;
+    font-family: 'Pirata_one';
+}
+
+button:hover {
+    background-color: darkred;
+}
