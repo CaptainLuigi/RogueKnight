@@ -32,10 +32,24 @@
       />
     </div>
 
+    <div>
+      <img id="christmasTree" src="Assets/christmasTree.gif" />
+    </div>
+
     <div id="pause-menu-button" title="Menu">☰</div>
 
     <div id="pause-menu" class="hidden">
       <button onclick="deleteProgressAndExit()">Abandon Run</button>
+      <button onclick="downloadGameFile()">Save in JSON</button>
+      <button onclick="loadGameFile()">Load from JSON</button>
+      <input
+        type="file"
+        id="gameFilePicker"
+        onchange="pickGameFile(this)"
+        accept=".json,application/json"
+        style="display: none"
+      />
+
       <div class="volume-info">Music Volume</div>
       <input
         type="range"
@@ -187,7 +201,7 @@
 
     <div class="sprite"></div>
 
-    <div id="version">Version 1.11</div>
+    <div id="version">Version 1.12</div>
 
     <div id="switchToMobile" class="hidden">
       <button onclick="window.location.href='iframeIndex.html'">Mobile</button>

@@ -4,8 +4,6 @@ let playerSprite;
 
 let postBattleTriggered = false;
 
-let startSecondTurnOccured = false;
-
 let playerTookDamageThisFight = false;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -217,7 +215,9 @@ async function enemyDeathEvent(deadEnemy) {
     postBattleTriggered = true;
     disableGameInteractions(); // Disable game interactions after the battle
 
-    // await wait(1000);
+    raiseEvent("EndFight", {
+      player: player,
+    });
 
     if (globalSettings.difficulty === 0) {
       raiseEvent("WinTutorial");
@@ -227,18 +227,12 @@ async function enemyDeathEvent(deadEnemy) {
       localStorage.removeItem("selectedFightIndex");
       window.location.href = "winscreen.html";
     } else if (globalSettings.difficulty === 20) {
-      if (!playerTookDamageThisFight) {
-        unlockAchievement("Flawless victory");
-      }
       unlockCharacter();
       SoundManager.fadeOutBattleMusic();
       await wait(1500);
       localStorage.removeItem("selectedFightIndex");
       window.location.href = "winscreen.html";
     } else if (globalSettings.difficulty === 10) {
-      if (!playerTookDamageThisFight) {
-        unlockAchievement("Flawless victory");
-      }
       SoundManager.fadeOutBattleMusic();
       await wait(500);
       localStorage.removeItem("selectedFightIndex");
@@ -597,16 +591,11 @@ async function endTurn() {
   console.log("End turn clicked!");
   document.getElementById("end-turn-btn").disabled = true;
 
-  const endTurnEvent = new CustomEvent("EndTurn", {
-    detail: {
-      unusedEnergy: player.energy,
-      player: player,
-      eventQueue: Promise.resolve(),
-    },
+  await raiseEvent("EndTurn", {
+    unusedEnergy: player.energy,
+    player: player,
   });
-  window.dispatchEvent(endTurnEvent);
-  await wait(10);
-  await endTurnEvent.detail.eventQueue;
+
   updateHealthBar(player);
 
   if (player.currentPoison > 0) {
@@ -680,10 +669,6 @@ async function endTurn() {
 
   raiseEvent("StartSecondTurn", {
     player: player,
-  });
-
-  window.addEventListener("StartSecondTurn", () => {
-    startSecondTurnOccured = true;
   });
 
   updateEnergyDisplay();
@@ -785,10 +770,6 @@ async function triggerPostBattleScreen() {
   player.strength = 0;
   player.weak = 0;
   player.updateStrengthDisplay();
-
-  raiseEvent("EndFight", {
-    player: player,
-  });
 
   const postBattleScreen = document.getElementById("post-battle-screen");
   postBattleScreen.classList.remove("hidden");

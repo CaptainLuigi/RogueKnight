@@ -165,6 +165,14 @@ class Enemy extends HealthEntity {
     return this.#details;
   }
 
+  get isElite() {
+    return false;
+  }
+
+  get isBoss() {
+    return false;
+  }
+
   get description() {
     let desc = `${this.#name}<br><br>`;
     desc += `Max Health: ${this.#maxHealth}<br>`;
@@ -1162,6 +1170,9 @@ class Hornet extends Enemy {
 }
 
 class EvilKnight extends Enemy {
+  get isBoss() {
+    return true;
+  }
   constructor() {
     super(
       "Evil Knight",
@@ -1215,11 +1226,6 @@ class EvilKnight extends Enemy {
   async enemyDeath() {
     unlockAchievement("The better knight");
     await super.enemyDeath();
-
-    if (!startSecondTurnOccured) {
-      unlockAchievement("Overwhelming power");
-    }
-    startSecondTurnOccured = false;
   }
 }
 
@@ -1663,6 +1669,9 @@ class Necromancer extends Enemy {
 }
 
 class SpiderBoss extends Enemy {
+  get isBoss() {
+    return true;
+  }
   constructor() {
     super(
       "Spider Boss",
@@ -1716,16 +1725,13 @@ class SpiderBoss extends Enemy {
   async enemyDeath() {
     unlockAchievement("No spider dance");
     await super.enemyDeath();
-
-    if (!startSecondTurnOccured) {
-      unlockAchievement("Overwhelming power");
-    }
-
-    startSecondTurnOccured = false;
   }
 }
 
 class RatKing extends Enemy {
+  get isBoss() {
+    return true;
+  }
   constructor() {
     super(
       "Rat King",
@@ -1776,12 +1782,6 @@ class RatKing extends Enemy {
     unlockAchievement("Ratvolution");
     this.spawnRatsOnDeath();
     await super.enemyDeath();
-
-    if (!startSecondTurnOccured) {
-      unlockAchievement("Overwhelming power");
-    }
-
-    startSecondTurnOccured = false;
   }
 
   spawnRatsOnDeath() {

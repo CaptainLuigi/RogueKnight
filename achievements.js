@@ -420,31 +420,80 @@ function masterAdventurer() {
 window.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("achievementsContainer");
 
-  achievementList.forEach((achievement) => {
-    const card = document.createElement("div");
-    card.classList.add("achievement-card");
-    if (!achievement.unlocked) {
-      card.classList.add("locked");
+  if (container)
+    achievementList.forEach((achievement) => {
+      const card = document.createElement("div");
+      card.classList.add("achievement-card");
+      if (!achievement.unlocked) {
+        card.classList.add("locked");
+      }
+
+      const icon = document.createElement("img");
+      icon.src = achievement.icon;
+      icon.classList.add("achievement-icon");
+
+      const textDiv = document.createElement("div");
+      textDiv.classList.add("achievement-text");
+
+      const name = document.createElement("h2");
+      name.textContent = achievement.name;
+
+      const description = document.createElement("p");
+      description.textContent = achievement.description;
+
+      textDiv.appendChild(name);
+      textDiv.appendChild(description);
+
+      card.appendChild(icon);
+      card.appendChild(textDiv);
+      container.appendChild(card);
+    });
+
+  detectOverwhelmingPower();
+  detectFlawlessVictory();
+});
+
+function detectOverwhelmingPower() {
+  let isFirstTurn = true;
+
+  window.addEventListener("EndTurn", () => {
+    isFirstTurn = false;
+  });
+
+  window.addEventListener("EnemyDeath", (event) => {
+    let enemy = event.detail.enemy;
+
+    if (enemy.isBoss && isFirstTurn) {
+      unlockAchievement("Overwhelming power");
+    }
+  });
+}
+
+function detectFlawlessVictory() {
+  let playerTookDamage = false;
+  let fightEnded = false;
+  let bossDefeated = false;
+
+  window.addEventListener("PlayerTookDamage", () => {
+    playerTookDamage = true;
+  });
+
+  window.addEventListener("EndFight", () => {
+    fightEnded = true;
+
+    if (bossDefeated && !playerTookDamage && fightEnded) {
+      unlockAchievement("Flawless victory");
+    }
+  });
+
+  window.addEventListener("EnemyDeath", (event) => {
+    let enemy = event.detail.enemy;
+    if (enemy.isBoss) {
+      bossDefeated = true;
     }
 
-    const icon = document.createElement("img");
-    icon.src = achievement.icon;
-    icon.classList.add("achievement-icon");
-
-    const textDiv = document.createElement("div");
-    textDiv.classList.add("achievement-text");
-
-    const name = document.createElement("h2");
-    name.textContent = achievement.name;
-
-    const description = document.createElement("p");
-    description.textContent = achievement.description;
-
-    textDiv.appendChild(name);
-    textDiv.appendChild(description);
-
-    card.appendChild(icon);
-    card.appendChild(textDiv);
-    container.appendChild(card);
+    if (bossDefeated && !playerTookDamage && fightEnded) {
+      unlockAchievement("Flawless victory");
+    }
   });
-});
+}

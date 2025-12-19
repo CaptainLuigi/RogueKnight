@@ -483,3 +483,49 @@ function updateCustomDeckPreview() {
     relicsItems.appendChild(div);
   });
 }
+
+function downloadGameFile() {
+  let saveGame = {};
+  for (let key in localStorage) saveGame[key] = localStorage[key];
+  let dataStr =
+    "data:text/json;charset=utf-8," +
+    encodeURIComponent(JSON.stringify(saveGame));
+  let downloadElement = document.createElement("a");
+  downloadElement.style.display = "none";
+  document.body.appendChild(downloadElement);
+  downloadElement.setAttribute("href", dataStr);
+  downloadElement.setAttribute("download", "SaveGame.json");
+  downloadElement.setAttribute("target", "_self");
+  downloadElement.click();
+  downloadElement.remove();
+}
+
+function loadGameFile() {
+  let filePicker = document.getElementById("gameFilePicker");
+
+  filePicker.click();
+}
+
+function pickGameFile(fileInput) {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = (event) => {
+    try {
+      const saveGame = JSON.parse(event.target.result);
+      console.log("JSON contents:", saveGame);
+      deleteProgressAndExit();
+      for (let key in saveGame) localStorage.setItem(key, saveGame[key]);
+    } catch (err) {
+      alert("Invalid JSON file");
+    }
+  };
+
+  reader.onerror = () => {
+    alert("Error reading file");
+  };
+
+  reader.readAsText(file);
+}

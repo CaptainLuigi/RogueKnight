@@ -265,7 +265,7 @@ class Player extends HealthEntity {
     if (this.#maxHealth >= 200) {
       unlockAchievement("Absolut unit");
     }
-    updateHealBtn();
+    if (typeof updateHealBtn == "function") updateHealBtn();
   }
 
   decreaseMaxHealth(amount) {
@@ -398,11 +398,14 @@ class Player extends HealthEntity {
 
     const finalDamage = Math.max(0, reduceAmount);
 
-    if (finalDamage > 0) {
-      playerTookDamageThisFight = true;
-    }
-
     this.#health -= finalDamage;
+
+    if (finalDamage > 0) {
+      raiseEvent("PlayerTookDamage", {
+        player: this,
+        damage: finalDamage,
+      });
+    }
 
     if (this.#health <= 0) {
       isDying = true;
@@ -845,8 +848,6 @@ let idleInterval;
 
 // Function to animate the sprite for attack
 let attackFrame = 0;
-player.isAnimating = false;
-player.isActing = false;
 
 function animateAttack() {
   if (typeof playerSprite === "undefined") return;
