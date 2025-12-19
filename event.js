@@ -1324,6 +1324,7 @@ document.addEventListener("DOMContentLoaded", function () {
     heartbrokenBtn?.addEventListener("click", async () => {
       player.foundRelic("Broken Heart", true);
       player.savePlayerToStorage();
+      angelSprite.classList.add("hidden");
       returnToMap();
     });
   }

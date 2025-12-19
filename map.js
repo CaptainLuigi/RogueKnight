@@ -372,7 +372,7 @@ function triggerRandomEvent() {
     { type: "magicWand", action: showEvent },
     { type: "fallingStones", action: showEvent },
     { type: "offerWeapon", action: showEvent },
-    { type: "angel", action: showEvent },
+    { type: "angel", action: showEvent, weight: 0.2 },
   ];
 
   const sharedEvents = [
@@ -477,9 +477,18 @@ function triggerRandomEvent() {
     );
   });
 
+  function weightedRandom(events) {
+    const totalWeight = events.reduce((sum, e) => sum + (e.weight || 1), 0);
+    let r = Math.random() * totalWeight;
+    for (const e of events) {
+      r -= e.weight || 1;
+      if (r <= 0) return e;
+    }
+    return events[events.length - 1];
+  }
+
   if (availableEvents.length > 0) {
-    const randomEvent =
-      availableEvents[Math.floor(Math.random() * availableEvents.length)];
+    const randomEvent = weightedRandom(availableEvents);
 
     eventAssignments[locationKey] = randomEvent.type;
     localStorage.setItem("eventAssignments", JSON.stringify(eventAssignments));

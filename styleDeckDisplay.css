@@ -385,4 +385,5 @@ html {
     position: absolute;
     top: 30vh;
     left: 10vw;
+    image-rendering: pixelated;
 }

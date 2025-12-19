@@ -216,6 +216,7 @@ html, body {
     top: 30vh;
     left: 10vw;
     z-index: 2;
+    image-rendering: pixelated;
 }
 
 
