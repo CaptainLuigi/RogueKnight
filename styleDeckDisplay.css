@@ -381,3 +381,8 @@ html {
     z-index: 1005;
 }
 
+#christmasTree {
+    position: absolute;
+    top: 30vh;
+    left: 10vw;
+}

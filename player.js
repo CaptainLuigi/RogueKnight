@@ -398,11 +398,11 @@ class Player extends HealthEntity {
 
     const finalDamage = Math.max(0, reduceAmount);
 
+    this.#health -= finalDamage;
+
     if (finalDamage > 0) {
       playerTookDamageThisFight = true;
     }
-
-    this.#health -= finalDamage;
 
     if (this.#health <= 0) {
       isDying = true;

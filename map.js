@@ -372,6 +372,7 @@ function triggerRandomEvent() {
     { type: "magicWand", action: showEvent },
     { type: "fallingStones", action: showEvent },
     { type: "offerWeapon", action: showEvent },
+    { type: "angel", action: showEvent },
   ];
 
   const sharedEvents = [

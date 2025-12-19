@@ -741,3 +741,10 @@ button:disabled {
     margin: 2rem auto 0 auto;
 }
 
+#christmasTree {
+    position: absolute;
+    top: 30vh;
+    left: 10vw;
+    z-index: 2;
+}
+

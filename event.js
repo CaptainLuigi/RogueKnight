@@ -1274,6 +1274,60 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // angel
+
+  if (eventType === "angel") {
+    const flash = document.getElementById("flashOverlay");
+    const angelSprite = document.getElementById("angelSprite");
+    const acceptBtn = document.getElementById("acceptAngel");
+
+    flash.classList.remove("hidden");
+    flash.classList.add("active");
+
+    setTimeout(() => {
+      flash.classList.remove("active");
+      flash.classList.add("hidden");
+    }, 3000);
+
+    setTimeout(() => {
+      angelSprite.classList.remove("hidden");
+      angelSprite.classList.add("angel-appear");
+    }, 500);
+
+    acceptBtn?.addEventListener("click", async () => {
+      const upgradeableWeapons = player.deck.filter(
+        (weapon) => weapon.level < 3
+      );
+
+      if (upgradeableWeapons.length === 0) {
+        displayTurnMessage("All your weapons are already max level");
+      } else {
+        SoundManager.play("Upgrade");
+
+        for (const weapon of upgradeableWeapons) {
+          weapon.upgrade();
+        }
+      }
+
+      player.heal(player.maxHealth);
+      updateHealthBar(player);
+      player.savePlayerToStorage();
+
+      await wait(500);
+
+      document.getElementById("angel").classList.add("hidden");
+      document.getElementById("angel2").classList.remove("hidden");
+    });
+
+    const heartbrokenBtn = document.getElementById("angelCurse");
+
+    heartbrokenBtn?.addEventListener("click", async () => {
+      player.foundRelic("Broken Heart", true);
+      player.savePlayerToStorage();
+      returnToMap();
+    });
+  }
+
   //duplicate Weapon
 
   if (eventType === "duplicateWeapon") {

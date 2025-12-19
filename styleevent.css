@@ -189,3 +189,56 @@ button#randomWeapon2 {
 #elvish {
     font-family: 'Elvish';
 }
+
+#angelSprite {
+    position: absolute;
+    top: 52vh;
+    right: 15vw;
+    z-index: 1005;
+    height: 12vw;
+    width: 12vw;
+    image-rendering: pixelated;
+}
+
+.angel-appear {
+  animation: angelGlow 2s ease-out;
+}
+
+@keyframes angelGlow {
+  0% {
+    opacity: 0;
+    filter: brightness(3) blur(4px);
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) blur(0);
+    transform: scale(1);
+  }
+}
+
+.flash {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1500;
+}
+
+.flash.active {
+  animation: flash 3s ease-out;
+}
+
+@keyframes flash {
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+#christmasTree {
+    position: absolute;
+    top: 30vh;
+    left: 10vw;
+    z-index: 2;
+}

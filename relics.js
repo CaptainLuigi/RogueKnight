@@ -589,6 +589,15 @@ const relicList = [
     0,
     "Make your heavy hitting weapons cheaper. Focusing on high energy weapons is the best way to use this relic."
   ),
+  new ActiveRelics(
+    "Broken Heart",
+    "Assets/brokenHeart.png",
+    brokenHeart,
+    "Curse: Take 5 damage at the end of your turn.",
+    "curse",
+    0,
+    "The lovesickness is wearing you down."
+  ),
 ].reduce((o, r) => {
   o[r.name] = r;
   return o;
@@ -671,6 +680,15 @@ function overchargedCore(player, relicObject) {
   window.addEventListener("EndTurn", (event) => {
     event.detail.eventQueue = event.detail.eventQueue.then(async () => {
       player.takeDamage(3);
+      await wait(400);
+    });
+  });
+}
+
+function brokenHeart(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    event.detail.eventQueue = event.detail.eventQueue.then(async () => {
+      player.takeDamage(5);
       await wait(400);
     });
   });

@@ -211,7 +211,12 @@ html, body {
     flex: 1 1 0;
 }
 
-
+#christmasTree {
+    position: absolute;
+    top: 30vh;
+    left: 10vw;
+    z-index: 2;
+}
 
 
 
