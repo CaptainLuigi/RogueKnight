@@ -480,6 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //Thors Hammer Code
 
   if (eventType === "thorsHammer") {
+    const shortFlash = document.getElementById("shortFlashOverlay");
     const thorsHammerBtn = document.querySelector(".thorsHammer-btn");
     const thorsHammerBox = document.getElementById("thorsHammer");
     const thorsHammerTakenBox = document.getElementById("thorsHammerTaken");
@@ -493,6 +494,8 @@ document.addEventListener("DOMContentLoaded", function () {
           const successChance = Math.random();
 
           if (successChance < 0.3) {
+            shortFlash.classList.remove("hidden");
+            shortFlash.classList.add("active");
             SoundManager.play("Thunder");
             thorsHammerBox.classList.add("hidden");
             thorsHammerTakenBox.classList.remove("hidden");

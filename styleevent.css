@@ -230,7 +230,26 @@ button#randomWeapon2 {
   animation: flash 3s ease-out;
 }
 
+.shortFlash {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1500;  
+}
+
+.shortFlash.active {
+  animation: flash 0.5s ease-out;
+}
+
 @keyframes flash {
+  0%   { opacity: 0; }
+  30%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes shortFlash {
   0%   { opacity: 0; }
   30%  { opacity: 1; }
   100% { opacity: 0; }
