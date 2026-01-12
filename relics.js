@@ -575,10 +575,10 @@ const relicList = [
     "Critikris",
     "Assets/critikris.png",
     critikris,
-    "Your weapons always hit a critial hit.",
+    "All weapons get +50 critical chance.",
     "boss",
     0,
-    "Crit synergies were never easier with this relic. Guaranteeing a crit often means more damage and possibly other positive effects."
+    "Crit synergies were never easier with this relic. Getting a crit more often means more damage and possibly other positive effects."
   ),
   new Relics(
     "Champion's Might",
@@ -935,7 +935,7 @@ function whetstone(player) {
 }
 
 function critikris(player) {
-  player.increaseWeaponCritChance(100);
+  player.increaseWeaponCritChance(50);
 }
 
 function criticalSurge(player) {

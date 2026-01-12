@@ -127,6 +127,12 @@ const achievementList = [
     // theBetterKnight
   ),
   new Achievements(
+    "Wake the bear",
+    "Defeat the Boss Bear",
+    "Assets/bear.png",
+    false
+  ),
+  new Achievements(
     "Ratvolution",
     "Defeat the Rat King",
     "Assets/ratKing.png",

@@ -363,16 +363,16 @@ function triggerRandomEvent() {
   ];
 
   const act2Events = [
-    { type: "upgradeAll", action: showEvent },
-    { type: "lowerEnergyCost", action: showEvent },
-    { type: "goldenStatue", action: showEvent },
-    { type: "healOrHp", action: showEvent },
-    { type: "golemEncounter", action: showEvent },
-    { type: "ancientWriting", action: showEvent },
-    { type: "magicWand", action: showEvent },
-    { type: "fallingStones", action: showEvent },
-    { type: "offerWeapon", action: showEvent },
-    { type: "angel", action: showEvent, weight: 0.2 },
+    // { type: "upgradeAll", action: showEvent },
+    // { type: "lowerEnergyCost", action: showEvent },
+    // { type: "goldenStatue", action: showEvent },
+    // { type: "healOrHp", action: showEvent },
+    // { type: "golemEncounter", action: showEvent },
+    // { type: "ancientWriting", action: showEvent },
+    // { type: "magicWand", action: showEvent },
+    // { type: "fallingStones", action: showEvent },
+    // { type: "offerWeapon", action: showEvent },
+    // { type: "angel", action: showEvent, weight: 0.2 },
   ];
 
   const sharedEvents = [
@@ -437,12 +437,12 @@ function triggerRandomEvent() {
     allEvents.push({ type: "reunionDave", action: showEvent });
   }
 
-  if (
-    !player.equippedRelics.includes("Infernal Ingot") &&
-    globalSettings.currentAct === 2
-  ) {
-    allEvents.push({ type: "infernalIngot", action: showEvent });
-  }
+  // if (
+  //   !player.equippedRelics.includes("Infernal Ingot") &&
+  //   globalSettings.currentAct === 2
+  // ) {
+  //   allEvents.push({ type: "infernalIngot", action: showEvent });
+  // }
 
   if (
     globalSettings.playerGold >= 150 &&

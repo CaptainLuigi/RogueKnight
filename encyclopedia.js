@@ -274,6 +274,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let actTwoMimic = new Mimic();
   actTwoMimic.fightType = "Act 2 - event";
   allEnemies.push(actTwoMimic);
+  let actTwoPot = new PotOfGold();
+  actTwoPot.fightType = "Act 2 - normal";
+  allEnemies.push(actTwoPot);
   globalSettings.currentAct = activeAct;
 
   allEnemies.forEach((enemy) => {

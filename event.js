@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (eventType === "zenRelic") {
     document.getElementById("zenRelic").classList.remove("hidden");
     document.getElementById("donateAll").addEventListener("click", function () {
-      updatePlayerGold(-globalSettings.playerGold);
+      updatePlayerGold(-Math.floor(globalSettings.playerGold / 2));
       player.foundRelic("Zen Barrier", true);
       player.savePlayerToStorage();
       returnToMap();

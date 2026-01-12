@@ -193,10 +193,28 @@ function fillEnemyArray(currentDifficulty) {
 
   const selectedConstellation = filteredEnemyArray[selectedIndex];
 
-  for (const EnemyClass of selectedConstellation.enemies) {
-    const enemyInstance = new EnemyClass();
-    enemyInstance.randomizeAction();
-    enemyInstance.displayIntent();
+  // for (const EnemyClass of selectedConstellation.enemies) {
+  //   const enemyInstance = new EnemyClass();
+  //   enemyInstance.randomizeAction();
+  //   enemyInstance.displayIntent();
+  // }
+
+  for (const entry of selectedConstellation.enemies) {
+    let EnemyClass = null;
+
+    if (typeof entry === "function") {
+      EnemyClass = entry;
+    } else if (entry?.enemy && typeof entry.chance === "number") {
+      if (Math.random() < entry.chance) {
+        EnemyClass = entry.enemy;
+      }
+    }
+
+    if (EnemyClass) {
+      const enemyInstance = new EnemyClass();
+      enemyInstance.randomizeAction();
+      enemyInstance.displayIntent();
+    }
   }
 
   console.log("Loaded fight constellation:", selectedConstellation);

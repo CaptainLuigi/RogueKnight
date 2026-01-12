@@ -7,32 +7,49 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 1,
     difficultyTo: 2,
-    enemies: [Snail, Snail, Snail],
+    enemies: [Snail, Snail, Snail, { enemy: PotOfGold, chance: 0.1 }],
   },
   {
     difficultyFrom: 1,
     difficultyTo: 3,
-    enemies: [Snail, Mantis, Mantis],
+    enemies: [Snail, Mantis, Mantis, { enemy: PotOfGold, chance: 0.1 }],
   },
   {
     difficultyFrom: 3,
     difficultyTo: 3,
-    enemies: [Scorpion, Scorpion, Scorpion, Scorpion],
+    enemies: [
+      Scorpion,
+      Scorpion,
+      Scorpion,
+      Scorpion,
+      { enemy: PotOfGold, chance: 0.1 },
+    ],
   },
   {
     difficultyFrom: 2,
     difficultyTo: 3,
-    enemies: [Shroom, Shroom, Shroom, SadShroom],
+    enemies: [
+      Shroom,
+      Shroom,
+      Shroom,
+      SadShroom,
+      { enemy: PotOfGold, chance: 0.1 },
+    ],
   },
   {
     difficultyFrom: 3,
     difficultyTo: 4,
-    enemies: [Gnome, Gnome, Gnome, Druid],
+    enemies: [Gnome, Gnome, Gnome, Druid, { enemy: PotOfGold, chance: 0.1 }],
   },
   {
     difficultyFrom: 3,
     difficultyTo: 4,
-    enemies: [BitingPlant, BitingPlant, BitingPlant],
+    enemies: [
+      BitingPlant,
+      BitingPlant,
+      BitingPlant,
+      { enemy: PotOfGold, chance: 0.1 },
+    ],
   },
   {
     difficultyFrom: 8,
@@ -64,15 +81,26 @@ const enemyConstellationTemplates = [
     difficultyTo: 9,
     enemies: [Succubus],
   },
+  // {
+  //   difficultyFrom: 10,
+  //   difficultyTo: 10,
+  //   enemies: [MinionKnight, MasterMage, EvilKnight],
+  // },
   {
     difficultyFrom: 10,
     difficultyTo: 10,
-    enemies: [MinionKnight, MasterMage, EvilKnight],
+    enemies: [BossBear],
   },
   {
     difficultyFrom: 11,
     difficultyTo: 12,
-    enemies: [Centepede, Centepede, Centepede, Centepede],
+    enemies: [
+      Centepede,
+      Centepede,
+      Centepede,
+      Centepede,
+      { enemy: PotOfGold, chance: 0.1 },
+    ],
   },
   {
     difficultyFrom: 12,
@@ -82,12 +110,28 @@ const enemyConstellationTemplates = [
   {
     difficultyFrom: 11,
     difficultyTo: 14,
-    enemies: [Rat, Imp, FatImp, HappyImp],
+    enemies: [Rat, Imp, FatImp, HappyImp, { enemy: PotOfGold, chance: 0.1 }],
+  },
+  {
+    difficultyFrom: 11,
+    difficultyTo: 14,
+    enemies: [
+      BigCopperCloud,
+      BigCopperCloud,
+      BigCopperCloud,
+      { enemy: PotOfGold, chance: 0.1 },
+    ],
   },
   {
     difficultyFrom: 13,
     difficultyTo: 14,
-    enemies: [HappyImp, HappyImp, HappyImp, HappyImp],
+    enemies: [
+      HappyImp,
+      HappyImp,
+      HappyImp,
+      HappyImp,
+      { enemy: PotOfGold, chance: 0.1 },
+    ],
   },
   {
     difficultyFrom: 18,

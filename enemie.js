@@ -125,6 +125,10 @@ class Enemy extends HealthEntity {
     return this.#attackPower > 0;
   }
 
+  get attackPower() {
+    return this.#attackPower;
+  }
+
   get canBlock() {
     return this.#blockAmount > 0;
   }
@@ -163,6 +167,14 @@ class Enemy extends HealthEntity {
 
   get details() {
     return this.#details;
+  }
+
+  get possibleActions() {
+    return [...this.#possibleActions];
+  }
+
+  get actionWeights() {
+    return { ...this.#actionWeights };
   }
 
   get isElite() {
@@ -319,7 +331,7 @@ class Enemy extends HealthEntity {
   }
 
   randomizeAction() {
-    let availableActions = [...this.#possibleActions];
+    let availableActions = this.possibleActions;
     const maxEnemies = 5;
 
     if (enemies.length >= maxEnemies) {
@@ -339,22 +351,25 @@ class Enemy extends HealthEntity {
 
     let weightedActions = availableActions.map((action) => ({
       action,
-      weight: this.#actionWeights[action] || 0,
+      weight: this.actionWeights[action] || 0,
     }));
 
     const totalWeight = weightedActions.reduce((sum, a) => sum + a.weight, 0);
     if (totalWeight === 0) return;
 
     let rand = Math.random() * totalWeight;
+    let selectedAction;
     for (let { action, weight } of weightedActions) {
       if (rand < weight) {
-        this.#nextAction = action;
+        selectedAction = action;
+        this.#nextAction = action.split("_$sep$_")[0];
         break;
       }
       rand -= weight;
     }
 
     this.updateDisplay();
+    return selectedAction;
   }
 
   displayIntent() {
@@ -479,8 +494,7 @@ class Enemy extends HealthEntity {
     player.attackingEnemy = this;
     console.log("Player is being attacked by:", player.attackingEnemy);
 
-    let actualDamage =
-      damageOverride !== null ? damageOverride : this.#attackPower;
+    let actualDamage = damageOverride ?? this.attackPower;
 
     let blockedSomeDamage = false;
 
@@ -676,7 +690,7 @@ class Enemy extends HealthEntity {
     // intentElement.style.visibility = "visible";
 
     const actionMap = {
-      attack: `<img src="Assets/swordsEmoji.png"/> ${this.#attackPower}`,
+      attack: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower}`,
       block: `<img src="Assets/shieldEmoji.png"/> ${this.#blockAmount}`,
       poison: `<img src="Assets/skullEmoji.png"/> ${this.#poison}`,
       healAll: `<img src="Assets/greenHeartEmoji.png"/> ${this.#healAll}`,
@@ -692,6 +706,11 @@ class Enemy extends HealthEntity {
       tripleStrike: `3x <img src="Assets/swordsEmoji.png"/> ${
         this.#tripleStrike
       }`,
+      attack_in_5: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 5)`,
+      attack_in_4: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 4)`,
+      attack_in_3: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 3)`,
+      attack_in_2: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 2)`,
+      attack_in_1: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 1)`,
     };
 
     // intentElement.innerHTML = actionMap[this.#nextAction] || "";
@@ -729,6 +748,11 @@ class Enemy extends HealthEntity {
       canSummon: `summon an enemy`,
       doubleStrike: `attack for ${this.#doubleStrike} damage two times`,
       tripleStrike: `attack for ${this.#tripleStrike} damage three times`,
+      attack_in_1: `attack for ${this.attackPower} in 1 Turn`,
+      attack_in_2: `attack for ${this.attackPower} in 2 Turns`,
+      attack_in_3: `attack for ${this.attackPower} in 3 Turns`,
+      attack_in_4: `attack for ${this.attackPower} in 4 Turns`,
+      attack_in_5: `attack for ${this.attackPower} in 5 Turns`,
     };
 
     tooltipText += tooltipMap[this.#nextAction] || "";
@@ -1166,6 +1190,140 @@ class Hornet extends Enemy {
       poison: 10,
       block: 50,
     });
+  }
+}
+
+class BossBear extends Enemy {
+  get isBoss() {
+    return true;
+  }
+  specialAttackStarted = false;
+  specialAttackCooldown = 0;
+  specialAttackMaxCooldown = 5;
+  canQueueSpecialAttack = true;
+  forceQueueSpecialAttack = true;
+  specialAttackPower = 50;
+  specialAttackWeight = 0;
+
+  get possibleActions() {
+    if (!this.canQueueSpecialAttack && !this.forceQueueSpecialAttack) {
+      return super.possibleActions;
+    }
+
+    let actualActions = super.possibleActions;
+    if (this.specialAttackStarted) {
+      actualActions = [this.specialAttackPlaceholder];
+    } else {
+      actualActions.push(this.specialAttackPlaceholder);
+      // actualActions.push("attack_in_3_$sep$_poisionMist");
+    }
+
+    return actualActions;
+  }
+
+  get actionWeights() {
+    if (!this.canQueueSpecialAttack && !this.forceQueueSpecialAttack) {
+      return super.actionWeights;
+    }
+
+    if (this.forceQueueSpecialAttack) {
+      return { [this.specialAttackPlaceholder]: 1 };
+    }
+
+    let actualWeights = super.actionWeights;
+    if (this.specialAttackStarted) {
+      actualWeights = { [this.specialAttackPlaceholder]: 1 };
+    } else {
+      actualWeights[this.specialAttackPlaceholder] = this.specialAttackWeight;
+    }
+
+    return actualWeights;
+  }
+
+  get attackPower() {
+    if (!this.specialAttackStarted) {
+      return super.attackPower;
+    }
+    return this.specialAttackPower;
+  }
+
+  get specialAttackPlaceholder() {
+    let actualCooldown = this.specialAttackMaxCooldown;
+    if (this.specialAttackStarted) {
+      actualCooldown = this.specialAttackCooldown;
+    }
+    return "attack_in_" + actualCooldown;
+  }
+  constructor() {
+    super(
+      "Boss Bear",
+      1250,
+      15,
+      "Assets/bearSleeping.png",
+      true,
+      0,
+      80,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      10,
+      8,
+      "Act 1 - boss",
+      "Don't wait until this bear wakes up. After that the fight will be extremely dangerous."
+    );
+
+    this.setActionWeights({
+      attack: 30,
+      doubleStrike: 25,
+      tripleStrike: 15,
+      block: 30,
+    });
+
+    this.display.classList.add("biggestEnemy");
+  }
+  randomizeAction() {
+    let action = super.randomizeAction();
+    let [key, actionName] = action.split("_$sep$_");
+
+    // if (actionName == "poisonMist") {
+
+    // }
+
+    this.forceQueueSpecialAttack = false;
+    if (!this.specialAttackStarted && key == this.specialAttackPlaceholder) {
+      this.specialAttackStarted = true;
+      this.specialAttackCooldown = this.specialAttackMaxCooldown - 1;
+    } else if (this.specialAttackStarted) {
+      this.specialAttackCooldown -= 1;
+    }
+    return [key, actionName];
+  }
+
+  async performAction(player) {
+    const image = this.display.querySelector(".enemy-icon");
+    if (image && this.specialAttackStarted && this.specialAttackCooldown == 0) {
+      image.src = "Assets/bear.png";
+    }
+    if (this.specialAttackStarted) {
+      if (this.specialAttackCooldown > 0) {
+        return;
+      }
+      try {
+        return this.attack(player);
+      } finally {
+        this.specialAttackStarted = false;
+        this.specialAttackCooldown = 0;
+      }
+    }
+    return super.performAction(player);
+  }
+
+  async enemyDeath() {
+    unlockAchievement("Wake the bear");
+    await super.enemyDeath();
   }
 }
 
@@ -2168,6 +2326,142 @@ class BigGolem extends Enemy {
   }
 }
 
+class SmallCopperCloud extends Enemy {
+  constructor() {
+    super(
+      "Copper Cloud Small",
+      150,
+      5,
+      "Assets/Transperent2/Icon15.png",
+      true,
+      0,
+      5,
+      5,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "Act 2 - normal",
+      "The smaller variant of the Copper Cloud, that appears after defeating a big Copper Cloud."
+    );
+    this.setActionWeights({
+      block: 45,
+      attack: 25,
+      poison: 30,
+    });
+    this.display.classList.add("dark-cave-effect");
+  }
+  async enemyDeath() {
+    player.applyPoison(2);
+    player.updatePoisonDisplay();
+    await super.enemyDeath();
+  }
+}
+
+class BigCopperCloud extends Enemy {
+  constructor() {
+    super(
+      "Copper Cloud Big",
+      300,
+      10,
+      "Assets/Transperent2/Icon15.png",
+      true,
+      0,
+      15,
+      10,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "Act 2 - normal",
+      "A cloud of poison, that tries to wear you down. Killing it might add even more poison."
+    );
+    this.setActionWeights({
+      block: 40,
+      attack: 20,
+      poison: 40,
+    });
+    this.display.classList.add("bigEnemy");
+  }
+
+  async enemyDeath() {
+    this.spawnSmallCopperCloudOnDeath();
+    player.applyPoison(5);
+    player.updatePoisonDisplay();
+    await super.enemyDeath();
+  }
+
+  spawnSmallCopperCloudOnDeath() {
+    const maxEnemies = 5;
+    const copperCloudsToSpawn = 2;
+
+    for (let i = 0; i < copperCloudsToSpawn; i++) {
+      if (enemies.length >= maxEnemies) break;
+
+      const smallCopperCloud = new SmallCopperCloud();
+      enemies.pop();
+
+      let index = enemies.findIndex((e) => e === this);
+      enemies.splice(index, 0, smallCopperCloud);
+
+      this.display.parentNode.insertBefore(
+        smallCopperCloud.display,
+        this.display
+      );
+
+      smallCopperCloud.randomizeAction();
+      smallCopperCloud.displayIntent();
+    }
+  }
+}
+
+class PotOfGold extends Enemy {
+  #fightType = "Act 1 - normal";
+  get fightType() {
+    return this.#fightType;
+  }
+
+  set fightType(value) {
+    this.#fightType = value;
+  }
+
+  constructor() {
+    const attackPower = 5 * globalSettings.currentAct;
+    const health = 100 * globalSettings.currentAct;
+    const block = 5 * globalSettings.currentAct;
+    super(
+      "Pot of Gold",
+      health,
+      attackPower,
+      "Assets/potOfGold.png",
+      true,
+      0,
+      block,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "Act 1 - normal",
+      "This enemy has a small chance to appear in a fight, and when defeated, you will be rewarded with extra gold. This is one of the few enemies that can appear in Act 1 and Act 2."
+    );
+  }
+
+  async enemyDeath() {
+    updatePlayerGold(50);
+    await super.enemyDeath();
+  }
+}
+
 class Mimic extends Enemy {
   #fightType = "Act 1 - event";
   get fightType() {
@@ -2199,7 +2493,7 @@ class Mimic extends Enemy {
       0,
       0,
       "Act 1 - event",
-      "The Mimic camouflages itself as a chest, and when you least expect it, you have to fight. This is the only enemy that appears in Act 1 and Act 2."
+      "The Mimic camouflages itself as a chest, and when you least expect it, you have to fight. This is one of the few enemies that can appear in Act 1 and Act 2."
     );
   }
 }
@@ -2267,4 +2561,8 @@ const enemyClassMapping = {
   BigGolem,
   Mimic,
   HappyImp,
+  BigCopperCloud,
+  SmallCopperCloud,
+  PotOfGold,
+  BossBear,
 };
