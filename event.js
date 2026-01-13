@@ -225,11 +225,36 @@ document.addEventListener("DOMContentLoaded", function () {
     document
       .getElementById("noGolemStones")
       .addEventListener("click", function () {
+        globalSettings.difficulty = 18;
+        globalSettings.relicGroup = "elite";
+        globalSettings.redirectToChest = true;
+        window.location.href = "Tutorial.html";
+      });
+  }
+
+  // ancient clock
+
+  if (eventType === "ancientClockEncounter") {
+    const ancientClockBtn = document.querySelector(".ancientClock-btn");
+    const ancientClockBox = document.getElementById("ancientClockEncounter");
+    const ancientClockAccept = document.getElementById("ancientClockAccept");
+    const ancientClockFight = document.getElementById("ancientClockFight");
+
+    if (ancientClockBtn) {
+      ancientClockBtn.addEventListener("click", function () {
+        ancientClockBox.classList.add("hidden");
+        ancientClockAccept.classList.remove("hidden");
+      });
+    }
+
+    if (ancientClockFight) {
+      ancientClockFight.addEventListener("click", function () {
         globalSettings.difficulty = 19;
         globalSettings.relicGroup = "elite";
         globalSettings.redirectToChest = true;
         window.location.href = "Tutorial.html";
       });
+    }
   }
 
   // magic wand

@@ -711,6 +711,16 @@ class Enemy extends HealthEntity {
       attack_in_3: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 3)`,
       attack_in_2: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 2)`,
       attack_in_1: `<img src="Assets/swordsEmoji.png"/> ${this.attackPower} (in 1)`,
+      SD_in_10: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 10)`,
+      SD_in_9: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 9)`,
+      SD_in_8: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 8)`,
+      SD_in_7: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 7)`,
+      SD_in_6: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 6)`,
+      SD_in_5: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 5)`,
+      SD_in_4: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 4)`,
+      SD_in_3: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 3)`,
+      SD_in_2: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 2)`,
+      SD_in_1: `<img src="Assets/explosionEmoji.png"/> ${this.attackPower} (in 1)`,
     };
 
     // intentElement.innerHTML = actionMap[this.#nextAction] || "";
@@ -733,6 +743,8 @@ class Enemy extends HealthEntity {
 
   // Show tooltip when hovering over intent
   showIntentTooltip(intentElement) {
+    this.hideIntentTooltip(intentElement);
+
     const intentTooltip = document.createElement("div");
     intentTooltip.classList.add("enemy-intent-tooltip");
 
@@ -753,6 +765,16 @@ class Enemy extends HealthEntity {
       attack_in_3: `attack for ${this.attackPower} in 3 Turns`,
       attack_in_4: `attack for ${this.attackPower} in 4 Turns`,
       attack_in_5: `attack for ${this.attackPower} in 5 Turns`,
+      SD_in_1: `selfdestruct in 1 Turn, dealing ${this.attackPower} damage`,
+      SD_in_2: `selfdestruct in 2 Turns, dealing ${this.attackPower} damage`,
+      SD_in_3: `selfdestruct in 3 Turns, dealing ${this.attackPower} damage`,
+      SD_in_4: `selfdestruct in 4 Turns, dealing ${this.attackPower} damage`,
+      SD_in_5: `selfdestruct in 5 Turns, dealing ${this.attackPower} damage`,
+      SD_in_6: `selfdestruct in 6 Turns, dealing ${this.attackPower} damage`,
+      SD_in_7: `selfdestruct in 7 Turns, dealing ${this.attackPower} damage`,
+      SD_in_8: `selfdestruct in 8 Turns, dealing ${this.attackPower} damage`,
+      SD_in_9: `selfdestruct in 9 Turns, dealing ${this.attackPower} damage`,
+      SD_in_10: `selfdestruct in 10 Turns, dealing ${this.attackPower} damage`,
     };
 
     tooltipText += tooltipMap[this.#nextAction] || "";
@@ -760,11 +782,11 @@ class Enemy extends HealthEntity {
 
     intentElement.appendChild(intentTooltip);
 
-    const intentElementTop = intentElement.offsetTop;
-    const intentElementHeight = intentElement.offsetHeight;
+    // const intentElementTop = intentElement.offsetTop;
+    // const intentElementHeight = intentElement.offsetHeight;
 
-    intentTooltip.style.top = `${intentElementTop + intentElementHeight + 5}px`;
-    intentTooltip.style.left = `${intentElement.offsetLeft + 20}px`;
+    // intentTooltip.style.top = `${intentElementTop + intentElementHeight + 5}px`;
+    // intentTooltip.style.left = `${intentElement.offsetLeft + 20}px`;
   }
 
   // Hide tooltip when mouse leaves
@@ -1272,7 +1294,7 @@ class BossBear extends Enemy {
       10,
       8,
       "Act 1 - boss",
-      "Don't wait until this bear wakes up. After that the fight will be extremely dangerous."
+      "Don't wait until this bear wakes up. After that its next attack will be extremely dangerous."
     );
 
     this.setActionWeights({
@@ -1312,6 +1334,7 @@ class BossBear extends Enemy {
         return;
       }
       try {
+        SoundManager.play("BearGrowl");
         return this.attack(player);
       } finally {
         this.specialAttackStarted = false;
@@ -1324,6 +1347,123 @@ class BossBear extends Enemy {
   async enemyDeath() {
     unlockAchievement("Wake the bear");
     await super.enemyDeath();
+  }
+}
+
+class FireSpirit extends Enemy {
+  specialAttackStarted = false;
+  specialAttackCooldown = 0;
+  specialAttackMaxCooldown = 3;
+  canQueueSpecialAttack = true;
+  forceQueueSpecialAttack = true;
+  specialAttackPower = 35;
+  specialAttackWeight = 0;
+
+  get possibleActions() {
+    if (!this.canQueueSpecialAttack && !this.forceQueueSpecialAttack) {
+      return super.possibleActions;
+    }
+
+    let actualActions = super.possibleActions;
+    if (this.specialAttackStarted) {
+      actualActions = [this.specialAttackPlaceholder];
+    } else {
+      actualActions.push(this.specialAttackPlaceholder);
+      // actualActions.push("attack_in_3_$sep$_poisionMist");
+    }
+
+    return actualActions;
+  }
+
+  get actionWeights() {
+    if (!this.canQueueSpecialAttack && !this.forceQueueSpecialAttack) {
+      return super.actionWeights;
+    }
+
+    if (this.forceQueueSpecialAttack) {
+      return { [this.specialAttackPlaceholder]: 1 };
+    }
+
+    let actualWeights = super.actionWeights;
+    if (this.specialAttackStarted) {
+      actualWeights = { [this.specialAttackPlaceholder]: 1 };
+    } else {
+      actualWeights[this.specialAttackPlaceholder] = this.specialAttackWeight;
+    }
+
+    return actualWeights;
+  }
+
+  get attackPower() {
+    if (!this.specialAttackStarted) {
+      return super.attackPower;
+    }
+    return this.specialAttackPower;
+  }
+
+  get specialAttackPlaceholder() {
+    let actualCooldown = this.specialAttackMaxCooldown;
+    if (this.specialAttackStarted) {
+      actualCooldown = this.specialAttackCooldown;
+    }
+    return "SD_in_" + actualCooldown;
+  }
+  constructor() {
+    super(
+      "Fire Spirit",
+      75,
+      0,
+      "Assets/Transperent2/Icon47.png",
+      true,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "Act 2 - normal",
+      "This enemy is summoned by the Fire Lizard. They don't have a normal attack, but explode after a short time, dealing big damage to you."
+    );
+    this.isSummoned = true;
+  }
+  async randomizeAction() {
+    let action = super.randomizeAction();
+    if (!action) return [null, null];
+    let [key, actionName] = action.split("_$sep$_");
+
+    // if (actionName == "poisonMist") {
+
+    // }
+
+    this.forceQueueSpecialAttack = false;
+    if (!this.specialAttackStarted && key == this.specialAttackPlaceholder) {
+      this.specialAttackStarted = true;
+      this.specialAttackCooldown = this.specialAttackMaxCooldown - 1;
+    } else if (this.specialAttackStarted) {
+      this.specialAttackCooldown -= 1;
+    }
+    return [key, actionName];
+  }
+
+  async performAction(player) {
+    if (this.specialAttackStarted) {
+      if (this.specialAttackCooldown > 0) {
+        return;
+      }
+      try {
+        return this.attack(player);
+      } finally {
+        this.specialAttackStarted = false;
+        this.specialAttackCooldown = 0;
+        SoundManager.play("BombSound");
+        this.takeDamage(999);
+      }
+    }
+    return super.performAction(player);
   }
 }
 
@@ -1823,6 +1963,58 @@ class Necromancer extends Enemy {
     );
     summonedSkeleton.randomizeAction();
     summonedSkeleton.displayIntent();
+  }
+}
+
+class FireLizard extends Enemy {
+  constructor() {
+    super(
+      "Fire Lizard",
+      300,
+      15,
+      "Assets/Transperent2/Icon28.png",
+      true,
+      0,
+      50,
+      0,
+      0,
+      0,
+      0,
+      true,
+      0,
+      0,
+      8,
+      "Act 2 - normal",
+      "The Fire Lizard might look cute, but don't let that fool you. It summons Fire Spirits that will explode, damaging you in the process.",
+      "Fire Spirit"
+    );
+    this.setActionWeights({
+      block: 30,
+      canSummon: 40,
+      attack: 20,
+      tripleStrike: 10,
+    });
+    this.display.classList.add("bigEnemy");
+  }
+
+  summon() {
+    const maxEnemies = 5;
+    if (enemies.length >= maxEnemies) {
+      return;
+    }
+
+    const summonedFireSpirit = new FireSpirit();
+
+    enemies.pop();
+
+    let index = enemies.findIndex((e) => e == this);
+    enemies.splice(index, 0, summonedFireSpirit);
+    this.display.parentNode.insertBefore(
+      summonedFireSpirit.display,
+      this.display
+    );
+    summonedFireSpirit.randomizeAction();
+    summonedFireSpirit.displayIntent();
   }
 }
 
@@ -2326,6 +2518,125 @@ class BigGolem extends Enemy {
   }
 }
 
+class AncientClock extends Enemy {
+  specialAttackStarted = false;
+  specialAttackCooldown = 0;
+  specialAttackMaxCooldown = 10;
+  canQueueSpecialAttack = true;
+  forceQueueSpecialAttack = true;
+  specialAttackPower = 999;
+  specialAttackWeight = 0;
+
+  get possibleActions() {
+    if (!this.canQueueSpecialAttack && !this.forceQueueSpecialAttack) {
+      return super.possibleActions;
+    }
+
+    let actualActions = super.possibleActions;
+    if (this.specialAttackStarted) {
+      actualActions = [this.specialAttackPlaceholder];
+    } else {
+      actualActions.push(this.specialAttackPlaceholder);
+      // actualActions.push("attack_in_3_$sep$_poisionMist");
+    }
+
+    return actualActions;
+  }
+
+  get actionWeights() {
+    if (!this.canQueueSpecialAttack && !this.forceQueueSpecialAttack) {
+      return super.actionWeights;
+    }
+
+    if (this.forceQueueSpecialAttack) {
+      return { [this.specialAttackPlaceholder]: 1 };
+    }
+
+    let actualWeights = super.actionWeights;
+    if (this.specialAttackStarted) {
+      actualWeights = { [this.specialAttackPlaceholder]: 1 };
+    } else {
+      actualWeights[this.specialAttackPlaceholder] = this.specialAttackWeight;
+    }
+
+    return actualWeights;
+  }
+
+  get attackPower() {
+    if (!this.specialAttackStarted) {
+      return super.attackPower;
+    }
+    return this.specialAttackPower;
+  }
+
+  get specialAttackPlaceholder() {
+    let actualCooldown = this.specialAttackMaxCooldown;
+    if (this.specialAttackStarted) {
+      actualCooldown = this.specialAttackCooldown;
+    }
+    return "SD_in_" + actualCooldown;
+  }
+
+  constructor() {
+    super(
+      "Ancient Clock",
+      5000,
+      0,
+      "Assets/ancientClock.png",
+      true,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      0,
+      "Act 2 - event",
+      "Hidden deep in the caves, this ancient machine waits for an unlucky soul to trigger its kill switch."
+    );
+    this.display.classList.add("biggestEnemy");
+  }
+
+  async randomizeAction() {
+    let action = super.randomizeAction();
+    if (!action) return [null, null];
+    let [key, actionName] = action.split("_$sep$_");
+
+    // if (actionName == "poisonMist") {
+
+    // }
+
+    this.forceQueueSpecialAttack = false;
+    if (!this.specialAttackStarted && key == this.specialAttackPlaceholder) {
+      this.specialAttackStarted = true;
+      this.specialAttackCooldown = this.specialAttackMaxCooldown - 1;
+    } else if (this.specialAttackStarted) {
+      this.specialAttackCooldown -= 1;
+    }
+    return [key, actionName];
+  }
+
+  async performAction(player) {
+    if (this.specialAttackStarted) {
+      if (this.specialAttackCooldown > 0) {
+        return;
+      }
+      try {
+        return this.attack(player);
+      } finally {
+        this.specialAttackStarted = false;
+        this.specialAttackCooldown = 0;
+        SoundManager.play("BombSound");
+        this.takeDamage(9999);
+      }
+    }
+    return super.performAction(player);
+  }
+}
+
 class SmallCopperCloud extends Enemy {
   constructor() {
     super(
@@ -2565,4 +2876,7 @@ const enemyClassMapping = {
   SmallCopperCloud,
   PotOfGold,
   BossBear,
+  FireSpirit,
+  FireLizard,
+  AncientClock,
 };

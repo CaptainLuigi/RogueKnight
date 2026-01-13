@@ -4,6 +4,7 @@ const enemyConstellationTemplates = [
     difficultyTo: 0,
     enemies: [TrainingDummy, TrainingDummy],
   },
+
   {
     difficultyFrom: 1,
     difficultyTo: 2,
@@ -81,11 +82,11 @@ const enemyConstellationTemplates = [
     difficultyTo: 9,
     enemies: [Succubus],
   },
-  // {
-  //   difficultyFrom: 10,
-  //   difficultyTo: 10,
-  //   enemies: [MinionKnight, MasterMage, EvilKnight],
-  // },
+  {
+    difficultyFrom: 10,
+    difficultyTo: 10,
+    enemies: [MinionKnight, MasterMage, EvilKnight],
+  },
   {
     difficultyFrom: 10,
     difficultyTo: 10,
@@ -101,6 +102,11 @@ const enemyConstellationTemplates = [
       Centepede,
       { enemy: PotOfGold, chance: 0.1 },
     ],
+  },
+  {
+    difficultyFrom: 11,
+    difficultyTo: 13,
+    enemies: [FireLizard, FireLizard, { enemy: PotOfGold, chance: 0.1 }],
   },
   {
     difficultyFrom: 12,
@@ -134,14 +140,19 @@ const enemyConstellationTemplates = [
     ],
   },
   {
-    difficultyFrom: 18,
-    difficultyTo: 18,
+    difficultyFrom: 17,
+    difficultyTo: 17,
     enemies: [FatImp, Imp, Imp, Imp, Imp],
   },
   {
-    difficultyFrom: 18,
-    difficultyTo: 19,
+    difficultyFrom: 17,
+    difficultyTo: 18,
     enemies: [BigGolem],
+  },
+  {
+    difficultyFrom: 19,
+    difficultyTo: 19,
+    enemies: [AncientClock],
   },
   {
     difficultyFrom: 20,

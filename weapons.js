@@ -53,33 +53,36 @@ class Weapons {
     selfDamage = 0,
     rarity
   ) {
-    this.loadFromWeaponInfo({
-      name,
-      level,
-      range,
-      damage,
-      criticalDamage,
-      criticalChance,
-      energy,
-      description,
-      sprite,
-      requiresTargeting,
-      minRange,
-      maxRange,
-      effectsLeft,
-      effectsRight,
-      healingAmount,
-      canHeal,
-      blockAmount,
-      poisonAmount,
-      oncePerBattle,
-      energyGainOnUse,
-      drawAmountOnUse,
-      soundCategory,
-      strength,
-      selfDamage,
-      rarity,
-    });
+    this.loadFromWeaponInfo(
+      {
+        name,
+        level,
+        range,
+        damage,
+        criticalDamage,
+        criticalChance,
+        energy,
+        description,
+        sprite,
+        requiresTargeting,
+        minRange,
+        maxRange,
+        effectsLeft,
+        effectsRight,
+        healingAmount,
+        canHeal,
+        blockAmount,
+        poisonAmount,
+        oncePerBattle,
+        energyGainOnUse,
+        drawAmountOnUse,
+        soundCategory,
+        strength,
+        selfDamage,
+        rarity,
+      },
+      true
+    );
   }
 
   get name() {
@@ -339,7 +342,7 @@ class Weapons {
     }
     return info;
   }
-  loadFromWeaponInfo(info) {
+  loadFromWeaponInfo(info, isFirstLoad = false) {
     this.#name = info.name;
     this.#level = info.level;
     this.#range = info.range;
@@ -542,6 +545,70 @@ class BigHealthPotion extends Weapons {
   }
   applyEffects(target) {
     this.applyHealing(target);
+  }
+}
+
+class GoldenPotion extends Weapons {
+  #healingPercent = 0.1;
+
+  get healingAmount() {
+    const p = typeof player === "undefined" ? { maxHealth: 100 } : player;
+    return Math.floor(p.maxHealth * this.#healingPercent);
+  }
+
+  constructor() {
+    super(
+      "Golden Potion",
+      1,
+      "Healing",
+      0,
+      0,
+      0,
+      1,
+      "Heals 10% of your max HP. Can only be used once per battle.",
+      "Assets/goldenPotion.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      true,
+      0,
+      0,
+      true,
+      0,
+      0,
+      "HealSound",
+      0,
+      0,
+      "rare"
+    );
+  }
+
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    super.loadFromWeaponInfo(...arguments);
+    this.applyUpgrades(info, isFirstLoad);
+  }
+
+  applyUpgrades(weaponInfo, isFirstLoad) {
+    switch (weaponInfo.level) {
+      case 1:
+        if (!isFirstLoad) {
+          this.#healingPercent = 0.1;
+        }
+        break;
+      case 2:
+        this.#healingPercent = 0.15;
+        weaponInfo.description =
+          "Heals 15% of your max HP. Can only be used once per battle.";
+        break;
+      case 3:
+        this.#healingPercent = 0.2;
+        weaponInfo.description = "Heals 20% of your max HP.";
+        weaponInfo.oncePerBattle = false;
+        break;
+    }
   }
 }
 
@@ -1597,7 +1664,7 @@ class GoldSword extends Weapons {
       0,
       20,
       2,
-      "Deals more damage depending on the amount of gold you have. Can target only the first enemy, click to instantly use weapon.",
+      "Deals damage equal to 50% of the gold you have (crit 125%). Can target only the first enemy, click to instantly use weapon.",
       "Assets/goldSword.png",
       false,
       0,
@@ -1617,23 +1684,31 @@ class GoldSword extends Weapons {
       "rare"
     );
   }
-  loadFromWeaponInfo(info) {
-    this.applyUpgrades(info);
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    this.applyUpgrades(info, isFirstLoad);
     super.loadFromWeaponInfo(...arguments);
   }
-  applyUpgrades(weaponInfo) {
+  applyUpgrades(weaponInfo, isFirstLoad) {
     switch (weaponInfo.level) {
       case 1:
+        if (!isFirstLoad) {
+          this.#damageModifier = 0.5;
+          this.#critDamageModifier = 1;
+        }
         break;
       case 2:
         this.#damageModifier = 0.75;
         this.#critDamageModifier = 1.25;
         weaponInfo.criticalChance = 25;
+        weaponInfo.description =
+          "Deals damage equal to 75% of the gold you have. Can target only the first enemy, click to instantly use weapon.";
         break;
       case 3:
         this.#damageModifier = 1;
         this.#critDamageModifier = 1.5;
         weaponInfo.criticalChance = 30;
+        weaponInfo.description =
+          "Deals damage equal to 100% of the gold you have. Can target only the first enemy, click to instantly use weapon.";
         break;
     }
   }
@@ -1655,7 +1730,7 @@ class GoldShield extends Weapons {
       0,
       0,
       2,
-      "Blocks more depending on the amount of gold you have. Block is removed at the beginning of you next turn.",
+      "Blocks equal to 10% of the gold you have. Block is removed at the beginning of you next turn.",
       "Assets/goldShield.png",
       false,
       0,
@@ -1675,19 +1750,109 @@ class GoldShield extends Weapons {
       "rare"
     );
   }
-  loadFromWeaponInfo(info) {
-    this.applyUpgrades(info);
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    this.applyUpgrades(info, isFirstLoad);
     super.loadFromWeaponInfo(...arguments);
   }
-  applyUpgrades(weaponInfo) {
+  applyUpgrades(weaponInfo, isFirstLoad) {
     switch (weaponInfo.level) {
       case 1:
+        if (!isFirstLoad) {
+          this.#blockModifier = 0.1;
+        }
         break;
       case 2:
         this.#blockModifier = 0.15;
+        weaponInfo.description =
+          "Blocks equal to 15% of the gold you have. Block is removed at the beginning of you next turn.";
         break;
       case 3:
         this.#blockModifier = 0.2;
+        weaponInfo.description =
+          "Blocks equal to 20% of the gold you have. Block is removed at the beginning of you next turn.";
+        break;
+    }
+  }
+}
+
+class WarbandBlade extends Weapons {
+  #damagePerMelee = 10;
+  #critMultiplier = 1.25;
+
+  get damage() {
+    if (
+      typeof player === "undefined" ||
+      !player?.deck ||
+      player.deck.length === 0
+    ) {
+      return this.#damagePerMelee;
+    }
+
+    const meleeCount = player.deck.filter(
+      (weapon) => weapon.range === "Melee"
+    ).length;
+
+    return Math.max(1, meleeCount) * this.#damagePerMelee;
+  }
+
+  get criticalDamage() {
+    return Math.floor(this.damage * this.#critMultiplier);
+  }
+
+  constructor() {
+    super(
+      "Warband Blade",
+      1,
+      "Melee",
+      0,
+      0,
+      20,
+      1,
+      "Deals damage equal to 10 times the Melee weapons in your deck (crit x1.25). Can target only the first enemy, click to instantly use weapon.",
+      "Assets/scimitar.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      0,
+      0,
+      "rare"
+    );
+  }
+
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    super.loadFromWeaponInfo(...arguments);
+    this.applyUpgrades(info, isFirstLoad);
+  }
+
+  applyUpgrades(weaponInfo, isFirstLoad) {
+    switch (weaponInfo.level) {
+      case 1:
+        if (!isFirstLoad) {
+          this.#damagePerMelee = 10;
+          this.#critMultiplier = 1.25;
+        }
+        break;
+      case 2:
+        this.#damagePerMelee = 12;
+        weaponInfo.criticalChance = 25;
+        weaponInfo.description =
+          "Deals damage equal to 12 times the Melee weapons in your deck (crit x1.25). Can target only the first enemy, click to instantly use weapon.";
+        break;
+      case 3:
+        this.#damagePerMelee = 15;
+        this.#critMultiplier = 1.5;
+        weaponInfo.description =
+          "Deals damage equal to 15 times the Melee weapons in your deck (crit x1.5). Can target only the first enemy, click to instantly use weapon.";
         break;
     }
   }
@@ -2676,6 +2841,8 @@ function getAvailableWeapons() {
     new RagingDagger(),
     new BerserkersSpear(),
     new Leechfang(),
+    new WarbandBlade(),
+    new GoldenPotion(),
   ];
 }
 
@@ -2723,6 +2890,8 @@ const weaponClassMapping = {
   BerserkersSpear,
   Leechfang,
   MagicWand,
+  WarbandBlade,
+  GoldenPotion,
   DevShield,
   DevBow,
   DevSword,

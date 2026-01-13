@@ -160,6 +160,12 @@ const SoundManager = {
       audio.dataset = { baseVolume: 0.075 };
       return audio;
     })(),
+    BearGrowl: (() => {
+      const audio = new Audio("Assets/Sound/bearGrowlgiddster.wav");
+      audio.volume = 0.1;
+      audio.dataset = { baseVolume: 0.1 };
+      return audio;
+    })(),
   },
 
   globalVolume: 0.5,

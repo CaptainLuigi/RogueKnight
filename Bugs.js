@@ -65,4 +65,6 @@ musiklautstärke wie anpassung vom startscreen nutzen
 updatehealbtn not defined wenn custom knight hp increase bei character customization
 
 größeren bizeps emoji für achievement heraussuchen
+
+special attack countdown intent flickert
 */

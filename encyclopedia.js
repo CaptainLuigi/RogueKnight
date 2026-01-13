@@ -137,7 +137,7 @@ sortedRarities.forEach((rarity) => {
   }
 });
 
-let currentRarityPage = 0;
+// let currentRarityPage = 0;
 const backToSummaryBtn = document.getElementById("backToSummary");
 
 function enterWeaponSection() {
@@ -146,7 +146,7 @@ function enterWeaponSection() {
   sectionNextPage = nextWeaponPage;
   sectionPreviousPage = prevWeaponPage;
 
-  renderWeaponsByPage(currentRarityPage);
+  renderWeaponsByPage(currentWeaponPageIndex);
   updateWeaponPaginationButtons();
   adjustPageNavigationButtons();
 }

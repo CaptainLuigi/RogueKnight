@@ -553,6 +553,16 @@ const relicList = [
     100,
     "This is the only way to block poison completely. That can be convenient in later fights."
   ),
+
+  new ActiveRelics(
+    "Shield Mastery",
+    "Assets/Shield.png",
+    shieldMastery,
+    "Add 5 block at the end of your Turn for each Basic Shield in your deck.",
+    "chest",
+    100,
+    ""
+  ),
   new Relics(
     "Pile of Gold",
     "Assets/goldCoins2.gif",
@@ -730,6 +740,26 @@ function stonewallTotem(player, relicObject) {
   });
 }
 
+function shieldMastery(player, relicObject) {
+  window.addEventListener("EndTurn", (event) => {
+    const basicShields = player.deck.filter(
+      (weapon) => weapon.name === "Basic Shield"
+    ).length;
+
+    if (basicShields > 0) {
+      event.detail.eventQueue = event.detail.eventQueue.then(() => {
+        player.blockAmount = (player.blockAmount || 0) + basicShields * 5;
+
+        const blockCircle = document.getElementById("block-circle");
+        const blockText = document.getElementById("block-text");
+
+        if (blockText) blockText.innerText = player.blockAmount;
+        if (blockCircle) blockCircle.classList.remove("hidden");
+      });
+    }
+  });
+}
+
 function bloodInk(player, relicObject) {
   window.addEventListener("SelfDamage", (event) => {
     player.drawExtraCards(1);
@@ -780,7 +810,7 @@ function enthusiasticStart(player, relicObject) {
 function woundmark(player, relicObject) {
   window.addEventListener("StartFight", (event) => {
     event.detail.eventQueue = event.detail.eventQueue.then(() => {
-      const allowedDifficulties = [8, 9, 18, 19, 100];
+      const allowedDifficulties = [8, 9, 17, 18, 19, 100];
 
       if (allowedDifficulties.includes(globalSettings.difficulty)) {
         enemies.forEach((enemy) => {

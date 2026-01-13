@@ -643,6 +643,7 @@ async function endTurn() {
 
       // Perform the enemy action
       await enemy.performAction(player);
+
       updateHealthBar(player);
       await wait(300);
     }
@@ -653,6 +654,10 @@ async function endTurn() {
     enemy.randomizeAction();
     // Display the intent for the next turn
     enemy.displayIntent();
+
+    if (enemy.specialAttackStarted) {
+      await wait(400);
+    }
 
     index++;
   }

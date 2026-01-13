@@ -363,16 +363,17 @@ function triggerRandomEvent() {
   ];
 
   const act2Events = [
-    // { type: "upgradeAll", action: showEvent },
-    // { type: "lowerEnergyCost", action: showEvent },
-    // { type: "goldenStatue", action: showEvent },
-    // { type: "healOrHp", action: showEvent },
-    // { type: "golemEncounter", action: showEvent },
-    // { type: "ancientWriting", action: showEvent },
-    // { type: "magicWand", action: showEvent },
-    // { type: "fallingStones", action: showEvent },
-    // { type: "offerWeapon", action: showEvent },
-    // { type: "angel", action: showEvent, weight: 0.2 },
+    { type: "upgradeAll", action: showEvent },
+    { type: "lowerEnergyCost", action: showEvent },
+    { type: "goldenStatue", action: showEvent },
+    { type: "healOrHp", action: showEvent },
+    { type: "golemEncounter", action: showEvent },
+    { type: "ancientWriting", action: showEvent },
+    { type: "magicWand", action: showEvent },
+    { type: "fallingStones", action: showEvent },
+    { type: "offerWeapon", action: showEvent },
+    { type: "angel", action: showEvent, weight: 0.2 },
+    { type: "ancientClockEncounter", action: showEvent },
   ];
 
   const sharedEvents = [
@@ -504,7 +505,7 @@ function triggerRandomEvent() {
 }
 
 function startEliteFight() {
-  globalSettings.difficulty = globalSettings.currentAct === 2 ? 18 : 8;
+  globalSettings.difficulty = globalSettings.currentAct === 2 ? 17 : 8;
   globalSettings.relicGroup = "elite";
   globalSettings.redirectToChest = true;
   window.location.href = "Tutorial.html";

@@ -569,6 +569,8 @@ button:disabled {
 }
 
 .enemy-intent {
+    position: relative;
+    top: 0%;
     display: block;
     visibility: visible;
     font-size: 1.5rem;
