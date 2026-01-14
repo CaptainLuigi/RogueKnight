@@ -165,6 +165,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document
       .getElementById("takeLightning")
       .addEventListener("click", function () {
+        const shortFlash = document.getElementById("shortFlashOverlay");
+        shortFlash.classList.remove("hidden");
+        shortFlash.classList.add("active");
         SoundManager.play("Thunder");
         document.getElementById("lightning").classList.add("hidden");
         document.getElementById("takeLightning2").classList.remove("hidden");
@@ -472,6 +475,77 @@ document.addEventListener("DOMContentLoaded", function () {
         updateHealthBar(player);
         player.savePlayerToStorage();
       }
+    });
+  }
+
+  // swap weapon
+
+  if (eventType === "swapWeapon") {
+    const offerBtn = document.getElementById("offerWeaponRange");
+    const weaponDeckScreen = document.getElementById("weapon-deck-screen");
+    let offerMode = false;
+
+    if (offerBtn) {
+      offerBtn.addEventListener("click", () => {
+        offerMode = true;
+        weaponDeckScreen.classList.remove("hidden");
+        player.showDeck();
+        document.body.classList.add("offer-mode");
+
+        setTimeout(() => {
+          weaponDeckScreen.querySelectorAll(".weapon").forEach((el) => {
+            el.style.cursor = "pointer";
+          });
+        }, 0);
+      });
+    }
+
+    weaponDeckScreen?.addEventListener("click", (event) => {
+      if (!offerMode) return;
+
+      const weaponElement = event.target.closest(".weapon");
+      if (!weaponElement) return;
+
+      const weaponIndex = Array.from(
+        weaponDeckScreen.querySelectorAll(".weapon")
+      ).indexOf(weaponElement);
+
+      if (weaponIndex === -1) return;
+
+      const removedWeapon = player.deck[weaponIndex];
+      if (!removedWeapon) return;
+
+      const removedWeaponRange = removedWeapon.range;
+      const removedWeaponConstructor = removedWeapon.constructor;
+
+      dropWeapon(weaponIndex);
+
+      const filteredWeapons = getAvailableWeapons().filter(
+        (w) =>
+          w.range === removedWeaponRange &&
+          !player.deck.some((dw) => dw.constructor === w.constructor) &&
+          w.rarity !== "legendary" &&
+          w.constructor !== removedWeaponConstructor
+      );
+
+      if (filteredWeapons.length === 0) {
+        weaponDeckScreen.classList.add("hidden");
+        document.body.classList.remove("offer-mode");
+        offerMode = false;
+        return;
+      }
+
+      const newWeapon =
+        filteredWeapons[Math.floor(Math.random() * filteredWeapons.length)];
+
+      player.addWeapon(new newWeapon.constructor());
+
+      weaponDeckScreen.classList.add("hidden");
+      document.body.classList.remove("offer-mode");
+      offerMode = false;
+      player.savePlayerToStorage();
+
+      returnToMap();
     });
   }
 

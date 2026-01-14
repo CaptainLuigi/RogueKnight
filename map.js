@@ -374,13 +374,14 @@ function triggerRandomEvent() {
     { type: "offerWeapon", action: showEvent },
     { type: "angel", action: showEvent, weight: 0.2 },
     { type: "ancientClockEncounter", action: showEvent },
+    { type: "swapWeapon", action: showEvent },
   ];
 
   const sharedEvents = [
     { type: "shopScouting", action: showEvent },
-    { type: "eliteFight", action: startEliteFight },
-    { type: "normalFight", action: startNormalFight },
-    { type: "chest", action: openChest },
+    { type: "eliteFight", action: startEliteFight, weight: 0.8 },
+    { type: "normalFight", action: startNormalFight, weight: 5 },
+    { type: "chest", action: openChest, weight: 0.9 },
   ];
 
   let allEvents = [...sharedEvents];
@@ -438,12 +439,12 @@ function triggerRandomEvent() {
     allEvents.push({ type: "reunionDave", action: showEvent });
   }
 
-  // if (
-  //   !player.equippedRelics.includes("Infernal Ingot") &&
-  //   globalSettings.currentAct === 2
-  // ) {
-  //   allEvents.push({ type: "infernalIngot", action: showEvent });
-  // }
+  if (
+    !player.equippedRelics.includes("Infernal Ingot") &&
+    globalSettings.currentAct === 2
+  ) {
+    allEvents.push({ type: "infernalIngot", action: showEvent });
+  }
 
   if (
     globalSettings.playerGold >= 150 &&

@@ -236,7 +236,7 @@ class Weapons {
   }
 
   possibleTargets() {
-    if (this.damage <= 0) return [];
+    if (this.damage <= 0 && !this.poisonAmount) return [];
 
     if (player.canTargetAnyEnemy(this)) {
       return enemies
@@ -548,7 +548,7 @@ class BigHealthPotion extends Weapons {
   }
 }
 
-class GoldenPotion extends Weapons {
+class PhoenixElixir extends Weapons {
   #healingPercent = 0.1;
 
   get healingAmount() {
@@ -558,7 +558,7 @@ class GoldenPotion extends Weapons {
 
   constructor() {
     super(
-      "Golden Potion",
+      "Phoenix Elixir",
       1,
       "Healing",
       0,
@@ -566,7 +566,7 @@ class GoldenPotion extends Weapons {
       0,
       1,
       "Heals 10% of your max HP. Can only be used once per battle.",
-      "Assets/goldenPotion.png",
+      "Assets/phoenixElixir.png",
       false,
       0,
       0,
@@ -582,7 +582,7 @@ class GoldenPotion extends Weapons {
       "HealSound",
       0,
       0,
-      "rare"
+      "uncommon"
     );
   }
 
@@ -607,6 +607,69 @@ class GoldenPotion extends Weapons {
         this.#healingPercent = 0.2;
         weaponInfo.description = "Heals 20% of your max HP.";
         weaponInfo.oncePerBattle = false;
+        break;
+    }
+  }
+}
+
+class GoldenPotion extends Weapons {
+  #healModifier = 0.05;
+
+  get healingAmount() {
+    return Math.floor(globalSettings.playerGold * this.#healModifier);
+  }
+
+  constructor() {
+    super(
+      "Golden Potion",
+      1,
+      "Healing",
+      0,
+      0,
+      0,
+      2,
+      "Heals equal to 5% of the gold you have. Can be only used once per battle.",
+      "Assets/goldenPotion.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      true,
+      0,
+      0,
+      true,
+      0,
+      0,
+      "HealSound",
+      0,
+      0,
+      "rare"
+    );
+  }
+
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    this.applyUpgrades(info, isFirstLoad);
+    super.loadFromWeaponInfo(...arguments);
+  }
+
+  applyUpgrades(weaponInfo, isFirstLoad) {
+    switch (weaponInfo.level) {
+      case 1:
+        if (!isFirstLoad) {
+          this.#healModifier = 0.05;
+        }
+        break;
+      case 2:
+        this.#healModifier = 0.1;
+        weaponInfo.description =
+          "Heals equal to 10% of the gold you have. Can be only used once per battle.";
+        break;
+      case 3:
+        this.#healModifier = 0.15;
+        weaponInfo.oncePerBattle = false;
+        weaponInfo.description = "Heals equal to 15% of the gold you have.";
         break;
     }
   }
@@ -713,7 +776,7 @@ class BasicSpear extends Weapons {
     super(
       "Basic Spear",
       1,
-      "Medium",
+      "Melee",
       20,
       35,
       15,
@@ -1420,7 +1483,7 @@ class SpikedShield extends Weapons {
     super(
       "Spiked Shield",
       1,
-      "Melee",
+      "Block",
       15,
       20,
       30,
@@ -1519,7 +1582,7 @@ class SurvivalPotion extends Weapons {
       0,
       0,
       2,
-      "Heals you and blocks incoming damage. Block is removed at the beginning of your next turn. Can only be used once per battle",
+      "Heals you and blocks incoming damage. Block is removed at the beginning of your next turn. Can only be used once per battle.",
       "Assets/purplePotion.png",
       false,
       0,
@@ -1664,7 +1727,7 @@ class GoldSword extends Weapons {
       0,
       20,
       2,
-      "Deals damage equal to 50% of the gold you have (crit 125%). Can target only the first enemy, click to instantly use weapon.",
+      "Deals damage equal to 50% of the gold you have (crit 100%). Can target only the first enemy, click to instantly use weapon.",
       "Assets/goldSword.png",
       false,
       0,
@@ -1701,14 +1764,14 @@ class GoldSword extends Weapons {
         this.#critDamageModifier = 1.25;
         weaponInfo.criticalChance = 25;
         weaponInfo.description =
-          "Deals damage equal to 75% of the gold you have. Can target only the first enemy, click to instantly use weapon.";
+          "Deals damage equal to 75% of the gold you have (crit 125%). Can target only the first enemy, click to instantly use weapon.";
         break;
       case 3:
         this.#damageModifier = 1;
         this.#critDamageModifier = 1.5;
         weaponInfo.criticalChance = 30;
         weaponInfo.description =
-          "Deals damage equal to 100% of the gold you have. Can target only the first enemy, click to instantly use weapon.";
+          "Deals damage equal to 100% of the gold you have (crit 150%). Can target only the first enemy, click to instantly use weapon.";
         break;
     }
   }
@@ -1808,7 +1871,7 @@ class WarbandBlade extends Weapons {
       0,
       20,
       1,
-      "Deals damage equal to 10 times the Melee weapons in your deck (crit x1.25). Can target only the first enemy, click to instantly use weapon.",
+      "Deals damage equal to 10 times the amount of Melee weapons in your deck (crit x1.25). Can target only the first enemy, click to instantly use weapon.",
       "Assets/scimitar.png",
       false,
       0,
@@ -1846,13 +1909,260 @@ class WarbandBlade extends Weapons {
         this.#damagePerMelee = 12;
         weaponInfo.criticalChance = 25;
         weaponInfo.description =
-          "Deals damage equal to 12 times the Melee weapons in your deck (crit x1.25). Can target only the first enemy, click to instantly use weapon.";
+          "Deals damage equal to 12 times the the amount of Melee weapons in your deck (crit x1.25). Can target only the first enemy, click to instantly use weapon.";
         break;
       case 3:
         this.#damagePerMelee = 15;
         this.#critMultiplier = 1.5;
         weaponInfo.description =
-          "Deals damage equal to 15 times the Melee weapons in your deck (crit x1.5). Can target only the first enemy, click to instantly use weapon.";
+          "Deals damage equal to 15 times the the amount of Melee weapons in your deck (crit x1.5). Can target only the first enemy, click to instantly use weapon.";
+        break;
+    }
+  }
+}
+
+class BerserkersBlade extends Weapons {
+  #baseDamage = 20;
+  #critDamage = 30;
+
+  get damage() {
+    if (
+      typeof player === "undefined" ||
+      player.health == null ||
+      player.maxHealth == null
+    ) {
+      return this.#baseDamage;
+    }
+
+    const missingHp = player.maxHealth - player.health;
+    const multiplier = 1 + missingHp / 100;
+
+    return Math.floor(this.#baseDamage * multiplier);
+  }
+
+  get criticalDamage() {
+    if (
+      typeof player === "undefined" ||
+      player.health == null ||
+      player.maxHealth == null
+    ) {
+      return this.#critDamage;
+    }
+    const missingHp = player.maxHealth - player.health;
+    const multiplier = 1 + missingHp / 100;
+
+    return Math.floor(this.#critDamage * multiplier);
+  }
+
+  constructor() {
+    super(
+      "Berserkers Blade",
+      1,
+      "Melee",
+      0,
+      0,
+      20,
+      1,
+      "Has a damage multiplier based on the HP you are missing. Can target only the first enemy, click to instantly use weapon.",
+      "Assets/berserkersBlade.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      0,
+      0,
+      "uncommon"
+    );
+  }
+
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    super.loadFromWeaponInfo(...arguments);
+    this.applyUpgrades(info, isFirstLoad);
+  }
+
+  applyUpgrades(weaponInfo, isFirstLoad) {
+    switch (weaponInfo.level) {
+      case 1:
+        if (!isFirstLoad) {
+          this.#baseDamage = 20;
+          this.#critDamage = 30;
+        }
+        break;
+      case 2:
+        this.#baseDamage = 25;
+        this.#critDamage = 40;
+        weaponInfo.criticalChance = 25;
+        break;
+      case 3:
+        this.#baseDamage = 30;
+        this.#critDamage = 50;
+        break;
+    }
+  }
+}
+
+class AssassinsDagger extends Weapons {
+  #hpMultiplier = 0.1;
+  #critHpMultiplier = 0.15;
+
+  get damage() {
+    if (!window.enemies || enemies.length === 0) return 0;
+
+    const targetEnemy = enemies[0];
+    if (!targetEnemy || typeof targetEnemy.maxHealth !== "number") return 0;
+
+    return Math.floor(targetEnemy.maxHealth * this.#hpMultiplier);
+  }
+
+  get criticalDamage() {
+    if (!window.enemies || enemies.length === 0) return 0;
+
+    const targetEnemy = enemies[0];
+    if (!targetEnemy || typeof targetEnemy.maxHealth !== "number") return 0;
+
+    return Math.floor(targetEnemy.maxHealth * this.#critHpMultiplier);
+  }
+
+  constructor() {
+    super(
+      "Assassins Dagger",
+      1,
+      "Melee",
+      0,
+      0,
+      15,
+      2,
+      "Deals damage equal to 10% of the enemies max HP (crit 15%). Can target only the first enemy, click to instantly use weapon.",
+      "Assets/assassinsDagger.png",
+      false,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      0,
+      0,
+      false,
+      0,
+      0,
+      "SwordSlash",
+      0,
+      0,
+      "rare"
+    );
+  }
+
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    super.loadFromWeaponInfo(...arguments);
+    this.applyUpgrades(info, isFirstLoad);
+  }
+
+  applyUpgrades(weaponInfo, isFirstLoad) {
+    switch (weaponInfo.level) {
+      case 1:
+        if (!isFirstLoad) {
+          this.#hpMultiplier = 0.1;
+          this.#critHpMultiplier = 0.15;
+        }
+        break;
+      case 2:
+        this.#hpMultiplier = 0.15;
+        this.#critHpMultiplier = 0.2;
+        weaponInfo.criticalChance = 20;
+        weaponInfo.description =
+          "Deals damage equal to 15% of the enemies max HP (crit 20%). Can target only the first enemy, click to instantly use weapon.";
+        break;
+      case 3:
+        this.#hpMultiplier = 0.2;
+        this.#critHpMultiplier = 0.3;
+        weaponInfo.description =
+          "Deals damage equal to 20% of the enemies max HP (crit 30%). Can target only the first enemy, click to instantly use weapon.";
+        break;
+    }
+  }
+}
+
+class ToxicEcho extends Weapons {
+  #poisonMultiplier = 0.5;
+
+  constructor() {
+    super(
+      "Toxic Echo",
+      1,
+      "Utility",
+      1,
+      0,
+      0,
+      1,
+      "Apply poison equal to 50% of the poison target enemy already has. Can target any enemy, click weapon first, then the enemy you want to hit.",
+      "Assets/toxicEcho.png",
+      true,
+      0,
+      5,
+      0,
+      0,
+      0,
+      false,
+      0,
+      1,
+      false,
+      0,
+      0,
+      "Acid",
+      0,
+      0,
+      "rare"
+    );
+  }
+
+  applyPoisonToEnemy(targetEnemy, poisonModifier = 0) {
+    if (!targetEnemy) return;
+
+    const existingPoison = targetEnemy.poisonFromPlayer ?? 0;
+
+    const copiedPoison = Math.floor(
+      existingPoison * this.#poisonMultiplier + 1
+    );
+
+    const totalPoison = copiedPoison + poisonModifier;
+
+    if (totalPoison > 0) {
+      targetEnemy.addPoisonFromPlayer(totalPoison);
+      targetEnemy.updatePoisonDisplay();
+    }
+  }
+
+  loadFromWeaponInfo(info, isFirstLoad = false) {
+    super.loadFromWeaponInfo(...arguments);
+    this.applyUpgrades(info, isFirstLoad);
+  }
+
+  applyUpgrades(weaponInfo, isFirstLoad) {
+    switch (weaponInfo.level) {
+      case 1:
+        if (!isFirstLoad) {
+          this.#poisonMultiplier = 0.5;
+        }
+        break;
+      case 2:
+        this.#poisonMultiplier = 0.75;
+        weaponInfo.description =
+          "Apply poison equal to 75% of the poison target enemy already has. Can target any enemy, click weapon first, then the enemy you want to hit.";
+        break;
+      case 3:
+        this.#poisonMultiplier = 1;
+        weaponInfo.description =
+          "Apply poison equal to 100% of the poison target enemy already has. Can target any enemy, click weapon first, then the enemy you want to hit.";
         break;
     }
   }
@@ -1993,7 +2303,7 @@ class SwiftSword extends Weapons {
         weaponInfo.criticalDamage = 70;
         weaponInfo.drawAmountOnUse = 2;
         weaponInfo.description =
-          "Can only target the first enemy, click to instantly use weapon and draw two.";
+          "Can only target the first enemy, click to instantly use weapon. Draw two on attack.";
     }
   }
 }
@@ -2039,7 +2349,7 @@ class SwiftShield extends Weapons {
         weaponInfo.blockAmount = 15;
         weaponInfo.drawAmountOnUse = 2;
         weaponInfo.description =
-          "Block incoming damage and draw one. Block is removed at the beginning of you next turn.";
+          "Block incoming damage and draw two. Block is removed at the beginning of you next turn.";
     }
   }
 }
@@ -2479,7 +2789,7 @@ class BerserkersSpear extends Weapons {
     super(
       "Berserkers Spear",
       1,
-      "Medium",
+      "Melee",
       30,
       50,
       30,
@@ -2613,6 +2923,7 @@ class MagicWand extends Weapons {
       case 1:
         break;
       case 2:
+        weaponInfo.damage = 10;
         break;
       case 3:
         weaponInfo.damage = 50;
@@ -2842,7 +3153,11 @@ function getAvailableWeapons() {
     new BerserkersSpear(),
     new Leechfang(),
     new WarbandBlade(),
+    new PhoenixElixir(),
+    new BerserkersBlade(),
     new GoldenPotion(),
+    new ToxicEcho(),
+    new AssassinsDagger(),
   ];
 }
 
@@ -2891,7 +3206,11 @@ const weaponClassMapping = {
   Leechfang,
   MagicWand,
   WarbandBlade,
+  PhoenixElixir,
+  BerserkersBlade,
   GoldenPotion,
+  ToxicEcho,
+  AssassinsDagger,
   DevShield,
   DevBow,
   DevSword,
