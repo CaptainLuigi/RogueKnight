@@ -89,4 +89,12 @@ class globalSettings {
   static set currentAct(value) {
     storeData("globalSetting_currentAct", value);
   }
+
+  static get shopPriceMultiplier() {
+    return loadData("globalSetting_shopPriceMultiplier") ?? 1;
+  }
+
+  static set shopPriceMultiplier(value) {
+    storeData("globalSetting_shopPriceMultiplier", value);
+  }
 }

@@ -573,6 +573,15 @@ const relicList = [
     "You get this relic if no other relic is available."
   ),
   new Relics(
+    "Bargain Idol",
+    "Assets/bargainIdol.png",
+    bargainIdol,
+    "Reduces the prices of weapons and relics in the shop by 25%.",
+    "chest",
+    100,
+    "Make your future purchases cheaper and buy more Relics and Weapons. Capitalism is good."
+  ),
+  new Relics(
     "Double Strike",
     "Assets/doubleStrike.png",
     doubleStrike,
@@ -599,6 +608,24 @@ const relicList = [
     0,
     "Make your heavy hitting weapons cheaper. Focusing on high energy weapons is the best way to use this relic."
   ),
+  new Relics(
+    "Transmutation",
+    "Assets/transmutation.png",
+    transmutation,
+    "Removes all your weapons that are common and uncommon and not Level 3 and adds another weapon of the same type with better rarity and the same level for each weapon removed.",
+    "boss",
+    0,
+    "Down for a little gamble? Usually this relic should give you better weapons, but watch out, you might destroy synergies you built on the way."
+  ),
+  new Relics(
+    "Piercing Gauntlet",
+    "Assets/piercingGauntlet.png",
+    piercingGauntlet,
+    "All your melee weapons pierce an additional enemy, but weapon damage is reduced by 25%.",
+    "boss",
+    0,
+    "Fighting a lot of enemies is much easier with this relic. But don't left your single-target damage behind."
+  ),
   new ActiveRelics(
     "Broken Heart",
     "Assets/brokenHeart.png",
@@ -613,6 +640,14 @@ const relicList = [
   return o;
 }, {});
 const relicNames = [...Object.keys(relicList)].sort();
+
+const rarityOrder = ["common", "uncommon", "rare"];
+
+function getNextRarity(rarity) {
+  const idx = rarityOrder.indexOf(rarity);
+  if (idx === -1 || idx === rarityOrder.length - 1) return null;
+  return rarityOrder[idx + 1];
+}
 
 function grindingMonstera(player) {
   window.addEventListener("EnemyDeath", (event) => {
@@ -635,6 +670,60 @@ function championsMight(player, relicObject) {
   player.savePlayerToStorage();
 }
 
+function transmutation(player) {
+  for (let i = player.deck.length - 1; i >= 0; i--) {
+    const oldWeapon = player.deck[i];
+    if (!oldWeapon) continue;
+
+    if (oldWeapon.rarity === "rare" || oldWeapon.rarity === "legendary")
+      continue;
+    if (oldWeapon.level >= 3) continue;
+
+    const targetRarity = getNextRarity(oldWeapon.rarity);
+    if (!targetRarity) continue;
+
+    const oldRange = oldWeapon.range;
+    const oldLevel = oldWeapon.level;
+
+    const candidates = getAvailableWeapons().filter(
+      (w) =>
+        w.range === oldRange &&
+        w.rarity === targetRarity &&
+        w.rarity !== "legendary"
+    );
+
+    if (candidates.length === 0) return;
+
+    const newWeaponDef =
+      candidates[Math.floor(Math.random() * candidates.length)];
+
+    player.dropWeapon(i);
+
+    const newWeapon = new newWeaponDef.constructor();
+
+    while (newWeapon.level < oldLevel) {
+      newWeapon.upgrade();
+    }
+
+    player.addWeapon(newWeapon);
+  }
+
+  player.savePlayerToStorage();
+}
+
+function piercingGauntlet(player) {
+  player.deck.forEach((weapon) => {
+    if (weapon.range === "Melee") {
+      const currentEffects = weapon.effectsRight || [];
+      weapon.effectsRight = [...currentEffects, 1];
+    }
+  });
+
+  player.increaseWeaponDamagePercent(-25);
+  player.increaseWeaponCritDamagePercent(-25);
+  player.savePlayerToStorage();
+}
+
 function curseOfContinuity(player, relicObject) {
   window.addEventListener("EndTurn", (event) => {
     console.log("EndTurn event registered");
@@ -649,6 +738,10 @@ function curseOfContinuity(player, relicObject) {
 
     relicObject.bonusEnergy = unusedEnergy;
   });
+}
+
+function bargainIdol(player, relicObject) {
+  globalSettings.shopPriceMultiplier = 0.75;
 }
 
 function reservoirLotus(player, relicObject) {

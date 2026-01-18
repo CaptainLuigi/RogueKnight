@@ -463,7 +463,13 @@ class Enemy extends HealthEntity {
       if (this.#health < 0) this.#health = 0; // Ensure health doesn't go negative
       if (this.#health === 0) this.enemyDeath();
       else {
+        if (this.#health === 69) {
+          displayTurnMessage("Nice!");
+        }
         this.updateDisplay();
+      }
+      if (actualDamage === 69) {
+        displayTurnMessage("Nice!");
       }
       return actualDamage;
     }

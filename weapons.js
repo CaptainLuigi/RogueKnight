@@ -117,6 +117,10 @@ class Weapons {
     return this.#requiresTargeting;
   }
 
+  get effectsRight() {
+    return this.#effectsRight;
+  }
+
   // Getter for #minRange
   get minRange() {
     return this.#minRange;
@@ -229,6 +233,10 @@ class Weapons {
 
   set poisonAmount(value) {
     this.#poisonAmount = value;
+  }
+
+  set effectsRight(newArray) {
+    this.#effectsRight = newArray;
   }
 
   set wasUsed(value) {
@@ -454,7 +462,7 @@ class SmallHealthPotion extends Weapons {
     super(
       "Small Health Potion",
       1,
-      "Healing",
+      "Utility",
       0,
       0,
       0,
@@ -504,7 +512,7 @@ class BigHealthPotion extends Weapons {
     super(
       "Big Health Potion",
       1,
-      "Healing",
+      "Utility",
       0,
       0,
       0,
@@ -560,7 +568,7 @@ class PhoenixElixir extends Weapons {
     super(
       "Phoenix Elixir",
       1,
-      "Healing",
+      "Utility",
       0,
       0,
       0,
@@ -623,7 +631,7 @@ class GoldenPotion extends Weapons {
     super(
       "Golden Potion",
       1,
-      "Healing",
+      "Utility",
       0,
       0,
       0,
@@ -1577,7 +1585,7 @@ class SurvivalPotion extends Weapons {
     super(
       "Survival Potion",
       1,
-      "Healing & Block",
+      "Utility",
       0,
       0,
       0,
@@ -2507,7 +2515,7 @@ class Hammer extends Weapons {
       "Melee",
       75,
       15,
-      10,
+      20,
       2,
       "Can only target the first enemy, click to instantly use weapon.",
       "Assets/hammer.png",
@@ -2541,7 +2549,7 @@ class Hammer extends Weapons {
       case 3:
         weaponInfo.damage = 110;
         weaponInfo.criticalDamage = 5;
-        weaponInfo.criticalChance = 20;
+        weaponInfo.criticalChance = 10;
         break;
     }
   }
@@ -2847,7 +2855,7 @@ class Leechfang extends Weapons {
       60,
       10,
       1,
-      "Can only target the first enemy, click to instantly use weapon and take selfdamage.",
+      "Has 20% lifesteal. Can only target the first enemy, click to instantly use weapon and take selfdamage.",
       "Assets/leechfang.png",
       false,
       0,
@@ -2876,12 +2884,16 @@ class Leechfang extends Weapons {
         weaponInfo.criticalDamage = 70;
         weaponInfo.criticalChance = 15;
         weaponInfo.healingAmount = [25];
+        weaponInfo.description =
+          "Has 25% lifesteal. Can only target the first enemy, click to instantly use weapon and take selfdamage.";
         break;
       case 3:
         weaponInfo.damage = 70;
         weaponInfo.criticalDamage = 80;
         weaponInfo.criticalChance = 20;
         weaponInfo.healingAmount = [30];
+        weaponInfo.description =
+          "Has 30% lifesteal. Can only target the first enemy, click to instantly use weapon and take selfdamage.";
         break;
     }
   }
@@ -2943,7 +2955,7 @@ class DevWeapon extends Weapons {
       "Dev Weapon",
       1,
       "Melee",
-      10000,
+      81,
       10000,
       0,
       0,

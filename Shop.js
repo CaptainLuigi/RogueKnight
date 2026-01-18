@@ -71,12 +71,17 @@ function displayWeaponSpeechbubble() {
     }
     if (!weapon) return;
 
-    let weaponPrice = 20;
+    let basePrice = 20;
     if (weapon.level === 2) {
-      weaponPrice = 40;
+      basePrice = 40;
     } else if (weapon.level === 3) {
-      weaponPrice = 60;
+      basePrice = 60;
     }
+
+    let weaponPrice = Math.floor(
+      basePrice * globalSettings.shopPriceMultiplier
+    );
+
     let weaponDisplay = generateWeaponInfo(
       player,
       weapon,
@@ -145,6 +150,8 @@ function purchaseWeapon(weapon) {
     weaponPrice = 40;
   } else if (weapon.level === 3) {
     weaponPrice = 60;
+
+    weaponPrice = Math.floor(weaponPrice * globalSettings.shopPriceMultiplier);
   }
 
   if (globalSettings.playerGold >= weaponPrice) {
@@ -305,7 +312,11 @@ function displayShopRelics() {
 
     button.addEventListener("mouseover", () => {
       if (relicInfo) {
-        relicInfo.innerHTML = `<strong>${relic.name}</strong><br>${relic.relicDescription}<br><strong>Price:</strong> ${relic.relicPrice} Gold`;
+        const discountedPrice = Math.floor(
+          relic.relicPrice * globalSettings.shopPriceMultiplier
+        );
+
+        relicInfo.innerHTML = `<strong>${relic.name}</strong><br>${relic.relicDescription}<br><strong>Price:</strong> ${discountedPrice} Gold`;
         relicInfo.classList.add("visible");
       }
     });
@@ -317,8 +328,12 @@ function displayShopRelics() {
     });
 
     button.firstElementChild?.addEventListener("click", () => {
-      if (globalSettings.playerGold >= relic.relicPrice) {
-        updatePlayerGold(-relic.relicPrice);
+      const finalPrice = Math.floor(
+        relic.relicPrice * globalSettings.shopPriceMultiplier
+      );
+
+      if (globalSettings.playerGold >= finalPrice) {
+        updatePlayerGold(-finalPrice);
         purchaseRelic(relic);
         boughtRelicFlags[index] = true;
         localStorage.setItem(

@@ -361,6 +361,14 @@ class Player extends HealthEntity {
         updateHealthBar(this);
       }
     }
+
+    if (this.#equippedRelics.includes("Piercing Gauntlet")) {
+      if (weapon.range === "Melee") {
+        const currentEffects = weapon.effectsRight || [];
+        weapon.effectsRight = [...currentEffects, 1];
+      }
+    }
+
     this.savePlayerToStorage();
   }
 
@@ -425,6 +433,7 @@ class Player extends HealthEntity {
         await wait(2000);
         globalSettings.relicGroup = "chest";
         globalSettings.redirectToChest = false;
+        globalSettings.shopPriceMultiplier = 0.5;
         localStorage.removeItem("selectedFightIndex");
         // deleteProgressAndExit(false);
         window.location.href = "deathscreen.html";
@@ -435,6 +444,11 @@ class Player extends HealthEntity {
         this.displayDamage(finalDamage, false, -60);
         triggerDamageAnimation();
         SoundManager.play("Hurt");
+
+        if (this.#health === 69) {
+          displayTurnMessage("Nice!");
+        }
+
         await wait(300);
       }
     }

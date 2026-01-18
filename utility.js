@@ -103,6 +103,7 @@ function deleteProgressAndExit(exit = true) {
   globalSettings.relicGroup = "chest";
   globalSettings.redirectToChest = false;
   globalSettings.currentAct = 1;
+  globalSettings.shopPriceMultiplier = 1;
 
   if (exit === true) {
     window.location.href = "index.html";
@@ -166,6 +167,10 @@ function updatePlayerGold(goldAmount) {
   raiseEvent("PlayerGold", {
     amount: globalSettings.playerGold,
   });
+
+  if (globalSettings.playerGold === 69) {
+    displayTurnMessage("Nice!");
+  }
 }
 
 function openMap() {
